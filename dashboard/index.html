@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Interactive explorer of UN human-rights voting records: 1,705 recorded roll-call votes of the Commission on Human Rights and Human Rights Council (1947–2026), from the OHCHR Search Library.">
+<title>Voting Records — CHR·HRC (OHCHR Search Library)</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗳️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============ CHR·HRC Voting Records — design system (UHRI+ family) ============
+   Three palettes: paper (default), terminal, ink — switched via data-palette on .vr.
+   All chart fills reference these variables, so palette switches restyle live. */
+.vr{--paper:#F2EFE8;--paper-2:#EAE6DD;--paper-3:#E1DCD0;--ink:#0F0F10;--ink-2:#2A2824;--dim:#525049;--dimmer:#67645E;--line:rgba(15,15,16,.14);--line-2:rgba(15,15,16,.07);--accent:oklch(0.50 0.17 27);--accent-soft:oklch(0.50 0.17 27 / .14);--yes:#20713c;--yes2:#6f9a4f;--no:#a83a30;--abstain:#a07312;--absent:#b9b4a6;--chr:#8b7a3e;--hrc:var(--accent);--g-AFRICAN:#2a6fb0;--g-ASIA_PACIFIC:#177e63;--g-EEG:#a37a17;--g-GRULAC:#bf5b2d;--g-WEOG:#5b4ba0;--g-:#67645E;--div-hi:#2a6fb0;--div-mid:#e6e1d5;--div-lo:#a83a30;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace;--ui:"Inter",sans-serif;--serif:"Instrument Serif","Times New Roman",serif;font-family:var(--mono);font-size:12px;line-height:1.45;background:var(--paper);color:var(--ink);height:100vh;height:100dvh;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr) auto;grid-template-areas:"top" "tabs" "main" "foot";overflow:hidden;-webkit-font-smoothing:antialiased}
+.vr[data-palette="terminal"]{--paper:#0b0d0b;--paper-2:#121612;--paper-3:#1a1f1a;--ink:#d6e6cf;--ink-2:#b4c8ac;--dim:#8a9a80;--dimmer:#57644f;--line:rgba(214,230,207,.16);--line-2:rgba(214,230,207,.08);--accent:#9cf06b;--accent-soft:rgba(156,240,107,.16);--yes:#7ade5f;--yes2:#4f9a42;--no:#f07a6b;--abstain:#e6c25a;--absent:#3e4a39;--chr:#b0a05a;--g-AFRICAN:#6db2f0;--g-ASIA_PACIFIC:#4fd0a5;--g-EEG:#e0b34f;--g-GRULAC:#f0885a;--g-WEOG:#a99df0;--div-hi:#6db2f0;--div-mid:#1a1f1a;--div-lo:#f07a6b}
+.vr[data-palette="ink"]{--paper:#ffffff;--paper-2:#f4f4f5;--paper-3:#e9e9eb;--ink:#000000;--ink-2:#1a1a1a;--dim:#5b5b5b;--dimmer:#9a9a9a;--line:rgba(0,0,0,.13);--line-2:rgba(0,0,0,.06);--accent:#1d4ed8;--accent-soft:rgba(29,78,216,.12);--yes:#15803d;--yes2:#65a30d;--no:#b91c1c;--abstain:#a16207;--absent:#c9c9cc;--chr:#7a6a2e;--div-hi:#1d4ed8;--div-mid:#eeeef0;--div-lo:#b91c1c}
+.vr ::selection{background:var(--accent);color:var(--paper)}
+.vr a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--line)}
+.vr a:hover{color:var(--accent);border-color:var(--accent)}
+.vr button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.vr :focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+/* utilities */
+.fx{display:flex}.ac{align-items:center}.jb{justify-content:space-between}.gap16{gap:16px}
+.posrel{position:relative}.w100{width:100%}.m0{margin:0}.mb12{margin-bottom:12px}
+.mut,.muted{color:var(--dimmer)}
+/* topbar (console shell — kept for completeness; masthead shell hides it) */
+.topbar{grid-area:top;height:44px;display:none;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;padding:0 16px;border-bottom:1px solid var(--line);background:var(--paper)}
+.statchip{display:inline-flex;align-items:center;gap:7px;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap;font-size:10px}
+.dot{width:6px;height:6px;border-radius:50%;background:#2ecc71;box-shadow:0 0 0 3px rgba(46,204,113,.22);animation:vrpulse 2s infinite;display:inline-block}
+@keyframes vrpulse{50%{opacity:.4}}
+/* masthead (editorial serif header — the active shell) */
+.masthead{grid-area:top;padding:22px 24px 14px;border-bottom:1px solid var(--line);background:var(--paper)}
+.mh-row{flex-wrap:wrap;row-gap:10px}
+.mh-kicker{font-size:9px;letter-spacing:.22em;color:var(--dim);text-transform:uppercase}
+.mh-title{font-family:var(--serif);font-size:46px;font-weight:400;margin:8px 0 4px;line-height:1;letter-spacing:-.01em}
+.mh-sub{color:var(--dim);font-size:11px;letter-spacing:.03em}
+.vr .cmdk{display:flex;align-items:center;gap:10px;border:1px solid var(--line);background:var(--paper-2);padding:4px 10px;color:var(--dim);font-size:11px}
+.vr .cmdk:hover{border-color:var(--ink)}
+.mh-cmdk{max-width:340px;flex:0 1 340px}
+.kk{font-weight:700;color:var(--ink);border:1px solid var(--line);padding:1px 5px;background:var(--paper)}
+.khint{flex:1;text-align:left;padding-left:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+/* tabs */
+.tabs{grid-area:tabs;display:flex;border-bottom:1px solid var(--line);background:var(--paper);overflow-x:auto;scrollbar-width:thin}
+.tab{display:flex;align-items:baseline;gap:8px;padding:10px 14px;color:var(--dim);position:relative;flex-shrink:0;letter-spacing:.02em}
+.tab:hover{color:var(--ink)}
+.tab.on{color:var(--ink)}
+.tab.on::after{content:"";position:absolute;left:0;bottom:-1px;height:2px;width:100%;background:var(--accent)}
+.tidx{font-size:9px;color:var(--dimmer);font-variant-numeric:tabular-nums}
+.tab.on .tidx{color:var(--accent)}
+.tlbl{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+/* main scroll area */
+.main{grid-area:main;overflow-y:auto;background:var(--paper)}
+.inner{padding:18px 20px 40px;max-width:1220px;margin:0 auto}
+/* filter bar */
+.fbar{display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap;margin-bottom:16px;padding:12px 14px;background:var(--paper-2);border:1px solid var(--line)}
+.fitem{min-width:0}
+.fgrow{flex:1 1 280px}
+.flbl{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:var(--dimmer);margin-bottom:5px}
+.sel{font-family:var(--mono);font-size:11px;padding:6px 8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);min-width:130px;border-radius:0}
+.sel:focus{outline:none;border-color:var(--accent)}
+.tin{font-family:var(--mono);font-size:11px;padding:6px 9px;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:0}
+.tin:focus{outline:none;border-color:var(--accent)}
+.tin::placeholder{color:var(--dimmer)}
+/* stat tiles */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:16px}
+.tile{background:var(--paper-2);border:1px solid var(--line);padding:12px 14px 10px}
+.tk{font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:var(--dim)}
+.tv{font-family:var(--serif);font-size:30px;margin-top:4px;letter-spacing:-.01em;font-variant-numeric:tabular-nums;line-height:1.05}
+.tvs{font-family:var(--mono);font-size:11px;color:var(--dim);margin-left:6px;font-weight:400}
+/* panels */
+.panel{border:1px solid var(--line);background:var(--paper);margin-bottom:16px}
+.p-head{display:flex;gap:10px;align-items:baseline;padding:8px 14px;border-bottom:1px solid var(--line);background:var(--paper-2)}
+.p-idx{font-size:9px;color:var(--dimmer);font-variant-numeric:tabular-nums}
+.p-title{font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:700}
+.p-note{margin-left:auto;font-size:10px;color:var(--dim);text-align:right}
+.p-body{padding:14px}
+.p-desc{font-size:10.5px;color:var(--dim);margin-bottom:12px;letter-spacing:.01em;max-width:70em}
+.ptext{font-size:11.5px;line-height:1.7;color:var(--ink-2);max-width:70em}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.grid2{grid-template-columns:1fr}}
+/* legends */
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:10px;color:var(--dim);margin-top:10px;align-items:center}
+.li{display:inline-flex;align-items:center;gap:5px}
+.sw{width:10px;height:10px;display:inline-block}
+.swchr{background:var(--chr)}.swhrc{background:var(--hrc)}.swyes{background:var(--yes)}.swno{background:var(--no)}.swab{background:var(--abstain)}.swabs{background:var(--absent)}
+.swg-af{background:var(--g-AFRICAN)}.swg-ap{background:var(--g-ASIA_PACIFIC)}.swg-ee{background:var(--g-EEG)}.swg-gr{background:var(--g-GRULAC)}.swg-we{background:var(--g-WEOG)}
+/* grid tables */
+.tblwrap{border:1px solid var(--line);overflow:auto}
+.h460{max-height:460px}.h320{max-height:320px}.h280{max-height:280px}
+.scrolly{overflow-y:auto}
+.gt{font-size:11px}
+.gtr{display:grid;align-items:center;border-bottom:1px solid var(--line-2);color:var(--ink-2)}
+.gtc{padding:5px 10px;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.gth{position:sticky;top:0;background:var(--paper-2);z-index:1;border-bottom:1px solid var(--line)}
+.gth .gtc{color:var(--dim);font-weight:600;text-transform:uppercase;font-size:9px;letter-spacing:.1em;padding:6px 10px}
+.thsort{cursor:pointer}
+.thsort:hover{color:var(--ink)}
+.num{text-align:right!important;font-variant-numeric:tabular-nums}
+.cols5{grid-template-columns:56px minmax(0,1fr) 48px 48px 48px}
+.cols6{grid-template-columns:56px minmax(0,1fr) 44px 44px 44px 52px}
+.colsc{grid-template-columns:64px minmax(0,1fr) 110px 64px}
+/* variants with a Subject column (topic scent without clicking) */
+.cols5s{grid-template-columns:52px 148px minmax(0,1fr) 40px 40px 40px}
+.cols6s{grid-template-columns:52px 148px minmax(0,1fr) 38px 38px 38px 48px}
+.colsc2{grid-template-columns:56px 148px minmax(0,1fr) 92px 52px}
+.colsvt{grid-template-columns:minmax(0,1fr) 110px 110px}
+.colsdec{grid-template-columns:90px minmax(0,1fr) minmax(0,1fr)}
+.colscd{grid-template-columns:70px minmax(0,1fr) 90px 70px}
+/* pills */
+.pill{display:inline-block;padding:1px 7px;font-size:9px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;border:1px solid;white-space:nowrap}
+.pY{color:var(--yes);border-color:var(--yes);background:color-mix(in oklab, var(--yes) 10%, transparent)}
+.pN{color:var(--no);border-color:var(--no);background:color-mix(in oklab, var(--no) 10%, transparent)}
+.pA{color:var(--abstain);border-color:var(--abstain);background:color-mix(in oklab, var(--abstain) 10%, transparent)}
+.pX{color:var(--dim);border-color:var(--line)}
+/* chips (light 1px border per design — clickable subject labels) */
+.chiprow{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.vr .chip{font-family:var(--mono);font-size:10.5px;padding:4px 9px;background:var(--paper);color:var(--dim);border:1px solid var(--line);letter-spacing:.02em}
+.vr .chip:hover{border-color:var(--accent);color:var(--ink)}
+.vr .chip.on{background:var(--accent);color:var(--paper);border-color:var(--accent)}
+.vr .chip.more{border-style:dashed}
+.chipn{opacity:.55;font-variant-numeric:tabular-nums;margin-left:2px}
+.chsm{font-size:10px;padding:2px 7px}
+.relbl{font-size:10px;color:var(--dim)}
+/* suggestions dropdown */
+.suggest{position:absolute;top:100%;left:0;right:0;margin-top:4px;background:var(--paper);border:1px solid var(--ink);z-index:40;max-height:300px;overflow:auto;box-shadow:0 6px 20px rgba(0,0,0,.18);display:none}
+.sitem{padding:7px 11px;cursor:pointer;display:flex;justify-content:space-between;gap:12px;font-size:11px}
+.sitem:hover{background:var(--paper-2)}
+.cnt{color:var(--dimmer);white-space:nowrap}
+/* callout note */
+.note{font-size:11px;color:var(--dim);background:var(--paper-2);border:1px solid var(--line);border-left:2px solid var(--accent);padding:12px 14px;line-height:1.6;margin-bottom:16px}
+.cd{border:1px solid var(--line);background:var(--paper-2);padding:0 5px;font-size:10px}
+/* footer */
+.foot{grid-area:foot;min-height:30px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 16px;border-top:1px solid var(--line);background:var(--paper);font-size:10px;color:var(--dim);letter-spacing:.04em;overflow:hidden;white-space:nowrap}
+.fl{display:flex;gap:10px;align-items:center;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.fr{display:flex;gap:6px;align-items:center;flex-shrink:0}
+.fsep{color:var(--dimmer)}
+.sup{border:1px solid var(--line);padding:1px 6px;letter-spacing:.12em;text-transform:uppercase;font-size:9px;flex-shrink:0}
+.pallbl{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--dimmer);margin-right:2px}
+.vr .palbtn{font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border:1px solid var(--line);color:var(--dim)}
+.vr .palbtn:hover{border-color:var(--ink);color:var(--ink)}
+.vr .palbtn.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+/* ⌘K command palette */
+.kwrap{position:fixed;inset:0;background:rgba(10,10,8,.5);z-index:200;display:none;align-items:flex-start;justify-content:center;padding-top:12vh;backdrop-filter:blur(2px)}
+.kwrap.open{display:flex}
+.kbox{width:min(560px,92vw);background:var(--paper);border:1px solid var(--ink);box-shadow:0 16px 48px rgba(0,0,0,.35)}
+.kin{width:100%;padding:13px 16px;border:0;border-bottom:1px solid var(--line);background:var(--paper);color:var(--ink);font-family:var(--mono);font-size:13px}
+.kin:focus{outline:none}
+.kin::placeholder{color:var(--dimmer)}
+.klist{max-height:320px;overflow-y:auto}
+.kitem{display:flex;align-items:center;gap:12px;padding:8px 16px;cursor:pointer;font-size:11.5px;border-left:2px solid transparent}
+.kitem.on{background:var(--accent-soft);border-left-color:var(--accent)}
+.kkind{font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--dimmer);width:52px;flex-shrink:0}
+.ktxt{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kn{color:var(--dimmer);font-size:10px;font-variant-numeric:tabular-nums}
+.kfoot{padding:7px 16px;border-top:1px solid var(--line);color:var(--dimmer);font-size:9px;letter-spacing:.08em}
+/* responsive */
+@media(max-width:760px){
+  .mh-title{font-size:32px}
+  .masthead{padding:16px 14px 10px}
+  .inner{padding:14px 12px 32px}
+  .foot{height:auto;flex-wrap:wrap;padding:8px 12px;white-space:normal}
+  .mh-cmdk{flex-basis:100%;max-width:none}
+}
+</style>
+</head>
+<body>
+<div class="vr" id="vr" data-palette="paper">
+
+<div class="masthead">
+  <div class="fx ac jb gap16 mh-row">
+    <span class="mh-kicker">OHCHR Search Library — Voting Collection</span>
+    <button class="cmdk mh-cmdk" id="k-open"><span class="kk">⌘K</span><span class="khint">Jump to a view, country, or subject tag…</span></button>
+    <span class="statchip"><i class="dot"></i><span id="hd-stat">loading…</span></span>
+  </div>
+  <h1 class="mh-title">Voting Records</h1>
+  <div class="mh-sub">Commission on Human Rights (1946–2006) · Human Rights Council (2006–) — every recorded roll-call vote, per country</div>
+</div>
+
+<nav class="tabs" id="tabs">
+  <button class="tab on" data-view="overview"><span class="tidx">01</span><span class="tlbl">Overview</span></button>
+  <button class="tab" data-view="country"><span class="tidx">02</span><span class="tlbl">Country profile</span></button>
+  <button class="tab" data-view="topics"><span class="tidx">03</span><span class="tlbl">Topics</span></button>
+  <button class="tab" data-view="blocs"><span class="tidx">04</span><span class="tlbl">Blocs &amp; alignment</span></button>
+  <button class="tab" data-view="method"><span class="tidx">05</span><span class="tlbl">Methodology</span></button>
+</nav>
+
+<main class="main"><div class="inner">
+
+<!-- ================= 01 OVERVIEW ================= -->
+<section id="view-overview">
+  <div class="tiles" id="ov-tiles"></div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">01</span><span class="p-title">Recorded votes per year</span><span class="p-note">resolutions decided by roll-call, by deciding body</span></div>
+    <div class="p-body">
+      <div id="ov-timeline"></div>
+      <div class="legend" id="ov-legend"><span class="li"><i class="sw swchr"></i>Commission on Human Rights</span><span class="li"><i class="sw swhrc"></i>Human Rights Council</span></div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="panel">
+      <div class="p-head"><span class="p-idx">02</span><span class="p-title">How contested were the votes?</span></div>
+      <div class="p-body"><div class="p-desc">Share of recorded votes by Yes−No margin — near-unanimous through highly divided.</div><div id="ov-margin"></div></div>
+    </div>
+    <div class="panel">
+      <div class="p-head"><span class="p-idx">03</span><span class="p-title">Most divided votes</span><span class="p-note">narrowest Yes−No margin</span></div>
+      <div class="tblwrap h320 gt">
+        <div class="gtr gth cols5s"><span class="gtc">Year</span><span class="gtc">Resolution</span><span class="gtc">Subject</span><span class="gtc num">Y</span><span class="gtc num">N</span><span class="gtc num">A</span></div>
+        <div id="ov-close"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 02 COUNTRY PROFILE ================= -->
+<section id="view-country" style="display:none">
+  <div class="fbar">
+    <div class="fitem"><label class="flbl" for="c-country">Country</label><select class="sel" id="c-country"></select></div>
+    <div class="fitem"><label class="flbl" for="c-ymin">From year</label><select class="sel" id="c-ymin"></select></div>
+    <div class="fitem"><label class="flbl" for="c-ymax">To year</label><select class="sel" id="c-ymax"></select></div>
+    <div class="fitem"><label class="flbl" for="c-body">Body</label><select class="sel" id="c-body"><option value="">CHR + HRC</option><option value="CHR">CHR only</option><option value="HRC">HRC only</option></select></div>
+  </div>
+  <div class="tiles" id="c-tiles"></div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">01</span><span class="p-title">How it voted, year by year</span></div>
+    <div class="p-body">
+      <div class="p-desc">Each column = share of that year's votes cast Yes / Abstain / No (absences excluded; in tooltip). Grey strip below: how many votes that year. Dashed gaps: years outside CHR/HRC membership.</div>
+      <div id="c-timeline"></div>
+      <div class="legend"><span class="li"><i class="sw swyes"></i>Yes</span><span class="li"><i class="sw swab"></i>Abstain</span><span class="li"><i class="sw swno"></i>No</span><span class="li"><i class="sw swabs"></i>votes-per-year strip</span></div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">02</span><span class="p-title">Closest &amp; furthest voting partners</span></div>
+    <div class="p-body">
+      <div class="p-desc">Voting coincidence over shared recorded votes (min. <span id="c-minco">20</span> in common). Bar colour = UN regional group.</div>
+      <div class="grid2">
+        <div><div class="flbl">Closest 30</div><div class="scrolly" style="max-height:220px;border:1px solid var(--line-2)"><div id="c-align-top"></div></div></div>
+        <div><div class="flbl">Furthest 30</div><div class="scrolly" style="max-height:220px;border:1px solid var(--line-2)"><div id="c-align-bot"></div></div></div>
+      </div>
+      <div class="legend"><span class="li"><i class="sw swg-af"></i>African</span><span class="li"><i class="sw swg-ap"></i>Asia-Pacific</span><span class="li"><i class="sw swg-ee"></i>Eastern Europe</span><span class="li"><i class="sw swg-gr"></i>Latin America &amp; Caribbean</span><span class="li"><i class="sw swg-we"></i>Western Europe &amp; Others</span></div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">03</span><span class="p-title">Voting-agreement world map</span><span class="p-note">same encoding as the blocs matrix</span></div>
+    <div class="p-body">
+      <div class="p-desc">Every state coloured by its voting coincidence with <b id="c-mapself">—</b> over the selected window. Dots mark small states; grey = fewer than 20 shared votes. Historical entities (USSR, Yugoslavia, …) appear only in the lists above — the map shows present-day borders.</div>
+      <div id="c-map"></div>
+      <div class="legend"><span>Vote apart</span><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 100%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 70%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 40%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 20%, var(--div-mid))"></i><i class="sw" style="background:var(--div-mid)"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 20%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 40%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 70%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 100%, var(--div-mid))"></i><span>Vote alike</span><span class="li" style="margin-left:8px"><i class="sw" style="background:color-mix(in oklab, var(--accent) 35%, var(--paper));outline:1px solid var(--accent)"></i>selected state</span></div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">04</span><span class="p-title">Every recorded vote</span><span class="p-note"><span id="c-count"></span> votes · click a column header to sort</span></div>
+    <div class="tblwrap h460 gt" id="c-table">
+      <div class="gtr gth colsc2" id="c-head"></div>
+      <div id="c-rows"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 03 TOPICS ================= -->
+<section id="view-topics" style="display:none">
+  <div class="fbar">
+    <div class="fitem fgrow posrel">
+      <label class="flbl" for="t-search">Search title or subject</label>
+      <input class="tin w100" type="text" id="t-search" autocomplete="off" placeholder="Type 2+ letters for subject suggestions — free text also searches titles">
+      <div class="suggest" id="t-suggest"></div>
+    </div>
+    <div class="fitem"><label class="flbl" for="t-type">Topic type</label><select class="sel" id="t-type"><option value="">All topics</option><option value="theme">Thematic only</option><option value="country">Country situations</option></select></div>
+    <div class="fitem"><label class="flbl" for="t-ymin">From year</label><select class="sel" id="t-ymin"></select></div>
+    <div class="fitem"><label class="flbl" for="t-ymax">To year</label><select class="sel" id="t-ymax"></select></div>
+  </div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">00</span><span class="p-title">Most frequent subjects</span><span class="p-note" id="t-chipshead"></span></div>
+    <div class="p-body chiprow" id="t-chips"></div>
+  </div>
+  <div id="t-result" style="display:none">
+    <div class="tiles" id="t-tiles"></div>
+    <div class="panel" id="t-relatedcard" style="display:none">
+      <div class="p-body chiprow"><span class="relbl">Related subject tags in these results:</span><span id="t-related" class="chiprow" style="display:contents"></span></div>
+    </div>
+    <div class="panel">
+      <div class="p-head"><span class="p-idx">01</span><span class="p-title">Support over time</span><span class="p-note" id="t-trendnote"></span></div>
+      <div class="p-body"><div class="p-desc">Yearly average share voting Yes — of those casting Yes / No / Abstain (official totals). Faint dots: individual resolutions.</div><div id="t-trend"></div></div>
+    </div>
+    <div class="grid2">
+      <div class="panel">
+        <div class="p-head"><span class="p-idx">02</span><span class="p-title">Resolutions</span><span class="p-note" id="t-restitle"></span></div>
+        <div class="tblwrap h460 gt" id="t-table">
+          <div class="gtr gth cols6s"><span class="gtc">Year</span><span class="gtc">Resolution</span><span class="gtc">Subject</span><span class="gtc num">Y</span><span class="gtc num">N</span><span class="gtc num">A</span><span class="gtc">Body</span></div>
+          <div id="t-rows"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="p-head"><span class="p-idx">03</span><span class="p-title">How states voted on this topic</span></div>
+        <div class="p-body">
+          <div class="p-desc">Each state's Yes / Abstain / No share across these votes (min. 5 cast), ranked by support.</div>
+          <div id="t-stance" class="scrolly h460"></div>
+          <div class="legend"><span class="li"><i class="sw swyes"></i>Yes</span><span class="li"><i class="sw swab"></i>Abstain</span><span class="li"><i class="sw swno"></i>No</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="note" id="t-empty">Pick a subject tag above, or type in the search box, to see the resolutions and how each state voted.</div>
+</section>
+
+<!-- ================= 04 BLOCS & ALIGNMENT ================= -->
+<section id="view-blocs" style="display:none">
+  <div class="fbar">
+    <div class="fitem"><label class="flbl" for="b-set">Country set</label><select class="sel" id="b-set">
+      <option value="active">30 most active states</option>
+      <option value="agree30">30 most agreeing states</option>
+      <option value="disagree30">30 most disagreeing states</option>
+      <option value="AFRICAN">African group</option>
+      <option value="ASIA_PACIFIC">Asia-Pacific group</option>
+      <option value="EEG">Eastern Europe group</option>
+      <option value="GRULAC">Latin America &amp; Caribbean</option>
+      <option value="WEOG">Western Europe &amp; Others</option>
+      <option value="p5">Permanent-5 + key states</option>
+    </select></div>
+    <div class="fitem"><label class="flbl" for="b-ymin">From year</label><select class="sel" id="b-ymin"></select></div>
+    <div class="fitem"><label class="flbl" for="b-ymax">To year</label><select class="sel" id="b-ymax"></select></div>
+    <div class="fitem"><label class="flbl" for="b-order">Order rows by</label><select class="sel" id="b-order"><option value="cluster">Similarity (clustered)</option><option value="group">Regional group</option><option value="name">Name</option></select></div>
+  </div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">01</span><span class="p-title">Voting-coincidence matrix</span></div>
+    <div class="p-body">
+      <div class="p-desc">Each cell = share of shared recorded votes on which the two states voted the same way. Blue = vote alike, red = vote apart. Hover for detail.</div>
+      <div id="b-heat"></div>
+      <div class="legend"><span>Vote apart</span><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 100%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 70%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 40%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 20%, var(--div-mid))"></i><i class="sw" style="background:var(--div-mid)"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 20%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 40%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 70%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 100%, var(--div-mid))"></i><span>Vote alike</span><span class="mut">· grey = too few shared votes</span></div>
+      <div class="legend"><span class="mut">Labels:</span><span class="li"><i class="sw swg-af"></i>African</span><span class="li"><i class="sw swg-ap"></i>Asia-Pacific</span><span class="li"><i class="sw swg-ee"></i>Eastern Europe</span><span class="li"><i class="sw swg-gr"></i>Latin America &amp; Caribbean</span><span class="li"><i class="sw swg-we"></i>Western Europe &amp; Others</span></div>
+    </div>
+  </div>
+  <div class="note" id="b-note"></div>
+</section>
+
+<!-- ================= 05 METHODOLOGY ================= -->
+<section id="view-method" style="display:none">
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">01</span><span class="p-title">Source &amp; scope</span></div>
+    <div class="p-body ptext">All data comes from the <a href="https://searchlibrary.ohchr.org/search?c=Voting" target="_blank" rel="noopener">OHCHR Search Library — Voting collection</a>, harvested in full (<span id="m-total-inline">…</span> records — matching the collection's own reported total) via its MARCXML export. It covers every voting record catalogued for the <b>Commission on Human Rights</b> (1946–2006) and its successor, the <b>Human Rights Council</b> (2006–present).</div>
+  </div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">02</span><span class="p-title">Why most views show ~1,700 resolutions, not <span id="m-total-head">6,346</span></span></div>
+    <div class="p-body">
+      <div class="p-desc">Only resolutions decided by an actual roll-call (recorded) vote have a per-country breakdown. The Country profile, Topics, and Blocs views all depend on that breakdown, so they operate on this subset. Everything else — most resolutions — passed by consensus, with no individual positions logged.</div>
+      <div class="tiles mb12" id="m-tiles"></div>
+      <div class="tblwrap gt">
+        <div class="gtr gth colsvt"><span class="gtc">Vote type (source catalogue)</span><span class="gtc num">Resolutions</span><span class="gtc num">Has roll-call</span></div>
+        <div id="m-vt"></div>
+      </div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="panel">
+      <div class="p-head"><span class="p-idx">03</span><span class="p-title">Resolutions by decade</span></div>
+      <div class="tblwrap h280 gt">
+        <div class="gtr gth colsdec"><span class="gtc">Decade</span><span class="gtc num">All resolutions</span><span class="gtc num">Recorded votes</span></div>
+        <div id="m-decades"></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="p-head"><span class="p-idx">04</span><span class="p-title">Vote-code legend</span></div>
+      <div class="tblwrap h280 gt">
+        <div class="gtr gth colscd"><span class="gtc">Code</span><span class="gtc">Meaning</span><span class="gtc num">Rows</span><span class="gtc num">Share</span></div>
+        <div id="m-codes"></div>
+      </div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">05</span><span class="p-title">How topics are identified</span></div>
+    <div class="p-body">
+      <div class="p-desc">The Topics view does not use machine-learning or keyword clustering. It reuses OHCHR's own catalogued subject heading for each resolution (MARC field 991$d — the controlled vocabulary librarians use for search facets on the source site), so every topic label is traceable to the source catalogue. Subjects are additionally split into thematic vs. country-situation using a simple name-matching heuristic against the list of states in the vote data — imperfect at the margins and easy to adjust in the build script.</div>
+      <div class="tiles">
+        <div class="tile"><div class="tk">Distinct subjects, all resolutions</div><div class="tv" id="m-subj-all">…</div></div>
+        <div class="tile"><div class="tk">Distinct subjects, recorded votes</div><div class="tv" id="m-subj-rec">…</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">06</span><span class="p-title">Known data-quality notes</span></div>
+    <div class="p-body">
+      <div class="tiles mb12">
+        <div class="tile"><div class="tk">Roll-call reconciles with official totals</div><div class="tv" id="m-recon">…<small class="tvs" id="m-recon-pct"></small></div></div>
+        <div class="tile"><div class="tk">Roll-call vs. totals mismatch</div><div class="tv" id="m-mismatch">…<small class="tvs" id="m-mismatch-pct"></small></div></div>
+      </div>
+      <div class="p-desc m0">For <span id="m-mm-inline">~9%</span> of recorded votes — concentrated in older Commission-era records — the sum of individual Yes/No/Abstain positions doesn't exactly match the resolution's official totals, almost always by a small margin in the Abstain / non-participation count. Official totals are treated as authoritative; the per-country breakdown is shown alongside rather than forced to reconcile. One lowercase vote-code typo was normalised during parsing; nothing else is altered.</div>
+    </div>
+  </div>
+</section>
+
+</div></main>
+
+<footer class="foot">
+  <div class="fl"><span class="sup">CHR·HRC VR</span><span>Source: <a href="https://searchlibrary.ohchr.org/search?c=Voting" target="_blank" rel="noopener">OHCHR Search Library — Voting collection</a></span><span class="fsep">·</span><span id="f-note">loading dataset…</span></div>
+  <div class="fr"><span class="pallbl">Palette</span><button class="palbtn on" data-pal="paper">paper</button><button class="palbtn" data-pal="terminal">terminal</button><button class="palbtn" data-pal="ink">ink</button></div>
+</footer>
+
+<div class="kwrap" id="k-wrap">
+  <div class="kbox" id="k-box">
+    <input class="kin" id="k-in" placeholder="Jump to a view, country, or subject tag…" autocomplete="off">
+    <div class="klist" id="k-list"></div>
+    <div class="kfoot">↑↓ navigate · ↵ open · esc close</div>
+  </div>
+</div>
+
+</div><!-- /.vr -->
+
+<script src="world.js"></script>
+<script src="data.js"></script>
+<script>
+/* ================= VRC — SVG chart renderers (design-system port) =================
+   Pure drawing; all fills reference CSS custom properties so palette switches restyle live. */
+(function(){
+const NS='http://www.w3.org/2000/svg';
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,String(attrs[k]));if(parent)parent.appendChild(e);return e;}
+function txt(attrs,parent,content){const t=el('text',Object.assign({'font-family':'JetBrains Mono,monospace','font-size':'10','fill':'var(--dim)'},attrs),parent);t.textContent=content;return t;}
+function svg(w,h){const s=el('svg',{viewBox:'0 0 '+w+' '+h});s.style.width='100%';s.style.height='auto';s.style.display='block';s.style.overflow='visible';return s;}
+let tt=null;
+function ensureTT(){if(!tt||!tt.isConnected){tt=document.createElement('div');tt.setAttribute('style','position:fixed;pointer-events:none;z-index:9999;background:#14130f;color:#f2efe8;border:1px solid rgba(242,239,232,.3);padding:7px 10px;font:11px/1.5 "JetBrains Mono",monospace;max-width:300px;opacity:0;transition:opacity .08s');document.body.appendChild(tt);}return tt;}
+function show(html,x,y){const t=ensureTT();t.innerHTML=html;t.style.opacity='1';const w=t.offsetWidth,h=t.offsetHeight;t.style.left=Math.min(x+14,innerWidth-w-8)+'px';t.style.top=Math.max(8,y-h-12)+'px';}
+function hide(){if(tt)tt.style.opacity='0';}
+function hov(node,html){node.addEventListener('mousemove',e=>show(html,e.clientX,e.clientY));node.addEventListener('mouseleave',hide);}
+function esc(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function divColor(v){if(v==null)return 'var(--paper-3)';const t=(v-0.5)*2,p=Math.round(Math.abs(t)*100);return t>=0?('color-mix(in oklab, var(--div-hi) '+p+'%, var(--div-mid))'):('color-mix(in oklab, var(--div-lo) '+p+'%, var(--div-mid))');}
+
+const VRC={divColor:divColor};
+
+/* Overview: stacked bars CHR/HRC per year */
+VRC.ovTimeline=function(host,o){host.innerHTML='';
+  const years=o.years,perYear=o.perYear,maxY=o.maxY,ymin=o.ymin,ymax=o.ymax;
+  const W=1140,H=240,PL=36,PR=10,PT=10,PB=24,iw=W-PL-PR,ih=H-PT-PB;
+  const s=svg(W,H);const x=y=>PL+(y-ymin)/(ymax-ymin)*iw;const bw=Math.max(2,iw/years.length*0.8);
+  const step=Math.max(5,Math.ceil(maxY/50)*10);
+  for(let t=0;t<=maxY;t+=step){const yy=PT+ih-(t/maxY)*ih;
+    el('line',{x1:PL,x2:W-PR,y1:yy,y2:yy,stroke:'var(--line-2)'},s);
+    txt({x:PL-6,y:yy+3,'text-anchor':'end'},s,t);}
+  years.forEach(y=>{const d=perYear[y];const tot=d.CHR+d.HRC;if(!tot)return;let yb=PT+ih;
+    [['CHR','var(--chr)'],['HRC','var(--hrc)']].forEach(kc=>{const hh=(d[kc[0]]/maxY)*ih;if(hh<=0)return;yb-=hh;
+      const r=el('rect',{x:x(y)-bw/2,y:yb,width:bw,height:Math.max(hh-1,0.5),fill:kc[1]},s);
+      hov(r,'<b>'+y+'</b><br>CHR '+d.CHR+' · HRC '+d.HRC);});});
+  for(let y=Math.ceil(ymin/10)*10;y<=ymax;y+=10)txt({x:x(y),y:H-6,'text-anchor':'middle'},s,y);
+  host.appendChild(s);};
+
+/* Margin distribution: horizontal bars */
+VRC.margin=function(host,o){host.innerHTML='';
+  const rows=o.rows,maxC=Math.max.apply(null,rows.map(r=>r.count));
+  const W=520,rowh=42,s=svg(W,rows.length*rowh);
+  const cols=['var(--yes)','var(--yes2)','var(--abstain)','var(--no)'];
+  rows.forEach((b,i)=>{const yy=i*rowh+6,barmax=W-250;
+    txt({x:0,y:yy+16,fill:'var(--ink-2)'},s,b.label);
+    el('rect',{x:170,y:yy+4,width:barmax,height:18,fill:'var(--paper-2)',stroke:'var(--line-2)'},s);
+    const ww=barmax*(b.count/maxC);
+    const rr=el('rect',{x:170,y:yy+4,width:Math.max(ww,1),height:18,fill:cols[i]},s);
+    txt({x:170+Math.max(ww,1)+8,y:yy+17},s,b.count.toLocaleString('en-US')+' ('+b.pct+'%)');
+    hov(rr,b.label+'<br><b>'+b.count.toLocaleString('en-US')+'</b> votes');});
+  host.appendChild(s);};
+
+/* Country profile: yearly Yes/Abstain/No COMPOSITION (100%) + votes-per-year strip.
+   Categorical x-axis over member years only; dashed markers flag membership gaps. */
+VRC.cComposition=function(host,o){host.innerHTML='';
+  const ys=o.years;if(!ys.length){host.innerHTML='<div style="color:var(--dim)">No votes in this window.</div>';return;}
+  const W=1140,PL=38,PR=12,PT=10,CH=170,GAP=12,VH=34,AX=22;
+  const H=PT+CH+GAP+VH+AX,iw=W-PL-PR,s=svg(W,H);
+  const n=ys.length,slot=iw/n,bw=Math.min(46,Math.max(3,slot*0.82));
+  const cx=i=>PL+i*slot+slot/2;
+  /* composition gridlines 0/50/100% */
+  [0,.5,1].forEach(v=>{const yy=PT+CH-v*CH;
+    el('line',{x1:PL,x2:W-PR,y1:yy,y2:yy,stroke:'var(--line-2)'},s);
+    txt({x:PL-6,y:yy+3,'text-anchor':'end'},s,Math.round(v*100)+'%');});
+  /* volume-strip baseline + label */
+  const vy0=PT+CH+GAP+VH;
+  el('line',{x1:PL,x2:W-PR,y1:vy0,y2:vy0,stroke:'var(--line-2)'},s);
+  txt({x:PL-6,y:PT+CH+GAP+VH/2+3,'text-anchor':'end',fill:'var(--dimmer)'},s,'vol');
+  const maxV=Math.max(...ys.map(d=>d.Y+d.N+d.A+d.o),1);
+  ys.forEach((d,i)=>{
+    const denom=d.Y+d.A+d.N;
+    /* composition column (Yes bottom, Abstain middle, No top) */
+    if(denom>0){let yb=PT+CH;
+      [['Y','var(--yes)'],['A','var(--abstain)'],['N','var(--no)']].forEach(kc=>{
+        const hh=d[kc[0]]/denom*CH;if(hh<=0)return;yb-=hh;
+        el('rect',{x:cx(i)-bw/2,y:yb,width:bw,height:Math.max(hh-0.6,0.6),fill:kc[1]},s);});}
+    /* volume strip */
+    const tot=d.Y+d.N+d.A+d.o,vh=tot/maxV*VH;
+    el('rect',{x:cx(i)-bw/2,y:vy0-vh,width:bw,height:Math.max(vh,0.8),fill:'var(--absent)'},s);
+    /* one hover target per year, spanning both areas */
+    const hit=el('rect',{x:PL+i*slot,y:PT,width:slot,height:CH+GAP+VH,fill:'transparent'},s);
+    hov(hit,'<b>'+d.y+'</b> · '+tot+' vote'+(tot>1?'s':'')+'<br>Yes '+d.Y+(denom?' ('+Math.round(d.Y/denom*100)+'%)':'')+' · Abstain '+d.A+' · No '+d.N+(d.o?'<br>'+d.o+' absent / not participating':''));
+  });
+  /* membership-gap markers between non-consecutive member years */
+  for(let i=0;i<n-1;i++){const g=ys[i+1].y-ys[i].y;
+    if(g>1){const gx=PL+(i+1)*slot;
+      el('line',{x1:gx,x2:gx,y1:PT,y2:vy0,stroke:'var(--dimmer)','stroke-width':1,'stroke-dasharray':'2 3'},s);
+      const ghit=el('rect',{x:gx-3,y:PT,width:6,height:CH+GAP+VH,fill:'transparent'},s);
+      hov(ghit,'Not a member '+(ys[i].y+1)+(g>2?'–'+(ys[i+1].y-1):''));}}
+  /* x labels on member-year slots */
+  const step=Math.max(1,Math.ceil(n/14));
+  for(let i=0;i<n;i+=step)txt({x:cx(i),y:H-6,'text-anchor':'middle'},s,ys[i].y);
+  host.appendChild(s);};
+
+/* Country profile: world choropleth of voting agreement with the selected state */
+VRC.worldMap=function(host,o){host.innerHTML='';
+  if(!window.WORLD){host.innerHTML='<div style="color:var(--dim)">Map data not loaded.</div>';return;}
+  const Wd=WORLD.W,Hd=WORLD.H,by=o.byIso,self=o.self;
+  const s=svg(Wd,Hd);
+  const fillFor=iso=>{
+    if(iso===self)return 'color-mix(in oklab, var(--accent) 35%, var(--paper))';
+    const d=by[iso];return d&&d.v!=null?divColor(d.v):'var(--paper-3)';};
+  const tipFor=(iso,fallback)=>{
+    if(iso===self)return '<b>'+esc(o.selfName)+'</b> — selected state';
+    const d=by[iso];
+    if(d&&d.v!=null)return '<b>'+esc(d.name)+'</b><br>'+Math.round(d.v*100)+'% agreement · '+d.co+' shared votes';
+    if(d)return '<b>'+esc(d.name)+'</b><br>fewer than 20 shared votes';
+    return '<b>'+esc(fallback)+'</b><br>no recorded votes in common';};
+  for(const iso in WORLD.paths){
+    const p=el('path',{d:WORLD.paths[iso],fill:fillFor(iso),stroke:'var(--paper)','stroke-width':0.6},s);
+    if(iso===self)p.setAttribute('stroke','var(--accent)'),p.setAttribute('stroke-width','1.2');
+    hov(p,tipFor(iso,WORLD.names[iso]||iso));}
+  for(const iso in WORLD.dots){
+    const [dx,dy]=WORLD.dots[iso];
+    const c=el('circle',{cx:dx,cy:dy,r:4,fill:fillFor(iso),stroke:iso===self?'var(--accent)':'var(--paper)','stroke-width':iso===self?1.2:0.8},s);
+    hov(c,tipFor(iso,WORLD.names[iso]||iso));}
+  host.appendChild(s);};
+
+/* Alignment: top/bottom partners, bars coloured by regional group */
+VRC.alignment=function(host,o){host.innerHTML='';
+  const items=o.items;
+  if(!items.length){host.innerHTML='<div style="color:var(--dim)">Not enough shared votes in this window for a reliable comparison.</div>';return;}
+  const rowh=22,W=520,LBL=150,barx=LBL,barmax=W-LBL-52;
+  const s=svg(W,items.length*rowh+6);
+  items.forEach((a,i)=>{const yy=i*rowh+4;
+    if(a===null){el('line',{x1:0,x2:W,y1:yy+rowh/2,y2:yy+rowh/2,stroke:'var(--line)'},s);return;}
+    txt({x:0,y:yy+14,fill:'var(--ink-2)'},s,a.name.length>22?a.name.slice(0,21)+'…':a.name);
+    el('rect',{x:barx,y:yy+3,width:barmax,height:14,fill:'var(--paper-2)',stroke:'var(--line-2)'},s);
+    const ww=barmax*a.agree;
+    const rr=el('rect',{x:barx,y:yy+3,width:Math.max(ww,1),height:14,fill:'var(--g-'+(a.group||'')+')'},s);
+    txt({x:barx+barmax+6,y:yy+14},s,Math.round(a.agree*100)+'%');
+    hov(rr,'<b>'+esc(a.name)+'</b> · '+esc(a.glabel||'')+'<br>'+Math.round(a.agree*100)+'% agreement over '+a.co+' shared votes');});
+  host.appendChild(s);};
+
+/* Blocs: voting-coincidence heatmap */
+VRC.heatmap=function(host,o){host.innerHTML='';host.style.overflowX='auto';
+  const labels=o.labels,cells=o.cells,n=labels.length;
+  const cell=Math.max(11,Math.min(24,Math.floor(720/n)));
+  const LBL=118,TOP=118,W=LBL+n*cell+8,H=TOP+n*cell+8;
+  const s=svg(W,H);s.style.width=null;s.setAttribute('width',W);s.setAttribute('height',H);
+  labels.forEach((c,ci)=>{const tx=LBL+ci*cell+cell/2,ty=TOP-6;
+    txt({x:tx,y:ty,'text-anchor':'start',transform:'rotate(-55 '+tx+' '+ty+')',fill:'var(--g-'+(c.group||'')+')'},s,c.iso);});
+  for(let r=0;r<n;r++){const cR=labels[r];
+    txt({x:LBL-6,y:TOP+r*cell+cell/2+3,'text-anchor':'end',fill:'var(--g-'+(cR.group||'')+')'},s,cR.iso);
+    for(let ci=0;ci<n;ci++){const d=cells[r][ci];
+      const rect=el('rect',{x:LBL+ci*cell,y:TOP+r*cell,width:cell-1.5,height:cell-1.5,fill:d.self?'var(--absent)':divColor(d.v)},s);
+      if(!d.self)hov(rect,'<b>'+esc(cR.name)+'</b> ↔ <b>'+esc(labels[ci].name)+'</b><br>'+(d.v==null?'no shared votes':Math.round(d.v*100)+'% agreement · '+d.co+' shared votes'));}}
+  host.appendChild(s);};
+
+/* Topics: support-over-time trend */
+VRC.trend=function(host,o){host.innerHTML='';
+  const pts=o.pts,means=o.means;
+  if(pts.length<2){host.innerHTML='<div style="color:var(--dim)">Not enough dated votes with vote totals to chart a trend.</div>';return;}
+  const years=means.map(m=>m.year),y0=years[0],y1=years[years.length-1],span=Math.max(1,y1-y0);
+  const W=1140,H=200,PL=36,PR=12,PT=8,PB=22,iw=W-PL-PR,ih=H-PT-PB;
+  const s=svg(W,H),X=y=>PL+(y-y0)/span*iw,Yc=v=>PT+ih-v*ih;
+  [0,.25,.5,.75,1].forEach(v=>{el('line',{x1:PL,x2:W-PR,y1:Yc(v),y2:Yc(v),stroke:'var(--line-2)'},s);
+    txt({x:PL-6,y:Yc(v)+3,'text-anchor':'end'},s,Math.round(v*100)+'%');});
+  const step=span<=12?2:span<=30?5:10;
+  for(let y=Math.ceil(y0/step)*step;y<=y1;y+=step)txt({x:X(y),y:H-4,'text-anchor':'middle'},s,y);
+  pts.forEach(p=>el('circle',{cx:X(p.year),cy:Yc(p.share),r:2.5,fill:'var(--yes)',opacity:0.3},s));
+  if(means.length>1){const d=means.map((m,i)=>(i?'L':'M')+X(m.year).toFixed(1)+' '+Yc(m.mean).toFixed(1)).join(' ');
+    el('path',{d:d,fill:'none',stroke:'var(--yes)','stroke-width':2,'stroke-linejoin':'round','stroke-linecap':'round'},s);}
+  means.forEach(m=>{el('circle',{cx:X(m.year),cy:Yc(m.mean),r:3.5,fill:'var(--yes)',stroke:'var(--paper)','stroke-width':2},s);
+    const hit=el('circle',{cx:X(m.year),cy:Yc(m.mean),r:10,fill:'transparent'},s);
+    hov(hit,'<b>'+m.year+'</b><br>Avg support '+Math.round(m.mean*100)+'% · '+m.n+' resolution'+(m.n>1?'s':''));});
+  host.appendChild(s);};
+
+/* Topics: per-state Yes/Abstain/No stacked shares */
+VRC.stance=function(host,o){host.innerHTML='';
+  const stats=o.stats;
+  if(stats.length<2){host.innerHTML='<div style="color:var(--dim)">Too few states cast ≥5 votes on this topic for a breakdown.</div>';return;}
+  const W=520,rowh=20,LBL=140,barx=LBL,barw=W-LBL-38;
+  const s=svg(W,stats.length*rowh+4);
+  stats.forEach((d,i)=>{const yy=i*rowh+3;
+    txt({x:0,y:yy+13,fill:'var(--ink-2)'},s,d.name.length>20?d.name.slice(0,19)+'…':d.name);
+    let x=barx;
+    [['var(--yes)',d.Y],['var(--abstain)',d.A],['var(--no)',d.N]].forEach(cv=>{const ww=barw*(cv[1]/d.tot);if(ww<=0)return;
+      el('rect',{x:x,y:yy+3,width:Math.max(ww-0.5,0.5),height:13,fill:cv[0]},s);x+=ww;});
+    txt({x:barx+barw+6,y:yy+13},s,Math.round(d.share*100)+'%');
+    const hit=el('rect',{x:barx,y:yy+2,width:barw,height:15,fill:'transparent'},s);
+    hov(hit,'<b>'+esc(d.name)+'</b><br>Yes '+d.Y+' · Abstain '+d.A+' · No '+d.N+' ('+d.tot+' votes)');});
+  host.appendChild(s);};
+
+window.VRC=VRC;
+})();
+</script>
+<script>
+/* ================= App logic (audited pipeline, design-system markup) ================= */
+'use strict';
+const D=window.DATA, RES=D.res, C=D.countries, M=D.meta, GLAB=M.groupLabels;
+const byIso=Object.fromEntries(C.map(c=>[c.iso3,c]));
+const SUBJ=D.subjects||[];
+const subjCS=new Map(SUBJ.map(x=>[x.name,x.cs]));
+const SUBS=new Set(['Y','N','A']);
+const nVotesTotal=C.reduce((a,c)=>a+c.n,0);
+
+const fmt=n=>n==null?'—':n.toLocaleString('en-US');
+const esc=s=>(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const tc=s=>s.toLowerCase().replace(/\b([a-z])/g,(m,c)=>c.toUpperCase()).replace(/\b(Of|And|The|In|To|For|On)\b/g,m=>m.toLowerCase());
+const $=id=>document.getElementById(id);
+const recUrl=id=>'https://searchlibrary.ohchr.org/record/'+id;
+
+/* vote maps: parallel arrays -> Map(resIdx -> code), lazy per country */
+const _vm={};
+function vmap(iso){if(_vm[iso])return _vm[iso];const v=D.votes[iso],m=new Map();if(v)for(let i=0;i<v.r.length;i++)m.set(v.r[i],v.v[i]);return _vm[iso]=m;}
+
+/* resolutions in a year window (+optional body); From>To tolerated by swapping */
+function resSet(ymin,ymax,body){const a=Math.min(ymin,ymax),b=Math.max(ymin,ymax),out=new Set();
+  for(let i=0;i<RES.length;i++){const r=RES[i];if(r.year!=null&&r.year>=a&&r.year<=b&&(!body||r.body===body))out.add(i);}return out;}
+function yearPair(idMin,idMax){const a=+$(idMin).value,b=+$(idMax).value;return a<=b?[a,b]:[b,a];}
+
+/* ---------- palette switcher ---------- */
+function setPalette(p){$('vr').dataset.palette=p;
+  document.querySelectorAll('.palbtn').forEach(b=>b.classList.toggle('on',b.dataset.pal===p));
+  try{localStorage.setItem('vrPalette',p)}catch(e){}
+  renderCurrent(); /* charts re-read CSS vars via var() live, but rebuild keeps SVG strokes crisp */
+}
+document.querySelectorAll('.palbtn').forEach(b=>b.addEventListener('click',()=>setPalette(b.dataset.pal)));
+
+/* ---------- tabs ---------- */
+let VIEW='overview';
+const VIEWS=['overview','country','topics','blocs','method'];
+function switchTab(v){VIEW=v;
+  VIEWS.forEach(x=>{$('view-'+x).style.display=x===v?'':'none';});
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.view===v));
+  renderCurrent();
+}
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.view)));
+function renderCurrent(){
+  if(VIEW==='overview')renderOverview();
+  else if(VIEW==='country')renderCountry();
+  else if(VIEW==='topics')renderTopics();
+  else if(VIEW==='blocs')renderBlocs();
+  else if(VIEW==='method')renderMethod();
+}
+
+/* ---------- 01 OVERVIEW ---------- */
+function renderOverview(){
+  $('ov-tiles').innerHTML=[
+    ['Recorded resolutions',fmt(RES.length),''],['Countries',fmt(C.length),''],
+    ['Roll-call votes cast',fmt(nVotesTotal),''],['Years covered',M.yearMin+'–'+M.yearMax,'']
+  ].map(t=>`<div class="tile"><div class="tk">${t[0]}</div><div class="tv">${t[1]}<small class="tvs">${t[2]}</small></div></div>`).join('');
+  const years=[];for(let y=M.yearMin;y<=M.yearMax;y++)years.push(y);
+  const perYear={};years.forEach(y=>perYear[y]={CHR:0,HRC:0});
+  RES.forEach(r=>{if(r.year!=null&&perYear[r.year])perYear[r.year][r.body]++;});
+  const maxY=Math.max(...years.map(y=>perYear[y].CHR+perYear[y].HRC));
+  VRC.ovTimeline($('ov-timeline'),{years,perYear,maxY,ymin:M.yearMin,ymax:M.yearMax});
+  const buckets=[['Near-unanimous (0–5)',0,5],['Clear (6–15)',6,15],['Divided (16–30)',16,30],['Highly divided (31+)',31,9999]];
+  const counts=buckets.map(()=>0);
+  RES.forEach(r=>{if(r.y==null||r.n==null)return;const m=Math.abs(r.y-r.n);
+    for(let i=0;i<buckets.length;i++)if(m>=buckets[i][1]&&m<=buckets[i][2]){counts[i]++;break;}});
+  const tot=counts.reduce((a,b)=>a+b,0);
+  VRC.margin($('ov-margin'),{rows:buckets.map((b,i)=>({label:b[0],count:counts[i],pct:Math.round(counts[i]/tot*100)}))});
+  $('ov-close').innerHTML=RES.filter(r=>r.y!=null&&r.n!=null&&(r.y+r.n)>10)
+    .map(r=>({r,m:Math.abs(r.y-r.n)})).sort((a,b)=>a.m-b.m).slice(0,12)
+    .map(({r})=>`<div class="gtr cols5s"><span class="gtc">${r.year==null?'—':r.year}</span><span class="gtc" title="${esc(r.title)}"><a href="${recUrl(r.id)}" target="_blank" rel="noopener">${esc(r.sym||r.title.slice(0,40))}</a></span><span class="gtc mut" title="${esc(r.title)}">${r.subj?esc(tc(r.subj)):'—'}</span><span class="gtc num">${r.y}</span><span class="gtc num">${r.n}</span><span class="gtc num">${r.a==null?'—':r.a}</span></div>`).join('');
+}
+
+/* ---------- 02 COUNTRY PROFILE ---------- */
+let cSortKey='year',cSortDir=1;
+function countryRows(){
+  const iso=$('c-country').value,[ymin,ymax]=yearPair('c-ymin','c-ymax'),body=$('c-body').value;
+  const allowed=resSet(ymin,ymax,body),m=vmap(iso),rows=[];
+  for(const [ri,code] of m){if(!allowed.has(ri))continue;rows.push({r:RES[ri],code});}
+  return {rows,allowed,iso};
+}
+function alignData(iso,allowed){
+  const mA=vmap(iso),all=[],by={};
+  for(const c of C){if(c.iso3===iso)continue;const mB=vmap(c.iso3);let agree=0,co=0;
+    const sm=mA.size<mB.size?mA:mB,bg=sm===mA?mB:mA;
+    for(const [ri,code] of sm){if(!allowed.has(ri))continue;if(!SUBS.has(code))continue;const o=bg.get(ri);if(o===undefined||!SUBS.has(o))continue;co++;if(o===code)agree++;}
+    if(co>=20){const rec={iso:c.iso3,name:c.name,group:c.group,glabel:GLAB[c.group]||'',agree:agree/co,co};
+      all.push(rec);by[c.iso3]={v:rec.agree,co,name:c.name};}
+    else by[c.iso3]={v:null,co,name:c.name};}
+  all.sort((a,b)=>b.agree-a.agree);
+  return {all,by};
+}
+function renderCountry(){
+  const {rows,allowed,iso}=countryRows();const c=byIso[iso];
+  const cnt={Y:0,N:0,A:0};let other=0;rows.forEach(x=>{if(cnt[x.code]!=null)cnt[x.code]++;else other++;});
+  const nsub=cnt.Y+cnt.N+cnt.A,pct=v=>nsub?Math.round(v/nsub*100)+'%':'—';
+  const yrs=rows.map(x=>x.r.year).filter(Boolean);
+  $('c-tiles').innerHTML=[
+    ['Votes',fmt(rows.length),''],['Yes',fmt(cnt.Y),pct(cnt.Y)],['No',fmt(cnt.N),pct(cnt.N)],['Abstain',fmt(cnt.A),pct(cnt.A)],
+    ['Membership span',yrs.length?Math.min(...yrs)+'–'+Math.max(...yrs):'—',''],['UN group','',GLAB[c.group]||'—']
+  ].map(t=>`<div class="tile"><div class="tk">${t[0]}</div><div class="tv">${t[1]}<small class="tvs">${t[2]}</small></div></div>`).join('');
+  /* chart: yearly composition + volume strip */
+  const yrsAgg={};
+  rows.forEach(x=>{const y=x.r.year;if(!y)return;(yrsAgg[y]=yrsAgg[y]||{Y:0,N:0,A:0,o:0});if(SUBS.has(x.code))yrsAgg[y][x.code]++;else yrsAgg[y].o++;});
+  const years=Object.keys(yrsAgg).map(Number).sort((a,b)=>a-b).map(y=>Object.assign({y},yrsAgg[y]));
+  VRC.cComposition($('c-timeline'),{years});
+  /* partners: top/bottom 30 lists + world map (full list) */
+  const ad=alignData(iso,allowed);
+  const enough=ad.all.length>=3;
+  VRC.alignment($('c-align-top'),{items:enough?ad.all.slice(0,30):[]});
+  VRC.alignment($('c-align-bot'),{items:enough?ad.all.slice(Math.max(30,ad.all.length-30)).reverse():[]});
+  $('c-mapself').textContent=c.name;
+  VRC.worldMap($('c-map'),{byIso:enough?ad.by:{},self:iso,selfName:c.name});
+  /* table */
+  $('c-count').textContent=fmt(rows.length);
+  const heads=[['year','Year'],['sym','Resolution'],['subj','Subject'],['vote','Vote'],['body','Body']];
+  $('c-head').innerHTML=heads.map(p=>`<button class="gtc thsort" data-k="${p[0]}">${p[1]}${cSortKey===p[0]?(cSortDir>0?' ▲':' ▼'):''}</button>`).join('');
+  $('c-head').querySelectorAll('.thsort').forEach(b=>b.onclick=()=>{const k=b.dataset.k;
+    cSortDir=cSortKey===k?-cSortDir:1;cSortKey=k;renderCountry();});
+  const lbl={Y:'Yes',N:'No',A:'Abstain','.':'Absent','-':'Non-member'};
+  const cls={Y:'pY',N:'pN',A:'pA','.':'pX','-':'pX'};
+  const sorted=rows.slice().sort((a,b)=>{let va,vb;
+    if(cSortKey==='year'){va=a.r.year||0;vb=b.r.year||0;}
+    else if(cSortKey==='vote'){va=a.code;vb=b.code;}
+    else if(cSortKey==='body'){va=a.r.body;vb=b.r.body;}
+    else if(cSortKey==='subj'){va=a.r.subj||'';vb=b.r.subj||'';}
+    else{va=a.r.sym||'';vb=b.r.sym||'';}
+    return (va>vb?1:va<vb?-1:0)*cSortDir;});
+  $('c-rows').innerHTML=sorted.map(x=>`<div class="gtr colsc2"><span class="gtc">${x.r.year==null?'—':x.r.year}</span><span class="gtc" title="${esc(x.r.title)}"><a href="${recUrl(x.r.id)}" target="_blank" rel="noopener">${esc(x.r.sym||x.r.title.slice(0,50))}</a></span><span class="gtc mut" title="${esc(x.r.title)}">${x.r.subj?esc(tc(x.r.subj)):'—'}</span><span class="gtc"><span class="pill ${cls[x.code]||'pX'}">${lbl[x.code]||x.code||'—'}</span></span><span class="gtc">${x.r.body}</span></div>`).join('');
+}
+
+/* ---------- 03 TOPICS ---------- */
+let topicState={subject:null};
+let chipsExpanded=false;
+function pickSubject(name){
+  topicState.subject=name;$('t-search').value='';hideSuggest();
+  renderTopicChips();renderTopics();
+}
+function renderTopicChips(){
+  const type=$('t-type').value;
+  const pool=SUBJ.filter(s=> type===''?true : type==='country'?s.cs : !s.cs);
+  let list=chipsExpanded?pool:pool.slice(0,32);
+  if(topicState.subject&&!list.some(s=>s.name===topicState.subject)){
+    const sel=SUBJ.find(s=>s.name===topicState.subject);if(sel)list=[sel,...list];}
+  const typeword=type==='country'?'country-situation ':type==='theme'?'thematic ':'';
+  $('t-chipshead').textContent=chipsExpanded
+    ?('all '+pool.length+' '+typeword+'subject tags, most-voted first')
+    :('top '+Math.min(32,pool.length)+' of '+pool.length+' '+typeword+'subject tags, by recorded-vote count');
+  $('t-chips').innerHTML=list.map(s=>`<button class="chip${topicState.subject===s.name?' on':''}" data-s="${esc(s.name)}">${esc(tc(s.name))} <span class="chipn">${s.n}</span></button>`).join('')
+    +(pool.length>32?`<button class="chip more" id="t-morechips">${chipsExpanded?'− show fewer':'+ '+(pool.length-32)+' more…'}</button>`:'');
+  $('t-chips').querySelectorAll('.chip[data-s]').forEach(ch=>ch.onclick=()=>{
+    if(topicState.subject===ch.dataset.s){topicState.subject=null;renderTopicChips();renderTopics();}
+    else pickSubject(ch.dataset.s);});
+  const more=$('t-morechips');
+  if(more)more.onclick=()=>{chipsExpanded=!chipsExpanded;renderTopicChips();};
+}
+function hideSuggest(){const b=$('t-suggest');b.style.display='none';b.innerHTML='';}
+function renderSuggest(){
+  const box=$('t-suggest'),q=$('t-search').value.trim().toLowerCase();
+  if(q.length<2){hideSuggest();return;}
+  const type=$('t-type').value;
+  const pool=SUBJ.filter(s=> type===''?true : type==='country'?s.cs : !s.cs);
+  const hits=pool.filter(s=>s.name.toLowerCase().includes(q)).slice(0,8); /* pool is most-voted-first */
+  if(!hits.length){
+    box.innerHTML=`<div class="sitem mut" style="cursor:default">No subject tag matches — free text still searches resolution titles</div>`;
+    box.style.display='block';return;}
+  box.innerHTML=hits.map(s=>`<div class="sitem" data-s="${esc(s.name)}"><span>${esc(tc(s.name))}</span><span class="cnt">${s.n} vote${s.n>1?'s':''}${s.cs?' · country':''}</span></div>`).join('');
+  box.style.display='block';
+  box.querySelectorAll('.sitem[data-s]').forEach(it=>it.onmousedown=e=>{e.preventDefault();pickSubject(it.dataset.s);});
+}
+function topicMatched(){
+  const text=$('t-search').value.trim().toLowerCase(),type=$('t-type').value;
+  const [ymin,ymax]=yearPair('t-ymin','t-ymax'),matched=[];
+  RES.forEach((r,i)=>{
+    if(r.year==null||r.year<ymin||r.year>ymax)return;
+    if(type==='country'&&!subjCS.get(r.subj))return;
+    if(type==='theme'&&subjCS.get(r.subj))return;
+    let ok=false;
+    if(topicState.subject)ok=r.subj===topicState.subject;
+    else if(text.length>=2)ok=(r.title||'').toLowerCase().includes(text)||(r.subj||'').toLowerCase().includes(text)||(r.sym||'').toLowerCase().includes(text);
+    if(ok)matched.push(i);});
+  return matched;
+}
+function trendData(matched){
+  const pts=[];
+  matched.forEach(i=>{const r=RES[i],tot=(r.y||0)+(r.n||0)+(r.a||0);if(r.year!=null&&tot>0)pts.push({year:r.year,share:r.y/tot});});
+  const byYear=new Map();pts.forEach(p=>{if(!byYear.has(p.year))byYear.set(p.year,[]);byYear.get(p.year).push(p);});
+  const years=[...byYear.keys()].sort((a,b)=>a-b);
+  const means=years.map(y=>{const a=byYear.get(y);return {year:y,n:a.length,mean:a.reduce((s,p)=>s+p.share,0)/a.length};});
+  let note='';
+  if(means.length>=3&&years.length&&(years[years.length-1]-years[0])>=5){
+    const n=means.length,mx=means.reduce((s,m)=>s+m.year,0)/n,my=means.reduce((s,m)=>s+m.mean,0)/n;
+    let num=0,den=0;means.forEach(m=>{num+=(m.year-mx)*(m.mean-my);den+=(m.year-mx)*(m.year-mx);});
+    const pp=den?num/den*1000:0,word=Math.abs(pp)<2?'roughly steady':(pp>0?'rising':'falling');
+    note=years[0]+'–'+years[years.length-1]+': '+word+(Math.abs(pp)>=2?' (≈ '+(pp>0?'+':'')+pp.toFixed(1)+' pp/decade)':'');}
+  return {pts,means,note};
+}
+function stanceStats(mset){
+  const stats=[];
+  for(const c of C){const m=vmap(c.iso3);let Y=0,N=0,A=0;
+    for(const ri of mset){const code=m.get(ri);if(code==='Y')Y++;else if(code==='N')N++;else if(code==='A')A++;}
+    const tot=Y+N+A;if(tot>=5)stats.push({name:c.name,Y,N,A,tot,share:Y/tot});}
+  stats.sort((a,b)=>b.share-a.share||b.tot-a.tot);return stats;
+}
+function renderTopics(){
+  const text=$('t-search').value.trim();
+  const matched=topicMatched();
+  const show=!!(topicState.subject||text.length>=2);
+  $('t-result').style.display=show?'':'none';
+  $('t-empty').style.display=show?'none':'';
+  if(!show)return;
+  const heading=topicState.subject?tc(topicState.subject):'“'+text+'”';
+  const yrs=matched.map(i=>RES[i].year).filter(Boolean);
+  let sh=0,kk=0;matched.forEach(i=>{const r=RES[i],tot=(r.y||0)+(r.n||0)+(r.a||0);if(tot){sh+=r.y/tot;kk++;}});
+  const meanShare=kk?Math.round(sh/kk*100):null;
+  $('t-tiles').innerHTML=[
+    ['Resolutions',fmt(matched.length),''],
+    ['Period',yrs.length?Math.min(...yrs)+'–'+Math.max(...yrs):'—',''],
+    ['Typical support',meanShare==null?'—':meanShare+'%',meanShare==null?'':'Yes'],
+    ['Type','',topicState.subject?(subjCS.get(topicState.subject)?'Country situation':'Thematic'):'Free-text search']
+  ].map(t=>`<div class="tile"><div class="tk">${t[0]}</div><div class="tv">${t[1]}<small class="tvs">${t[2]}</small></div></div>`).join('');
+  /* related subject tags among results ("similar queries" to click) */
+  const relCounts=new Map();
+  matched.forEach(i=>{const sj=RES[i].subj;if(sj&&sj!==topicState.subject)relCounts.set(sj,(relCounts.get(sj)||0)+1);});
+  const rel=[...relCounts.entries()].sort((a,b)=>b[1]-a[1]).slice(0,8);
+  if(rel.length){
+    $('t-related').innerHTML=rel.map(([sj,n])=>`<button class="chip chsm" data-s="${esc(sj)}">${esc(tc(sj))} <span class="chipn">${n}</span></button>`).join('');
+    $('t-relatedcard').style.display='';
+    $('t-related').querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>pickSubject(ch.dataset.s));
+  } else $('t-relatedcard').style.display='none';
+  /* trend + note */
+  const td=trendData(matched);
+  VRC.trend($('t-trend'),td);
+  $('t-trendnote').textContent=td.note;
+  /* resolutions table */
+  $('t-restitle').textContent='('+matched.length+') — '+heading;
+  $('t-rows').innerHTML=matched.map(i=>RES[i]).sort((a,b)=>(b.year||0)-(a.year||0))
+    .map(r=>`<div class="gtr cols6s"><span class="gtc">${r.year==null?'—':r.year}</span><span class="gtc" title="${esc(r.title)}"><a href="${recUrl(r.id)}" target="_blank" rel="noopener">${esc(r.sym||r.title.slice(0,44))}</a></span><span class="gtc mut" title="${esc(r.title)}">${r.subj?esc(tc(r.subj)):'—'}</span><span class="gtc num">${r.y==null?'—':r.y}</span><span class="gtc num">${r.n==null?'—':r.n}</span><span class="gtc num">${r.a==null?'—':r.a}</span><span class="gtc">${r.body}</span></div>`).join('');
+  /* stance */
+  VRC.stance($('t-stance'),{stats:stanceStats(new Set(matched))});
+}
+
+/* ---------- 04 BLOCS ---------- */
+/* avg pairwise agreement per country over a window — for the agree30/disagree30 sets */
+const _consCache={key:null,val:null};
+function consensusRank(ymin,ymax){
+  const key=ymin+'|'+ymax;
+  if(_consCache.key===key)return _consCache.val;
+  const allowed=resSet(ymin,ymax,'');
+  const isos=C.map(c=>c.iso3),n=isos.length,maps=isos.map(vmap);
+  const sum=new Array(n).fill(0),cnt=new Array(n).fill(0);
+  for(let i=0;i<n;i++)for(let j=i+1;j<n;j++){
+    const sm=maps[i].size<maps[j].size?maps[i]:maps[j],bg=sm===maps[i]?maps[j]:maps[i];
+    let a=0,cc=0;
+    for(const [ri,code] of sm){if(!allowed.has(ri))continue;if(!SUBS.has(code))continue;const o=bg.get(ri);if(o===undefined||!SUBS.has(o))continue;cc++;if(o===code)a++;}
+    if(cc>=20){const v=a/cc;sum[i]+=v;cnt[i]++;sum[j]+=v;cnt[j]++;}
+  }
+  const scored=isos.map((iso,i)=>({iso,score:cnt[i]>=10?sum[i]/cnt[i]:null,pairs:cnt[i]}))
+    .filter(x=>x.score!=null);
+  scored.sort((a,b)=>b.score-a.score);
+  const val={agree:scored.slice(0,30).map(x=>x.iso),disagree:scored.slice(-30).reverse().map(x=>x.iso)};
+  _consCache.key=key;_consCache.val=val;
+  return val;
+}
+function pickSet(kind,ymin,ymax){
+  if(kind==='active')return C.slice().sort((a,b)=>b.n-a.n).slice(0,30).map(c=>c.iso3);
+  if(kind==='agree30')return consensusRank(ymin,ymax).agree;
+  if(kind==='disagree30')return consensusRank(ymin,ymax).disagree;
+  if(kind==='p5')return ['USA','RUS','CHN','GBR','FRA','DEU','IND','BRA','ZAF','SAU','CUB','PAK','JPN','NGA'].filter(i=>byIso[i]);
+  return C.filter(c=>c.group===kind).sort((a,b)=>b.n-a.n).slice(0,30).map(c=>c.iso3);
+}
+const _heatCache={key:null,val:null};
+function heatData(){
+  const kind=$('b-set').value,[ymin,ymax]=yearPair('b-ymin','b-ymax'),mode=$('b-order').value;
+  const key=[kind,ymin,ymax,mode].join('|');
+  if(_heatCache.key===key)return _heatCache.val;
+  const isos=pickSet(kind,ymin,ymax),allowed=resSet(ymin,ymax,'');
+  const n=isos.length,maps=isos.map(vmap);
+  const Mx=Array.from({length:n},()=>new Array(n).fill(null));
+  const co=Array.from({length:n},()=>new Array(n).fill(0));
+  for(let i=0;i<n;i++){Mx[i][i]=1;for(let j=i+1;j<n;j++){
+    const sm=maps[i].size<maps[j].size?maps[i]:maps[j],bg=sm===maps[i]?maps[j]:maps[i];let a=0,cc=0;
+    for(const [ri,code] of sm){if(!allowed.has(ri))continue;if(!SUBS.has(code))continue;const o=bg.get(ri);if(o===undefined||!SUBS.has(o))continue;cc++;if(o===code)a++;}
+    const v=cc>0?a/cc:null;Mx[i][j]=Mx[j][i]=v;co[i][j]=co[j][i]=cc;}}
+  let order;
+  if(mode==='name')order=isos.map((x,i)=>i).sort((a,b)=>byIso[isos[a]].name<byIso[isos[b]].name?-1:1);
+  else if(mode==='group')order=isos.map((x,i)=>i).sort((a,b)=>{const ga=byIso[isos[a]].group,gb=byIso[isos[b]].group;
+    return ga<gb?-1:ga>gb?1:(byIso[isos[a]].name<byIso[isos[b]].name?-1:1);});
+  else{const used=new Array(n).fill(false);let cur=0;used[0]=true;order=[0];
+    for(let k=1;k<n;k++){let best=-1,bv=-2;for(let j=0;j<n;j++){if(used[j])continue;const v=Mx[cur][j]==null?-1:Mx[cur][j];if(v>bv){bv=v;best=j;}}used[best]=true;order.push(best);cur=best;}}
+  const labels=order.map(i=>{const c=byIso[isos[i]];return {iso:c.iso3,name:c.name,group:c.group};});
+  const cells=order.map(i=>order.map(j=>({v:Mx[i][j],co:co[i][j],self:i===j})));
+  const val={labels,cells,n,kind,ymin,ymax};
+  _heatCache.key=key;_heatCache.val=val;
+  return val;
+}
+function renderBlocs(){
+  const hd=heatData();
+  VRC.heatmap($('b-heat'),hd);
+  const setDesc={
+    active:' (most active by vote count)',
+    agree30:' (highest average voting coincidence with all other states — min. 20 shared votes per pair, ≥10 partners)',
+    disagree30:' (lowest average voting coincidence with all other states — min. 20 shared votes per pair, ≥10 partners)'
+  }[hd.kind]||'';
+  $('b-note').textContent='Showing '+hd.n+' states'+setDesc+' across '+hd.ymin+'–'+hd.ymax+'. Row/column labels are coloured by UN regional group. Clustering greedily chains each state to its closest remaining partner, so blocs surface as blue blocks along the diagonal.';
+}
+
+/* ---------- 05 METHODOLOGY ---------- */
+function renderMethod(){
+  const cov=M.coverage;
+  $('m-total-inline').textContent=fmt(cov.totalResolutions);
+  $('m-total-head').textContent=fmt(cov.totalResolutions);
+  $('m-tiles').innerHTML=[
+    ['Total resolutions',fmt(cov.totalResolutions),'',' id="m-tile-total"'],
+    ['With a per-country roll-call',fmt(cov.recordedResolutions),Math.round(cov.recordedResolutions/cov.totalResolutions*100)+'%',''],
+    ['Totals only, no roll-call',fmt(cov.totalsNoRollcall),'',''],
+    ['Consensus / no vote recorded',fmt(cov.neitherTotalsNorRollcall),'','']
+  ].map(t=>`<div class="tile"><div class="tk">${t[0]}</div><div class="tv"${t[3]}>${t[1]}<small class="tvs">${t[2]}</small></div></div>`).join('');
+  $('m-vt').innerHTML=cov.voteTypes.map(vt=>`<div class="gtr colsvt"><span class="gtc" title="${esc(vt.type)}">${esc(vt.type==='ADOPTED WITHOUT VOTE'?'Adopted without vote (consensus)':tc(vt.type))}</span><span class="gtc num">${fmt(vt.count)}</span><span class="gtc num">${vt.hasRollcall?fmt(vt.hasRollcall):'—'}</span></div>`).join('');
+  $('m-decades').innerHTML=cov.decades.map(d=>`<div class="gtr colsdec"><span class="gtc">${d.decade}s</span><span class="gtc num">${fmt(d.all)}</span><span class="gtc num">${fmt(d.recorded)}</span></div>`).join('');
+  const ct={Y:0,N:0,A:0,absent:0,blank:0};
+  C.forEach(c=>{ct.Y+=c.y;ct.N+=c.no;ct.A+=c.a;ct.absent+=c.absent;ct.blank+=c.blank;});
+  const all=ct.Y+ct.N+ct.A+ct.absent+ct.blank;
+  $('m-codes').innerHTML=[['Y','Yes',ct.Y],['N','No',ct.N],['A','Abstain',ct.A],['.','Absent / did not participate',ct.absent],['(blank)','Not a member at the time / no position recorded',ct.blank]]
+    .map(p=>`<div class="gtr colscd"><span class="gtc"><code class="cd">${p[0]}</code></span><span class="gtc" title="${p[1]}">${p[1]}</span><span class="gtc num">${fmt(p[2])}</span><span class="gtc num">${Math.round(p[2]/all*100)}%</span></div>`).join('');
+  $('m-subj-all').textContent=fmt(cov.nSubjectsAll);
+  $('m-subj-rec').textContent=fmt(cov.nSubjectsRecorded);
+  const mp=Math.round(cov.mismatched/(cov.reconciled+cov.mismatched)*100);
+  $('m-recon').innerHTML=fmt(cov.reconciled)+`<small class="tvs">${100-mp}%</small>`;
+  $('m-mismatch').innerHTML=fmt(cov.mismatched)+`<small class="tvs">${mp}%</small>`;
+  $('m-mm-inline').textContent=mp+'%';
+}
+
+/* ---------- ⌘K command palette ---------- */
+let kSel=0;
+function kItems(q){
+  q=(q||'').trim().toLowerCase();const out=[];
+  [['overview','Overview'],['country','Country profile'],['topics','Topics'],['blocs','Blocs & alignment'],['method','Methodology']]
+    .forEach(p=>{if(!q||p[1].toLowerCase().includes(q))out.push({type:'view',kind:'view',label:p[1],n:'',v:p[0]});});
+  const cs=q?C.filter(c=>c.name.toLowerCase().includes(q)):C.slice().sort((a,b)=>b.n-a.n).slice(0,4);
+  cs.forEach(c=>{if(out.length<14)out.push({type:'country',kind:'country',label:c.name,n:fmt(c.n)+' votes',v:c.iso3});});
+  if(q)SUBJ.filter(x=>x.name.toLowerCase().includes(q)).slice(0,6)
+    .forEach(x=>{if(out.length<14)out.push({type:'subject',kind:'subject',label:tc(x.name),n:fmt(x.n),v:x.name});});
+  return out.slice(0,14);
+}
+function kGo(it){
+  closeK();
+  if(it.type==='view')switchTab(it.v);
+  else if(it.type==='country'){$('c-country').value=it.v;cSortKey='year';cSortDir=1;switchTab('country');}
+  else {topicState.subject=it.v;$('t-search').value='';renderTopicChips();switchTab('topics');}
+}
+function kRender(){
+  const items=kItems($('k-in').value);
+  kSel=Math.min(kSel,Math.max(0,items.length-1));
+  $('k-list').innerHTML=items.map((it,i)=>`<div class="kitem${i===kSel?' on':''}" data-i="${i}"><span class="kkind">${it.kind}</span><span class="ktxt">${esc(it.label)}</span><span class="kn">${it.n}</span></div>`).join('');
+  $('k-list').querySelectorAll('.kitem').forEach(elx=>elx.onmousedown=e=>{e.preventDefault();kGo(items[+elx.dataset.i]);});
+}
+function openK(){$('k-wrap').classList.add('open');$('k-in').value='';kSel=0;kRender();$('k-in').focus();}
+function closeK(){$('k-wrap').classList.remove('open');}
+$('k-open').addEventListener('click',openK);
+$('k-wrap').addEventListener('click',e=>{if(e.target===$('k-wrap'))closeK();});
+$('k-in').addEventListener('input',()=>{kSel=0;kRender();});
+window.addEventListener('keydown',e=>{
+  if((e.metaKey||e.ctrlKey)&&(e.key==='k'||e.key==='K')){e.preventDefault();
+    $('k-wrap').classList.contains('open')?closeK():openK();return;}
+  if(!$('k-wrap').classList.contains('open'))return;
+  if(e.key==='Escape')closeK();
+  else if(e.key==='ArrowDown'){e.preventDefault();kSel++;kRender();}
+  else if(e.key==='ArrowUp'){e.preventDefault();kSel=Math.max(0,kSel-1);kRender();}
+  else if(e.key==='Enter'){const items=kItems($('k-in').value);const it=items[Math.min(kSel,items.length-1)];if(it)kGo(it);}
+});
+
+/* ---------- boot ---------- */
+function fillYears(sel,def){const s=$(sel);let h='';for(let y=M.yearMin;y<=M.yearMax;y++)h+=`<option${y===def?' selected':''}>${y}</option>`;s.innerHTML=h;}
+(function boot(){
+  $('hd-stat').textContent=fmt(RES.length)+' recorded · '+fmt(nVotesTotal)+' roll-calls';
+  $('f-note').textContent=fmt(RES.length)+' recorded of '+fmt(M.coverage.totalResolutions)+' catalogued resolutions · '+M.yearMin+'–'+M.yearMax+' · built with a reproducible pipeline';
+  $('c-country').innerHTML=C.slice().sort((a,b)=>a.name<b.name?-1:1).map(c=>`<option value="${c.iso3}"${c.iso3==='USA'?' selected':''}>${esc(c.name)}</option>`).join('');
+  fillYears('c-ymin',M.yearMin);fillYears('c-ymax',M.yearMax);
+  fillYears('t-ymin',M.yearMin);fillYears('t-ymax',M.yearMax);
+  fillYears('b-ymin',Math.max(2006,M.yearMin));fillYears('b-ymax',M.yearMax);
+  /* controls */
+  ['c-country','c-ymin','c-ymax','c-body'].forEach(id=>$(id).addEventListener('change',()=>{if(id==='c-country'){cSortKey='year';cSortDir=1;}renderCountry();}));
+  $('t-type').addEventListener('change',()=>{topicState.subject=null;renderTopicChips();renderTopics();renderSuggest();});
+  const tSearch=$('t-search');
+  tSearch.addEventListener('input',()=>{topicState.subject=null;renderTopicChips();renderTopics();renderSuggest();});
+  tSearch.addEventListener('focus',renderSuggest);
+  tSearch.addEventListener('blur',()=>setTimeout(hideSuggest,150));
+  tSearch.addEventListener('keydown',e=>{
+    if(e.key==='Enter'){const it=document.querySelector('#t-suggest .sitem[data-s]');if(it){e.preventDefault();pickSubject(it.dataset.s);}}
+    else if(e.key==='Escape')hideSuggest();});
+  ['t-ymin','t-ymax'].forEach(id=>$(id).addEventListener('change',renderTopics));
+  ['b-set','b-ymin','b-ymax','b-order'].forEach(id=>$(id).addEventListener('change',renderBlocs));
+  /* palette from storage */
+  let pal=null;try{pal=localStorage.getItem('vrPalette')}catch(e){}
+  if(pal&&pal!=='paper')setPalette(pal); else renderTopicChips(),renderOverview();
+  if(pal&&pal!=='paper')renderTopicChips();
+})();
+</script>
+</body>
+</html>
