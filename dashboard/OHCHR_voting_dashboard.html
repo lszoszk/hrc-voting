@@ -6,6 +6,31 @@
 <meta name="description" content="Interactive explorer of UN human-rights voting records: 1,705 recorded roll-call votes of the Commission on Human Rights and Human Rights Council (1947–2026), from the OHCHR Search Library.">
 <title>Voting Records — CHR·HRC (OHCHR Search Library)</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗳️</text></svg>">
+<!-- Google Analytics 4 (G-F3XBX45HQC) — consent-gated (Consent Mode v2, default
+     DENIED), DNT-respecting, IP-anonymised, no ad signals, send_page_view:false.
+     Only activates on http(s): the offline standalone file never phones home.
+     Nothing is sent until the visitor accepts the banner; only view names are
+     tracked — never search queries, selected countries/subjects, or IP in clear. -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    analytics_storage: 'denied', ad_storage: 'denied',
+    ad_user_data: 'denied', ad_personalization: 'denied', wait_for_update: 500,
+  });
+  if (location.protocol.indexOf('http') === 0 &&
+      !(navigator.doNotTrack === '1' || window.doNotTrack === '1')) {
+    var _ga = document.createElement('script');
+    _ga.async = true;
+    _ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-F3XBX45HQC';
+    document.head.appendChild(_ga);
+    gtag('js', new Date());
+    gtag('config', 'G-F3XBX45HQC', {
+      anonymize_ip: true, allow_ad_personalization_signals: false,
+      allow_google_signals: false, send_page_view: false,
+    });
+  }
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -162,6 +187,19 @@
   .foot{height:auto;flex-wrap:wrap;padding:8px 12px;white-space:normal}
   .mh-cmdk{flex-basis:100%;max-width:none}
 }
+/* GA consent banner — bottom-right, non-blocking; inherits the active palette */
+.ga-consent{position:fixed;bottom:16px;right:16px;max-width:440px;background:var(--paper);border:1px solid var(--ink);box-shadow:0 12px 40px rgba(0,0,0,.22);padding:14px 16px 12px;font:13px var(--ui);line-height:1.5;color:var(--ink);z-index:240;animation:ga-consent-in .25s ease-out}
+.ga-consent-text{margin-bottom:10px}
+.ga-consent-text strong{font-weight:600}
+.ga-consent-more{color:var(--dim);border-bottom:1px dotted var(--dim);text-decoration:none;margin-left:4px;cursor:pointer}
+.ga-consent-more:hover{color:var(--ink);border-color:var(--ink)}
+.ga-consent-actions{display:flex;gap:8px;justify-content:flex-end}
+.vr .ga-consent-actions button{font:11px var(--mono);letter-spacing:.08em;padding:8px 14px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer;text-transform:uppercase}
+.vr .ga-consent-actions button.primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.vr .ga-consent-actions button.primary:hover{background:var(--ink-2)}
+.vr .ga-consent-actions button.ghost:hover{background:var(--paper-2)}
+@keyframes ga-consent-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(max-width:720px){.ga-consent{left:8px;right:8px;bottom:8px;max-width:none}}
 </style>
 </head>
 <body>
@@ -384,6 +422,13 @@
         <div class="tile"><div class="tk">Roll-call vs. totals mismatch</div><div class="tv" id="m-mismatch">…<small class="tvs" id="m-mismatch-pct"></small></div></div>
       </div>
       <div class="p-desc m0">For <span id="m-mm-inline">~9%</span> of recorded votes — concentrated in older Commission-era records — the sum of individual Yes/No/Abstain positions doesn't exactly match the resolution's official totals, almost always by a small margin in the Abstain / non-participation count. Official totals are treated as authoritative; the per-country breakdown is shown alongside rather than forced to reconcile. One lowercase vote-code typo was normalised during parsing; nothing else is altered.</div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">07</span><span class="p-title">Analytics &amp; privacy</span></div>
+    <div class="p-body">
+      <div class="p-desc m0">This site uses <b>Google Analytics 4</b> only to see which views are used, and only <b>after you accept</b> the banner (Google Consent Mode v2 defaults to denied; nothing is sent before then, and a <code class="cd">Do-Not-Track</code> browser setting skips it entirely). We record <b>view names only</b> (Overview, Country profile, Topics, Blocs, Methodology). We never send your searches, the countries or subjects you select, the records you open, or your IP address in clear — GA4 anonymises IP and ad-personalisation / Google signals are disabled. The offline single-file version does no tracking at all. <span id="m-ga-state" class="mut"></span></div>
+      <div style="margin-top:12px"><button class="palbtn" id="m-ga-reset" type="button">Reset analytics choice</button></div>
     </div>
   </div>
 </section>
@@ -636,6 +681,7 @@ function switchTab(v){VIEW=v;
   VIEWS.forEach(x=>{$('view-'+x).style.display=x===v?'':'none';});
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.view===v));
   renderCurrent();
+  trackView(v);
 }
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.view)));
 function renderCurrent(){
@@ -967,6 +1013,50 @@ window.addEventListener('keydown',e=>{
   else if(e.key==='Enter'){const items=kItems($('k-in').value);const it=items[Math.min(kSel,items.length-1)];if(it)kGo(it);}
 });
 
+/* ---------- analytics (GA4, consent-gated, privacy-first) ---------- */
+const GA_KEY='hrc-ga-consent';
+const GA_VIEWS={
+  overview:['CHR·HRC Voting — Overview','/hrc-voting/overview'],
+  country:['CHR·HRC Voting — Country profile','/hrc-voting/country'],
+  topics:['CHR·HRC Voting — Topics','/hrc-voting/topics'],
+  blocs:['CHR·HRC Voting — Blocs & alignment','/hrc-voting/blocs'],
+  method:['CHR·HRC Voting — Methodology','/hrc-voting/methodology'],
+};
+const gaState=()=>{try{return localStorage.getItem(GA_KEY)}catch(e){return null}};
+const gaDNT=()=>navigator.doNotTrack==='1'||window.doNotTrack==='1';
+const gaHttp=()=>location.protocol.indexOf('http')===0;
+function trackView(v){
+  if(gaState()!=='granted'||typeof window.gtag!=='function')return;
+  const l=GA_VIEWS[v]||['CHR·HRC Voting — '+v,'/hrc-voting/'+v];
+  try{window.gtag('event','page_view',{page_title:l[0],page_path:l[1]});}catch(e){}
+}
+function gaRefresh(){const st=$('m-ga-state');if(!st)return;const s=gaState();
+  st.textContent=' '+(s==='granted'?'Current choice: analytics allowed — thank you.':s==='denied'?'Current choice: analytics declined.':gaDNT()?'Your browser sends Do-Not-Track — analytics stays off.':'No choice made yet.');}
+function gaGrant(){
+  try{localStorage.setItem(GA_KEY,'granted')}catch(e){}
+  if(typeof window.gtag==='function')window.gtag('consent','update',{analytics_storage:'granted'});
+  trackView(VIEW);gaRefresh();
+}
+function gaBanner(){
+  if(!gaHttp()||gaDNT()||gaState()!==null)return;
+  const host=document.createElement('div');
+  host.className='ga-consent';host.setAttribute('role','dialog');host.setAttribute('aria-label','Privacy choice');
+  host.innerHTML=`<div class="ga-consent-text">We'd like to use <strong>Google Analytics</strong> to see which views get used — view names only. <strong>Your searches, the countries or subjects you pick, and your IP in clear are never sent.</strong> <a class="ga-consent-more" id="ga-more">Privacy details</a></div>`
+    +`<div class="ga-consent-actions"><button class="ghost" id="ga-reject" type="button">Reject</button><button class="primary" id="ga-accept" type="button">Allow anonymous analytics</button></div>`;
+  ($('vr')||document.body).appendChild(host);
+  const close=()=>host.remove();
+  host.querySelector('#ga-accept').onclick=()=>{gaGrant();close();};
+  host.querySelector('#ga-reject').onclick=()=>{try{localStorage.setItem(GA_KEY,'denied')}catch(e){}gaRefresh();close();};
+  host.querySelector('#ga-more').onclick=()=>{switchTab('method');const b=$('m-ga-reset');if(b)b.scrollIntoView({block:'center'});};
+  document.addEventListener('keydown',function esc(e){if(e.key==='Escape'&&document.body.contains(host)){document.removeEventListener('keydown',esc);close();}});
+}
+function gaInit(){
+  gaRefresh();
+  const btn=$('m-ga-reset');if(btn)btn.onclick=()=>{try{localStorage.removeItem(GA_KEY)}catch(e){}location.reload();};
+  if(gaState()==='granted'&&typeof window.gtag==='function'){try{window.gtag('consent','update',{analytics_storage:'granted'});}catch(e){}trackView(VIEW);}
+  if(gaState()===null&&gaHttp()&&!gaDNT())setTimeout(gaBanner,600);
+}
+
 /* ---------- boot ---------- */
 function fillYears(sel,def){const s=$(sel);let h='';for(let y=M.yearMin;y<=M.yearMax;y++)h+=`<option${y===def?' selected':''}>${y}</option>`;s.innerHTML=h;}
 (function boot(){
@@ -992,6 +1082,7 @@ function fillYears(sel,def){const s=$(sel);let h='';for(let y=M.yearMin;y<=M.yea
   let pal=null;try{pal=localStorage.getItem('vrPalette')}catch(e){}
   if(pal&&pal!=='paper')setPalette(pal); else renderTopicChips(),renderOverview();
   if(pal&&pal!=='paper')renderTopicChips();
+  gaInit();
 })();
 </script>
 </body>

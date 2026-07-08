@@ -22,6 +22,11 @@ with sync_playwright() as p:
 
     checks = {}
     checks["DATA loaded"] = pg.evaluate("!!window.DATA && DATA.res.length")
+    # privacy: from file:// (offline artifact) GA must NOT load and the consent
+    # banner must NOT appear — it only activates on http(s).
+    pg.wait_for_timeout(800)
+    checks["file:// GA script absent"] = pg.evaluate("!document.querySelector('script[src*=googletagmanager]')")
+    checks["file:// consent banner absent"] = pg.evaluate("!document.querySelector('.ga-consent')")
     checks["masthead stat"] = pg.evaluate("document.getElementById('hd-stat').textContent")
     checks["overview tiles"] = pg.evaluate("document.querySelectorAll('#ov-tiles .tile').length")
     checks["ov legend"] = pg.evaluate("document.getElementById('ov-legend').textContent.includes('Commission')")
@@ -101,6 +106,7 @@ ok = (checks["DATA loaded"] and checks["overview tiles"] == 4 and checks["countr
       and checks["suggest items"] and checks["topic rows"] and checks["trend svg"]
       and checks["heat cells (agree30)"] == 900 and checks["heat cells (disagree30)"] == 900
       and checks["chip border"] == "1px" and checks["cmdk opens"]
+      and checks["file:// GA script absent"] and checks["file:// consent banner absent"]
       and checks["palette paper"] == "paper" and not errors)
 print("SMOKE:", "PASS" if ok else "FAIL")
 raise SystemExit(0 if ok else 1)
