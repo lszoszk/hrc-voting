@@ -380,30 +380,30 @@
       <div class="legend"><span class="li"><i class="sw swg-af"></i>African</span><span class="li"><i class="sw swg-ap"></i>Asia-Pacific</span><span class="li"><i class="sw swg-ee"></i>Eastern Europe</span><span class="li"><i class="sw swg-gr"></i>Latin America &amp; Caribbean</span><span class="li"><i class="sw swg-we"></i>Western Europe &amp; Others</span></div>
     </div>
   </div>
-  <div class="panel">
-    <div class="p-head"><span class="p-idx">02</span><span class="p-title">Voting-coincidence matrix</span><span class="p-exp"><button class="expb" data-csv="bheat" title="Download matrix as CSV">CSV</button><button class="expb" data-png="b-heat" data-pngname="voting-coincidence-matrix" title="Download matrix as PNG">PNG</button></span></div>
-    <div class="p-body">
-      <div class="p-desc">Each cell = share of shared recorded votes on which the two states voted the same way. Blue = vote alike, red = vote apart. Hover for detail.</div>
-      <div id="b-heat"></div>
-      <div class="legend"><span>Vote apart</span><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 100%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 70%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 40%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 20%, var(--div-mid))"></i><i class="sw" style="background:var(--div-mid)"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 20%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 40%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 70%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 100%, var(--div-mid))"></i><span>Vote alike</span><span class="mut">· grey = too few shared votes</span></div>
-      <div class="legend"><span class="mut">Labels:</span><span class="li"><i class="sw swg-af"></i>African</span><span class="li"><i class="sw swg-ap"></i>Asia-Pacific</span><span class="li"><i class="sw swg-ee"></i>Eastern Europe</span><span class="li"><i class="sw swg-gr"></i>Latin America &amp; Caribbean</span><span class="li"><i class="sw swg-we"></i>Western Europe &amp; Others</span></div>
-    </div>
-  </div>
   <div class="grid2">
     <div class="panel">
-      <div class="p-head"><span class="p-idx">03</span><span class="p-title">Regional-group cohesion</span><span class="p-exp"><button class="expb" data-csv="bcoh" title="Download data as CSV">CSV</button><button class="expb" data-png="b-cohesion" data-pngname="group-cohesion" title="Download chart as PNG">PNG</button></span></div>
+      <div class="p-head"><span class="p-idx">02</span><span class="p-title">Regional-group cohesion</span><span class="p-exp"><button class="expb" data-csv="bcoh" title="Download data as CSV">CSV</button><button class="expb" data-png="b-cohesion" data-pngname="group-cohesion" title="Download chart as PNG">PNG</button></span></div>
       <div class="p-body">
         <div class="p-desc">How unified each UN regional group votes over the window — Agreement Index (1 = unanimous, 0 = evenly split), across all its members. Independent of the country set above.</div>
         <div id="b-cohesion"></div>
       </div>
     </div>
     <div class="panel">
-      <div class="p-head"><span class="p-idx">04</span><span class="p-title">Most often outvoted</span><span class="p-exp"><button class="expb" data-csv="biso" title="Download data as CSV">CSV</button><button class="expb" data-png="b-isolation" data-pngname="most-outvoted" title="Download chart as PNG">PNG</button></span></div>
+      <div class="p-head"><span class="p-idx">03</span><span class="p-title">Most often outvoted</span><span class="p-exp"><button class="expb" data-csv="biso" title="Download data as CSV">CSV</button><button class="expb" data-png="b-isolation" data-pngname="most-outvoted" title="Download chart as PNG">PNG</button></span></div>
       <div class="p-body">
         <div class="p-desc">Share of each state's votes that differ from the outcome's majority position — the winning Yes / No / Abstain side pooled across the whole chamber (min. 20 votes in the window). A high rate often means siding with a cohesive minority bloc, not voting alone — compare the cohesion panel. Bar colour = UN regional group.</div>
         <div id="b-isolation" class="scrolly" style="max-height:420px"></div>
         <div class="legend"><span class="li"><i class="sw swg-af"></i>African</span><span class="li"><i class="sw swg-ap"></i>Asia-Pacific</span><span class="li"><i class="sw swg-ee"></i>Eastern Europe</span><span class="li"><i class="sw swg-gr"></i>Latin America &amp; Caribbean</span><span class="li"><i class="sw swg-we"></i>Western Europe &amp; Others</span></div>
       </div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">04</span><span class="p-title">Voting-coincidence matrix</span><span class="p-exp"><button class="expb" data-csv="bheat" title="Download matrix as CSV">CSV</button><button class="expb" data-png="b-heat" data-pngname="voting-coincidence-matrix" title="Download matrix as PNG">PNG</button></span></div>
+    <div class="p-body">
+      <div class="p-desc">Every pair of states in the selected set, by how often they voted the same way — blue = vote alike, red = vote apart. The densest view: the whole matrix at once, for those who want the pairwise detail. Hover any cell for the figure.</div>
+      <div id="b-heat"></div>
+      <div class="legend"><span>Vote apart</span><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 100%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 70%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 40%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 20%, var(--div-mid))"></i><i class="sw" style="background:var(--div-mid)"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 20%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 40%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 70%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 100%, var(--div-mid))"></i><span>Vote alike</span><span class="mut">· grey = too few shared votes</span></div>
+      <div class="legend"><span class="mut">Labels:</span><span class="li"><i class="sw swg-af"></i>African</span><span class="li"><i class="sw swg-ap"></i>Asia-Pacific</span><span class="li"><i class="sw swg-ee"></i>Eastern Europe</span><span class="li"><i class="sw swg-gr"></i>Latin America &amp; Caribbean</span><span class="li"><i class="sw swg-we"></i>Western Europe &amp; Others</span></div>
     </div>
   </div>
   <div class="note" id="b-note"></div>
