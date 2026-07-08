@@ -99,11 +99,16 @@
 .p-idx{font-size:9px;color:var(--dimmer);font-variant-numeric:tabular-nums}
 .p-title{font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:700}
 .p-note{margin-left:auto;font-size:10px;color:var(--dim);text-align:right}
+.p-exp{margin-left:auto;padding-left:10px;display:inline-flex;gap:5px;flex-shrink:0}
+.vr .expb{font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border:1px solid var(--line);color:var(--dim);background:var(--paper);cursor:pointer;border-radius:0}
+.vr .expb:hover{border-color:var(--accent);color:var(--ink)}
 .p-body{padding:14px}
 .p-desc{font-size:10.5px;color:var(--dim);margin-bottom:12px;letter-spacing:.01em;max-width:70em}
 .ptext{font-size:11.5px;line-height:1.7;color:var(--ink-2);max-width:70em}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid2>*{min-width:0}   /* prevent grid-item min-content blowout (tables/SVGs) */
 @media(max-width:900px){.grid2{grid-template-columns:1fr}}
+.panel svg{max-width:100%}
 /* legends */
 .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:10px;color:var(--dim);margin-top:10px;align-items:center}
 .li{display:inline-flex;align-items:center;gap:5px}
@@ -186,6 +191,14 @@
   .inner{padding:14px 12px 32px}
   .foot{height:auto;flex-wrap:wrap;padding:8px 12px;white-space:normal}
   .mh-cmdk{flex-basis:100%;max-width:none}
+  /* all tabs visible (no hidden horizontal scroll), filters + headers shrink cleanly */
+  .tabs{flex-wrap:wrap;overflow-x:visible}
+  .tab{padding:9px 11px}
+  .fbar{gap:10px 12px}
+  .fitem{flex:1 1 140px}
+  .sel,.tin{min-width:0;width:100%}
+  .p-head{flex-wrap:wrap;row-gap:4px}
+  .p-note{margin-left:auto}
 }
 /* GA consent banner — bottom-right, non-blocking; inherits the active palette */
 .ga-consent{position:fixed;bottom:16px;right:16px;max-width:440px;background:var(--paper);border:1px solid var(--ink);box-shadow:0 12px 40px rgba(0,0,0,.22);padding:14px 16px 12px;font:13px var(--ui);line-height:1.5;color:var(--ink);z-index:240;animation:ga-consent-in .25s ease-out}
@@ -229,7 +242,7 @@
 <section id="view-overview">
   <div class="tiles" id="ov-tiles"></div>
   <div class="panel">
-    <div class="p-head"><span class="p-idx">01</span><span class="p-title">Recorded votes per year</span><span class="p-note">resolutions decided by roll-call, by deciding body</span></div>
+    <div class="p-head"><span class="p-idx">01</span><span class="p-title">Recorded votes per year</span><span class="p-note">resolutions decided by roll-call, by deciding body</span><span class="p-exp"><button class="expb" data-csv="ovtl" title="Download data as CSV">CSV</button><button class="expb" data-png="ov-timeline" data-pngname="recorded-votes-per-year" title="Download chart as PNG">PNG</button></span></div>
     <div class="p-body">
       <div id="ov-timeline"></div>
       <div class="legend" id="ov-legend"><span class="li"><i class="sw swchr"></i>Commission on Human Rights</span><span class="li"><i class="sw swhrc"></i>Human Rights Council</span></div>
@@ -237,11 +250,11 @@
   </div>
   <div class="grid2">
     <div class="panel">
-      <div class="p-head"><span class="p-idx">02</span><span class="p-title">How contested were the votes?</span></div>
+      <div class="p-head"><span class="p-idx">02</span><span class="p-title">How contested were the votes?</span><span class="p-exp"><button class="expb" data-csv="ovmg" title="Download data as CSV">CSV</button><button class="expb" data-png="ov-margin" data-pngname="vote-margin-distribution" title="Download chart as PNG">PNG</button></span></div>
       <div class="p-body"><div class="p-desc">Share of recorded votes by Yes−No margin — near-unanimous through highly divided.</div><div id="ov-margin"></div></div>
     </div>
     <div class="panel">
-      <div class="p-head"><span class="p-idx">03</span><span class="p-title">Most divided votes</span><span class="p-note">narrowest Yes−No margin</span></div>
+      <div class="p-head"><span class="p-idx">03</span><span class="p-title">Most divided votes</span><span class="p-note">narrowest Yes−No margin</span><span class="p-exp"><button class="expb" data-csv="ovclose" title="Download data as CSV">CSV</button></span></div>
       <div class="tblwrap h320 gt">
         <div class="gtr gth cols5s"><span class="gtc">Year</span><span class="gtc">Resolution</span><span class="gtc">Subject</span><span class="gtc num">Y</span><span class="gtc num">N</span><span class="gtc num">A</span></div>
         <div id="ov-close"></div>
@@ -260,7 +273,7 @@
   </div>
   <div class="tiles" id="c-tiles"></div>
   <div class="panel">
-    <div class="p-head"><span class="p-idx">01</span><span class="p-title">How it voted, year by year</span></div>
+    <div class="p-head"><span class="p-idx">01</span><span class="p-title">How it voted, year by year</span><span class="p-exp"><button class="expb" data-csv="ctl" title="Download data as CSV">CSV</button><button class="expb" data-png="c-timeline" data-pngname="country-composition" title="Download chart as PNG">PNG</button></span></div>
     <div class="p-body">
       <div class="p-desc">Each column = share of that year's votes cast Yes / Abstain / No (absences excluded; in tooltip). Grey strip below: how many votes that year. Dashed gaps: years outside CHR/HRC membership.</div>
       <div id="c-timeline"></div>
@@ -268,7 +281,7 @@
     </div>
   </div>
   <div class="panel">
-    <div class="p-head"><span class="p-idx">02</span><span class="p-title">Closest &amp; furthest voting partners</span></div>
+    <div class="p-head"><span class="p-idx">02</span><span class="p-title">Closest &amp; furthest voting partners</span><span class="p-exp"><button class="expb" data-csv="cal" title="Download data as CSV">CSV</button><button class="expb" data-png="c-align-top,c-align-bot" data-pngname="country-partners" title="Download chart as PNG">PNG</button></span></div>
     <div class="p-body">
       <div class="p-desc">Voting coincidence over shared recorded votes (min. <span id="c-minco">20</span> in common). Bar colour = UN regional group.</div>
       <div class="grid2">
@@ -279,7 +292,7 @@
     </div>
   </div>
   <div class="panel">
-    <div class="p-head"><span class="p-idx">03</span><span class="p-title">Voting-agreement world map</span><span class="p-note">same encoding as the blocs matrix</span></div>
+    <div class="p-head"><span class="p-idx">03</span><span class="p-title">Voting-agreement world map</span><span class="p-note">same encoding as the blocs matrix</span><span class="p-exp"><button class="expb" data-csv="cmap" title="Download data as CSV">CSV</button><button class="expb" data-png="c-map" data-pngname="country-agreement-map" title="Download map as PNG">PNG</button></span></div>
     <div class="p-body">
       <div class="p-desc">Every state coloured by its voting coincidence with <b id="c-mapself">—</b> over the selected window. Dots mark small states; grey = fewer than 20 shared votes. Historical entities (USSR, Yugoslavia, …) appear only in the lists above — the map shows present-day borders.</div>
       <div id="c-map"></div>
@@ -287,7 +300,7 @@
     </div>
   </div>
   <div class="panel">
-    <div class="p-head"><span class="p-idx">04</span><span class="p-title">Every recorded vote</span><span class="p-note"><span id="c-count"></span> votes · click a column header to sort</span></div>
+    <div class="p-head"><span class="p-idx">04</span><span class="p-title">Every recorded vote</span><span class="p-note"><span id="c-count"></span> votes · click a column header to sort</span><span class="p-exp"><button class="expb" data-csv="crows" title="Download data as CSV">CSV</button></span></div>
     <div class="tblwrap h460 gt" id="c-table">
       <div class="gtr gth colsc2" id="c-head"></div>
       <div id="c-rows"></div>
@@ -317,19 +330,19 @@
       <div class="p-body chiprow"><span class="relbl">Related subject tags in these results:</span><span id="t-related" class="chiprow" style="display:contents"></span></div>
     </div>
     <div class="panel">
-      <div class="p-head"><span class="p-idx">01</span><span class="p-title">Support over time</span><span class="p-note" id="t-trendnote"></span></div>
+      <div class="p-head"><span class="p-idx">01</span><span class="p-title">Support over time</span><span class="p-note" id="t-trendnote"></span><span class="p-exp"><button class="expb" data-csv="ttrend" title="Download data as CSV">CSV</button><button class="expb" data-png="t-trend" data-pngname="topic-support-over-time" title="Download chart as PNG">PNG</button></span></div>
       <div class="p-body"><div class="p-desc">Yearly average share voting Yes — of those casting Yes / No / Abstain (official totals). Faint dots: individual resolutions.</div><div id="t-trend"></div></div>
     </div>
     <div class="grid2">
       <div class="panel">
-        <div class="p-head"><span class="p-idx">02</span><span class="p-title">Resolutions</span><span class="p-note" id="t-restitle"></span></div>
+        <div class="p-head"><span class="p-idx">02</span><span class="p-title">Resolutions</span><span class="p-note" id="t-restitle"></span><span class="p-exp"><button class="expb" data-csv="trows" title="Download data as CSV">CSV</button></span></div>
         <div class="tblwrap h460 gt" id="t-table">
           <div class="gtr gth cols6s"><span class="gtc">Year</span><span class="gtc">Resolution</span><span class="gtc">Subject</span><span class="gtc num">Y</span><span class="gtc num">N</span><span class="gtc num">A</span><span class="gtc">Body</span></div>
           <div id="t-rows"></div>
         </div>
       </div>
       <div class="panel">
-        <div class="p-head"><span class="p-idx">03</span><span class="p-title">How states voted on this topic</span></div>
+        <div class="p-head"><span class="p-idx">03</span><span class="p-title">How states voted on this topic</span><span class="p-exp"><button class="expb" data-csv="tstance" title="Download data as CSV">CSV</button><button class="expb" data-png="t-stance" data-pngname="topic-state-stance" title="Download chart as PNG">PNG</button></span></div>
         <div class="p-body">
           <div class="p-desc">Each state's Yes / Abstain / No share across these votes (min. 5 cast), ranked by support.</div>
           <div id="t-stance" class="scrolly h460"></div>
@@ -360,7 +373,7 @@
     <div class="fitem"><label class="flbl" for="b-order">Order rows by</label><select class="sel" id="b-order"><option value="cluster">Similarity (clustered)</option><option value="group">Regional group</option><option value="name">Name</option></select></div>
   </div>
   <div class="panel">
-    <div class="p-head"><span class="p-idx">01</span><span class="p-title">Voting-coincidence matrix</span></div>
+    <div class="p-head"><span class="p-idx">01</span><span class="p-title">Voting-coincidence matrix</span><span class="p-exp"><button class="expb" data-csv="bheat" title="Download matrix as CSV">CSV</button><button class="expb" data-png="b-heat" data-pngname="voting-coincidence-matrix" title="Download matrix as PNG">PNG</button></span></div>
     <div class="p-body">
       <div class="p-desc">Each cell = share of shared recorded votes on which the two states voted the same way. Blue = vote alike, red = vote apart. Hover for detail.</div>
       <div id="b-heat"></div>
@@ -657,6 +670,62 @@ const tc=s=>s.toLowerCase().replace(/\b([a-z])/g,(m,c)=>c.toUpperCase()).replace
 const $=id=>document.getElementById(id);
 const recUrl=id=>'https://searchlibrary.ohchr.org/record/'+id;
 
+/* ---------- export: CSV (data behind each plot) + PNG (the plot itself) ---------- */
+const CSVDATA={};
+function toCSV(headers,rows){
+  const q=v=>{v=v==null?'':String(v);return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;};
+  return [headers.map(q).join(','),...rows.map(r=>r.map(q).join(','))].join('\r\n');
+}
+function download(name,content,mime){
+  const blob=content instanceof Blob?content:new Blob([content],{type:mime||'application/octet-stream'});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download=name;document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(url);a.remove();},120);
+}
+function exportCSV(key){const d=CSVDATA[key];if(!d||!d.rows)return;
+  download('hrc-'+d.name+'.csv','﻿'+toCSV(d.headers,d.rows),'text/csv;charset=utf-8');}
+/* copy resolved (var()-substituted) presentation styles onto a detached clone so the
+   serialized SVG renders identically when rasterised outside the document. */
+function inlineStyles(orig,clone){
+  const cs=getComputedStyle(orig);
+  ['fill','fill-opacity','stroke','stroke-width','stroke-dasharray','stroke-linejoin','stroke-linecap','opacity','font-family','font-size','font-weight','text-anchor'].forEach(p=>{
+    const v=cs.getPropertyValue(p);if(v&&v!=='none'&&v!=='normal'&&v!=='')clone.setAttribute(p,v);});
+  const oc=orig.children,cc=clone.children;
+  for(let i=0;i<oc.length&&i<cc.length;i++)inlineStyles(oc[i],cc[i]);
+}
+function exportPNG(hostSel,name,scale){
+  scale=scale||2;
+  const svgs=hostSel.split(',').map(id=>document.querySelector('#'+id+' svg')).filter(Boolean);
+  if(!svgs.length)return;
+  const paper=(getComputedStyle($('vr')).getPropertyValue('--paper').trim())||'#ffffff';
+  const items=svgs.map(svg=>{const vb=(svg.getAttribute('viewBox')||'').split(/[ ,]+/).map(Number);
+    const r=svg.getBoundingClientRect();
+    return {svg,w:vb[2]||r.width||300,h:vb[3]||r.height||150};});
+  const pad=14,gap=16;
+  const W=Math.max(...items.map(i=>i.w))+pad*2;
+  const H=items.reduce((s,i)=>s+i.h,0)+pad*2+gap*(items.length-1);
+  const canvas=document.createElement('canvas');
+  canvas.width=Math.round(W*scale);canvas.height=Math.round(H*scale);
+  const ctx=canvas.getContext('2d');ctx.scale(scale,scale);
+  ctx.fillStyle=paper;ctx.fillRect(0,0,W,H);
+  const slots=[];let yy=pad;
+  items.forEach((it,i)=>{slots[i]={x:(W-it.w)/2,y:yy};yy+=it.h+gap;});
+  let done=0;const finish=()=>{if(++done===items.length)canvas.toBlob(b=>b&&download('hrc-'+name+'.png',b,'image/png'));};
+  items.forEach((it,i)=>{
+    const clone=it.svg.cloneNode(true);inlineStyles(it.svg,clone);
+    clone.setAttribute('width',it.w);clone.setAttribute('height',it.h);
+    clone.setAttribute('xmlns','http://www.w3.org/2000/svg');
+    const str=new XMLSerializer().serializeToString(clone),img=new Image();
+    img.onload=()=>{ctx.drawImage(img,slots[i].x,slots[i].y,it.w,it.h);finish();};
+    img.onerror=finish;
+    img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(str);
+  });
+}
+document.addEventListener('click',e=>{
+  const c=e.target.closest('[data-csv]');if(c){exportCSV(c.dataset.csv);return;}
+  const p=e.target.closest('[data-png]');if(p){exportPNG(p.dataset.png,p.dataset.pngname||'chart');}
+});
+
 /* vote maps: parallel arrays -> Map(resIdx -> code), lazy per country */
 const _vm={};
 function vmap(iso){if(_vm[iso])return _vm[iso];const v=D.votes[iso],m=new Map();if(v)for(let i=0;i<v.r.length;i++)m.set(v.r[i],v.v[i]);return _vm[iso]=m;}
@@ -703,15 +772,21 @@ function renderOverview(){
   RES.forEach(r=>{if(r.year!=null&&perYear[r.year])perYear[r.year][r.body]++;});
   const maxY=Math.max(...years.map(y=>perYear[y].CHR+perYear[y].HRC));
   VRC.ovTimeline($('ov-timeline'),{years,perYear,maxY,ymin:M.yearMin,ymax:M.yearMax});
+  CSVDATA.ovtl={name:'recorded-votes-per-year',headers:['year','CHR','HRC','total'],
+    rows:years.filter(y=>perYear[y].CHR+perYear[y].HRC>0).map(y=>[y,perYear[y].CHR,perYear[y].HRC,perYear[y].CHR+perYear[y].HRC])};
   const buckets=[['Near-unanimous (0–5)',0,5],['Clear (6–15)',6,15],['Divided (16–30)',16,30],['Highly divided (31+)',31,9999]];
   const counts=buckets.map(()=>0);
   RES.forEach(r=>{if(r.y==null||r.n==null)return;const m=Math.abs(r.y-r.n);
     for(let i=0;i<buckets.length;i++)if(m>=buckets[i][1]&&m<=buckets[i][2]){counts[i]++;break;}});
   const tot=counts.reduce((a,b)=>a+b,0);
   VRC.margin($('ov-margin'),{rows:buckets.map((b,i)=>({label:b[0],count:counts[i],pct:Math.round(counts[i]/tot*100)}))});
-  $('ov-close').innerHTML=RES.filter(r=>r.y!=null&&r.n!=null&&(r.y+r.n)>10)
-    .map(r=>({r,m:Math.abs(r.y-r.n)})).sort((a,b)=>a.m-b.m).slice(0,12)
-    .map(({r})=>`<div class="gtr cols5s"><span class="gtc">${r.year==null?'—':r.year}</span><span class="gtc" title="${esc(r.title)}"><a href="${recUrl(r.id)}" target="_blank" rel="noopener">${esc(r.sym||r.title.slice(0,40))}</a></span><span class="gtc mut" title="${esc(r.title)}">${r.subj?esc(tc(r.subj)):'—'}</span><span class="gtc num">${r.y}</span><span class="gtc num">${r.n}</span><span class="gtc num">${r.a==null?'—':r.a}</span></div>`).join('');
+  CSVDATA.ovmg={name:'vote-margin-distribution',headers:['margin_bucket','count','share_pct'],
+    rows:buckets.map((b,i)=>[b[0],counts[i],Math.round(counts[i]/tot*100)])};
+  const closeRows=RES.filter(r=>r.y!=null&&r.n!=null&&(r.y+r.n)>10)
+    .map(r=>({r,m:Math.abs(r.y-r.n)})).sort((a,b)=>a.m-b.m).slice(0,12).map(x=>x.r);
+  $('ov-close').innerHTML=closeRows.map(r=>`<div class="gtr cols5s"><span class="gtc">${r.year==null?'—':r.year}</span><span class="gtc" title="${esc(r.title)}"><a href="${recUrl(r.id)}" target="_blank" rel="noopener">${esc(r.sym||r.title.slice(0,40))}</a></span><span class="gtc mut" title="${esc(r.title)}">${r.subj?esc(tc(r.subj)):'—'}</span><span class="gtc num">${r.y}</span><span class="gtc num">${r.n}</span><span class="gtc num">${r.a==null?'—':r.a}</span></div>`).join('');
+  CSVDATA.ovclose={name:'most-divided-votes',headers:['year','resolution','subject','title','yes','no','abstain','record_url'],
+    rows:closeRows.map(r=>[r.year,r.sym,r.subj,r.title,r.y,r.n,r.a,recUrl(r.id)])};
 }
 
 /* ---------- 02 COUNTRY PROFILE ---------- */
@@ -747,6 +822,8 @@ function renderCountry(){
   rows.forEach(x=>{const y=x.r.year;if(!y)return;(yrsAgg[y]=yrsAgg[y]||{Y:0,N:0,A:0,o:0});if(SUBS.has(x.code))yrsAgg[y][x.code]++;else yrsAgg[y].o++;});
   const years=Object.keys(yrsAgg).map(Number).sort((a,b)=>a-b).map(y=>Object.assign({y},yrsAgg[y]));
   VRC.cComposition($('c-timeline'),{years});
+  CSVDATA.ctl={name:'country-'+iso+'-yearly-composition',headers:['year','yes','abstain','no','absent_or_nonmember','total','yes_share_pct'],
+    rows:years.map(d=>{const den=d.Y+d.A+d.N;return [d.y,d.Y,d.A,d.N,d.o,d.Y+d.A+d.N+d.o,den?Math.round(d.Y/den*100):''];})};
   /* partners: top/bottom 30 lists + world map (full list) */
   const ad=alignData(iso,allowed);
   const enough=ad.all.length>=3;
@@ -754,6 +831,10 @@ function renderCountry(){
   VRC.alignment($('c-align-bot'),{items:enough?ad.all.slice(Math.max(30,ad.all.length-30)).reverse():[]});
   $('c-mapself').textContent=c.name;
   VRC.worldMap($('c-map'),{byIso:enough?ad.by:{},self:iso,selfName:c.name});
+  CSVDATA.cal={name:'country-'+iso+'-voting-partners',headers:['iso3','country','un_group','agreement_pct','shared_votes'],
+    rows:ad.all.map(a=>[a.iso,a.name,GLAB[a.group]||a.group,Math.round(a.agree*100),a.co])};
+  CSVDATA.cmap={name:'country-'+iso+'-agreement-by-country',headers:['iso3','country','agreement_pct','shared_votes'],
+    rows:Object.entries(ad.by).filter(e=>e[1].v!=null).map(e=>[e[0],e[1].name,Math.round(e[1].v*100),e[1].co]).sort((a,b)=>b[2]-a[2])};
   /* table */
   $('c-count').textContent=fmt(rows.length);
   const heads=[['year','Year'],['sym','Resolution'],['subj','Subject'],['vote','Vote'],['body','Body']];
@@ -770,6 +851,8 @@ function renderCountry(){
     else{va=a.r.sym||'';vb=b.r.sym||'';}
     return (va>vb?1:va<vb?-1:0)*cSortDir;});
   $('c-rows').innerHTML=sorted.map(x=>`<div class="gtr colsc2"><span class="gtc">${x.r.year==null?'—':x.r.year}</span><span class="gtc" title="${esc(x.r.title)}"><a href="${recUrl(x.r.id)}" target="_blank" rel="noopener">${esc(x.r.sym||x.r.title.slice(0,50))}</a></span><span class="gtc mut" title="${esc(x.r.title)}">${x.r.subj?esc(tc(x.r.subj)):'—'}</span><span class="gtc"><span class="pill ${cls[x.code]||'pX'}">${lbl[x.code]||x.code||'—'}</span></span><span class="gtc">${x.r.body}</span></div>`).join('');
+  CSVDATA.crows={name:'country-'+iso+'-votes',headers:['year','resolution','subject','title','vote','body','record_url'],
+    rows:sorted.map(x=>[x.r.year,x.r.sym,x.r.subj,x.r.title,lbl[x.code]||x.code,x.r.body,recUrl(x.r.id)])};
 }
 
 /* ---------- 03 TOPICS ---------- */
@@ -875,12 +958,20 @@ function renderTopics(){
   const td=trendData(matched);
   VRC.trend($('t-trend'),td);
   $('t-trendnote').textContent=td.note;
+  const slug=(((topicState.subject||text||'topic').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''))||'topic').slice(0,40);
+  CSVDATA.ttrend={name:'topic-'+slug+'-support-over-time',headers:['year','avg_yes_share_pct','n_resolutions'],
+    rows:td.means.map(m=>[m.year,Math.round(m.mean*100),m.n])};
   /* resolutions table */
   $('t-restitle').textContent='('+matched.length+') — '+heading;
-  $('t-rows').innerHTML=matched.map(i=>RES[i]).sort((a,b)=>(b.year||0)-(a.year||0))
-    .map(r=>`<div class="gtr cols6s"><span class="gtc">${r.year==null?'—':r.year}</span><span class="gtc" title="${esc(r.title)}"><a href="${recUrl(r.id)}" target="_blank" rel="noopener">${esc(r.sym||r.title.slice(0,44))}</a></span><span class="gtc mut" title="${esc(r.title)}">${r.subj?esc(tc(r.subj)):'—'}</span><span class="gtc num">${r.y==null?'—':r.y}</span><span class="gtc num">${r.n==null?'—':r.n}</span><span class="gtc num">${r.a==null?'—':r.a}</span><span class="gtc">${r.body}</span></div>`).join('');
+  const tres=matched.map(i=>RES[i]).sort((a,b)=>(b.year||0)-(a.year||0));
+  $('t-rows').innerHTML=tres.map(r=>`<div class="gtr cols6s"><span class="gtc">${r.year==null?'—':r.year}</span><span class="gtc" title="${esc(r.title)}"><a href="${recUrl(r.id)}" target="_blank" rel="noopener">${esc(r.sym||r.title.slice(0,44))}</a></span><span class="gtc mut" title="${esc(r.title)}">${r.subj?esc(tc(r.subj)):'—'}</span><span class="gtc num">${r.y==null?'—':r.y}</span><span class="gtc num">${r.n==null?'—':r.n}</span><span class="gtc num">${r.a==null?'—':r.a}</span><span class="gtc">${r.body}</span></div>`).join('');
+  CSVDATA.trows={name:'topic-'+slug+'-resolutions',headers:['year','resolution','subject','title','yes','no','abstain','body','record_url'],
+    rows:tres.map(r=>[r.year,r.sym,r.subj,r.title,r.y,r.n,r.a,r.body,recUrl(r.id)])};
   /* stance */
-  VRC.stance($('t-stance'),{stats:stanceStats(new Set(matched))});
+  const stStats=stanceStats(new Set(matched));
+  VRC.stance($('t-stance'),{stats:stStats});
+  CSVDATA.tstance={name:'topic-'+slug+'-state-stance',headers:['country','yes','abstain','no','total','yes_share_pct'],
+    rows:stStats.map(s=>[s.name,s.Y,s.A,s.N,s.tot,Math.round(s.share*100)])};
 }
 
 /* ---------- 04 BLOCS ---------- */
@@ -940,6 +1031,9 @@ function heatData(){
 function renderBlocs(){
   const hd=heatData();
   VRC.heatmap($('b-heat'),hd);
+  const iso=hd.labels.map(l=>l.iso);
+  CSVDATA.bheat={name:'voting-coincidence-'+hd.kind+'-'+hd.ymin+'-'+hd.ymax,headers:['state',...iso],
+    rows:hd.cells.map((row,r)=>[iso[r],...row.map(c=>c.self?'':(c.v==null?'':Math.round(c.v*100)))])};
   const setDesc={
     active:' (most active by vote count)',
     agree30:' (highest average voting coincidence with all other states — min. 20 shared votes per pair, ≥10 partners)',

@@ -4,3 +4,4 @@ notes/shots/
 __pycache__/
 *.pyc
 .DS_Store
+notes/exports/

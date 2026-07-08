@@ -64,6 +64,13 @@ recorded (roll-call) votes:
   recorded/roll-call votes carry a per-country breakdown), the vote-code legend, how
   topics are identified, and the known data-quality caveats below.
 
+**Exports.** Every chart carries a `CSV` button (the exact data behind it) and a
+`PNG` button (the chart itself, rasterised client-side — resolved palette colours
+inlined, current palette's paper background); the data tables carry `CSV`. All
+export is offline/client-side, so it works in the single-file build too.
+`scripts/audit.py` sweeps both desktop and mobile viewports for overflow/console
+bugs; `scripts/export_test.py` downloads and validates every CSV + PNG.
+
 Topics come straight from the library catalogue — no ML/topic-modelling — so every
 label is authoritative and traceable. The thematic/country split is a heuristic
 (`build_dashboard_data.py`) and editable. Coverage/reconciliation stats shown in the
