@@ -68,6 +68,16 @@ with sync_playwright() as p:
         checks[f"note ({kind})"] = pg.evaluate("document.getElementById('b-note').textContent")[:60]
     pg.screenshot(path=str(SHOTS / "04_blocs_disagree30.png"))
     pg.select_option("#b-set", "active")
+    pg.wait_for_timeout(300)
+    # alignment-geometry panels
+    checks["mds points"] = pg.evaluate("document.querySelectorAll('#b-mds circle').length")
+    checks["mds anchors note"] = pg.evaluate("document.getElementById('b-mds-note').textContent")
+    checks["cohesion bars"] = pg.evaluate("document.querySelectorAll('#b-cohesion rect').length")
+    checks["isolation labels"] = pg.evaluate("document.querySelectorAll('#b-isolation text').length")
+    pg.select_option("#b-poleY", "RUS")  # change an anchor
+    pg.wait_for_timeout(400)
+    checks["mds after anchor change"] = pg.evaluate("document.getElementById('b-mds-note').textContent")
+    pg.select_option("#b-poleY", "CHN")
 
     pg.click('.tab[data-view="method"]')
     checks["method total"] = pg.evaluate("document.getElementById('m-tile-total').textContent")
@@ -105,6 +115,8 @@ ok = (checks["DATA loaded"] and checks["overview tiles"] == 4 and checks["countr
       and checks["align top rows"] and checks["subject col (country)"]
       and checks["suggest items"] and checks["topic rows"] and checks["trend svg"]
       and checks["heat cells (agree30)"] == 900 and checks["heat cells (disagree30)"] == 900
+      and checks["mds points"] > 20 and checks["cohesion bars"] == 10 and checks["isolation labels"] > 40
+      and "anchors" in checks["mds anchors note"] and "Russia" in checks["mds after anchor change"]
       and checks["chip border"] == "1px" and checks["cmdk opens"]
       and checks["file:// GA script absent"] and checks["file:// consent banner absent"]
       and checks["palette paper"] == "paper" and not errors)

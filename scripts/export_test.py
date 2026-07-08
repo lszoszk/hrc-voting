@@ -54,18 +54,27 @@ with sync_playwright() as p:
     grab(pg, '[data-png="t-trend"]', "t-trend")
     png_stance = grab(pg, '[data-png="t-stance"]', "t-stance")
 
-    # --- Blocs ---
+    # --- Blocs (heatmap + alignment-geometry panels) ---
     pg.click('.tab[data-view="blocs"]'); pg.wait_for_timeout(400)
     csv_bheat = grab(pg, '[data-csv="bheat"]', "bheat")
     png_heat = grab(pg, '[data-png="b-heat"]', "b-heat")
+    csv_bmds = grab(pg, '[data-csv="bmds"]', "bmds")
+    png_mds = grab(pg, '[data-png="b-mds"]', "b-mds")
+    csv_bcoh = grab(pg, '[data-csv="bcoh"]', "bcoh")
+    png_coh = grab(pg, '[data-png="b-cohesion"]', "b-cohesion")
+    csv_biso = grab(pg, '[data-csv="biso"]', "biso")
+    png_iso = grab(pg, '[data-png="b-isolation"]', "b-isolation")
 
     b.close()
 
 # ---- validate CSVs ----
 def check_csv(path, min_rows, must_have):
-    rows = list(csv.reader(io.StringIO(path.read_text(encoding="utf-8-sig"))))
-    ok = len(rows) - 1 >= min_rows and must_have in rows[0]
-    print(f"  CSV {path.name}: {len(rows)-1} data rows, header={rows[0][:4]}… {'OK' if ok else 'FAIL'}")
+    txt = path.read_text(encoding="utf-8-sig")
+    # citation title + source are prepended as `#` comment lines — verify + skip them
+    has_cite = txt.startswith("# ") and "# Source: OHCHR" in txt.split("\n")[1]
+    rows = [r for r in csv.reader(io.StringIO(txt)) if not (r and r[0].startswith("#"))]
+    ok = has_cite and len(rows) - 1 >= min_rows and must_have in rows[0]
+    print(f"  CSV {path.name}: {len(rows)-1} data rows, header={rows[0][:4]}… cite={'y' if has_cite else 'N'} {'OK' if ok else 'FAIL'}")
     if not ok: fails.append(f"csv {path.name}")
     return rows
 
@@ -75,9 +84,13 @@ check_csv(csv_cal, 100, "agreement_pct")
 check_csv(csv_ttrend, 10, "avg_yes_share_pct")
 bheat_rows = check_csv(csv_bheat, 30, "state")
 print(f"  bheat matrix is square-ish: {len(bheat_rows[0])} cols × {len(bheat_rows)-1} rows")
+check_csv(csv_bmds, 20, "shared_votes")
+check_csv(csv_bcoh, 5, "agreement_index")
+check_csv(csv_biso, 40, "minority_side_pct")
 
 # ---- validate PNGs ----
-for path in [png_ovtl, png_ovmg, png_align, png_map, png_stance, png_heat]:
+for path in [png_ovtl, png_ovmg, png_align, png_map, png_stance, png_heat,
+             png_mds, png_coh, png_iso]:
     data = path.read_bytes()
     dims = png_dims(data)
     ok = dims is not None and len(data) > 3000 and dims[0] > 100 and dims[1] > 60

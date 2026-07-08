@@ -54,11 +54,15 @@ recorded (roll-call) votes:
   For any topic: the matching resolutions, a **support-over-time trend** (yearly average
   Yes-share from official totals, with a least-squares rising/falling note in pp per
   decade), and **how every state voted** (Yes/Abstain/No share, ranked by support).
-- **Blocs & alignment** — a voting-coincidence matrix (blue = vote alike, red = vote
-  apart) with greedy similarity clustering; country sets: 30 most active, each UN
-  regional group, P5 + key states, plus computed **30 most agreeing / 30 most
-  disagreeing** states (highest/lowest average pairwise coincidence over the window,
-  min. 20 shared votes per pair, ≥10 partners); filter by year range.
+- **Blocs & alignment** — an **alignment map** (reference-pole scatter: each state
+  placed by its % agreement with two anchor states you pick, default USA → vs China ↑,
+  so position is directly interpretable), a voting-coincidence matrix (blue = alike, red
+  = apart) with greedy clustering, **regional-group cohesion** (Hix–Noury–Roland
+  Agreement Index per UN group) and a **most-often-outvoted** ranking (share of a
+  state's votes that differ from the whole-chamber majority position). Country sets: 30
+  most active, each UN regional group,
+  P5 + key states, plus computed **30 most agreeing / 30 most disagreeing** states;
+  filter by year range. Methods are documented in the Methodology tab.
 - **Methodology** — explains, with live numbers pulled from `meta.coverage`, why the
   other three views operate on ~1,705 resolutions instead of the full 6,346 (only
   recorded/roll-call votes carry a per-country breakdown), the vote-code legend, how

@@ -373,12 +373,37 @@
     <div class="fitem"><label class="flbl" for="b-order">Order rows by</label><select class="sel" id="b-order"><option value="cluster">Similarity (clustered)</option><option value="group">Regional group</option><option value="name">Name</option></select></div>
   </div>
   <div class="panel">
-    <div class="p-head"><span class="p-idx">01</span><span class="p-title">Voting-coincidence matrix</span><span class="p-exp"><button class="expb" data-csv="bheat" title="Download matrix as CSV">CSV</button><button class="expb" data-png="b-heat" data-pngname="voting-coincidence-matrix" title="Download matrix as PNG">PNG</button></span></div>
+    <div class="p-head"><span class="p-idx">01</span><span class="p-title">Alignment map</span><span class="p-note" id="b-mds-note"></span><span class="p-exp"><button class="expb" data-csv="bmds" title="Download coordinates as CSV">CSV</button><button class="expb" data-png="b-mds" data-pngname="alignment-map" title="Download map as PNG">PNG</button></span></div>
+    <div class="p-body">
+      <div class="p-desc">Every state is placed by how often it votes the same way as two <b>anchor states</b> — right = agrees with the first, up = agrees with the second (dashed diagonal = equal agreement with both). The <b>selected country set</b> (the <i>Country set</i> control above) is highlighted in colour and labelled; all other states are grey — hover any dot for its name and figures. <label style="margin-left:4px">Anchors: <select class="sel" id="b-poleX" style="padding:3px 6px"></select> <span class="mut">(→)</span> <select class="sel" id="b-poleY" style="padding:3px 6px"></select> <span class="mut">(↑)</span></label></div>
+      <div id="b-mds"></div>
+      <div class="legend"><span class="li"><i class="sw swg-af"></i>African</span><span class="li"><i class="sw swg-ap"></i>Asia-Pacific</span><span class="li"><i class="sw swg-ee"></i>Eastern Europe</span><span class="li"><i class="sw swg-gr"></i>Latin America &amp; Caribbean</span><span class="li"><i class="sw swg-we"></i>Western Europe &amp; Others</span></div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">02</span><span class="p-title">Voting-coincidence matrix</span><span class="p-exp"><button class="expb" data-csv="bheat" title="Download matrix as CSV">CSV</button><button class="expb" data-png="b-heat" data-pngname="voting-coincidence-matrix" title="Download matrix as PNG">PNG</button></span></div>
     <div class="p-body">
       <div class="p-desc">Each cell = share of shared recorded votes on which the two states voted the same way. Blue = vote alike, red = vote apart. Hover for detail.</div>
       <div id="b-heat"></div>
       <div class="legend"><span>Vote apart</span><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 100%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 70%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 40%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 20%, var(--div-mid))"></i><i class="sw" style="background:var(--div-mid)"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 20%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 40%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 70%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 100%, var(--div-mid))"></i><span>Vote alike</span><span class="mut">· grey = too few shared votes</span></div>
       <div class="legend"><span class="mut">Labels:</span><span class="li"><i class="sw swg-af"></i>African</span><span class="li"><i class="sw swg-ap"></i>Asia-Pacific</span><span class="li"><i class="sw swg-ee"></i>Eastern Europe</span><span class="li"><i class="sw swg-gr"></i>Latin America &amp; Caribbean</span><span class="li"><i class="sw swg-we"></i>Western Europe &amp; Others</span></div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="panel">
+      <div class="p-head"><span class="p-idx">03</span><span class="p-title">Regional-group cohesion</span><span class="p-exp"><button class="expb" data-csv="bcoh" title="Download data as CSV">CSV</button><button class="expb" data-png="b-cohesion" data-pngname="group-cohesion" title="Download chart as PNG">PNG</button></span></div>
+      <div class="p-body">
+        <div class="p-desc">How unified each UN regional group votes over the window — Agreement Index (1 = unanimous, 0 = evenly split), across all its members. Independent of the country set above.</div>
+        <div id="b-cohesion"></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="p-head"><span class="p-idx">04</span><span class="p-title">Most often outvoted</span><span class="p-exp"><button class="expb" data-csv="biso" title="Download data as CSV">CSV</button><button class="expb" data-png="b-isolation" data-pngname="most-outvoted" title="Download chart as PNG">PNG</button></span></div>
+      <div class="p-body">
+        <div class="p-desc">Share of each state's votes that differ from the outcome's majority position — the winning Yes / No / Abstain side pooled across the whole chamber (min. 20 votes in the window). A high rate often means siding with a cohesive minority bloc, not voting alone — compare the cohesion panel. Bar colour = UN regional group.</div>
+        <div id="b-isolation" class="scrolly" style="max-height:420px"></div>
+        <div class="legend"><span class="li"><i class="sw swg-af"></i>African</span><span class="li"><i class="sw swg-ap"></i>Asia-Pacific</span><span class="li"><i class="sw swg-ee"></i>Eastern Europe</span><span class="li"><i class="sw swg-gr"></i>Latin America &amp; Caribbean</span><span class="li"><i class="sw swg-we"></i>Western Europe &amp; Others</span></div>
+      </div>
     </div>
   </div>
   <div class="note" id="b-note"></div>
@@ -443,6 +468,13 @@
       <div class="p-desc m0">This site uses <b>Google Analytics 4</b> only to see which views are used, and only <b>after you accept</b> the banner (Google Consent Mode v2 defaults to denied; nothing is sent before then, and a <code class="cd">Do-Not-Track</code> browser setting skips it entirely). We record <b>view names only</b> (Overview, Country profile, Topics, Blocs, Methodology). We never send your searches, the countries or subjects you select, the records you open, or your IP address in clear — GA4 anonymises IP and ad-personalisation / Google signals are disabled. The offline single-file version does no tracking at all. <span id="m-ga-state" class="mut"></span></div>
       <div style="margin-top:12px"><button class="palbtn" id="m-ga-reset" type="button">Reset analytics choice</button></div>
     </div>
+  </div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">08</span><span class="p-title">Alignment methods</span></div>
+    <div class="p-body ptext">The <b>Blocs &amp; alignment</b> tab uses three standard measures from the study of legislative and UN voting, all computed client-side from the recorded roll-calls (no external data):
+      <br>• <b>Alignment map</b> — a <b>reference-pole scatter</b>: each state is placed by its voting agreement with two anchor states you choose (horizontal = agreement with the first, vertical = agreement with the second, each 0–100% over shared recorded votes). Positions are directly interpretable; the dashed diagonal marks equal agreement with both anchors.
+      <br>• <b>Regional-group cohesion</b> — the <b>Agreement Index</b> (Hix, Noury &amp; Roland): for each resolution, (largest bloc − ½·the rest) ÷ total among a group's members, averaged over the window; 1 = unanimous, 0 = evenly split.
+      <br>• <b>Most often outvoted</b> — the share of a state's votes that <b>differ from the majority position</b> (the winning Yes/No/Abstain side, from official whole-chamber totals), over states with at least 20 votes in the window. It measures being on the losing side, which is not the same as being isolated — a state can be in a large, cohesive minority bloc.</div>
   </div>
 </section>
 
@@ -645,6 +677,56 @@ VRC.stance=function(host,o){host.innerHTML='';
     hov(hit,'<b>'+esc(d.name)+'</b><br>Yes '+d.Y+' · Abstain '+d.A+' · No '+d.N+' ('+d.tot+' votes)');});
   host.appendChild(s);};
 
+/* Alignment map: reference-pole scatter — agreement with two anchor states (X,Y in 0..1) */
+VRC.poleScatter=function(host,o){host.innerHTML='';
+  const pts=o.points;if(pts.length<2){host.innerHTML='<div style="color:var(--dim)">Not enough shared votes with the two anchor states to place these countries.</div>';return;}
+  const W=760,H=600,PL=54,PR=94,PT=16,PB=50,iw=W-PL-PR,ih=H-PT-PB;
+  const s=svg(W,H),X=v=>PL+v*iw,Y=v=>PT+ih-v*ih;
+  [0,.25,.5,.75,1].forEach(v=>{
+    el('line',{x1:X(v),x2:X(v),y1:PT,y2:PT+ih,stroke:'var(--line-2)'},s);
+    el('line',{x1:PL,x2:PL+iw,y1:Y(v),y2:Y(v),stroke:'var(--line-2)'},s);
+    txt({x:X(v),y:PT+ih+15,'text-anchor':'middle','font-size':'9'},s,Math.round(v*100)+'%');
+    txt({x:PL-8,y:Y(v)+3,'text-anchor':'end','font-size':'9'},s,Math.round(v*100)+'%');});
+  el('line',{x1:X(0),y1:Y(0),x2:X(1),y2:Y(1),stroke:'var(--line)','stroke-dasharray':'3 4'},s);
+  txt({x:PL+iw/2,y:H-9,'text-anchor':'middle',fill:'var(--ink-2)','font-size':'10'},s,'agreement with '+o.xlab+' →');
+  const yl=el('text',{x:15,y:PT+ih/2,fill:'var(--ink-2)','font-size':'10','text-anchor':'middle','font-family':'JetBrains Mono,monospace',transform:'rotate(-90 15 '+(PT+ih/2)+')'},s);
+  yl.textContent='agreement with '+o.ylab+' →';
+  /* background cloud: states not in the selected set — muted grey, no label */
+  pts.forEach(p=>{if(p.sel)return;el('circle',{cx:X(p.x),cy:Y(p.y),r:3,fill:'var(--dimmer)','fill-opacity':0.32},s);});
+  /* highlighted (selected) states — coloured by UN group */
+  pts.forEach(p=>{if(!p.sel||p.isPole)return;
+    el('circle',{cx:X(p.x),cy:Y(p.y),r:4.5,fill:'var(--g-'+(p.group||'')+')','fill-opacity':0.9,stroke:'var(--paper)','stroke-width':0.8},s);});
+  /* anchor poles — ringed */
+  pts.forEach(p=>{if(!p.isPole)return;
+    el('circle',{cx:X(p.x),cy:Y(p.y),r:6,fill:'var(--g-'+(p.group||'')+')','fill-opacity':1,stroke:'var(--ink)','stroke-width':1.4},s);});
+  /* labels for the highlighted set only (poles first, then most-active); positions around the dot */
+  const placed=[];
+  const order=pts.filter(p=>p.sel).sort((a,b)=>(b.isPole?1:0)-(a.isPole?1:0)||(b.coX+b.coY)-(a.coX+a.coY));
+  order.forEach(p=>{const cx=X(p.x),cy=Y(p.y),w=p.iso.length*5.6+2;
+    const cands=[[cx+7,cy+3],[cx-7-w,cy+3],[cx-w/2+2,cy-7],[cx-w/2+2,cy+13],[cx+7,cy-7],[cx-7-w,cy-7],[cx+7,cy+13],[cx-7-w,cy+13]];
+    for(let k=0;k<cands.length;k++){const lx=cands[k][0],ly=cands[k][1],r={x0:lx-1,y0:ly-8,x1:lx+w,y1:ly+2};
+      if(lx<PL-2||r.x1>W-2||ly<PT+4||ly>PT+ih+2)continue;
+      if(p.isPole||!placed.some(q=>r.x0<q.x1&&r.x1>q.x0&&r.y0<q.y1&&r.y1>q.y0)){
+        txt({x:lx,y:ly,'font-size':'8',fill:p.isPole?'var(--ink)':'var(--dim)'},s,p.iso);placed.push(r);break;}}});
+  /* hover targets for ALL states (so any grey dot can be identified) */
+  pts.forEach(p=>{const hit=el('circle',{cx:X(p.x),cy:Y(p.y),r:7,fill:'transparent'},s);
+    hov(hit,'<b>'+esc(p.name)+'</b> · '+esc(p.glabel)+(p.isPole?' · axis anchor':'')+'<br>'+Math.round(p.x*100)+'% with '+esc(o.xlab)+' · '+Math.round(p.y*100)+'% with '+esc(o.ylab)+'<br>'+Math.min(p.coX,p.coY)+' shared votes');});
+  host.appendChild(s);};
+
+/* Generic horizontal-bar list (cohesion by group, isolation by state) */
+VRC.hbars=function(host,o){host.innerHTML='';
+  const rows=o.rows;if(!rows.length){host.innerHTML='<div style="color:var(--dim)">'+(o.empty||'No data in this window.')+'</div>';return;}
+  const W=520,rowh=o.rowh||22,LBL=o.lbl||150,barx=LBL,barmax=W-LBL-52,max=o.max||1;
+  const s=svg(W,rows.length*rowh+6);
+  rows.forEach((d,i)=>{const yy=i*rowh+4;
+    txt({x:0,y:yy+14,fill:'var(--ink-2)'},s,d.label.length>26?d.label.slice(0,25)+'…':d.label);
+    el('rect',{x:barx,y:yy+3,width:barmax,height:14,fill:'var(--paper-2)',stroke:'var(--line-2)'},s);
+    const ww=barmax*(d.value/max);
+    const r=el('rect',{x:barx,y:yy+3,width:Math.max(ww,1),height:14,fill:d.color||'var(--accent)'},s);
+    txt({x:barx+barmax+6,y:yy+14},s,d.right!=null?d.right:Math.round(d.value*100)+'%');
+    if(d.hover)hov(r,d.hover);});
+  host.appendChild(s);};
+
 window.VRC=VRC;
 })();
 </script>
@@ -653,6 +735,10 @@ window.VRC=VRC;
 'use strict';
 const D=window.DATA, RES=D.res, C=D.countries, M=D.meta, GLAB=M.groupLabels;
 const byIso=Object.fromEntries(C.map(c=>[c.iso3,c]));
+/* UN-agency short display names for a few long/formal names (patched in place, so every
+   surface — bars, dropdown, tables, tooltips, exports — shows the same clean name) */
+const NAME_FIX={COD:'DR Congo',VEN:'Venezuela',BOL:'Bolivia',IRN:'Iran',TZA:'Tanzania',GER:'Germany (FRG)',DDR:'Germany (GDR)'};
+Object.keys(NAME_FIX).forEach(iso=>{if(byIso[iso])byIso[iso].name=NAME_FIX[iso];});
 const SUBJ=D.subjects||[];
 const subjCS=new Map(SUBJ.map(x=>[x.name,x.cs]));
 const SUBS=new Set(['Y','N','A']);
@@ -665,7 +751,11 @@ const $=id=>document.getElementById(id);
 const recUrl=id=>'https://searchlibrary.ohchr.org/record/'+id;
 
 /* ---------- export: CSV (data behind each plot) + PNG (the plot itself) ---------- */
+/* Each CSVDATA[key] carries {name (file slug), title (human title), headers, rows}. */
 const CSVDATA={};
+const CITE_BASE='Source: OHCHR Search Library — Voting collection (searchlibrary.ohchr.org) · CHR·HRC Voting Records · https://lszoszk.github.io/hrc-voting';
+function citeLine(){const d=new Date(),p=n=>String(n).padStart(2,'0');
+  return CITE_BASE+' · accessed '+d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());}
 function toCSV(headers,rows){
   const q=v=>{v=v==null?'':String(v);return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;};
   return [headers.map(q).join(','),...rows.map(r=>r.map(q).join(','))].join('\r\n');
@@ -677,7 +767,8 @@ function download(name,content,mime){
   setTimeout(()=>{URL.revokeObjectURL(url);a.remove();},120);
 }
 function exportCSV(key){const d=CSVDATA[key];if(!d||!d.rows)return;
-  download('hrc-'+d.name+'.csv','﻿'+toCSV(d.headers,d.rows),'text/csv;charset=utf-8');}
+  const meta='# '+(d.title||d.name)+'\r\n# '+citeLine()+'\r\n';   // title + source as CSV comment lines
+  download('hrc-'+d.name+'.csv','﻿'+meta+toCSV(d.headers,d.rows),'text/csv;charset=utf-8');}
 /* copy resolved (var()-substituted) presentation styles onto a detached clone so the
    serialized SVG renders identically when rasterised outside the document. */
 function inlineStyles(orig,clone){
@@ -687,23 +778,31 @@ function inlineStyles(orig,clone){
   const oc=orig.children,cc=clone.children;
   for(let i=0;i<oc.length&&i<cc.length;i++)inlineStyles(oc[i],cc[i]);
 }
-function exportPNG(hostSel,name,scale){
-  scale=scale||2;
+function exportPNG(hostSel,name,key){
+  const scale=2;
   const svgs=hostSel.split(',').map(id=>document.querySelector('#'+id+' svg')).filter(Boolean);
   if(!svgs.length)return;
-  const paper=(getComputedStyle($('vr')).getPropertyValue('--paper').trim())||'#ffffff';
+  const cst=getComputedStyle($('vr'));
+  const paper=cst.getPropertyValue('--paper').trim()||'#ffffff',
+        ink=cst.getPropertyValue('--ink').trim()||'#111',
+        dim=cst.getPropertyValue('--dim').trim()||'#666';
+  const title=(CSVDATA[key]&&CSVDATA[key].title)||name, cite=citeLine();
+  const TF='600 14px "JetBrains Mono",ui-monospace,monospace',CF='10px "JetBrains Mono",ui-monospace,monospace';
   const items=svgs.map(svg=>{const vb=(svg.getAttribute('viewBox')||'').split(/[ ,]+/).map(Number);
-    const r=svg.getBoundingClientRect();
-    return {svg,w:vb[2]||r.width||300,h:vb[3]||r.height||150};});
-  const pad=14,gap=16;
-  const W=Math.max(...items.map(i=>i.w))+pad*2;
-  const H=items.reduce((s,i)=>s+i.h,0)+pad*2+gap*(items.length-1);
+    const r=svg.getBoundingClientRect();return {svg,w:vb[2]||r.width||300,h:vb[3]||r.height||150};});
+  const mctx=document.createElement('canvas').getContext('2d');
+  mctx.font=TF;const tw=mctx.measureText(title).width;mctx.font=CF;const cw=mctx.measureText(cite).width;
+  const pad=16,gap=16,titleBand=26,citeBand=26;
+  const chartW=Math.max(...items.map(i=>i.w)),chartH=items.reduce((s,i)=>s+i.h,0)+gap*(items.length-1);
+  const W=Math.max(chartW,tw,cw)+pad*2, chartTop=pad+titleBand, H=chartTop+chartH+citeBand+pad;
   const canvas=document.createElement('canvas');
   canvas.width=Math.round(W*scale);canvas.height=Math.round(H*scale);
   const ctx=canvas.getContext('2d');ctx.scale(scale,scale);
   ctx.fillStyle=paper;ctx.fillRect(0,0,W,H);
-  const slots=[];let yy=pad;
-  items.forEach((it,i)=>{slots[i]={x:(W-it.w)/2,y:yy};yy+=it.h+gap;});
+  ctx.textBaseline='alphabetic';
+  ctx.fillStyle=ink;ctx.font=TF;ctx.fillText(title,pad,pad+15);
+  ctx.fillStyle=dim;ctx.font=CF;ctx.fillText(cite,pad,H-pad+2);
+  const slots=[];let yy=chartTop;items.forEach((it,i)=>{slots[i]={x:(W-it.w)/2,y:yy};yy+=it.h+gap;});
   let done=0;const finish=()=>{if(++done===items.length)canvas.toBlob(b=>b&&download('hrc-'+name+'.png',b,'image/png'));};
   items.forEach((it,i)=>{
     const clone=it.svg.cloneNode(true);inlineStyles(it.svg,clone);
@@ -717,7 +816,8 @@ function exportPNG(hostSel,name,scale){
 }
 document.addEventListener('click',e=>{
   const c=e.target.closest('[data-csv]');if(c){exportCSV(c.dataset.csv);return;}
-  const p=e.target.closest('[data-png]');if(p){exportPNG(p.dataset.png,p.dataset.pngname||'chart');}
+  const p=e.target.closest('[data-png]');
+  if(p){const sib=p.parentElement.querySelector('[data-csv]');exportPNG(p.dataset.png,p.dataset.pngname||'chart',sib?sib.dataset.csv:null);}
 });
 
 /* vote maps: parallel arrays -> Map(resIdx -> code), lazy per country */
@@ -766,7 +866,7 @@ function renderOverview(){
   RES.forEach(r=>{if(r.year!=null&&perYear[r.year])perYear[r.year][r.body]++;});
   const maxY=Math.max(...years.map(y=>perYear[y].CHR+perYear[y].HRC));
   VRC.ovTimeline($('ov-timeline'),{years,perYear,maxY,ymin:M.yearMin,ymax:M.yearMax});
-  CSVDATA.ovtl={name:'recorded-votes-per-year',headers:['year','CHR','HRC','total'],
+  CSVDATA.ovtl={name:'recorded-votes-per-year',title:'Recorded votes per year, by deciding body',headers:['year','CHR','HRC','total'],
     rows:years.filter(y=>perYear[y].CHR+perYear[y].HRC>0).map(y=>[y,perYear[y].CHR,perYear[y].HRC,perYear[y].CHR+perYear[y].HRC])};
   const buckets=[['Near-unanimous (0–5)',0,5],['Clear (6–15)',6,15],['Divided (16–30)',16,30],['Highly divided (31+)',31,9999]];
   const counts=buckets.map(()=>0);
@@ -774,12 +874,12 @@ function renderOverview(){
     for(let i=0;i<buckets.length;i++)if(m>=buckets[i][1]&&m<=buckets[i][2]){counts[i]++;break;}});
   const tot=counts.reduce((a,b)=>a+b,0);
   VRC.margin($('ov-margin'),{rows:buckets.map((b,i)=>({label:b[0],count:counts[i],pct:Math.round(counts[i]/tot*100)}))});
-  CSVDATA.ovmg={name:'vote-margin-distribution',headers:['margin_bucket','count','share_pct'],
+  CSVDATA.ovmg={name:'vote-margin-distribution',title:'How contested were the votes — share by Yes−No margin',headers:['margin_bucket','count','share_pct'],
     rows:buckets.map((b,i)=>[b[0],counts[i],Math.round(counts[i]/tot*100)])};
   const closeRows=RES.filter(r=>r.y!=null&&r.n!=null&&(r.y+r.n)>10)
     .map(r=>({r,m:Math.abs(r.y-r.n)})).sort((a,b)=>a.m-b.m).slice(0,12).map(x=>x.r);
   $('ov-close').innerHTML=closeRows.map(r=>`<div class="gtr cols5s"><span class="gtc">${r.year==null?'—':r.year}</span><span class="gtc" title="${esc(r.title)}"><a href="${recUrl(r.id)}" target="_blank" rel="noopener">${esc(r.sym||r.title.slice(0,40))}</a></span><span class="gtc mut" title="${esc(r.title)}">${r.subj?esc(tc(r.subj)):'—'}</span><span class="gtc num">${r.y}</span><span class="gtc num">${r.n}</span><span class="gtc num">${r.a==null?'—':r.a}</span></div>`).join('');
-  CSVDATA.ovclose={name:'most-divided-votes',headers:['year','resolution','subject','title','yes','no','abstain','record_url'],
+  CSVDATA.ovclose={name:'most-divided-votes',title:'Most divided recorded votes (narrowest Yes−No margin)',headers:['year','resolution','subject','title','yes','no','abstain','record_url'],
     rows:closeRows.map(r=>[r.year,r.sym,r.subj,r.title,r.y,r.n,r.a,recUrl(r.id)])};
 }
 
@@ -804,6 +904,7 @@ function alignData(iso,allowed){
 }
 function renderCountry(){
   const {rows,allowed,iso}=countryRows();const c=byIso[iso];
+  const cwin='('+$('c-ymin').value+'–'+$('c-ymax').value+($('c-body').value?', '+$('c-body').value:'')+')';
   const cnt={Y:0,N:0,A:0};let other=0;rows.forEach(x=>{if(cnt[x.code]!=null)cnt[x.code]++;else other++;});
   const nsub=cnt.Y+cnt.N+cnt.A,pct=v=>nsub?Math.round(v/nsub*100)+'%':'—';
   const yrs=rows.map(x=>x.r.year).filter(Boolean);
@@ -816,7 +917,7 @@ function renderCountry(){
   rows.forEach(x=>{const y=x.r.year;if(!y)return;(yrsAgg[y]=yrsAgg[y]||{Y:0,N:0,A:0,o:0});if(SUBS.has(x.code))yrsAgg[y][x.code]++;else yrsAgg[y].o++;});
   const years=Object.keys(yrsAgg).map(Number).sort((a,b)=>a-b).map(y=>Object.assign({y},yrsAgg[y]));
   VRC.cComposition($('c-timeline'),{years});
-  CSVDATA.ctl={name:'country-'+iso+'-yearly-composition',headers:['year','yes','abstain','no','absent_or_nonmember','total','yes_share_pct'],
+  CSVDATA.ctl={name:'country-'+iso+'-yearly-composition',title:c.name+' — yearly vote composition '+cwin,headers:['year','yes','abstain','no','absent_or_nonmember','total','yes_share_pct'],
     rows:years.map(d=>{const den=d.Y+d.A+d.N;return [d.y,d.Y,d.A,d.N,d.o,d.Y+d.A+d.N+d.o,den?Math.round(d.Y/den*100):''];})};
   /* partners: top/bottom 30 lists + world map (full list) */
   const ad=alignData(iso,allowed);
@@ -825,9 +926,9 @@ function renderCountry(){
   VRC.alignment($('c-align-bot'),{items:enough?ad.all.slice(Math.max(30,ad.all.length-30)).reverse():[]});
   $('c-mapself').textContent=c.name;
   VRC.worldMap($('c-map'),{byIso:enough?ad.by:{},self:iso,selfName:c.name});
-  CSVDATA.cal={name:'country-'+iso+'-voting-partners',headers:['iso3','country','un_group','agreement_pct','shared_votes'],
+  CSVDATA.cal={name:'country-'+iso+'-voting-partners',title:c.name+' — closest & furthest voting partners '+cwin,headers:['iso3','country','un_group','agreement_pct','shared_votes'],
     rows:ad.all.map(a=>[a.iso,a.name,GLAB[a.group]||a.group,Math.round(a.agree*100),a.co])};
-  CSVDATA.cmap={name:'country-'+iso+'-agreement-by-country',headers:['iso3','country','agreement_pct','shared_votes'],
+  CSVDATA.cmap={name:'country-'+iso+'-agreement-by-country',title:c.name+' — voting agreement with each country '+cwin,headers:['iso3','country','agreement_pct','shared_votes'],
     rows:Object.entries(ad.by).filter(e=>e[1].v!=null).map(e=>[e[0],e[1].name,Math.round(e[1].v*100),e[1].co]).sort((a,b)=>b[2]-a[2])};
   /* table */
   $('c-count').textContent=fmt(rows.length);
@@ -845,7 +946,7 @@ function renderCountry(){
     else{va=a.r.sym||'';vb=b.r.sym||'';}
     return (va>vb?1:va<vb?-1:0)*cSortDir;});
   $('c-rows').innerHTML=sorted.map(x=>`<div class="gtr colsc2"><span class="gtc">${x.r.year==null?'—':x.r.year}</span><span class="gtc" title="${esc(x.r.title)}"><a href="${recUrl(x.r.id)}" target="_blank" rel="noopener">${esc(x.r.sym||x.r.title.slice(0,50))}</a></span><span class="gtc mut" title="${esc(x.r.title)}">${x.r.subj?esc(tc(x.r.subj)):'—'}</span><span class="gtc"><span class="pill ${cls[x.code]||'pX'}">${lbl[x.code]||x.code||'—'}</span></span><span class="gtc">${x.r.body}</span></div>`).join('');
-  CSVDATA.crows={name:'country-'+iso+'-votes',headers:['year','resolution','subject','title','vote','body','record_url'],
+  CSVDATA.crows={name:'country-'+iso+'-votes',title:c.name+' — every recorded vote '+cwin,headers:['year','resolution','subject','title','vote','body','record_url'],
     rows:sorted.map(x=>[x.r.year,x.r.sym,x.r.subj,x.r.title,lbl[x.code]||x.code,x.r.body,recUrl(x.r.id)])};
 }
 
@@ -953,18 +1054,19 @@ function renderTopics(){
   VRC.trend($('t-trend'),td);
   $('t-trendnote').textContent=td.note;
   const slug=(((topicState.subject||text||'topic').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''))||'topic').slice(0,40);
-  CSVDATA.ttrend={name:'topic-'+slug+'-support-over-time',headers:['year','avg_yes_share_pct','n_resolutions'],
+  const twin='('+$('t-ymin').value+'–'+$('t-ymax').value+')';
+  CSVDATA.ttrend={name:'topic-'+slug+'-support-over-time',title:heading+' — support over time '+twin,headers:['year','avg_yes_share_pct','n_resolutions'],
     rows:td.means.map(m=>[m.year,Math.round(m.mean*100),m.n])};
   /* resolutions table */
   $('t-restitle').textContent='('+matched.length+') — '+heading;
   const tres=matched.map(i=>RES[i]).sort((a,b)=>(b.year||0)-(a.year||0));
   $('t-rows').innerHTML=tres.map(r=>`<div class="gtr cols6s"><span class="gtc">${r.year==null?'—':r.year}</span><span class="gtc" title="${esc(r.title)}"><a href="${recUrl(r.id)}" target="_blank" rel="noopener">${esc(r.sym||r.title.slice(0,44))}</a></span><span class="gtc mut" title="${esc(r.title)}">${r.subj?esc(tc(r.subj)):'—'}</span><span class="gtc num">${r.y==null?'—':r.y}</span><span class="gtc num">${r.n==null?'—':r.n}</span><span class="gtc num">${r.a==null?'—':r.a}</span><span class="gtc">${r.body}</span></div>`).join('');
-  CSVDATA.trows={name:'topic-'+slug+'-resolutions',headers:['year','resolution','subject','title','yes','no','abstain','body','record_url'],
+  CSVDATA.trows={name:'topic-'+slug+'-resolutions',title:heading+' — resolutions '+twin,headers:['year','resolution','subject','title','yes','no','abstain','body','record_url'],
     rows:tres.map(r=>[r.year,r.sym,r.subj,r.title,r.y,r.n,r.a,r.body,recUrl(r.id)])};
   /* stance */
   const stStats=stanceStats(new Set(matched));
   VRC.stance($('t-stance'),{stats:stStats});
-  CSVDATA.tstance={name:'topic-'+slug+'-state-stance',headers:['country','yes','abstain','no','total','yes_share_pct'],
+  CSVDATA.tstance={name:'topic-'+slug+'-state-stance',title:heading+' — how states voted '+twin,headers:['country','yes','abstain','no','total','yes_share_pct'],
     rows:stStats.map(s=>[s.name,s.Y,s.A,s.N,s.tot,Math.round(s.share*100)])};
 }
 
@@ -1022,11 +1124,58 @@ function heatData(){
   _heatCache.key=key;_heatCache.val=val;
   return val;
 }
+/* ---- alignment-geometry computations (all client-side, over recorded roll-calls) ---- */
+const GROUPS=['AFRICAN','ASIA_PACIFIC','EEG','GRULAC','WEOG'];
+/* voting-agreement between two states over the allowed resolutions */
+function pairAgree(mA,mB,allowed){
+  const sm=mA.size<mB.size?mA:mB,bg=sm===mA?mB:mA;let a=0,cc=0;
+  for(const [ri,code] of sm){if(!allowed.has(ri)||!SUBS.has(code))continue;const o=bg.get(ri);if(o===undefined||!SUBS.has(o))continue;cc++;if(o===code)a++;}
+  return {v:cc>0?a/cc:null,co:cc};
+}
+/* reference-pole scatter: EVERY state's agreement with two anchor states (px,py);
+   `highlightIsos` marks the selected country set for colouring/labelling */
+function poleData(highlightIsos,px,py,ymin,ymax){
+  const allowed=resSet(ymin,ymax,''),mx=vmap(px),my=vmap(py),sel=new Set(highlightIsos),pts=[];
+  C.forEach(c=>{const iso=c.iso3,m=vmap(iso),pole=iso===px||iso===py;
+    const ax=pairAgree(m,mx,allowed),ay=pairAgree(m,my,allowed);
+    if(ax.v==null||ay.v==null)return;
+    if(!pole&&(ax.co<20||ay.co<20))return;   // need enough shared votes with each anchor to place reliably
+    pts.push({iso:iso,name:c.name,group:c.group,glabel:GLAB[c.group]||'',
+      x:ax.v,y:ay.v,coX:ax.co,coY:ay.co,isPole:pole,sel:pole||sel.has(iso)});});
+  return pts;
+}
+/* Agreement Index (Hix–Noury–Roland) per UN regional group over the window */
+const _cohCache={key:null,val:null};
+function cohesionByGroup(ymin,ymax){
+  const key=ymin+'|'+ymax;if(_cohCache.key===key)return _cohCache.val;
+  const allowed=resSet(ymin,ymax,''),byGR={};GROUPS.forEach(g=>byGR[g]=new Map());
+  C.forEach(c=>{const g=c.group;if(!byGR[g])return;const m=vmap(c.iso3);
+    for(const [ri,code] of m){if(!allowed.has(ri)||!SUBS.has(code))continue;
+      let t=byGR[g].get(ri);if(!t){t={Y:0,N:0,A:0};byGR[g].set(ri,t);}t[code]++;}});
+  const out=[];GROUPS.forEach(g=>{let sum=0,nn=0;
+    byGR[g].forEach(t=>{const tot=t.Y+t.N+t.A;if(tot<3)return;const mx=Math.max(t.Y,t.N,t.A);
+      sum+=(mx-0.5*(tot-mx))/tot;nn++;});
+    if(nn)out.push({group:g,label:GLAB[g]||g,index:sum/nn,n:nn});});
+  out.sort((a,b)=>b.index-a.index);_cohCache.key=key;_cohCache.val=out;return out;
+}
+/* share of each state's votes cast against the resolution's majority outcome */
+const _isoCache={key:null,val:null};
+function isolationRank(ymin,ymax){
+  const key=ymin+'|'+ymax;if(_isoCache.key===key)return _isoCache.val;
+  const allowed=resSet(ymin,ymax,''),maj={};
+  RES.forEach((r,i)=>{if(!allowed.has(i)||r.y==null)return;const mx=Math.max(r.y,r.n,r.a);
+    maj[i]=mx===r.y?'Y':(mx===r.n?'N':'A');});
+  const out=[];C.forEach(c=>{const m=vmap(c.iso3);let minority=0,tot=0;
+    for(const [ri,code] of m){if(!allowed.has(ri)||!SUBS.has(code)||!(ri in maj))continue;tot++;if(code!==maj[ri])minority++;}
+    if(tot>=20)out.push({iso:c.iso3,name:c.name,group:c.group,pct:minority/tot,votes:tot});});
+  out.sort((a,b)=>b.pct-a.pct);_isoCache.key=key;_isoCache.val=out;return out;
+}
+
 function renderBlocs(){
   const hd=heatData();
   VRC.heatmap($('b-heat'),hd);
   const iso=hd.labels.map(l=>l.iso);
-  CSVDATA.bheat={name:'voting-coincidence-'+hd.kind+'-'+hd.ymin+'-'+hd.ymax,headers:['state',...iso],
+  CSVDATA.bheat={name:'voting-coincidence-'+hd.kind+'-'+hd.ymin+'-'+hd.ymax,title:'Voting-coincidence matrix ('+hd.n+' states, '+hd.ymin+'–'+hd.ymax+')',headers:['state',...iso],
     rows:hd.cells.map((row,r)=>[iso[r],...row.map(c=>c.self?'':(c.v==null?'':Math.round(c.v*100)))])};
   const setDesc={
     active:' (most active by vote count)',
@@ -1034,6 +1183,33 @@ function renderBlocs(){
     disagree30:' (lowest average voting coincidence with all other states — min. 20 shared votes per pair, ≥10 partners)'
   }[hd.kind]||'';
   $('b-note').textContent='Showing '+hd.n+' states'+setDesc+' across '+hd.ymin+'–'+hd.ymax+'. Row/column labels are coloured by UN regional group. Clustering greedily chains each state to its closest remaining partner, so blocs surface as blue blocks along the diagonal.';
+
+  /* --- alignment map (reference-pole scatter) --- */
+  const [ymin,ymax]=yearPair('b-ymin','b-ymax');
+  const px=$('b-poleX').value,py=$('b-poleY').value;
+  const pd=poleData(hd.labels.map(l=>l.iso),px,py,ymin,ymax);
+  const nx=byIso[px]?byIso[px].name:px,ny=byIso[py]?byIso[py].name:py;
+  const short=t=>t.length>22?t.slice(0,21)+'…':t;
+  VRC.poleScatter($('b-mds'),{points:pd,xlab:short(nx),ylab:short(ny)});
+  $('b-mds-note').textContent='all '+pd.length+' states · '+pd.filter(p=>p.sel&&!p.isPole).length+' highlighted · anchors: '+nx+' ↔ '+ny;
+  CSVDATA.bmds={name:'alignment-'+px+'-vs-'+py+'-'+ymin+'-'+ymax,
+    title:'Alignment map — agreement with '+nx+' vs '+ny+' ('+ymin+'–'+ymax+')',
+    headers:['iso3','country','un_group','agree_with_'+px+'_pct','agree_with_'+py+'_pct','shared_votes','highlighted'],
+    rows:pd.map(p=>[p.iso,p.name,GLAB[p.group]||p.group,Math.round(p.x*100),Math.round(p.y*100),Math.min(p.coX,p.coY),p.sel&&!p.isPole?1:0])};
+
+  /* --- regional-group cohesion --- */
+  const coh=cohesionByGroup(ymin,ymax);
+  VRC.hbars($('b-cohesion'),{lbl:172,max:1,rows:coh.map(g=>({label:g.label,value:g.index,color:'var(--g-'+g.group+')',
+    right:g.index.toFixed(2),hover:'<b>'+esc(g.label)+'</b><br>Agreement Index '+g.index.toFixed(2)+' · '+g.n+' resolutions'}))});
+  CSVDATA.bcoh={name:'group-cohesion-'+ymin+'-'+ymax,title:'Regional-group cohesion — Agreement Index ('+ymin+'–'+ymax+')',headers:['un_group','agreement_index','n_resolutions'],
+    rows:coh.map(g=>[g.label,g.index.toFixed(3),g.n])};
+
+  /* --- most isolated states --- */
+  const isoR=isolationRank(ymin,ymax);
+  VRC.hbars($('b-isolation'),{lbl:150,max:1,rowh:20,rows:isoR.map(d=>({label:d.name,value:d.pct,color:'var(--g-'+d.group+')',
+    hover:'<b>'+esc(d.name)+'</b><br>'+Math.round(d.pct*100)+'% on the minority side · '+d.votes+' votes'}))});
+  CSVDATA.biso={name:'most-outvoted-'+ymin+'-'+ymax,title:'Most often outvoted — vote against the majority ('+ymin+'–'+ymax+')',headers:['iso3','country','un_group','minority_side_pct','votes'],
+    rows:isoR.map(d=>[d.iso,d.name,GLAB[d.group]||d.group,Math.round(d.pct*100),d.votes])};
 }
 
 /* ---------- 05 METHODOLOGY ---------- */
@@ -1151,6 +1327,8 @@ function fillYears(sel,def){const s=$(sel);let h='';for(let y=M.yearMin;y<=M.yea
   $('hd-stat').textContent=fmt(RES.length)+' recorded · '+fmt(nVotesTotal)+' roll-calls';
   $('f-note').textContent=fmt(RES.length)+' recorded of '+fmt(M.coverage.totalResolutions)+' catalogued resolutions · '+M.yearMin+'–'+M.yearMax+' · built with a reproducible pipeline';
   $('c-country').innerHTML=C.slice().sort((a,b)=>a.name<b.name?-1:1).map(c=>`<option value="${c.iso3}"${c.iso3==='USA'?' selected':''}>${esc(c.name)}</option>`).join('');
+  const poleOpts=sel=>C.slice().sort((a,b)=>a.name<b.name?-1:1).map(c=>`<option value="${c.iso3}"${c.iso3===sel?' selected':''}>${esc(c.name)}</option>`).join('');
+  $('b-poleX').innerHTML=poleOpts('USA');$('b-poleY').innerHTML=poleOpts('CHN');
   fillYears('c-ymin',M.yearMin);fillYears('c-ymax',M.yearMax);
   fillYears('t-ymin',M.yearMin);fillYears('t-ymax',M.yearMax);
   fillYears('b-ymin',Math.max(2006,M.yearMin));fillYears('b-ymax',M.yearMax);
@@ -1165,7 +1343,7 @@ function fillYears(sel,def){const s=$(sel);let h='';for(let y=M.yearMin;y<=M.yea
     if(e.key==='Enter'){const it=document.querySelector('#t-suggest .sitem[data-s]');if(it){e.preventDefault();pickSubject(it.dataset.s);}}
     else if(e.key==='Escape')hideSuggest();});
   ['t-ymin','t-ymax'].forEach(id=>$(id).addEventListener('change',renderTopics));
-  ['b-set','b-ymin','b-ymax','b-order'].forEach(id=>$(id).addEventListener('change',renderBlocs));
+  ['b-set','b-ymin','b-ymax','b-order','b-poleX','b-poleY'].forEach(id=>$(id).addEventListener('change',renderBlocs));
   /* palette from storage */
   let pal=null;try{pal=localStorage.getItem('vrPalette')}catch(e){}
   if(pal&&pal!=='paper')setPalette(pal); else renderTopicChips(),renderOverview();
