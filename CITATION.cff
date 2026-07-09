@@ -8,7 +8,7 @@ authors:
   - family-names: Szoszkiewicz
     given-names: Łukasz
     affiliation: "Adam Mickiewicz University, Poznań"
-    # orcid: "https://orcid.org/0000-0000-0000-0000"   # add your ORCID here
+    orcid: "https://orcid.org/0000-0001-6671-2893"
 repository-code: "https://github.com/lszoszk/hrc-voting"
 url: "https://lszoszk.github.io/hrc-voting/"
 abstract: >-
