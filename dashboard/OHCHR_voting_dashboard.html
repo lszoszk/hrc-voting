@@ -80,7 +80,7 @@
 /* filter bar */
 .fbar{display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap;margin-bottom:16px;padding:12px 14px;background:var(--paper-2);border:1px solid var(--line)}
 .fitem{min-width:0}
-.fgrow{flex:1 1 280px}
+.fgrow{flex:0 1 560px;margin-right:auto}  /* cap the search width; push the filter selects to the right */
 .flbl{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:var(--dimmer);margin-bottom:5px}
 .sel{font-family:var(--mono);font-size:11px;padding:6px 8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);min-width:130px;border-radius:0}
 .sel:focus{outline:none;border-color:var(--accent)}
@@ -222,6 +222,7 @@
   .tab{padding:9px 11px}
   .fbar{gap:10px 12px}
   .fitem{flex:1 1 140px}
+  .fgrow{flex:1 1 100%;margin-right:0}   /* search takes its own full row on mobile */
   .sel,.tin{min-width:0;width:100%}
   .p-head{flex-wrap:wrap;row-gap:4px}
   .p-note{margin-left:auto}
@@ -322,7 +323,7 @@
     <div class="p-body">
       <div class="p-desc">Every state coloured by its voting coincidence with <b id="c-mapself">—</b> over the selected window. Dots mark small states; grey = fewer than 20 shared votes. Historical entities (USSR, Yugoslavia, …) appear only in the lists above — the map shows present-day borders.</div>
       <div id="c-map"></div>
-      <div class="legend"><span>Vote apart</span><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 100%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 70%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 40%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 20%, var(--div-mid))"></i><i class="sw" style="background:var(--div-mid)"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 20%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 40%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 70%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 100%, var(--div-mid))"></i><span>Vote alike</span><span class="li" style="margin-left:8px"><i class="sw" style="background:color-mix(in oklab, var(--accent) 35%, var(--paper));outline:1px solid var(--accent)"></i>selected state</span></div>
+      <div class="legend"><span>Vote apart</span><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 100%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 70%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 40%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 20%, var(--div-mid))"></i><i class="sw" style="background:var(--div-mid)"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 20%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 40%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 70%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 100%, var(--div-mid))"></i><span>Vote alike</span><span class="li" style="margin-left:8px"><i class="sw" style="background:color-mix(in oklab, var(--ink) 14%, var(--paper));outline:1.5px solid var(--ink)"></i>selected state</span></div>
     </div>
   </div>
   <div class="panel">
@@ -636,8 +637,11 @@ VRC.worldMap=function(host,o){host.innerHTML='';
   if(!window.WORLD){host.innerHTML='<div style="color:var(--dim)">Map data not loaded.</div>';return;}
   const Wd=WORLD.W,Hd=WORLD.H,by=o.byIso,self=o.self;
   const s=svg(Wd,Hd);
+  /* the selected/home state: neutral fill + bold ink outline — NOT the red accent
+     (red already means "vote apart" on this map, which misreads on export) */
+  const SELF_FILL='color-mix(in oklab, var(--ink) 14%, var(--paper))';
   const fillFor=iso=>{
-    if(iso===self)return 'color-mix(in oklab, var(--accent) 35%, var(--paper))';
+    if(iso===self)return SELF_FILL;
     const d=by[iso];return d&&d.v!=null?divColor(d.v):'var(--paper-3)';};
   const tipFor=(iso,fallback)=>{
     if(iso===self)return '<b>'+esc(o.selfName)+'</b> — selected state';
@@ -647,11 +651,11 @@ VRC.worldMap=function(host,o){host.innerHTML='';
     return '<b>'+esc(fallback)+'</b><br>no recorded votes in common';};
   for(const iso in WORLD.paths){
     const p=el('path',{d:WORLD.paths[iso],fill:fillFor(iso),stroke:'var(--paper)','stroke-width':0.6},s);
-    if(iso===self)p.setAttribute('stroke','var(--accent)'),p.setAttribute('stroke-width','1.2');
+    if(iso===self)p.setAttribute('stroke','var(--ink)'),p.setAttribute('stroke-width','2');
     hov(p,tipFor(iso,WORLD.names[iso]||iso));}
   for(const iso in WORLD.dots){
     const [dx,dy]=WORLD.dots[iso];
-    const c=el('circle',{cx:dx,cy:dy,r:4,fill:fillFor(iso),stroke:iso===self?'var(--accent)':'var(--paper)','stroke-width':iso===self?1.2:0.8},s);
+    const c=el('circle',{cx:dx,cy:dy,r:4,fill:fillFor(iso),stroke:iso===self?'var(--ink)':'var(--paper)','stroke-width':iso===self?1.8:0.8},s);
     hov(c,tipFor(iso,WORLD.names[iso]||iso));}
   host.appendChild(s);};
 
@@ -1432,14 +1436,15 @@ function fillYears(sel,def){const s=$(sel);let h='';for(let y=M.yearMin;y<=M.yea
 (function boot(){
   $('hd-stat').textContent=fmt(RES.length)+' recorded · '+fmt(nVotesTotal)+' roll-calls';
   $('f-note').textContent=fmt(RES.length)+' recorded of '+fmt(M.coverage.totalResolutions)+' catalogued resolutions · '+M.yearMin+'–'+M.yearMax+' · built with a reproducible pipeline';
-  $('c-country').innerHTML=C.slice().sort((a,b)=>a.name<b.name?-1:1).map(c=>`<option value="${c.iso3}"${c.iso3==='USA'?' selected':''}>${esc(c.name)}</option>`).join('');
+  let defCountry='USA';try{const s=localStorage.getItem('hrc-country');if(s&&byIso[s])defCountry=s;}catch(e){}  // remember last-viewed country (local only)
+  $('c-country').innerHTML=C.slice().sort((a,b)=>a.name<b.name?-1:1).map(c=>`<option value="${c.iso3}"${c.iso3===defCountry?' selected':''}>${esc(c.name)}</option>`).join('');
   const poleOpts=sel=>C.slice().sort((a,b)=>a.name<b.name?-1:1).map(c=>`<option value="${c.iso3}"${c.iso3===sel?' selected':''}>${esc(c.name)}</option>`).join('');
   $('b-poleX').innerHTML=poleOpts('USA');$('b-poleY').innerHTML=poleOpts('CHN');
   fillYears('c-ymin',M.yearMin);fillYears('c-ymax',M.yearMax);
   fillYears('t-ymin',M.yearMin);fillYears('t-ymax',M.yearMax);
   fillYears('b-ymin',Math.max(2006,M.yearMin));fillYears('b-ymax',M.yearMax);
   /* controls */
-  ['c-country','c-ymin','c-ymax','c-body'].forEach(id=>$(id).addEventListener('change',()=>{if(id==='c-country'){cSortKey='year';cSortDir=1;}renderCountry();}));
+  ['c-country','c-ymin','c-ymax','c-body'].forEach(id=>$(id).addEventListener('change',()=>{if(id==='c-country'){cSortKey='year';cSortDir=1;try{localStorage.setItem('hrc-country',$('c-country').value);}catch(e){}}renderCountry();}));
   $('t-type').addEventListener('change',()=>{topicState.subject=null;renderTopicChips();renderTopics();renderSuggest();});
   const tSearch=$('t-search');
   tSearch.addEventListener('input',()=>{topicState.subject=null;renderTopicChips();renderTopics();renderSuggest();});
