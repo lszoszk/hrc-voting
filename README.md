@@ -157,6 +157,15 @@ python scripts/smoke_test.py         # file:// regression check, must pass
 git commit -am "refresh data" && git push   # Actions redeploys Pages
 ```
 
+## Citation
+
+If you use this software, the data pipeline, or the derived datasets, please
+cite it (see [`CITATION.cff`](CITATION.cff); GitHub's "Cite this repository"
+button generates APA/BibTeX from it):
+
+> Szoszkiewicz, Ł. (2026). *OHCHR Voting Records — CHR · HRC* [Software].
+> https://github.com/lszoszk/hrc-voting
+
 ## License
 
 Code and data are released under the **PolyForm Noncommercial License 1.0.0**
