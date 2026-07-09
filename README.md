@@ -2,6 +2,8 @@
 
 **Live dashboard: <https://lszoszk.github.io/hrc-voting/>**
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21281232.svg)](https://doi.org/10.5281/zenodo.21281232)
+
 Complete harvest of the **Voting** collection of the OHCHR search library
 (<https://searchlibrary.ohchr.org/search?c=Voting>) — voting records of the
 **Commission on Human Rights (CHR, 1946–2006)** and the **Human Rights Council
@@ -163,8 +165,8 @@ If you use this software, the data pipeline, or the derived datasets, please
 cite it (see [`CITATION.cff`](CITATION.cff); GitHub's "Cite this repository"
 button generates APA/BibTeX from it):
 
-> Szoszkiewicz, Ł. (2026). *OHCHR Voting Records — CHR · HRC* [Software].
-> https://github.com/lszoszk/hrc-voting
+> Szoszkiewicz, Ł. (2026). *OHCHR Voting Records — CHR · HRC* (v1.0.0)
+> [Software]. Zenodo. https://doi.org/10.5281/zenodo.21281232
 
 ## License
 

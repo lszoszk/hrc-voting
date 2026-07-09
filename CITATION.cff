@@ -28,3 +28,10 @@ keywords:
 license: PolyForm-Noncommercial-1.0.0
 version: "1.0.0"
 date-released: "2026-07-09"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.21281232"
+    description: "Concept DOI — always resolves to the latest version"
+  - type: doi
+    value: "10.5281/zenodo.21281233"
+    description: "DOI for version v1.0.0"
