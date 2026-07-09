@@ -32,6 +32,14 @@ with sync_playwright() as p:
     checks["ov legend"] = pg.evaluate("document.getElementById('ov-legend').textContent.includes('Commission')")
     checks["most divided rows"] = pg.evaluate("document.querySelectorAll('#ov-close .gtr').length")
     pg.screenshot(path=str(SHOTS / "01_overview_paper.png"))
+    # single-resolution roll-call overlay (drill-down from a table row)
+    pg.evaluate("document.querySelector('#ov-close .reslink').click()")
+    pg.wait_for_timeout(200)
+    checks["rollcall opens"] = pg.evaluate("document.getElementById('rc-wrap').classList.contains('open')")
+    checks["rollcall map paths"] = pg.evaluate("document.querySelectorAll('#rc-map path').length")
+    checks["rollcall list cols"] = pg.evaluate("document.querySelectorAll('#rc-lists .rc-col').length")
+    pg.evaluate("document.getElementById('rc-close').click()")
+    checks["rollcall closes"] = pg.evaluate("!document.getElementById('rc-wrap').classList.contains('open')")
 
     pg.click('.tab[data-view="country"]')
     checks["country rows"] = pg.evaluate("document.querySelectorAll('#c-rows .gtr').length")
@@ -118,6 +126,7 @@ ok = (checks["DATA loaded"] and checks["overview tiles"] == 4 and checks["countr
       and checks["mds points"] > 20 and checks["cohesion bars"] == 10 and checks["isolation labels"] > 40
       and "anchors" in checks["mds anchors note"] and "Russia" in checks["mds after anchor change"]
       and checks["chip border"] == "1px" and checks["cmdk opens"]
+      and checks["rollcall opens"] and checks["rollcall map paths"] > 150 and checks["rollcall list cols"] >= 3
       and checks["file:// GA script absent"] and checks["file:// consent banner absent"]
       and checks["palette paper"] == "paper" and not errors)
 print("SMOKE:", "PASS" if ok else "FAIL")

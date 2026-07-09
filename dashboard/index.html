@@ -184,6 +184,32 @@
 .ktxt{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .kn{color:var(--dimmer);font-size:10px;font-variant-numeric:tabular-nums}
 .kfoot{padding:7px 16px;border-top:1px solid var(--line);color:var(--dimmer);font-size:9px;letter-spacing:.08em}
+/* single-resolution roll-call overlay */
+/* resolution cell: symbol (opens our roll-call) + a right-pinned external-source glyph */
+.rescell{display:flex;align-items:center;min-width:0}
+.reslink{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer;border-bottom:1px dotted var(--line)}
+.vr .reslink:hover,.vr .reslink:focus-visible{color:var(--accent);border-color:var(--accent)}
+/* quiet external-source glyph → OHCHR record; margin-left:auto leaves a dead-space buffer so a
+   near-miss is a no-op, not the wrong action. 24px min target = WCAG 2.5.8 AA floor. */
+.vr .srclink{margin-left:auto;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-width:24px;min-height:22px;color:var(--dimmer);font-size:11px;text-decoration:none;border:0;cursor:pointer}
+.vr .srclink:hover,.vr .srclink:focus-visible{color:var(--accent)}
+.rcwrap{position:fixed;inset:0;background:rgba(10,10,8,.55);z-index:210;display:none;align-items:flex-start;justify-content:center;padding:4vh 16px;backdrop-filter:blur(2px);overflow:auto}
+.rcwrap.open{display:flex}
+.rc-box{width:min(940px,96vw);background:var(--paper);border:1px solid var(--ink);box-shadow:0 16px 48px rgba(0,0,0,.4);max-height:92vh;overflow:auto;position:relative}
+.vr .rc-close{position:absolute;top:8px;right:10px;font:15px var(--mono);color:var(--dim);width:26px;height:26px;border:1px solid var(--line);background:var(--paper);z-index:3}
+.vr .rc-close:hover{color:var(--ink);border-color:var(--ink)}
+.rc-head{padding:16px 18px 12px;border-bottom:1px solid var(--line);background:var(--paper-2)}
+.rc-sym{font:11px var(--mono);letter-spacing:.06em;color:var(--accent)}
+.rc-title{font-family:var(--serif);font-size:22px;line-height:1.18;margin:4px 44px 6px 0}
+.rc-meta{font-size:11px;color:var(--dim);line-height:1.65}
+.rc-meta a{color:var(--dim)}
+.rc-tot{margin-top:9px;display:flex;gap:7px;flex-wrap:wrap;align-items:center;font-size:11px;color:var(--dim)}
+.rc-body{padding:8px 18px 18px}
+.rc-lists{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:6px}
+@media(max-width:680px){.rc-lists{grid-template-columns:1fr}}
+.rc-col h4{font:10px var(--mono);text-transform:uppercase;letter-spacing:.1em;margin:0 0 6px;padding-bottom:5px;border-bottom:1px solid var(--line);color:var(--ink)}
+.rc-col .lst{font-size:11px;line-height:1.75;color:var(--ink-2);max-height:300px;overflow:auto}
+.rc-row{display:flex;align-items:center;gap:6px}
 /* responsive */
 @media(max-width:760px){
   .mh-title{font-size:32px}
@@ -493,6 +519,18 @@
   </div>
 </div>
 
+<div class="rcwrap" id="rc-wrap">
+  <div class="rc-box" id="rc-box">
+    <button class="rc-close" id="rc-close" type="button" aria-label="Close">✕</button>
+    <div class="rc-head" id="rc-head"></div>
+    <div class="rc-body">
+      <div class="p-desc" style="margin:0 0 6px">How each state voted on this resolution — <span class="li"><i class="sw swyes"></i>Yes</span> <span class="li"><i class="sw swab"></i>Abstain</span> <span class="li"><i class="sw swno"></i>No</span> <span class="li"><i class="sw swabs"></i>absent / not a member</span>. Hover the map for a state.</div>
+      <div id="rc-map"></div>
+      <div class="rc-lists" id="rc-lists"></div>
+    </div>
+  </div>
+</div>
+
 </div><!-- /.vr -->
 
 <script src="world.js"></script>
@@ -609,6 +647,24 @@ VRC.worldMap=function(host,o){host.innerHTML='';
     const [dx,dy]=WORLD.dots[iso];
     const c=el('circle',{cx:dx,cy:dy,r:4,fill:fillFor(iso),stroke:iso===self?'var(--accent)':'var(--paper)','stroke-width':iso===self?1.2:0.8},s);
     hov(c,tipFor(iso,WORLD.names[iso]||iso));}
+  host.appendChild(s);};
+
+/* Single-resolution roll-call: each state coloured by how it voted (Y/N/A/other) */
+VRC.rollcallMap=function(host,o){host.innerHTML='';
+  if(!window.WORLD){host.innerHTML='<div style="color:var(--dim)">Map data not loaded.</div>';return;}
+  const by=o.voteByIso,names=o.names||{};
+  const COL={Y:'var(--yes)',N:'var(--no)',A:'var(--abstain)'};
+  const LBL={Y:'voted Yes',N:'voted No',A:'abstained','.':'absent / did not participate','-':'not a member','':'not a member'};
+  const fillFor=iso=>{const v=by[iso];return v&&COL[v]?COL[v]:'var(--paper-3)';};
+  const tip=(iso,fb)=>{const v=by[iso],nm=names[iso]||WORLD.names[iso]||fb;
+    return '<b>'+esc(nm)+'</b><br>'+(v!==undefined?(LBL[v]||v):'no record for this vote');};
+  const s=svg(WORLD.W,WORLD.H);
+  for(const iso in WORLD.paths){
+    const p=el('path',{d:WORLD.paths[iso],fill:fillFor(iso),stroke:'var(--paper)','stroke-width':0.6},s);
+    hov(p,tip(iso,iso));}
+  for(const iso in WORLD.dots){const [dx,dy]=WORLD.dots[iso];
+    const c=el('circle',{cx:dx,cy:dy,r:4,fill:fillFor(iso),stroke:'var(--paper)','stroke-width':0.8},s);
+    hov(c,tip(iso,iso));}
   host.appendChild(s);};
 
 /* Alignment: top/bottom partners, bars coloured by regional group */
@@ -739,6 +795,7 @@ const byIso=Object.fromEntries(C.map(c=>[c.iso3,c]));
    surface — bars, dropdown, tables, tooltips, exports — shows the same clean name) */
 const NAME_FIX={COD:'DR Congo',VEN:'Venezuela',BOL:'Bolivia',IRN:'Iran',TZA:'Tanzania',GER:'Germany (FRG)',DDR:'Germany (GDR)'};
 Object.keys(NAME_FIX).forEach(iso=>{if(byIso[iso])byIso[iso].name=NAME_FIX[iso];});
+RES.forEach((r,i)=>{r.i=i;});   // stamp each resolution with its index (for roll-call drill-down)
 const SUBJ=D.subjects||[];
 const subjCS=new Map(SUBJ.map(x=>[x.name,x.cs]));
 const SUBS=new Set(['Y','N','A']);
@@ -878,7 +935,7 @@ function renderOverview(){
     rows:buckets.map((b,i)=>[b[0],counts[i],Math.round(counts[i]/tot*100)])};
   const closeRows=RES.filter(r=>r.y!=null&&r.n!=null&&(r.y+r.n)>10)
     .map(r=>({r,m:Math.abs(r.y-r.n)})).sort((a,b)=>a.m-b.m).slice(0,12).map(x=>x.r);
-  $('ov-close').innerHTML=closeRows.map(r=>`<div class="gtr cols5s"><span class="gtc">${r.year==null?'—':r.year}</span><span class="gtc" title="${esc(r.title)}"><a href="${recUrl(r.id)}" target="_blank" rel="noopener">${esc(r.sym||r.title.slice(0,40))}</a></span><span class="gtc mut" title="${esc(r.title)}">${r.subj?esc(tc(r.subj)):'—'}</span><span class="gtc num">${r.y}</span><span class="gtc num">${r.n}</span><span class="gtc num">${r.a==null?'—':r.a}</span></div>`).join('');
+  $('ov-close').innerHTML=closeRows.map(r=>`<div class="gtr cols5s"><span class="gtc">${r.year==null?'—':r.year}</span><span class="gtc rescell" title="${esc(r.title)}"><a class="reslink" role="button" tabindex="0" data-ri="${r.i}" title="View roll-call">${esc(r.sym||r.title.slice(0,40))}</a><a class="srclink" href="${recUrl(r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(r.sym||'record')} on OHCHR (new tab)" title="OHCHR source ↗"><span aria-hidden="true">↗</span></a></span><span class="gtc mut" title="${esc(r.title)}">${r.subj?esc(tc(r.subj)):'—'}</span><span class="gtc num">${r.y}</span><span class="gtc num">${r.n}</span><span class="gtc num">${r.a==null?'—':r.a}</span></div>`).join('');
   CSVDATA.ovclose={name:'most-divided-votes',title:'Most divided recorded votes (narrowest Yes−No margin)',headers:['year','resolution','subject','title','yes','no','abstain','record_url'],
     rows:closeRows.map(r=>[r.year,r.sym,r.subj,r.title,r.y,r.n,r.a,recUrl(r.id)])};
 }
@@ -945,7 +1002,7 @@ function renderCountry(){
     else if(cSortKey==='subj'){va=a.r.subj||'';vb=b.r.subj||'';}
     else{va=a.r.sym||'';vb=b.r.sym||'';}
     return (va>vb?1:va<vb?-1:0)*cSortDir;});
-  $('c-rows').innerHTML=sorted.map(x=>`<div class="gtr colsc2"><span class="gtc">${x.r.year==null?'—':x.r.year}</span><span class="gtc" title="${esc(x.r.title)}"><a href="${recUrl(x.r.id)}" target="_blank" rel="noopener">${esc(x.r.sym||x.r.title.slice(0,50))}</a></span><span class="gtc mut" title="${esc(x.r.title)}">${x.r.subj?esc(tc(x.r.subj)):'—'}</span><span class="gtc"><span class="pill ${cls[x.code]||'pX'}">${lbl[x.code]||x.code||'—'}</span></span><span class="gtc">${x.r.body}</span></div>`).join('');
+  $('c-rows').innerHTML=sorted.map(x=>`<div class="gtr colsc2"><span class="gtc">${x.r.year==null?'—':x.r.year}</span><span class="gtc rescell" title="${esc(x.r.title)}"><a class="reslink" role="button" tabindex="0" data-ri="${x.r.i}" title="View roll-call">${esc(x.r.sym||x.r.title.slice(0,50))}</a><a class="srclink" href="${recUrl(x.r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(x.r.sym||'record')} on OHCHR (new tab)" title="OHCHR source ↗"><span aria-hidden="true">↗</span></a></span><span class="gtc mut" title="${esc(x.r.title)}">${x.r.subj?esc(tc(x.r.subj)):'—'}</span><span class="gtc"><span class="pill ${cls[x.code]||'pX'}">${lbl[x.code]||x.code||'—'}</span></span><span class="gtc">${x.r.body}</span></div>`).join('');
   CSVDATA.crows={name:'country-'+iso+'-votes',title:c.name+' — every recorded vote '+cwin,headers:['year','resolution','subject','title','vote','body','record_url'],
     rows:sorted.map(x=>[x.r.year,x.r.sym,x.r.subj,x.r.title,lbl[x.code]||x.code,x.r.body,recUrl(x.r.id)])};
 }
@@ -1060,7 +1117,7 @@ function renderTopics(){
   /* resolutions table */
   $('t-restitle').textContent='('+matched.length+') — '+heading;
   const tres=matched.map(i=>RES[i]).sort((a,b)=>(b.year||0)-(a.year||0));
-  $('t-rows').innerHTML=tres.map(r=>`<div class="gtr cols6s"><span class="gtc">${r.year==null?'—':r.year}</span><span class="gtc" title="${esc(r.title)}"><a href="${recUrl(r.id)}" target="_blank" rel="noopener">${esc(r.sym||r.title.slice(0,44))}</a></span><span class="gtc mut" title="${esc(r.title)}">${r.subj?esc(tc(r.subj)):'—'}</span><span class="gtc num">${r.y==null?'—':r.y}</span><span class="gtc num">${r.n==null?'—':r.n}</span><span class="gtc num">${r.a==null?'—':r.a}</span><span class="gtc">${r.body}</span></div>`).join('');
+  $('t-rows').innerHTML=tres.map(r=>`<div class="gtr cols6s"><span class="gtc">${r.year==null?'—':r.year}</span><span class="gtc rescell" title="${esc(r.title)}"><a class="reslink" role="button" tabindex="0" data-ri="${r.i}" title="View roll-call">${esc(r.sym||r.title.slice(0,44))}</a><a class="srclink" href="${recUrl(r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(r.sym||'record')} on OHCHR (new tab)" title="OHCHR source ↗"><span aria-hidden="true">↗</span></a></span><span class="gtc mut" title="${esc(r.title)}">${r.subj?esc(tc(r.subj)):'—'}</span><span class="gtc num">${r.y==null?'—':r.y}</span><span class="gtc num">${r.n==null?'—':r.n}</span><span class="gtc num">${r.a==null?'—':r.a}</span><span class="gtc">${r.body}</span></div>`).join('');
   CSVDATA.trows={name:'topic-'+slug+'-resolutions',title:heading+' — resolutions '+twin,headers:['year','resolution','subject','title','yes','no','abstain','body','record_url'],
     rows:tres.map(r=>[r.year,r.sym,r.subj,r.title,r.y,r.n,r.a,r.body,recUrl(r.id)])};
   /* stance */
@@ -1320,6 +1377,49 @@ function gaInit(){
   if(gaState()==='granted'&&typeof window.gtag==='function'){try{window.gtag('consent','update',{analytics_storage:'granted'});}catch(e){}trackView(VIEW);}
   if(gaState()===null&&gaHttp()&&!gaDNT())setTimeout(gaBanner,600);
 }
+
+/* ---------- single-resolution roll-call overlay ---------- */
+const GRP_SW={AFRICAN:'af',ASIA_PACIFIC:'ap',EEG:'ee',GRULAC:'gr',WEOG:'we'};
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function fmtDate(d){if(!d)return '';const m=/^(\d{4})-?(\d{2})?-?(\d{2})?/.exec(d);if(!m)return d;
+  if(m[2]&&m[3])return (+m[3])+' '+MON[+m[2]-1]+' '+m[1];
+  if(m[2])return MON[+m[2]-1]+' '+m[1];return m[1];}
+function openResolution(ri){
+  const r=RES[ri];if(!r)return;
+  const bk={Y:[],A:[],N:[],o:[]},byVote={};
+  C.forEach(c=>{const code=vmap(c.iso3).get(ri);if(code===undefined)return;byVote[c.iso3]=code;
+    (bk[code==='Y'?'Y':code==='A'?'A':code==='N'?'N':'o']).push(c);});
+  const links=['<a href="'+recUrl(r.id)+'" target="_blank" rel="noopener">OHCHR record ↗</a>'];
+  if(r.urlR)links.push('<a href="'+esc(r.urlR)+'" target="_blank" rel="noopener">Resolution ↗</a>');
+  if(r.urlD)links.push('<a href="'+esc(r.urlD)+'" target="_blank" rel="noopener">Draft ↗</a>');
+  const bodyName=r.body==='HRC'?'Human Rights Council':'Commission on Human Rights';
+  $('rc-head').innerHTML=
+    '<div class="rc-sym">'+esc(r.sym||'')+'</div>'+
+    '<div class="rc-title">'+esc(r.title||'')+'</div>'+
+    '<div class="rc-meta">'+bodyName+(r.date?' · '+fmtDate(r.date):(r.year?' · '+r.year:''))+(r.item?' · '+esc(r.item):'')+
+      (r.spon?'<br>Main sponsors: '+esc(r.spon):'')+(r.mtg?(r.spon?' · ':'<br>')+esc(r.mtg):'')+'</div>'+
+    '<div class="rc-tot"><span class="mut">Official result:</span> <span class="pill pY">Yes '+(r.y==null?bk.Y.length:r.y)+'</span>'+
+      '<span class="pill pN">No '+(r.n==null?bk.N.length:r.n)+'</span>'+
+      '<span class="pill pA">Abstain '+(r.a==null?bk.A.length:r.a)+'</span>'+
+      '<span class="mut">· '+links.join(' · ')+'</span></div>'+
+    (((r.y!=null&&r.y!==bk.Y.length)||(r.n!=null&&r.n!==bk.N.length)||(r.a!=null&&r.a!==bk.A.length))
+      ?'<div class="rc-meta" style="margin-top:6px;color:var(--dimmer)">⚠ The per-country roll-call below and the official totals differ for this record — a known cataloguing quirk in older/edge records (see Methodology).</div>':'');
+  VRC.rollcallMap($('rc-map'),{voteByIso:byVote,names:Object.fromEntries(C.map(c=>[c.iso3,c.name]))});
+  const col=(t,arr)=>{arr.sort((a,b)=>a.name<b.name?-1:1);
+    return '<div class="rc-col"><h4>'+t+' ('+arr.length+')</h4><div class="lst">'+
+      (arr.length?arr.map(c=>'<div class="rc-row"><i class="sw swg-'+(GRP_SW[c.group]||'')+'"></i>'+esc(c.name)+'</div>').join(''):'<span class="mut">—</span>')+
+      '</div></div>';};
+  $('rc-lists').innerHTML=col('Yes',bk.Y)+col('Abstain',bk.A)+col('No',bk.N)+(bk.o.length?col('Absent / non-member',bk.o):'');
+  $('rc-box').scrollTop=0;$('rc-wrap').classList.add('open');
+}
+function closeResolution(){$('rc-wrap').classList.remove('open');}
+document.addEventListener('click',e=>{
+  const rl=e.target.closest('.reslink');if(rl&&rl.dataset.ri!=null){e.preventDefault();openResolution(+rl.dataset.ri);return;}
+  if(e.target.id==='rc-close'||e.target.id==='rc-wrap')closeResolution();
+});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){const rl=e.target.closest&&e.target.closest('.reslink');
+  if(rl&&rl.dataset.ri!=null){e.preventDefault();openResolution(+rl.dataset.ri);}}});
+window.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('rc-wrap').classList.contains('open'))closeResolution();});
 
 /* ---------- boot ---------- */
 function fillYears(sel,def){const s=$(sel);let h='';for(let y=M.yearMin;y<=M.yearMax;y++)h+=`<option${y===def?' selected':''}>${y}</option>`;s.innerHTML=h;}

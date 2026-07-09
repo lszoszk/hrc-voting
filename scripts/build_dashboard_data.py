@@ -84,9 +84,14 @@ def main():
     res = [{
         "id": r["record_id"], "sym": r["symbol"], "title": r["title"],
         "year": int(r["year"]) if r["year"].isdigit() else None,
+        "date": r["date"].strip(),                    # 269$a raw YYYYMMDD (may be partial)
         "body": "HRC" if "Council" in r["body"] else "CHR",
         "subj": r["agenda_subject"].strip(),          # 991$d controlled subject tag
         "item": clean_item(r["agenda_item_title"]),   # 991$c formal agenda item
+        "spon": r["main_sponsors"].strip(),           # 500$a main sponsors
+        "mtg": r["meeting"].strip(),                   # 952$a meeting adopted at
+        "urlR": r["url_resolution"].strip(),          # 856$u resolution on undocs
+        "urlD": r["url_draft"].strip(),                # 856$u draft on undocs
         "y": int(r["yes"]) if r["yes"].isdigit() else None,
         "n": int(r["no"]) if r["no"].isdigit() else None,
         "a": int(r["abstain"]) if r["abstain"].isdigit() else None,
