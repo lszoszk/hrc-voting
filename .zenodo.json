@@ -19,5 +19,19 @@
     "voting records",
     "roll-call votes",
     "open data"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://lszoszk.github.io/hrc-voting/",
+      "relation": "isSupplementTo",
+      "scheme": "url",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://searchlibrary.ohchr.org/search?c=Voting",
+      "relation": "isDerivedFrom",
+      "scheme": "url",
+      "resource_type": "dataset"
+    }
   ]
 }

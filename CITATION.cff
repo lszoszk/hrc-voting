@@ -11,6 +11,7 @@ authors:
     orcid: "https://orcid.org/0000-0001-6671-2893"
 repository-code: "https://github.com/lszoszk/hrc-voting"
 url: "https://lszoszk.github.io/hrc-voting/"
+doi: "10.5281/zenodo.21281232"
 abstract: >-
   Complete harvest of the OHCHR Search Library "Voting" collection — roll-call
   and summary voting records of the UN Commission on Human Rights (1946–2006)
