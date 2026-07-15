@@ -1,0 +1,35 @@
+{
+  "@context": "https://w3id.org/codemeta/3.0",
+  "type": "SoftwareSourceCode",
+  "name": "OHCHR Voting Records — CHR · HRC",
+  "description": "Interactive dashboard and reproducible pipeline for UN Commission on Human Rights and Human Rights Council voting records from the OHCHR Search Library.",
+  "codeRepository": "https://github.com/lszoszk/hrc-voting",
+  "url": "https://lszoszk.github.io/hrc-voting/",
+  "version": "1.0.0",
+  "datePublished": "2026-07-09",
+  "license": "https://polyformproject.org/licenses/noncommercial/1.0.0/",
+  "applicationCategory": "Legal research software",
+  "programmingLanguage": ["HTML", "JavaScript", "Python", "CSS"],
+  "keywords": [
+    "human rights",
+    "United Nations",
+    "Human Rights Council",
+    "Commission on Human Rights",
+    "voting records",
+    "roll-call votes",
+    "legal data"
+  ],
+  "author": {
+    "type": "Person",
+    "givenName": "Łukasz",
+    "familyName": "Szoszkiewicz",
+    "email": "l.szoszkiewicz@amu.edu.pl",
+    "affiliation": {
+      "type": "Organization",
+      "name": "Adam Mickiewicz University, Poznań"
+    },
+    "id": "https://orcid.org/0000-0001-6671-2893"
+  },
+  "identifier": "https://doi.org/10.5281/zenodo.21281232",
+  "isBasedOn": "https://searchlibrary.ohchr.org/search?c=Voting"
+}
