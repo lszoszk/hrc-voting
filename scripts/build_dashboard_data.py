@@ -81,6 +81,37 @@ def main():
     def clean_item(s):
         return s.strip().rstrip(" -").strip()
 
+    # ---- resAll: ALL 6,346 resolutions, lean rows for the Consensus tab ----
+    import re
+    VT_CODE = {
+        "ADOPTED WITHOUT VOTE": "C",
+        "RECORDED": "V",
+        "NON-RECORDED": "NR",
+        "NON-RECORDED, adopted unanimously": "NRU",
+        "WITHDRAWN": "WD",
+        "NOT CONSIDERED": "NC",
+        "NON-RECORDED, no voting information available": "NRX",
+        "RECORDED, adopted at a closed meeting": "VC",
+    }
+
+    def trim_title(t):
+        # strip catalogue boilerplate: "... : resolution / adopted by ..." etc.
+        return re.sub(r"\s*:\s*(draft\s+)?(resolution|decision|amendment)s?\s*/.*$",
+                      "", t.strip(), flags=re.I).strip()
+
+    res_all = []
+    for r in res_rows:
+        row = {
+            "id": r["record_id"], "sym": r["symbol"], "t": trim_title(r["title"]),
+            "year": int(r["year"]) if r["year"].isdigit() else None,
+            "body": "HRC" if "Council" in r["body"] else "CHR",
+            "subj": r["agenda_subject"].strip(),
+            "vt": VT_CODE.get(r["vote_type"], "O"),
+        }
+        if r["yes"].isdigit() and (int(r["yes"]) + int(r["no"]) + int(r["abstain"])) > 0:
+            row["y"], row["n"], row["a"] = int(r["yes"]), int(r["no"]), int(r["abstain"])
+        res_all.append(row)
+
     res = [{
         "id": r["record_id"], "sym": r["symbol"], "title": r["title"],
         "year": int(r["year"]) if r["year"].isdigit() else None,
@@ -188,6 +219,7 @@ def main():
         "countries": countries,
         "votes": votes,
         "subjects": subjects,
+        "resAll": res_all,
     }
 
     js = "window.DATA = " + json.dumps(payload, separators=(",", ":"),

@@ -34,8 +34,9 @@ a single ~1.1 MB file with the data inlined (regenerate by re-running the inline
 step in the audit notes, or just re-copy after `build_dashboard_data.py`).
 `scripts/smoke_test.py` loads the page from `file://` in headless Chromium (light
 + dark), clicks through every tab and key interaction, and fails on any console
-error — run it before sending the prototype onward. Five views over the ~1,705
-recorded (roll-call) votes:
+error — run it before sending the prototype onward. Six views — five over the
+~1,705 recorded (roll-call) votes, plus an experimental Consensus view over all
+6,346 catalogued resolutions:
 
 - **Overview** — volume over time (CHR→HRC), how contested votes were, most divided votes.
 - **Country profile** — per-state yearly Yes/Abstain/No **composition** chart (100%
@@ -63,6 +64,14 @@ recorded (roll-call) votes:
   most active, each UN regional group,
   P5 + key states, plus computed **30 most agreeing / 30 most disagreeing** states;
   filter by year range. Methods are documented in the Methodology tab.
+- **Consensus** *(experimental)* — reads the mode of adoption as a diplomatic signal
+  across ALL 6,346 catalogued resolutions (`resAll` in the payload, trimmed titles):
+  **breakdowns & rapprochements** (subjects whose mode flipped consensus↔votes — the
+  hero panel, e.g. HIV/AIDS 94%→0%), consensus share per year (peak 86%, HRC low 43%
+  in 2021), a 100% adoption-mode stack, most/least consensual subjects, a withdrawn-
+  drafts panel (a post-2010 phenomenon), and a filterable explorer of the full
+  catalogue. Modes, thresholds and caveats (without-a-vote ≠ unanimity; small-n flips
+  are candidates, not findings) documented in Methodology.
 - **Methodology** — explains, with live numbers pulled from `meta.coverage`, why the
   other three views operate on ~1,705 resolutions instead of the full 6,346 (only
   recorded/roll-call votes carry a per-country breakdown), the vote-code legend, how

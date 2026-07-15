@@ -143,6 +143,12 @@
 .pN{color:var(--no);border-color:var(--no);background:color-mix(in oklab, var(--no) 10%, transparent)}
 .pA{color:var(--abstain);border-color:var(--abstain);background:color-mix(in oklab, var(--abstain) 10%, transparent)}
 .pX{color:var(--dim);border-color:var(--line)}
+/* adoption-mode pills (Consensus tab): C=together(blue) V=contested(red) WD=amber */
+.pC{color:var(--div-hi);border-color:var(--div-hi);background:color-mix(in oklab, var(--div-hi) 10%, transparent)}
+.pV{color:var(--div-lo);border-color:var(--div-lo);background:color-mix(in oklab, var(--div-lo) 10%, transparent)}
+.pWD{color:var(--abstain);border-color:var(--abstain);background:color-mix(in oklab, var(--abstain) 10%, transparent)}
+.swC{background:var(--div-hi)}.swV{background:var(--div-lo)}.swWD{background:var(--abstain)}.swO{background:var(--dimmer)}
+.exp-badge{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent-soft);padding:1px 6px;margin-left:8px;vertical-align:middle}
 /* chips (light 1px border per design — clickable subject labels) */
 .chiprow{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
 .vr .chip{font-family:var(--mono);font-size:10.5px;padding:4px 9px;background:var(--paper);color:var(--dim);border:1px solid var(--line);letter-spacing:.02em}
@@ -260,7 +266,8 @@
   <button class="tab" data-view="country"><span class="tidx">02</span><span class="tlbl">Country profile</span></button>
   <button class="tab" data-view="topics"><span class="tidx">03</span><span class="tlbl">Topics</span></button>
   <button class="tab" data-view="blocs"><span class="tidx">04</span><span class="tlbl">Blocs &amp; alignment</span></button>
-  <button class="tab" data-view="method"><span class="tidx">05</span><span class="tlbl">Methodology</span></button>
+  <button class="tab" data-view="consensus"><span class="tidx">05</span><span class="tlbl">Consensus</span></button>
+  <button class="tab" data-view="method"><span class="tidx">06</span><span class="tlbl">Methodology</span></button>
 </nav>
 
 <main class="main"><div class="inner">
@@ -357,8 +364,9 @@
       <div class="p-body chiprow"><span class="relbl">Related subject tags in these results:</span><span id="t-related" class="chiprow" style="display:contents"></span></div>
     </div>
     <div class="panel">
-      <div class="p-head"><span class="p-idx">01</span><span class="p-title">Support over time</span><span class="p-note" id="t-trendnote"></span><span class="p-exp"><button class="expb" data-csv="ttrend" title="Download data as CSV">CSV</button><button class="expb" data-png="t-trend" data-pngname="topic-support-over-time" title="Download chart as PNG">PNG</button></span></div>
-      <div class="p-body"><div class="p-desc">Yearly average share voting Yes — of those casting Yes / No / Abstain (official totals). Faint dots: individual resolutions.</div><div id="t-trend"></div></div>
+      <div class="p-head"><span class="p-idx">01</span><span class="p-title">Support over time</span><span style="display:inline-flex;gap:4px;margin-left:10px"><button class="palbtn on" data-ttmode="all" type="button">overall</button><button class="palbtn" data-ttmode="groups" type="button">by regional group</button></span><span class="p-note" id="t-trendnote"></span><span class="p-exp"><button class="expb" data-csv="ttrend" title="Download data as CSV">CSV</button><button class="expb" data-png="t-trend" data-pngname="topic-support-over-time" title="Download chart as PNG">PNG</button></span></div>
+      <div class="p-body"><div class="p-desc" id="tt-desc">Yearly average share voting Yes — of those casting Yes / No / Abstain (official totals). Faint dots: individual resolutions.</div><div id="t-trend"></div>
+        <div class="legend" id="tt-legend" style="display:none"><span class="li"><i class="sw swg-af"></i>African</span><span class="li"><i class="sw swg-ap"></i>Asia-Pacific</span><span class="li"><i class="sw swg-ee"></i>Eastern Europe</span><span class="li"><i class="sw swg-gr"></i>Latin America &amp; Caribbean</span><span class="li"><i class="sw swg-we"></i>Western Europe &amp; Others</span><span class="mut">· line breaks where the group cast fewer than 3 votes that year</span></div></div>
     </div>
     <div class="grid2">
       <div class="panel">
@@ -369,9 +377,9 @@
         </div>
       </div>
       <div class="panel">
-        <div class="p-head"><span class="p-idx">03</span><span class="p-title">How states voted on this topic</span><span class="p-exp"><button class="expb" data-csv="tstance" title="Download data as CSV">CSV</button><button class="expb" data-png="t-stance" data-pngname="topic-state-stance" title="Download chart as PNG">PNG</button></span></div>
+        <div class="p-head"><span class="p-idx">03</span><span class="p-title" id="ts-title">How states voted on this topic</span><span style="display:inline-flex;gap:4px;margin-left:10px"><button class="palbtn on" data-tsmode="states" type="button">states</button><button class="palbtn" data-tsmode="groups" type="button">UN groups</button></span><span class="p-exp"><button class="expb" data-csv="tstance" title="Download data as CSV">CSV</button><button class="expb" data-png="t-stance" data-pngname="topic-stance" title="Download chart as PNG">PNG</button></span></div>
         <div class="p-body">
-          <div class="p-desc">Each state's Yes / Abstain / No share across these votes (min. 5 cast), ranked by support.</div>
+          <div class="p-desc" id="ts-desc">Each state's Yes / Abstain / No share across these votes (min. 5 cast), ranked by support.</div>
           <div id="t-stance" class="scrolly h460"></div>
           <div class="legend"><span class="li"><i class="sw swyes"></i>Yes</span><span class="li"><i class="sw swab"></i>Abstain</span><span class="li"><i class="sw swno"></i>No</span></div>
         </div>
@@ -436,7 +444,70 @@
   <div class="note" id="b-note"></div>
 </section>
 
-<!-- ================= 05 METHODOLOGY ================= -->
+<!-- ================= 05 CONSENSUS (experimental) ================= -->
+<section id="view-consensus" style="display:none">
+  <div class="tiles" id="cn-tiles"></div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">01</span><span class="p-title">Breakdowns &amp; rapprochements<span class="exp-badge">experimental</span></span><span class="p-note" id="cn-flipnote"></span><span class="p-exp"><button class="expb" data-csv="cflips" title="Download data as CSV">CSV</button><button class="expb" data-png="cn-strips" data-pngname="consensus-flips" title="Download chart as PNG">PNG</button></span></div>
+    <div class="p-body">
+      <div class="p-desc">Subjects whose <b>mode of adoption flipped</b> over time — each dot is one resolution on a shared timeline. <b>Breakdown</b>: adopted by consensus early, forced to votes later (a failure of consensus diplomacy). <b>Rapprochement</b>: voted early, consensual later. Heuristic: subjects with ≥6 resolutions and both modes, where the consensus share differs by ≥40 percentage points between the first and second half of the subject's history — treat small series as candidates, not conclusions. Click a voted dot for its roll-call.</div>
+      <div id="cn-strips"></div>
+      <div class="legend"><span class="li"><i class="sw swC"></i>adopted without a vote</span><span class="li"><i class="sw swV"></i>voted</span><span class="li"><i class="sw swWD"></i>withdrawn</span><span class="li"><i class="sw swO"></i>other</span></div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">02</span><span class="p-title">Consensus over time</span><span class="p-note" id="cn-eronote"></span><span class="p-exp"><button class="expb" data-csv="cero" title="Download data as CSV">CSV</button><button class="expb" data-png="cn-erosion" data-pngname="consensus-erosion" title="Download chart as PNG">PNG</button></span></div>
+    <div class="p-body">
+      <div class="p-desc">Share of considered resolutions adopted <b>without a vote</b>, per year (withdrawn and not-considered texts excluded from the denominator). Column colour = deciding body.</div>
+      <div id="cn-erosion"></div>
+      <div class="legend"><span class="li"><i class="sw swchr"></i>Commission on Human Rights</span><span class="li"><i class="sw swhrc"></i>Human Rights Council</span></div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">03</span><span class="p-title">How resolutions were adopted, year by year</span><span class="p-exp"><button class="expb" data-csv="cstack" title="Download data as CSV">CSV</button><button class="expb" data-png="cn-stack" data-pngname="adoption-modes" title="Download chart as PNG">PNG</button></span></div>
+    <div class="p-body">
+      <div class="p-desc">Each column = that year's resolutions by mode of adoption (100%). Grey strip below: how many resolutions that year.</div>
+      <div id="cn-stack"></div>
+      <div class="legend"><span class="li"><i class="sw swC"></i>adopted without a vote</span><span class="li"><i class="sw swV"></i>voted</span><span class="li"><i class="sw swWD"></i>withdrawn</span><span class="li"><i class="sw swO"></i>other (non-recorded / not considered)</span></div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="panel">
+      <div class="p-head"><span class="p-idx">04</span><span class="p-title">Most &amp; least consensual subjects</span><span class="p-exp"><button class="expb" data-csv="csubjcons" title="Download data as CSV">CSV</button><button class="expb" data-png="cn-subj-top,cn-subj-bot" data-pngname="subject-consensus" title="Download chart as PNG">PNG</button></span></div>
+      <div class="p-body">
+        <div class="p-desc">Share of a subject's resolutions adopted without a vote (subjects with ≥6 resolutions; withdrawn/not-considered excluded).</div>
+        <div class="flbl">Most consensual 15</div>
+        <div id="cn-subj-top"></div>
+        <div class="flbl" style="margin-top:10px">Least consensual 15</div>
+        <div id="cn-subj-bot"></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="p-head"><span class="p-idx">05</span><span class="p-title">Withdrawn before decision</span><span class="p-note" id="cn-wdnote"></span><span class="p-exp"><button class="expb" data-csv="cwd" title="Download data as CSV">CSV</button><button class="expb" data-png="cn-wd-dec,cn-wd-subj" data-pngname="withdrawn-subjects" title="Download chart as PNG">PNG</button></span></div>
+      <div class="p-body">
+        <div class="p-desc">Tabled drafts pulled before any decision — a third, quieter signal, almost entirely a post-2010 phenomenon. Interpret with care: some withdrawals are procedural (merged or resubmitted texts), not defeats. Top subjects below.</div>
+        <div id="cn-wd"></div>
+      </div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">06</span><span class="p-title">All catalogued resolutions</span><span class="p-note" id="cn-count"></span><span class="p-exp"><button class="expb" data-csv="cexplorer" title="Download the filtered set as CSV">CSV</button></span></div>
+    <div class="p-body" style="padding-bottom:8px">
+      <div class="fbar" style="margin-bottom:10px">
+        <div class="fitem fgrow posrel"><label class="flbl" for="cn-q">Search subject, title or symbol</label><input class="tin w100" type="text" id="cn-q" autocomplete="off" placeholder="e.g. genocide, A/HRC/53/…"></div>
+        <div class="fitem"><label class="flbl" for="cn-mode">Mode</label><select class="sel" id="cn-mode"><option value="">All modes</option><option value="C">Adopted without a vote</option><option value="V">Voted (recorded)</option><option value="NRT">Non-recorded</option><option value="WD">Withdrawn</option><option value="NC">Not considered</option></select></div>
+        <div class="fitem"><label class="flbl" for="cn-ymin">From year</label><select class="sel" id="cn-ymin"></select></div>
+        <div class="fitem"><label class="flbl" for="cn-ymax">To year</label><select class="sel" id="cn-ymax"></select></div>
+      </div>
+    </div>
+    <div class="tblwrap h460 gt">
+      <div class="gtr gth colsc2"><span class="gtc">Year</span><span class="gtc">Resolution</span><span class="gtc">Subject / title</span><span class="gtc">Mode</span><span class="gtc">Body</span></div>
+      <div id="cn-rows"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 06 METHODOLOGY ================= -->
 <section id="view-method" style="display:none">
   <div class="panel">
     <div class="p-head"><span class="p-idx">01</span><span class="p-title">Source &amp; scope</span></div>
@@ -499,9 +570,17 @@
   <div class="panel">
     <div class="p-head"><span class="p-idx">08</span><span class="p-title">Alignment methods</span></div>
     <div class="p-body ptext">The <b>Blocs &amp; alignment</b> tab uses three standard measures from the study of legislative and UN voting, all computed client-side from the recorded roll-calls (no external data):
-      <br>• <b>Alignment map</b> — a <b>reference-pole scatter</b>: each state is placed by its voting agreement with two anchor states you choose (horizontal = agreement with the first, vertical = agreement with the second, each 0–100% over shared recorded votes). Positions are directly interpretable; the dashed diagonal marks equal agreement with both anchors.
+      <br>• <b>Alignment map</b> — a <b>reference-pole scatter</b>: each state is placed by its voting agreement with two anchor states you choose (horizontal = agreement with the first, vertical = agreement with the second, each 0–100% over shared recorded votes). Positions are directly interpretable; the dashed diagonal marks equal agreement with both anchors. The axes are drawn to an <b>identical scale</b> on a square plot over the full, uncropped 0–100% domain — so the diagonal is exactly 45° and distance from it reads directly as a state's net leaning toward one anchor.
       <br>• <b>Regional-group cohesion</b> — the <b>Agreement Index</b> (Hix, Noury &amp; Roland): for each resolution, (largest bloc − ½·the rest) ÷ total among a group's members, averaged over the window; 1 = unanimous, 0 = evenly split.
       <br>• <b>Most often outvoted</b> — the share of a state's votes that <b>differ from the majority position</b> (the winning Yes/No/Abstain side, from official whole-chamber totals), over states with at least 20 votes in the window. It measures being on the losing side, which is not the same as being isolated — a state can be in a large, cohesive minority bloc.</div>
+  </div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">09</span><span class="p-title">Consensus &amp; adoption modes<span class="exp-badge">experimental</span></span></div>
+    <div class="p-body ptext">The <b>Consensus</b> tab reads the <i>mode of adoption</i> recorded in the source catalogue (MARC 591) as a diplomatic signal in its own right — being forced to a recorded vote marks the failure of consensus, and a withdrawal marks a text that never reached a decision.
+      <br>• <b>Modes</b> — <i>adopted without a vote</i> (blue; commonly called consensus), <i>recorded vote</i> (red), <i>non-recorded vote</i> / <i>non-recorded unanimous</i> / <i>no information</i> (grey, mostly Commission-era), <i>withdrawn</i> (amber) and <i>not considered</i>. "Consensus share" uses considered texts only — withdrawn and not-considered drafts are excluded from the denominator.
+      <br>• <b>Caveat</b> — adoption <i>without a vote</i> is not unanimity: delegations may dissociate from consensus in explanations of position after adoption, which the catalogue (and therefore this tab) does not capture.
+      <br>• <b>Flip heuristic</b> — subjects with ≥6 resolutions in both modes, comparing the consensus share of the first vs the second half of the subject's chronology; |Δ| ≥ 40 percentage points is flagged as a <i>breakdown</i> (consensus→votes) or <i>rapprochement</i> (votes→consensus). Small series (n≈6–9) should be read as candidates for investigation, not findings.
+      <br>• <b>Withdrawn</b> — some withdrawals are procedural (texts merged or resubmitted), not defeats; the panel counts them without attributing motive.</div>
   </div>
 </section>
 
@@ -721,6 +800,31 @@ VRC.trend=function(host,o){host.innerHTML='';
     hov(hit,'<b>'+m.year+'</b><br>Avg support '+Math.round(m.mean*100)+'% · '+m.n+' resolution'+(m.n>1?'s':''));});
   host.appendChild(s);};
 
+/* Topics: multi-line support trend — one line per UN regional group */
+VRC.trendMulti=function(host,o){host.innerHTML='';
+  const series=o.series.filter(s=>s.points.length>0);
+  if(!series.length){host.innerHTML='<div style="color:var(--dim)">Too few group votes in these resolutions to chart.</div>';return;}
+  const years=series.flatMap(s=>s.points.map(p=>p.year));
+  const y0=Math.min(...years),y1=Math.max(...years),span=Math.max(1,y1-y0);
+  const W=1140,H=200,PL=36,PR=12,PT=8,PB=22,iw=W-PL-PR,ih=H-PT-PB;
+  const s=svg(W,H),X=y=>PL+(y-y0)/span*iw,Yc=v=>PT+ih-v*ih;
+  [0,.25,.5,.75,1].forEach(v=>{el('line',{x1:PL,x2:W-PR,y1:Yc(v),y2:Yc(v),stroke:'var(--line-2)'},s);
+    txt({x:PL-6,y:Yc(v)+3,'text-anchor':'end'},s,Math.round(v*100)+'%');});
+  const step=span<=12?2:span<=30?5:10;
+  for(let y=Math.ceil(y0/step)*step;y<=y1;y+=step)txt({x:X(y),y:H-4,'text-anchor':'middle'},s,y);
+  series.forEach(sr=>{
+    const col='var(--g-'+sr.group+')';
+    /* draw honest segments: break the line when consecutive points are >2 years apart */
+    let d='';for(let i=0;i<sr.points.length;i++){const p=sr.points[i];
+      const move=i===0||(p.year-sr.points[i-1].year)>2;
+      d+=(move?'M':'L')+X(p.year).toFixed(1)+' '+Yc(p.share).toFixed(1)+' ';}
+    el('path',{d:d.trim(),fill:'none',stroke:col,'stroke-width':1.8,'stroke-linejoin':'round','stroke-linecap':'round'},s);
+    sr.points.forEach(p=>{
+      el('circle',{cx:X(p.year),cy:Yc(p.share),r:2.8,fill:col,stroke:'var(--paper)','stroke-width':1},s);
+      const hit=el('circle',{cx:X(p.year),cy:Yc(p.share),r:8,fill:'transparent'},s);
+      hov(hit,'<b>'+esc(sr.glabel)+'</b> · '+p.year+'<br>'+Math.round(p.share*100)+'% Yes · '+p.n+' votes cast');});});
+  host.appendChild(s);};
+
 /* Topics: per-state Yes/Abstain/No stacked shares */
 VRC.stance=function(host,o){host.innerHTML='';
   const stats=o.stats;
@@ -740,36 +844,42 @@ VRC.stance=function(host,o){host.innerHTML='';
 /* Alignment map: reference-pole scatter — agreement with two anchor states (X,Y in 0..1) */
 VRC.poleScatter=function(host,o){host.innerHTML='';
   const pts=o.points;if(pts.length<2){host.innerHTML='<div style="color:var(--dim)">Not enough shared votes with the two anchor states to place these countries.</div>';return;}
-  const W=760,H=600,PL=54,PR=94,PT=16,PB=50,iw=W-PL-PR,ih=H-PT-PB;
+  /* EQUAL-SCALE square plot: both axes are the same quantity (% agreement), so
+     1% on x must equal 1% on y — iw === ih, the 50/50 diagonal is exactly 45°,
+     and distance from it (net leaning) is isotropic. Full 0–100% domain, uncropped. */
+  const PL=56,PR=64,PT=14,PB=46,iw=600,ih=600,W=PL+iw+PR,H=PT+ih+PB;
   const s=svg(W,H),X=v=>PL+v*iw,Y=v=>PT+ih-v*ih;
+  /* cap the rendered size so the chart fits a laptop viewport without zooming
+     (and stops ballooning on wide monitors); fonts below are sized for this cap */
+  s.style.maxWidth='640px';s.style.marginLeft='auto';s.style.marginRight='auto';
   [0,.25,.5,.75,1].forEach(v=>{
     el('line',{x1:X(v),x2:X(v),y1:PT,y2:PT+ih,stroke:'var(--line-2)'},s);
     el('line',{x1:PL,x2:PL+iw,y1:Y(v),y2:Y(v),stroke:'var(--line-2)'},s);
-    txt({x:X(v),y:PT+ih+15,'text-anchor':'middle','font-size':'9'},s,Math.round(v*100)+'%');
-    txt({x:PL-8,y:Y(v)+3,'text-anchor':'end','font-size':'9'},s,Math.round(v*100)+'%');});
+    txt({x:X(v),y:PT+ih+16,'text-anchor':'middle','font-size':'10'},s,Math.round(v*100)+'%');
+    txt({x:PL-8,y:Y(v)+3,'text-anchor':'end','font-size':'10'},s,Math.round(v*100)+'%');});
   el('line',{x1:X(0),y1:Y(0),x2:X(1),y2:Y(1),stroke:'var(--line)','stroke-dasharray':'3 4'},s);
-  txt({x:PL+iw/2,y:H-9,'text-anchor':'middle',fill:'var(--ink-2)','font-size':'10'},s,'agreement with '+o.xlab+' →');
-  const yl=el('text',{x:15,y:PT+ih/2,fill:'var(--ink-2)','font-size':'10','text-anchor':'middle','font-family':'JetBrains Mono,monospace',transform:'rotate(-90 15 '+(PT+ih/2)+')'},s);
+  txt({x:PL+iw/2,y:H-9,'text-anchor':'middle',fill:'var(--ink-2)','font-size':'11.5'},s,'agreement with '+o.xlab+' →');
+  const yl=el('text',{x:15,y:PT+ih/2,fill:'var(--ink-2)','font-size':'11.5','text-anchor':'middle','font-family':'JetBrains Mono,monospace',transform:'rotate(-90 15 '+(PT+ih/2)+')'},s);
   yl.textContent='agreement with '+o.ylab+' →';
   /* background cloud: states not in the selected set — muted grey, no label */
-  pts.forEach(p=>{if(p.sel)return;el('circle',{cx:X(p.x),cy:Y(p.y),r:3,fill:'var(--dimmer)','fill-opacity':0.32},s);});
+  pts.forEach(p=>{if(p.sel)return;el('circle',{cx:X(p.x),cy:Y(p.y),r:3.4,fill:'var(--dimmer)','fill-opacity':0.32},s);});
   /* highlighted (selected) states — coloured by UN group */
   pts.forEach(p=>{if(!p.sel||p.isPole)return;
-    el('circle',{cx:X(p.x),cy:Y(p.y),r:4.5,fill:'var(--g-'+(p.group||'')+')','fill-opacity':0.9,stroke:'var(--paper)','stroke-width':0.8},s);});
+    el('circle',{cx:X(p.x),cy:Y(p.y),r:5,fill:'var(--g-'+(p.group||'')+')','fill-opacity':0.9,stroke:'var(--paper)','stroke-width':0.8},s);});
   /* anchor poles — ringed */
   pts.forEach(p=>{if(!p.isPole)return;
-    el('circle',{cx:X(p.x),cy:Y(p.y),r:6,fill:'var(--g-'+(p.group||'')+')','fill-opacity':1,stroke:'var(--ink)','stroke-width':1.4},s);});
+    el('circle',{cx:X(p.x),cy:Y(p.y),r:6.5,fill:'var(--g-'+(p.group||'')+')','fill-opacity':1,stroke:'var(--ink)','stroke-width':1.5},s);});
   /* labels for the highlighted set only (poles first, then most-active); positions around the dot */
   const placed=[];
   const order=pts.filter(p=>p.sel).sort((a,b)=>(b.isPole?1:0)-(a.isPole?1:0)||(b.coX+b.coY)-(a.coX+a.coY));
-  order.forEach(p=>{const cx=X(p.x),cy=Y(p.y),w=p.iso.length*5.6+2;
-    const cands=[[cx+7,cy+3],[cx-7-w,cy+3],[cx-w/2+2,cy-7],[cx-w/2+2,cy+13],[cx+7,cy-7],[cx-7-w,cy-7],[cx+7,cy+13],[cx-7-w,cy+13]];
-    for(let k=0;k<cands.length;k++){const lx=cands[k][0],ly=cands[k][1],r={x0:lx-1,y0:ly-8,x1:lx+w,y1:ly+2};
+  order.forEach(p=>{const cx=X(p.x),cy=Y(p.y),w=p.iso.length*6+2;
+    const cands=[[cx+8,cy+3.5],[cx-8-w,cy+3.5],[cx-w/2+2,cy-8],[cx-w/2+2,cy+15],[cx+8,cy-8],[cx-8-w,cy-8],[cx+8,cy+15],[cx-8-w,cy+15]];
+    for(let k=0;k<cands.length;k++){const lx=cands[k][0],ly=cands[k][1],r={x0:lx-1,y0:ly-9,x1:lx+w,y1:ly+2};
       if(lx<PL-2||r.x1>W-2||ly<PT+4||ly>PT+ih+2)continue;
       if(p.isPole||!placed.some(q=>r.x0<q.x1&&r.x1>q.x0&&r.y0<q.y1&&r.y1>q.y0)){
-        txt({x:lx,y:ly,'font-size':'8',fill:p.isPole?'var(--ink)':'var(--dim)'},s,p.iso);placed.push(r);break;}}});
+        txt({x:lx,y:ly,'font-size':'9.5',fill:p.isPole?'var(--ink)':'var(--dim)'},s,p.iso);placed.push(r);break;}}});
   /* hover targets for ALL states (so any grey dot can be identified) */
-  pts.forEach(p=>{const hit=el('circle',{cx:X(p.x),cy:Y(p.y),r:7,fill:'transparent'},s);
+  pts.forEach(p=>{const hit=el('circle',{cx:X(p.x),cy:Y(p.y),r:8,fill:'transparent'},s);
     hov(hit,'<b>'+esc(p.name)+'</b> · '+esc(p.glabel)+(p.isPole?' · axis anchor':'')+'<br>'+Math.round(p.x*100)+'% with '+esc(o.xlab)+' · '+Math.round(p.y*100)+'% with '+esc(o.ylab)+'<br>'+Math.min(p.coX,p.coY)+' shared votes');});
   host.appendChild(s);};
 
@@ -785,6 +895,77 @@ VRC.hbars=function(host,o){host.innerHTML='';
     const r=el('rect',{x:barx,y:yy+3,width:Math.max(ww,1),height:14,fill:d.color||'var(--accent)'},s);
     txt({x:barx+barmax+6,y:yy+14},s,d.right!=null?d.right:Math.round(d.value*100)+'%');
     if(d.hover)hov(r,d.hover);});
+  host.appendChild(s);};
+
+/* Consensus tab — adoption-mode colour map (C=together/blue, V=contested/red) */
+const MODEC={C:'var(--div-hi)',V:'var(--div-lo)',VC:'var(--div-lo)',WD:'var(--abstain)'};
+function modeCol(vt){return MODEC[vt]||'var(--dimmer)';}
+
+/* Flip strips: one row per subject, dots on a shared timeline coloured by mode */
+VRC.modeStrips=function(host,o){host.innerHTML='';
+  const groups=o.groups;if(!groups.some(g=>g.rows.length)){host.innerHTML='<div style="color:var(--dim)">No flips detected with the current thresholds.</div>';return;}
+  const W=1140,LBL=250,PR=16,rowh=19,gh=26,AXT=16;
+  const nrows=groups.reduce((s,g)=>s+g.rows.length,0),H=AXT+groups.length*gh+nrows*rowh+8;
+  const s=svg(W,H),iw=W-LBL-PR,X=y=>LBL+(y-o.ymin)/(o.ymax-o.ymin)*iw;
+  for(let y=Math.ceil(o.ymin/10)*10;y<=o.ymax;y+=10){
+    el('line',{x1:X(y),x2:X(y),y1:AXT,y2:H-4,stroke:'var(--line-2)'},s);
+    txt({x:X(y),y:AXT-5,'text-anchor':'middle','font-size':'9'},s,y);}
+  let yy=AXT;
+  groups.forEach(g=>{
+    txt({x:0,y:yy+17,'font-size':'10','font-weight':'700',fill:'var(--ink)','letter-spacing':'.1em'},s,g.title.toUpperCase());
+    yy+=gh;
+    g.rows.forEach(r=>{
+      const lbl=r.label.length>30?r.label.slice(0,29)+'…':r.label;
+      txt({x:0,y:yy+12,fill:'var(--ink-2)','font-size':'9.5'},s,lbl);
+      txt({x:LBL-8,y:yy+12,'text-anchor':'end',fill:'var(--dimmer)','font-size':'8.5'},s,r.note);
+      el('line',{x1:LBL,x2:W-PR,y1:yy+8.5,y2:yy+8.5,stroke:'var(--line-2)'},s);
+      r.items.forEach(it=>{
+        const c=el('circle',{cx:X(it.year),cy:yy+8.5,r:3.2,fill:modeCol(it.vt),'fill-opacity':0.92,style:it.ri!=null?'cursor:pointer':''},s);
+        hov(c,'<b>'+esc(it.sym||'')+'</b> · '+it.year+'<br>'+it.word+(it.ri!=null?'<br><span style="opacity:.7">click for roll-call</span>':''));
+        if(it.ri!=null&&o.onOpen)c.addEventListener('click',()=>o.onOpen(it.ri));});
+      yy+=rowh;});});
+  host.appendChild(s);};
+
+/* Percent-share bars per year (consensus erosion), coloured by body */
+VRC.shareBars=function(host,o){host.innerHTML='';
+  const items=o.items;if(!items.length){host.innerHTML='<div style="color:var(--dim)">No data.</div>';return;}
+  const W=1140,H=230,PL=38,PR=12,PT=10,PB=24,iw=W-PL-PR,ih=H-PT-PB;
+  const s=svg(W,H),y0=o.ymin,y1=o.ymax,x=y=>PL+(y-y0)/(y1-y0)*iw;
+  const bw=Math.max(2,iw/(y1-y0+1)*0.8);
+  [0,.25,.5,.75,1].forEach(v=>{const gy=PT+ih-v*ih;
+    el('line',{x1:PL,x2:W-PR,y1:gy,y2:gy,stroke:'var(--line-2)'},s);
+    txt({x:PL-6,y:gy+3,'text-anchor':'end'},s,Math.round(v*100)+'%');});
+  items.forEach(d=>{const hh=d.share*ih;
+    const r=el('rect',{x:x(d.y)-bw/2,y:PT+ih-hh,width:bw,height:Math.max(hh,0.8),fill:d.body==='HRC'?'var(--hrc)':'var(--chr)'},s);
+    hov(r,'<b>'+d.y+'</b> · '+Math.round(d.share*100)+'% without a vote<br>'+d.c+' consensus · '+d.v+' voted'+(d.o?' · '+d.o+' other':''));});
+  for(let y=Math.ceil(y0/10)*10;y<=y1;y+=10)txt({x:x(y),y:H-6,'text-anchor':'middle'},s,y);
+  host.appendChild(s);};
+
+/* 100% stacked adoption-mode composition per year + volume strip */
+VRC.stackShare=function(host,o){host.innerHTML='';
+  const ys=o.years;if(!ys.length){host.innerHTML='<div style="color:var(--dim)">No data.</div>';return;}
+  const W=1140,PL=38,PR=12,PT=10,CH=170,GAP=12,VH=30,AX=22,H=PT+CH+GAP+VH+AX,iw=W-PL-PR;
+  const s=svg(W,H),n=ys.length,slot=iw/n,bw=Math.min(46,Math.max(2.5,slot*0.82)),cx=i=>PL+i*slot+slot/2;
+  [0,.5,1].forEach(v=>{const gy=PT+CH-v*CH;
+    el('line',{x1:PL,x2:W-PR,y1:gy,y2:gy,stroke:'var(--line-2)'},s);
+    txt({x:PL-5,y:gy+3,'text-anchor':'end'},s,Math.round(v*100)+'%');});
+  const vy0=PT+CH+GAP+VH;
+  el('line',{x1:PL,x2:W-PR,y1:vy0,y2:vy0,stroke:'var(--line-2)'},s);
+  txt({x:PL-6,y:PT+CH+GAP+VH/2+3,'text-anchor':'end',fill:'var(--dimmer)'},s,'vol');
+  const maxV=Math.max(...ys.map(d=>d.tot),1);
+  const SEGS=[['C','var(--div-hi)'],['V','var(--div-lo)'],['WD','var(--abstain)'],['O','var(--dimmer)']];
+  ys.forEach((d,i)=>{
+    if(d.tot>0){let yb=PT+CH;
+      SEGS.forEach(kc=>{const hh=(d.parts[kc[0]]||0)/d.tot*CH;if(hh<=0)return;yb-=hh;
+        el('rect',{x:cx(i)-bw/2,y:yb,width:bw,height:Math.max(hh-0.6,0.6),fill:kc[1]},s);});}
+    const vh=d.tot/maxV*VH;
+    el('rect',{x:cx(i)-bw/2,y:vy0-vh,width:bw,height:Math.max(vh,0.8),fill:'var(--absent)'},s);
+    const hit=el('rect',{x:PL+i*slot,y:PT,width:slot,height:CH+GAP+VH,fill:'transparent'},s);
+    hov(hit,'<b>'+d.y+'</b> · '+d.tot+' resolutions<br>'+(d.parts.C||0)+' without a vote · '+(d.parts.V||0)+' voted'+((d.parts.WD||0)?' · '+d.parts.WD+' withdrawn':'')+((d.parts.O||0)?' · '+d.parts.O+' other':''));});
+  for(let i=0;i<n-1;i++){if(ys[i+1].y-ys[i].y>1){const gx=PL+(i+1)*slot;
+    el('line',{x1:gx,x2:gx,y1:PT,y2:vy0,stroke:'var(--dimmer)','stroke-width':1,'stroke-dasharray':'2 3'},s);}}
+  const step=Math.max(1,Math.ceil(n/14));
+  for(let i=0;i<n;i+=step)txt({x:cx(i),y:H-6,'text-anchor':'middle'},s,ys[i].y);
   host.appendChild(s);};
 
 window.VRC=VRC;
@@ -807,7 +988,7 @@ const nVotesTotal=C.reduce((a,c)=>a+c.n,0);
 
 const fmt=n=>n==null?'—':n.toLocaleString('en-US');
 const esc=s=>(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const tc=s=>s.toLowerCase().replace(/\b([a-z])/g,(m,c)=>c.toUpperCase()).replace(/\b(Of|And|The|In|To|For|On)\b/g,m=>m.toLowerCase());
+const tc=s=>s.toLowerCase().replace(/\b([a-z])/g,(m,c)=>c.toUpperCase()).replace(/\b(Of|And|The|In|To|For|On)\b/g,m=>m.toLowerCase()).replace(/(['\u2019])S\b/g,'$1s');
 const $=id=>document.getElementById(id);
 const recUrl=id=>'https://searchlibrary.ohchr.org/record/'+id;
 
@@ -900,7 +1081,7 @@ document.querySelectorAll('.palbtn').forEach(b=>b.addEventListener('click',()=>s
 
 /* ---------- tabs ---------- */
 let VIEW='overview';
-const VIEWS=['overview','country','topics','blocs','method'];
+const VIEWS=['overview','country','topics','blocs','consensus','method'];
 function switchTab(v){VIEW=v;
   VIEWS.forEach(x=>{$('view-'+x).style.display=x===v?'':'none';});
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.view===v));
@@ -913,6 +1094,7 @@ function renderCurrent(){
   else if(VIEW==='country')renderCountry();
   else if(VIEW==='topics')renderTopics();
   else if(VIEW==='blocs')renderBlocs();
+  else if(VIEW==='consensus')renderConsensus();
   else if(VIEW==='method')renderMethod();
 }
 
@@ -1084,6 +1266,25 @@ function stanceStats(mset){
     const tot=Y+N+A;if(tot>=5)stats.push({name:c.name,Y,N,A,tot,share:Y/tot});}
   stats.sort((a,b)=>b.share-a.share||b.tot-a.tot);return stats;
 }
+let ttMode='all',tsMode='states';
+function groupStanceStats(mset){
+  const agg={};GROUPS.forEach(g=>agg[g]={Y:0,N:0,A:0});
+  for(const c of C){const g=c.group;if(!agg[g])continue;const m=vmap(c.iso3);
+    for(const ri of mset){const code=m.get(ri);if(code==='Y')agg[g].Y++;else if(code==='N')agg[g].N++;else if(code==='A')agg[g].A++;}}
+  return GROUPS.map(g=>{const d=agg[g],tot=d.Y+d.N+d.A;
+    return {group:g,name:GLAB[g],Y:d.Y,N:d.N,A:d.A,tot,share:tot?d.Y/tot:0};})
+    .filter(d=>d.tot>0).sort((a,b)=>b.share-a.share);
+}
+function trendGroupsData(matched){
+  const per={};GROUPS.forEach(g=>per[g]=new Map());
+  for(const c of C){const g=c.group;if(!per[g])continue;const m=vmap(c.iso3);
+    matched.forEach(i=>{const code=m.get(i);if(code!=='Y'&&code!=='N'&&code!=='A')return;
+      const y=RES[i].year;if(y==null)return;
+      let d=per[g].get(y);if(!d){d={Y:0,N:0,A:0};per[g].set(y,d);}d[code]++;});}
+  return GROUPS.map(g=>({group:g,glabel:GLAB[g],
+    points:[...per[g].entries()].map(e=>({year:e[0],n:e[1].Y+e[1].N+e[1].A,share:e[1].Y/(e[1].Y+e[1].N+e[1].A)}))
+      .filter(p=>p.n>=3).sort((a,b)=>a.year-b.year)}));
+}
 function renderTopics(){
   const text=$('t-search').value.trim();
   const matched=topicMatched();
@@ -1110,25 +1311,48 @@ function renderTopics(){
     $('t-relatedcard').style.display='';
     $('t-related').querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>pickSubject(ch.dataset.s));
   } else $('t-relatedcard').style.display='none';
-  /* trend + note */
+  /* trend + note (overall or per regional group) */
   const td=trendData(matched);
-  VRC.trend($('t-trend'),td);
   $('t-trendnote').textContent=td.note;
   const slug=(((topicState.subject||text||'topic').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''))||'topic').slice(0,40);
   const twin='('+$('t-ymin').value+'–'+$('t-ymax').value+')';
-  CSVDATA.ttrend={name:'topic-'+slug+'-support-over-time',title:heading+' — support over time '+twin,headers:['year','avg_yes_share_pct','n_resolutions'],
-    rows:td.means.map(m=>[m.year,Math.round(m.mean*100),m.n])};
+  if(ttMode==='groups'){
+    const gs=trendGroupsData(matched);
+    VRC.trendMulti($('t-trend'),{series:gs});
+    $('tt-desc').textContent='Yearly share voting Yes within each UN regional group, across these resolutions (years where the group cast ≥3 votes).';
+    $('tt-legend').style.display='';
+    CSVDATA.ttrend={name:'topic-'+slug+'-group-support-over-time',title:heading+' — support over time by UN regional group '+twin,
+      headers:['un_group','year','yes_share_pct','votes_cast'],
+      rows:gs.flatMap(s=>s.points.map(p=>[s.glabel,p.year,Math.round(p.share*100),p.n]))};
+  }else{
+    VRC.trend($('t-trend'),td);
+    $('tt-desc').textContent='Yearly average share voting Yes — of those casting Yes / No / Abstain (official totals). Faint dots: individual resolutions.';
+    $('tt-legend').style.display='none';
+    CSVDATA.ttrend={name:'topic-'+slug+'-support-over-time',title:heading+' — support over time '+twin,headers:['year','avg_yes_share_pct','n_resolutions'],
+      rows:td.means.map(m=>[m.year,Math.round(m.mean*100),m.n])};
+  }
   /* resolutions table */
   $('t-restitle').textContent='('+matched.length+') — '+heading;
   const tres=matched.map(i=>RES[i]).sort((a,b)=>(b.year||0)-(a.year||0));
   $('t-rows').innerHTML=tres.map(r=>`<div class="gtr cols6s"><span class="gtc">${r.year==null?'—':r.year}</span><span class="gtc rescell" title="${esc(r.title)}"><a class="reslink" role="button" tabindex="0" data-ri="${r.i}" title="View roll-call">${esc(r.sym||r.title.slice(0,44))}</a><a class="srclink" href="${recUrl(r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(r.sym||'record')} on OHCHR (new tab)" title="OHCHR source ↗"><span aria-hidden="true">↗</span></a></span><span class="gtc mut" title="${esc(r.title)}">${r.subj?esc(tc(r.subj)):'—'}</span><span class="gtc num">${r.y==null?'—':r.y}</span><span class="gtc num">${r.n==null?'—':r.n}</span><span class="gtc num">${r.a==null?'—':r.a}</span><span class="gtc">${r.body}</span></div>`).join('');
   CSVDATA.trows={name:'topic-'+slug+'-resolutions',title:heading+' — resolutions '+twin,headers:['year','resolution','subject','title','yes','no','abstain','body','record_url'],
     rows:tres.map(r=>[r.year,r.sym,r.subj,r.title,r.y,r.n,r.a,r.body,recUrl(r.id)])};
-  /* stance */
-  const stStats=stanceStats(new Set(matched));
-  VRC.stance($('t-stance'),{stats:stStats});
-  CSVDATA.tstance={name:'topic-'+slug+'-state-stance',title:heading+' — how states voted '+twin,headers:['country','yes','abstain','no','total','yes_share_pct'],
-    rows:stStats.map(s=>[s.name,s.Y,s.A,s.N,s.tot,Math.round(s.share*100)])};
+  /* stance (individual states or UN regional groups) */
+  if(tsMode==='groups'){
+    const gStats=groupStanceStats(new Set(matched));
+    VRC.stance($('t-stance'),{stats:gStats});
+    $('ts-title').textContent='How regional groups voted on this topic';
+    $('ts-desc').textContent='All votes cast by each UN regional group’s members across these resolutions — Yes / Abstain / No share, ranked by support.';
+    CSVDATA.tstance={name:'topic-'+slug+'-group-stance',title:heading+' — how UN regional groups voted '+twin,headers:['un_group','yes','abstain','no','total_votes','yes_share_pct'],
+      rows:gStats.map(s=>[s.name,s.Y,s.A,s.N,s.tot,Math.round(s.share*100)])};
+  }else{
+    const stStats=stanceStats(new Set(matched));
+    VRC.stance($('t-stance'),{stats:stStats});
+    $('ts-title').textContent='How states voted on this topic';
+    $('ts-desc').textContent='Each state’s Yes / Abstain / No share across these votes (min. 5 cast), ranked by support.';
+    CSVDATA.tstance={name:'topic-'+slug+'-state-stance',title:heading+' — how states voted '+twin,headers:['country','yes','abstain','no','total','yes_share_pct'],
+      rows:stStats.map(s=>[s.name,s.Y,s.A,s.N,s.tot,Math.round(s.share*100)])};
+  }
 }
 
 /* ---------- 04 BLOCS ---------- */
@@ -1273,7 +1497,133 @@ function renderBlocs(){
     rows:isoR.map(d=>[d.iso,d.name,GLAB[d.group]||d.group,Math.round(d.pct*100),d.votes])};
 }
 
-/* ---------- 05 METHODOLOGY ---------- */
+/* ---------- 05 CONSENSUS (experimental) ---------- */
+const RA=D.resAll||[];
+const byIdRES=Object.fromEntries(RES.map(r=>[r.id,r.i]));
+const MODE_WORD={C:'adopted without a vote',V:'recorded vote',VC:'recorded vote (closed meeting)',NR:'non-recorded vote',NRU:'non-recorded, adopted unanimously',NRX:'non-recorded (no information)',WD:'withdrawn',NC:'not considered'};
+const isVoted=r=>r.vt==='V'||r.vt==='VC'||(('y' in r)&&(r.vt==='NR'||r.vt==='NRU'||r.vt==='NRX'));
+const isConsidered=r=>r.vt!=='WD'&&r.vt!=='NC';
+let _flips=null;
+function flipStats(){
+  if(_flips)return _flips;
+  const bySubj=new Map();
+  RA.forEach(r=>{if(!r.subj||r.year==null)return;
+    if(r.vt!=='C'&&!isVoted(r))return;               // flip sequence uses C vs voted only
+    if(!bySubj.has(r.subj))bySubj.set(r.subj,[]);
+    bySubj.get(r.subj).push(r);});
+  const out=[];
+  bySubj.forEach((rows,subj)=>{
+    if(rows.length<6)return;
+    rows.sort((a,b)=>a.year-b.year||(a.sym<b.sym?-1:1));
+    const nC=rows.filter(r=>r.vt==='C').length;
+    if(nC===0||nC===rows.length)return;              // needs both modes
+    const half=Math.floor(rows.length/2);
+    const share=arr=>arr.filter(r=>r.vt==='C').length/arr.length;
+    const h1=share(rows.slice(0,half)),h2=share(rows.slice(half));
+    if(Math.abs(h2-h1)<0.4)return;
+    out.push({subj,rows,h1,h2,diff:h2-h1,dir:h2<h1?'breakdown':'rapprochement'});});
+  _flips=out;return out;
+}
+let _cnStatic=false;
+function renderConsensus(){
+  if(!RA.length){$('cn-tiles').innerHTML='<div class="note">Rebuild data.js to include the full catalogue (resAll missing).</div>';return;}
+  if(!_cnStatic){_cnStatic=true;
+    const considered=RA.filter(isConsidered),nC=RA.filter(r=>r.vt==='C').length;
+    const flips=flipStats(),nBk=flips.filter(f=>f.dir==='breakdown').length,nRp=flips.length-nBk;
+    const wd=RA.filter(r=>r.vt==='WD'),wdRecent=wd.filter(r=>r.year>=2010).length;
+    $('cn-tiles').innerHTML=[
+      ['Catalogued resolutions',fmt(RA.length),''],
+      ['Adopted without a vote',fmt(nC),Math.round(nC/considered.length*100)+'% of considered'],
+      ['Mode flips detected',fmt(flips.length),nBk+' breakdown · '+nRp+' rapprochement'],
+      ['Withdrawn drafts',fmt(wd.length),Math.round(wdRecent/wd.length*100)+'% since 2010']
+    ].map(t=>`<div class="tile"><div class="tk">${t[0]}</div><div class="tv">${t[1]}<small class="tvs">${t[2]}</small></div></div>`).join('');
+    /* 01 flips */
+    const mkRow=f=>({label:tc(f.subj),note:Math.round(f.h1*100)+'%→'+Math.round(f.h2*100)+'%',
+      items:f.rows.map(r=>({year:r.year,vt:r.vt,sym:r.sym,word:MODE_WORD[r.vt]||r.vt,
+        ri:(r.vt==='V'||r.vt==='VC')&&byIdRES[r.id]!=null?byIdRES[r.id]:null}))});
+    const bk=flips.filter(f=>f.dir==='breakdown').sort((a,b)=>a.diff-b.diff);
+    const rp=flips.filter(f=>f.dir==='rapprochement').sort((a,b)=>b.diff-a.diff);
+    VRC.modeStrips($('cn-strips'),{ymin:M.yearMin,ymax:M.yearMax,onOpen:openResolution,
+      groups:[{title:'Breakdown — consensus early, voted late',rows:bk.map(mkRow)},
+              {title:'Rapprochement — voted early, consensual late',rows:rp.map(mkRow)}]});
+    $('cn-flipnote').textContent=nBk+' breakdowns · '+nRp+' rapprochements (≥6 resolutions, |Δ|≥40 pp)';
+    CSVDATA.cflips={name:'consensus-flips',title:'Adoption-mode flips — breakdowns & rapprochements',
+      headers:['direction','subject','n_resolutions','first_half_consensus_pct','second_half_consensus_pct','delta_pp','from_year','to_year'],
+      rows:[...bk,...rp].map(f=>[f.dir,f.subj,f.rows.length,Math.round(f.h1*100),Math.round(f.h2*100),Math.round((f.h2-f.h1)*100),f.rows[0].year,f.rows[f.rows.length-1].year])};
+    /* 02 erosion */
+    const byY=new Map();
+    considered.forEach(r=>{if(r.year==null)return;let d=byY.get(r.year);if(!d){d={y:r.year,c:0,v:0,o:0,hrc:0,chr:0};byY.set(r.year,d);}
+      if(r.vt==='C')d.c++;else if(isVoted(r))d.v++;else d.o++;
+      r.body==='HRC'?d.hrc++:d.chr++;});
+    const ero=[...byY.values()].sort((a,b)=>a.y-b.y).map(d=>({y:d.y,share:d.c/(d.c+d.v+d.o),c:d.c,v:d.v,o:d.o,body:d.hrc>=d.chr?'HRC':'CHR',tot:d.c+d.v+d.o}));
+    VRC.shareBars($('cn-erosion'),{items:ero,ymin:M.yearMin,ymax:M.yearMax});
+    const big=ero.filter(d=>d.tot>=20);
+    const peak=big.reduce((a,b)=>b.share>a.share?b:a),low=big.filter(d=>d.y>=2006).reduce((a,b)=>b.share<a.share?b:a);
+    $('cn-eronote').textContent='peak '+Math.round(peak.share*100)+'% ('+peak.y+') · HRC low '+Math.round(low.share*100)+'% ('+low.y+')';
+    CSVDATA.cero={name:'consensus-share-by-year',title:'Share of resolutions adopted without a vote, per year',
+      headers:['year','body','considered','without_vote','voted','other','consensus_share_pct'],
+      rows:ero.map(d=>[d.y,d.body,d.tot,d.c,d.v,d.o,Math.round(d.share*100)])};
+    /* 03 stack (all catalogued incl. withdrawn) */
+    const byY2=new Map();
+    RA.forEach(r=>{if(r.year==null)return;let d=byY2.get(r.year);if(!d){d={y:r.year,parts:{C:0,V:0,WD:0,O:0},tot:0};byY2.set(r.year,d);}
+      const b=r.vt==='C'?'C':(r.vt==='V'||r.vt==='VC')?'V':r.vt==='WD'?'WD':'O';
+      d.parts[b]++;d.tot++;});
+    const stack=[...byY2.values()].sort((a,b)=>a.y-b.y);
+    VRC.stackShare($('cn-stack'),{years:stack});
+    CSVDATA.cstack={name:'adoption-modes-by-year',title:'How resolutions were adopted, year by year',
+      headers:['year','total','without_vote','voted_recorded','withdrawn','other'],
+      rows:stack.map(d=>[d.y,d.tot,d.parts.C,d.parts.V,d.parts.WD,d.parts.O])};
+    /* 04 subjects */
+    const sb=new Map();
+    considered.forEach(r=>{if(!r.subj)return;let d=sb.get(r.subj);if(!d){d={n:0,c:0};sb.set(r.subj,d);}d.n++;if(r.vt==='C')d.c++;});
+    const subj=[...sb.entries()].filter(e=>e[1].n>=6).map(e=>({s:e[0],n:e[1].n,share:e[1].c/e[1].n}))
+      .sort((a,b)=>b.share-a.share||b.n-a.n);
+    const mkBar=(d,col)=>({label:tc(d.s),value:d.share,color:col,right:Math.round(d.share*100)+'%',
+      hover:'<b>'+esc(tc(d.s))+'</b><br>'+Math.round(d.share*100)+'% without a vote · '+d.n+' resolutions'});
+    VRC.hbars($('cn-subj-top'),{lbl:190,max:1,rowh:20,rows:subj.slice(0,15).map(d=>mkBar(d,'var(--div-hi)'))});
+    VRC.hbars($('cn-subj-bot'),{lbl:190,max:1,rowh:20,rows:subj.slice(-15).reverse().map(d=>mkBar(d,'var(--div-lo)'))});
+    CSVDATA.csubjcons={name:'subject-consensus-share',title:'Consensus share by subject (≥6 considered resolutions)',
+      headers:['subject','considered_resolutions','without_vote','consensus_share_pct'],
+      rows:subj.map(d=>[d.s,d.n,Math.round(d.share*d.n),Math.round(d.share*100)])};
+    /* 05 withdrawn */
+    const wdec=new Map();wd.forEach(r=>{if(r.year==null)return;const dd=Math.floor(r.year/10)*10;wdec.set(dd,(wdec.get(dd)||0)+1);});
+    const decs=[...wdec.entries()].sort((a,b)=>a[0]-b[0]);
+    const wsub=new Map();wd.forEach(r=>{if(r.subj)wsub.set(r.subj,(wsub.get(r.subj)||0)+1);});
+    const wtop=[...wsub.entries()].sort((a,b)=>b[1]-a[1]).slice(0,10);
+    $('cn-wd').innerHTML='<div class="flbl">By decade</div><div id="cn-wd-dec"></div><div class="flbl" style="margin-top:10px">Top withdrawn subjects</div><div id="cn-wd-subj"></div>';
+    const wmax=Math.max(...decs.map(d=>d[1]));
+    VRC.hbars($('cn-wd-dec'),{lbl:90,max:wmax,rowh:20,rows:decs.map(d=>({label:d[0]+'s',value:d[1],color:'var(--abstain)',right:String(d[1]),hover:'<b>'+d[0]+'s</b> · '+d[1]+' withdrawn drafts'}))});
+    VRC.hbars($('cn-wd-subj'),{lbl:190,max:Math.max(...wtop.map(d=>d[1])),rowh:20,rows:wtop.map(d=>({label:tc(d[0]),value:d[1],color:'var(--abstain)',right:String(d[1]),hover:'<b>'+esc(tc(d[0]))+'</b> · '+d[1]+' withdrawn'}))});
+    $('cn-wdnote').textContent=wd.length+' drafts · '+(wdec.get(2010)||0)+' in the 2010s · '+(wdec.get(2020)||0)+' in the 2020s';
+    CSVDATA.cwd={name:'withdrawn-drafts',title:'Drafts withdrawn before decision (all)',
+      headers:['year','symbol','subject','title','record_url'],
+      rows:wd.slice().sort((a,b)=>(b.year||0)-(a.year||0)).map(r=>[r.year,r.sym,r.subj,r.t,recUrl(r.id)])};
+  }
+  renderCNExplorer();
+}
+function renderCNExplorer(){
+  const q=$('cn-q').value.trim().toLowerCase(),mode=$('cn-mode').value,[ymin,ymax]=yearPair('cn-ymin','cn-ymax');
+  const inMode=r=>!mode||(mode==='V'?(r.vt==='V'||r.vt==='VC'):mode==='NRT'?(r.vt==='NR'||r.vt==='NRU'||r.vt==='NRX'):r.vt===mode);
+  const rows=RA.filter(r=>r.year!=null&&r.year>=ymin&&r.year<=ymax&&inMode(r)&&
+    (!q||(r.subj||'').toLowerCase().includes(q)||(r.t||'').toLowerCase().includes(q)||(r.sym||'').toLowerCase().includes(q)))
+    .sort((a,b)=>(b.year||0)-(a.year||0)||(a.sym<b.sym?-1:1));
+  const CAP=400,shown=rows.slice(0,CAP);
+  const pill=vt=>{const cls=vt==='C'?'pC':(vt==='V'||vt==='VC')?'pV':vt==='WD'?'pWD':'pX';
+    const lbl=vt==='C'?'No vote':(vt==='V'||vt==='VC')?'Voted':vt==='WD'?'Withdrawn':vt==='NC'?'Not consid.':'Non-rec.';
+    return '<span class="pill '+cls+'" title="'+esc(MODE_WORD[vt]||vt)+'">'+lbl+'</span>';};
+  $('cn-rows').innerHTML=shown.map(r=>{
+    const canOpen=(r.vt==='V'||r.vt==='VC')&&byIdRES[r.id]!=null;
+    const symCell=canOpen
+      ?`<span class="gtc rescell" title="${esc(r.t)}"><a class="reslink" role="button" tabindex="0" data-ri="${byIdRES[r.id]}" title="View roll-call">${esc(r.sym||'—')}</a><a class="srclink" href="${recUrl(r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(r.sym||'record')} on OHCHR (new tab)"><span aria-hidden="true">↗</span></a></span>`
+      :`<span class="gtc rescell" title="${esc(r.t)}"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.sym||'—')}</span><a class="srclink" href="${recUrl(r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(r.sym||'record')} on OHCHR (new tab)"><span aria-hidden="true">↗</span></a></span>`;
+    return `<div class="gtr colsc2"><span class="gtc">${r.year==null?'—':r.year}</span>${symCell}<span class="gtc mut" title="${esc(r.t)}">${r.subj?esc(tc(r.subj)):esc(r.t.slice(0,60))}</span><span class="gtc">${pill(r.vt)}</span><span class="gtc">${r.body}</span></div>`;}).join('');
+  $('cn-count').textContent=fmt(rows.length)+' of '+fmt(RA.length)+' resolutions'+(rows.length>CAP?' · showing first '+CAP+' — narrow the filters or download the CSV':'');
+  CSVDATA.cexplorer={name:'resolutions-explorer',title:'All catalogued resolutions (filtered view)',
+    headers:['year','symbol','subject','title','mode','body','yes','no','abstain','record_url'],
+    rows:rows.map(r=>[r.year,r.sym,r.subj,r.t,MODE_WORD[r.vt]||r.vt,r.body,('y' in r)?r.y:'',('y' in r)?r.n:'',('y' in r)?r.a:'',recUrl(r.id)])};
+}
+
+/* ---------- 06 METHODOLOGY ---------- */
 function renderMethod(){
   const cov=M.coverage;
   $('m-total-inline').textContent=fmt(cov.totalResolutions);
@@ -1303,7 +1653,7 @@ function renderMethod(){
 let kSel=0;
 function kItems(q){
   q=(q||'').trim().toLowerCase();const out=[];
-  [['overview','Overview'],['country','Country profile'],['topics','Topics'],['blocs','Blocs & alignment'],['method','Methodology']]
+  [['overview','Overview'],['country','Country profile'],['topics','Topics'],['blocs','Blocs & alignment'],['consensus','Consensus'],['method','Methodology']]
     .forEach(p=>{if(!q||p[1].toLowerCase().includes(q))out.push({type:'view',kind:'view',label:p[1],n:'',v:p[0]});});
   const cs=q?C.filter(c=>c.name.toLowerCase().includes(q)):C.slice().sort((a,b)=>b.n-a.n).slice(0,4);
   cs.forEach(c=>{if(out.length<14)out.push({type:'country',kind:'country',label:c.name,n:fmt(c.n)+' votes',v:c.iso3});});
@@ -1345,6 +1695,7 @@ const GA_VIEWS={
   country:['CHR·HRC Voting — Country profile','/hrc-voting/country'],
   topics:['CHR·HRC Voting — Topics','/hrc-voting/topics'],
   blocs:['CHR·HRC Voting — Blocs & alignment','/hrc-voting/blocs'],
+  consensus:['CHR·HRC Voting — Consensus','/hrc-voting/consensus'],
   method:['CHR·HRC Voting — Methodology','/hrc-voting/methodology'],
 };
 const gaState=()=>{try{return localStorage.getItem(GA_KEY)}catch(e){return null}};
@@ -1437,6 +1788,9 @@ function fillYears(sel,def){const s=$(sel);let h='';for(let y=M.yearMin;y<=M.yea
   fillYears('c-ymin',M.yearMin);fillYears('c-ymax',M.yearMax);
   fillYears('t-ymin',M.yearMin);fillYears('t-ymax',M.yearMax);
   fillYears('b-ymin',Math.max(2006,M.yearMin));fillYears('b-ymax',M.yearMax);
+  fillYears('cn-ymin',M.yearMin);fillYears('cn-ymax',M.yearMax);
+  $('cn-q').addEventListener('input',renderCNExplorer);
+  ['cn-mode','cn-ymin','cn-ymax'].forEach(id=>$(id).addEventListener('change',renderCNExplorer));
   /* controls */
   ['c-country','c-ymin','c-ymax','c-body'].forEach(id=>$(id).addEventListener('change',()=>{if(id==='c-country'){cSortKey='year';cSortDir=1;try{localStorage.setItem('hrc-country',$('c-country').value);}catch(e){}}renderCountry();}));
   $('t-type').addEventListener('change',()=>{topicState.subject=null;renderTopicChips();renderTopics();renderSuggest();});
@@ -1448,6 +1802,10 @@ function fillYears(sel,def){const s=$(sel);let h='';for(let y=M.yearMin;y<=M.yea
     if(e.key==='Enter'){const it=document.querySelector('#t-suggest .sitem[data-s]');if(it){e.preventDefault();pickSubject(it.dataset.s);}}
     else if(e.key==='Escape')hideSuggest();});
   ['t-ymin','t-ymax'].forEach(id=>$(id).addEventListener('change',renderTopics));
+  document.querySelectorAll('[data-ttmode]').forEach(b=>b.addEventListener('click',()=>{
+    ttMode=b.dataset.ttmode;document.querySelectorAll('[data-ttmode]').forEach(x=>x.classList.toggle('on',x===b));renderTopics();}));
+  document.querySelectorAll('[data-tsmode]').forEach(b=>b.addEventListener('click',()=>{
+    tsMode=b.dataset.tsmode;document.querySelectorAll('[data-tsmode]').forEach(x=>x.classList.toggle('on',x===b));renderTopics();}));
   ['b-set','b-ymin','b-ymax','b-order','b-poleX','b-poleY'].forEach(id=>$(id).addEventListener('change',renderBlocs));
   /* palette from storage */
   let pal=null;try{pal=localStorage.getItem('vrPalette')}catch(e){}

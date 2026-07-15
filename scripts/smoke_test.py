@@ -64,6 +64,12 @@ with sync_playwright() as p:
     checks["topic rows"] = pg.evaluate("document.querySelectorAll('#t-rows .gtr').length")
     checks["trend svg"] = pg.evaluate("document.querySelectorAll('#t-trend svg').length")
     checks["trend note"] = pg.evaluate("document.getElementById('t-trendnote').textContent")
+    # regional-group toggles (trend + stance)
+    pg.click('[data-ttmode="groups"]'); pg.wait_for_timeout(300)
+    checks["group trend series"] = pg.evaluate("document.querySelectorAll('#t-trend path').length")
+    pg.click('[data-tsmode="groups"]'); pg.wait_for_timeout(300)
+    checks["group stance title"] = pg.evaluate("document.getElementById('ts-title').textContent")
+    pg.click('[data-ttmode="all"]'); pg.click('[data-tsmode="states"]'); pg.wait_for_timeout(200)
     pg.screenshot(path=str(SHOTS / "03_topics.png"))
 
     pg.click('.tab[data-view="blocs"]')
@@ -86,6 +92,17 @@ with sync_playwright() as p:
     pg.wait_for_timeout(400)
     checks["mds after anchor change"] = pg.evaluate("document.getElementById('b-mds-note').textContent")
     pg.select_option("#b-poleY", "CHN")
+
+    pg.click('.tab[data-view="consensus"]')
+    pg.wait_for_timeout(500)
+    checks["consensus flipnote"] = pg.evaluate("document.getElementById('cn-flipnote').textContent")
+    checks["consensus strip dots"] = pg.evaluate("document.querySelectorAll('#cn-strips circle').length")
+    checks["consensus erosion bars"] = pg.evaluate("document.querySelectorAll('#cn-erosion rect').length")
+    checks["consensus explorer rows"] = pg.evaluate("document.querySelectorAll('#cn-rows .gtr').length")
+    pg.select_option("#cn-mode", "WD")
+    pg.wait_for_timeout(300)
+    checks["consensus WD filter"] = pg.evaluate("document.getElementById('cn-count').textContent")
+    pg.select_option("#cn-mode", "")
 
     pg.click('.tab[data-view="method"]')
     checks["method total"] = pg.evaluate("document.getElementById('m-tile-total').textContent")
@@ -127,6 +144,10 @@ ok = (checks["DATA loaded"] and checks["overview tiles"] == 4 and checks["countr
       and "anchors" in checks["mds anchors note"] and "Russia" in checks["mds after anchor change"]
       and checks["chip border"] == "1px" and checks["cmdk opens"]
       and checks["rollcall opens"] and checks["rollcall map paths"] > 150 and checks["rollcall list cols"] >= 3
+      and checks["group trend series"] >= 4 and "regional groups" in checks["group stance title"]
+      and "breakdowns" in checks["consensus flipnote"] and checks["consensus strip dots"] > 300
+      and checks["consensus erosion bars"] > 60 and checks["consensus explorer rows"] > 100
+      and checks["consensus WD filter"].startswith("236")
       and checks["file:// GA script absent"] and checks["file:// consent banner absent"]
       and checks["palette paper"] == "paper" and not errors)
 print("SMOKE:", "PASS" if ok else "FAIL")

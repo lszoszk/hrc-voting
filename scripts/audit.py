@@ -44,7 +44,7 @@ with sync_playwright() as p:
         pg.goto(INDEX.as_uri()); pg.wait_for_timeout(700)
         print(f"\n===== {label} {vp['width']}×{vp['height']} =====")
         issues = 0
-        for view in ["overview","country","topics","blocs","method"]:
+        for view in ["overview","country","topics","blocs","consensus","method"]:
             pg.click(f'.tab[data-view="{view}"]'); pg.wait_for_timeout(350)
             if view == "country":
                 pg.select_option("#c-country", "USA"); pg.wait_for_timeout(400)

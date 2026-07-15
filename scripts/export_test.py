@@ -54,6 +54,13 @@ with sync_playwright() as p:
     grab(pg, '[data-png="t-trend"]', "t-trend")
     png_stance = grab(pg, '[data-png="t-stance"]', "t-stance")
 
+    # --- Consensus (experimental) ---
+    pg.click('.tab[data-view="consensus"]'); pg.wait_for_timeout(600)
+    csv_cflips = grab(pg, '[data-csv="cflips"]', "cflips")
+    png_strips = grab(pg, '[data-png="cn-strips"]', "cn-strips")
+    csv_cero = grab(pg, '[data-csv="cero"]', "cero")
+    csv_cexp = grab(pg, '[data-csv="cexplorer"]', "cexplorer")
+
     # --- Blocs (heatmap + alignment-geometry panels) ---
     pg.click('.tab[data-view="blocs"]'); pg.wait_for_timeout(400)
     csv_bheat = grab(pg, '[data-csv="bheat"]', "bheat")
@@ -87,10 +94,13 @@ print(f"  bheat matrix is square-ish: {len(bheat_rows[0])} cols × {len(bheat_ro
 check_csv(csv_bmds, 20, "shared_votes")
 check_csv(csv_bcoh, 5, "agreement_index")
 check_csv(csv_biso, 40, "minority_side_pct")
+check_csv(csv_cflips, 30, "delta_pp")
+check_csv(csv_cero, 60, "consensus_share_pct")
+check_csv(csv_cexp, 6000, "mode")
 
 # ---- validate PNGs ----
 for path in [png_ovtl, png_ovmg, png_align, png_map, png_stance, png_heat,
-             png_mds, png_coh, png_iso]:
+             png_mds, png_coh, png_iso, png_strips]:
     data = path.read_bytes()
     dims = png_dims(data)
     ok = dims is not None and len(data) > 3000 and dims[0] > 100 and dims[1] > 60
