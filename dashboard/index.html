@@ -268,6 +268,7 @@
   <button class="tab" data-view="blocs"><span class="tidx">04</span><span class="tlbl">Blocs &amp; alignment</span></button>
   <button class="tab" data-view="consensus"><span class="tidx">05</span><span class="tlbl">Consensus</span></button>
   <button class="tab" data-view="method"><span class="tidx">06</span><span class="tlbl">Methodology</span></button>
+  <span style="margin-left:auto;display:inline-flex;align-items:center;gap:7px;padding:0 12px;flex-shrink:0"><span class="flbl" style="margin:0" title="Amendments answer a different question than resolutions — a Yes on a hostile amendment often opposes the parent text. See Methodology.">Scope</span><select class="sel" id="g-kind" style="min-width:0;padding:4px 6px"><option value="res">Resolutions only</option><option value="all">Resolutions + amendments</option><option value="amd">Amendments only</option></select></span>
 </nav>
 
 <main class="main"><div class="inner">
@@ -483,9 +484,9 @@
       </div>
     </div>
     <div class="panel">
-      <div class="p-head"><span class="p-idx">05</span><span class="p-title">Withdrawn before decision</span><span class="p-note" id="cn-wdnote"></span><span class="p-exp"><button class="expb" data-csv="cwd" title="Download data as CSV">CSV</button><button class="expb" data-png="cn-wd-dec,cn-wd-subj" data-pngname="withdrawn-subjects" title="Download chart as PNG">PNG</button></span></div>
+      <div class="p-head"><span class="p-idx">05</span><span class="p-title">Withdrawn amendments</span><span class="p-note" id="cn-wdnote"></span><span class="p-exp"><button class="expb" data-csv="cwd" title="Download data as CSV">CSV</button><button class="expb" data-png="cn-wd-dec,cn-wd-subj" data-pngname="withdrawn-subjects" title="Download chart as PNG">PNG</button></span></div>
       <div class="p-body">
-        <div class="p-desc">Tabled drafts pulled before any decision — a third, quieter signal, almost entirely a post-2010 phenomenon. Interpret with care: some withdrawals are procedural (merged or resubmitted texts), not defeats. Top subjects below.</div>
+        <div class="p-desc">Amendments tabled and then pulled before any decision — every withdrawn item in the catalogue is an amendment, so this panel ignores the global Scope filter. Almost entirely a post-2010 phenomenon. Interpret with care: some withdrawals are procedural (merged or resubmitted texts), not defeats.</div>
         <div id="cn-wd"></div>
       </div>
     </div>
@@ -580,7 +581,8 @@
       <br>• <b>Modes</b> — <i>adopted without a vote</i> (blue; commonly called consensus), <i>recorded vote</i> (red), <i>non-recorded vote</i> / <i>non-recorded unanimous</i> / <i>no information</i> (grey, mostly Commission-era), <i>withdrawn</i> (amber) and <i>not considered</i>. "Consensus share" uses considered texts only — withdrawn and not-considered drafts are excluded from the denominator.
       <br>• <b>Caveat</b> — adoption <i>without a vote</i> is not unanimity: delegations may dissociate from consensus in explanations of position after adoption, which the catalogue (and therefore this tab) does not capture.
       <br>• <b>Flip heuristic</b> — subjects with ≥6 resolutions in both modes, comparing the consensus share of the first vs the second half of the subject's chronology; |Δ| ≥ 40 percentage points is flagged as a <i>breakdown</i> (consensus→votes) or <i>rapprochement</i> (votes→consensus). Small series (n≈6–9) should be read as candidates for investigation, not findings.
-      <br>• <b>Withdrawn</b> — some withdrawals are procedural (texts merged or resubmitted), not defeats; the panel counts them without attributing motive.</div>
+      <br>• <b>Withdrawn</b> — some withdrawals are procedural (texts merged or resubmitted), not defeats; the panel counts them without attributing motive.
+      <br>• <b>Amendments &amp; the Scope filter</b> — 731 catalogued items are <i>amendments</i> to draft texts (27% of recorded roll-calls, almost all post-2010; every withdrawn or not-considered item is an amendment). A Yes on a hostile amendment frequently opposes the parent resolution's aim — e.g. votes supporting amendments to women's-rights texts are typically votes to weaken them — so mixing amendments with resolutions inverts meaning. The global <b>Scope</b> control (top right) therefore defaults to <i>resolutions only</i>; amendments can be analysed separately or together, are tagged <b>AMD</b> in tables, and detection uses two agreeing catalogue signals (the title marker ": amendment /" and the 993 draft note).</div>
   </div>
 </section>
 
@@ -981,8 +983,25 @@ const byIso=Object.fromEntries(C.map(c=>[c.iso3,c]));
 const NAME_FIX={COD:'DR Congo',VEN:'Venezuela',BOL:'Bolivia',IRN:'Iran',TZA:'Tanzania',GER:'Germany (FRG)',DDR:'Germany (GDR)'};
 Object.keys(NAME_FIX).forEach(iso=>{if(byIso[iso])byIso[iso].name=NAME_FIX[iso];});
 RES.forEach((r,i)=>{r.i=i;});   // stamp each resolution with its index (for roll-call drill-down)
-const SUBJ=D.subjects||[];
-const subjCS=new Map(SUBJ.map(x=>[x.name,x.cs]));
+/* global scope: amendments answer a different question than resolutions (a Yes on a
+   hostile amendment often opposes the parent text) — default excludes them */
+let gKind='res';try{gKind=localStorage.getItem('hrc-scope')||'res'}catch(e){}
+if(!['res','all','amd'].includes(gKind))gKind='res';
+const kindOK=r=>gKind==='all'?true:(gKind==='amd'?!!r.am:!r.am);
+const scopeLabel=()=>({res:'resolutions only',all:'resolutions + amendments',amd:'amendments only'})[gKind];
+let _rcCache={};
+function rollcallCount(){if(_rcCache[gKind]!=null)return _rcCache[gKind];
+  let n=0;for(const c of C){for(const ri of vmap(c.iso3).keys())if(kindOK(RES[ri]))n++;}
+  return _rcCache[gKind]=n;}
+let SUBJ=D.subjects||[];
+const subjCS=new Map((D.subjects||[]).map(x=>[x.name,x.cs]));
+function rescopeSubjects(){
+  const counts=new Map();
+  RES.forEach(r=>{if(!kindOK(r)||!r.subj)return;counts.set(r.subj,(counts.get(r.subj)||0)+1);});
+  SUBJ=(D.subjects||[]).map(s=>({name:s.name,cs:s.cs,n:counts.get(s.name)||0}))
+    .filter(s=>s.n>0).sort((a,b)=>b.n-a.n);
+}
+rescopeSubjects();
 const SUBS=new Set(['Y','N','A']);
 const nVotesTotal=C.reduce((a,c)=>a+c.n,0);
 
@@ -1009,7 +1028,7 @@ function download(name,content,mime){
   setTimeout(()=>{URL.revokeObjectURL(url);a.remove();},120);
 }
 function exportCSV(key){const d=CSVDATA[key];if(!d||!d.rows)return;
-  const meta='# '+(d.title||d.name)+'\r\n# '+citeLine()+'\r\n';   // title + source as CSV comment lines
+  const meta='# '+(d.title||d.name)+' \u00b7 '+scopeLabel()+'\r\n# '+citeLine()+'\r\n';   // title + scope + source
   download('hrc-'+d.name+'.csv','﻿'+meta+toCSV(d.headers,d.rows),'text/csv;charset=utf-8');}
 /* copy resolved (var()-substituted) presentation styles onto a detached clone so the
    serialized SVG renders identically when rasterised outside the document. */
@@ -1028,7 +1047,7 @@ function exportPNG(hostSel,name,key){
   const paper=cst.getPropertyValue('--paper').trim()||'#ffffff',
         ink=cst.getPropertyValue('--ink').trim()||'#111',
         dim=cst.getPropertyValue('--dim').trim()||'#666';
-  const title=(CSVDATA[key]&&CSVDATA[key].title)||name, cite=citeLine();
+  const title=((CSVDATA[key]&&CSVDATA[key].title)||name)+' \u00b7 '+scopeLabel(), cite=citeLine();
   const TF='600 14px "JetBrains Mono",ui-monospace,monospace',CF='10px "JetBrains Mono",ui-monospace,monospace';
   const items=svgs.map(svg=>{const vb=(svg.getAttribute('viewBox')||'').split(/[ ,]+/).map(Number);
     const r=svg.getBoundingClientRect();return {svg,w:vb[2]||r.width||300,h:vb[3]||r.height||150};});
@@ -1068,7 +1087,7 @@ function vmap(iso){if(_vm[iso])return _vm[iso];const v=D.votes[iso],m=new Map();
 
 /* resolutions in a year window (+optional body); From>To tolerated by swapping */
 function resSet(ymin,ymax,body){const a=Math.min(ymin,ymax),b=Math.max(ymin,ymax),out=new Set();
-  for(let i=0;i<RES.length;i++){const r=RES[i];if(r.year!=null&&r.year>=a&&r.year<=b&&(!body||r.body===body))out.add(i);}return out;}
+  for(let i=0;i<RES.length;i++){const r=RES[i];if(r.year!=null&&r.year>=a&&r.year<=b&&(!body||r.body===body)&&kindOK(r))out.add(i);}return out;}
 function yearPair(idMin,idMax){const a=+$(idMin).value,b=+$(idMax).value;return a<=b?[a,b]:[b,a];}
 
 /* ---------- palette switcher ---------- */
@@ -1100,28 +1119,29 @@ function renderCurrent(){
 
 /* ---------- 01 OVERVIEW ---------- */
 function renderOverview(){
+  const RS=RES.filter(kindOK);
   $('ov-tiles').innerHTML=[
-    ['Recorded resolutions',fmt(RES.length),''],['Countries',fmt(C.length),''],
-    ['Roll-call votes cast',fmt(nVotesTotal),''],['Years covered',M.yearMin+'–'+M.yearMax,'']
+    [gKind==='amd'?'Recorded amendments':'Recorded resolutions',fmt(RS.length),gKind==='res'?'amendments excluded':''],['Countries',fmt(C.length),''],
+    ['Roll-call votes cast',fmt(rollcallCount()),''],['Years covered',M.yearMin+'–'+M.yearMax,'']
   ].map(t=>`<div class="tile"><div class="tk">${t[0]}</div><div class="tv">${t[1]}<small class="tvs">${t[2]}</small></div></div>`).join('');
   const years=[];for(let y=M.yearMin;y<=M.yearMax;y++)years.push(y);
   const perYear={};years.forEach(y=>perYear[y]={CHR:0,HRC:0});
-  RES.forEach(r=>{if(r.year!=null&&perYear[r.year])perYear[r.year][r.body]++;});
+  RS.forEach(r=>{if(r.year!=null&&perYear[r.year])perYear[r.year][r.body]++;});
   const maxY=Math.max(...years.map(y=>perYear[y].CHR+perYear[y].HRC));
   VRC.ovTimeline($('ov-timeline'),{years,perYear,maxY,ymin:M.yearMin,ymax:M.yearMax});
   CSVDATA.ovtl={name:'recorded-votes-per-year',title:'Recorded votes per year, by deciding body',headers:['year','CHR','HRC','total'],
     rows:years.filter(y=>perYear[y].CHR+perYear[y].HRC>0).map(y=>[y,perYear[y].CHR,perYear[y].HRC,perYear[y].CHR+perYear[y].HRC])};
   const buckets=[['Near-unanimous (0–5)',0,5],['Clear (6–15)',6,15],['Divided (16–30)',16,30],['Highly divided (31+)',31,9999]];
   const counts=buckets.map(()=>0);
-  RES.forEach(r=>{if(r.y==null||r.n==null)return;const m=Math.abs(r.y-r.n);
+  RS.forEach(r=>{if(r.y==null||r.n==null)return;const m=Math.abs(r.y-r.n);
     for(let i=0;i<buckets.length;i++)if(m>=buckets[i][1]&&m<=buckets[i][2]){counts[i]++;break;}});
   const tot=counts.reduce((a,b)=>a+b,0);
   VRC.margin($('ov-margin'),{rows:buckets.map((b,i)=>({label:b[0],count:counts[i],pct:Math.round(counts[i]/tot*100)}))});
   CSVDATA.ovmg={name:'vote-margin-distribution',title:'How contested were the votes — share by Yes−No margin',headers:['margin_bucket','count','share_pct'],
     rows:buckets.map((b,i)=>[b[0],counts[i],Math.round(counts[i]/tot*100)])};
-  const closeRows=RES.filter(r=>r.y!=null&&r.n!=null&&(r.y+r.n)>10)
+  const closeRows=RS.filter(r=>r.y!=null&&r.n!=null&&(r.y+r.n)>10)
     .map(r=>({r,m:Math.abs(r.y-r.n)})).sort((a,b)=>a.m-b.m).slice(0,12).map(x=>x.r);
-  $('ov-close').innerHTML=closeRows.map(r=>`<div class="gtr cols5s"><span class="gtc">${r.year==null?'—':r.year}</span><span class="gtc rescell" title="${esc(r.title)}"><a class="reslink" role="button" tabindex="0" data-ri="${r.i}" title="View roll-call">${esc(r.sym||r.title.slice(0,40))}</a><a class="srclink" href="${recUrl(r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(r.sym||'record')} on OHCHR (new tab)" title="OHCHR source ↗"><span aria-hidden="true">↗</span></a></span><span class="gtc mut" title="${esc(r.title)}">${r.subj?esc(tc(r.subj)):'—'}</span><span class="gtc num">${r.y}</span><span class="gtc num">${r.n}</span><span class="gtc num">${r.a==null?'—':r.a}</span></div>`).join('');
+  $('ov-close').innerHTML=closeRows.map(r=>`<div class="gtr cols5s"><span class="gtc">${r.year==null?'—':r.year}</span><span class="gtc rescell" title="${esc(r.title)}"><a class="reslink" role="button" tabindex="0" data-ri="${r.i}" title="View roll-call">${esc(r.sym||r.title.slice(0,40))}</a>${r.am?'<span class="pill pX" style="margin-left:5px;font-size:8px;padding:0 4px;flex:0 0 auto" title="Amendment to a draft text">AMD</span>':''}<a class="srclink" href="${recUrl(r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(r.sym||'record')} on OHCHR (new tab)" title="OHCHR source ↗"><span aria-hidden="true">↗</span></a></span><span class="gtc mut" title="${esc(r.title)}">${r.subj?esc(tc(r.subj)):'—'}</span><span class="gtc num">${r.y}</span><span class="gtc num">${r.n}</span><span class="gtc num">${r.a==null?'—':r.a}</span></div>`).join('');
   CSVDATA.ovclose={name:'most-divided-votes',title:'Most divided recorded votes (narrowest Yes−No margin)',headers:['year','resolution','subject','title','yes','no','abstain','record_url'],
     rows:closeRows.map(r=>[r.year,r.sym,r.subj,r.title,r.y,r.n,r.a,recUrl(r.id)])};
 }
@@ -1188,7 +1208,7 @@ function renderCountry(){
     else if(cSortKey==='subj'){va=a.r.subj||'';vb=b.r.subj||'';}
     else{va=a.r.sym||'';vb=b.r.sym||'';}
     return (va>vb?1:va<vb?-1:0)*cSortDir;});
-  $('c-rows').innerHTML=sorted.map(x=>`<div class="gtr colsc2"><span class="gtc">${x.r.year==null?'—':x.r.year}</span><span class="gtc rescell" title="${esc(x.r.title)}"><a class="reslink" role="button" tabindex="0" data-ri="${x.r.i}" title="View roll-call">${esc(x.r.sym||x.r.title.slice(0,50))}</a><a class="srclink" href="${recUrl(x.r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(x.r.sym||'record')} on OHCHR (new tab)" title="OHCHR source ↗"><span aria-hidden="true">↗</span></a></span><span class="gtc mut" title="${esc(x.r.title)}">${x.r.subj?esc(tc(x.r.subj)):'—'}</span><span class="gtc"><span class="pill ${cls[x.code]||'pX'}">${lbl[x.code]||x.code||'—'}</span></span><span class="gtc">${x.r.body}</span></div>`).join('');
+  $('c-rows').innerHTML=sorted.map(x=>`<div class="gtr colsc2"><span class="gtc">${x.r.year==null?'—':x.r.year}</span><span class="gtc rescell" title="${esc(x.r.title)}"><a class="reslink" role="button" tabindex="0" data-ri="${x.r.i}" title="View roll-call">${esc(x.r.sym||x.r.title.slice(0,50))}</a>${x.r.am?'<span class="pill pX" style="margin-left:5px;font-size:8px;padding:0 4px;flex:0 0 auto" title="Amendment to a draft text">AMD</span>':''}<a class="srclink" href="${recUrl(x.r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(x.r.sym||'record')} on OHCHR (new tab)" title="OHCHR source ↗"><span aria-hidden="true">↗</span></a></span><span class="gtc mut" title="${esc(x.r.title)}">${x.r.subj?esc(tc(x.r.subj)):'—'}</span><span class="gtc"><span class="pill ${cls[x.code]||'pX'}">${lbl[x.code]||x.code||'—'}</span></span><span class="gtc">${x.r.body}</span></div>`).join('');
   CSVDATA.crows={name:'country-'+iso+'-votes',title:c.name+' — every recorded vote '+cwin,headers:['year','resolution','subject','title','vote','body','record_url'],
     rows:sorted.map(x=>[x.r.year,x.r.sym,x.r.subj,x.r.title,lbl[x.code]||x.code,x.r.body,recUrl(x.r.id)])};
 }
@@ -1237,6 +1257,7 @@ function topicMatched(){
   const [ymin,ymax]=yearPair('t-ymin','t-ymax'),matched=[];
   RES.forEach((r,i)=>{
     if(r.year==null||r.year<ymin||r.year>ymax)return;
+    if(!kindOK(r))return;
     if(type==='country'&&!subjCS.get(r.subj))return;
     if(type==='theme'&&subjCS.get(r.subj))return;
     let ok=false;
@@ -1334,7 +1355,7 @@ function renderTopics(){
   /* resolutions table */
   $('t-restitle').textContent='('+matched.length+') — '+heading;
   const tres=matched.map(i=>RES[i]).sort((a,b)=>(b.year||0)-(a.year||0));
-  $('t-rows').innerHTML=tres.map(r=>`<div class="gtr cols6s"><span class="gtc">${r.year==null?'—':r.year}</span><span class="gtc rescell" title="${esc(r.title)}"><a class="reslink" role="button" tabindex="0" data-ri="${r.i}" title="View roll-call">${esc(r.sym||r.title.slice(0,44))}</a><a class="srclink" href="${recUrl(r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(r.sym||'record')} on OHCHR (new tab)" title="OHCHR source ↗"><span aria-hidden="true">↗</span></a></span><span class="gtc mut" title="${esc(r.title)}">${r.subj?esc(tc(r.subj)):'—'}</span><span class="gtc num">${r.y==null?'—':r.y}</span><span class="gtc num">${r.n==null?'—':r.n}</span><span class="gtc num">${r.a==null?'—':r.a}</span><span class="gtc">${r.body}</span></div>`).join('');
+  $('t-rows').innerHTML=tres.map(r=>`<div class="gtr cols6s"><span class="gtc">${r.year==null?'—':r.year}</span><span class="gtc rescell" title="${esc(r.title)}"><a class="reslink" role="button" tabindex="0" data-ri="${r.i}" title="View roll-call">${esc(r.sym||r.title.slice(0,44))}</a>${r.am?'<span class="pill pX" style="margin-left:5px;font-size:8px;padding:0 4px;flex:0 0 auto" title="Amendment to a draft text">AMD</span>':''}<a class="srclink" href="${recUrl(r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(r.sym||'record')} on OHCHR (new tab)" title="OHCHR source ↗"><span aria-hidden="true">↗</span></a></span><span class="gtc mut" title="${esc(r.title)}">${r.subj?esc(tc(r.subj)):'—'}</span><span class="gtc num">${r.y==null?'—':r.y}</span><span class="gtc num">${r.n==null?'—':r.n}</span><span class="gtc num">${r.a==null?'—':r.a}</span><span class="gtc">${r.body}</span></div>`).join('');
   CSVDATA.trows={name:'topic-'+slug+'-resolutions',title:heading+' — resolutions '+twin,headers:['year','resolution','subject','title','yes','no','abstain','body','record_url'],
     rows:tres.map(r=>[r.year,r.sym,r.subj,r.title,r.y,r.n,r.a,r.body,recUrl(r.id)])};
   /* stance (individual states or UN regional groups) */
@@ -1503,11 +1524,13 @@ const byIdRES=Object.fromEntries(RES.map(r=>[r.id,r.i]));
 const MODE_WORD={C:'adopted without a vote',V:'recorded vote',VC:'recorded vote (closed meeting)',NR:'non-recorded vote',NRU:'non-recorded, adopted unanimously',NRX:'non-recorded (no information)',WD:'withdrawn',NC:'not considered'};
 const isVoted=r=>r.vt==='V'||r.vt==='VC'||(('y' in r)&&(r.vt==='NR'||r.vt==='NRU'||r.vt==='NRX'));
 const isConsidered=r=>r.vt!=='WD'&&r.vt!=='NC';
-let _flips=null;
+let _flips=null,_flipsKind=null;
 function flipStats(){
-  if(_flips)return _flips;
+  if(_flips&&_flipsKind===gKind)return _flips;
+  _flipsKind=gKind;
   const bySubj=new Map();
   RA.forEach(r=>{if(!r.subj||r.year==null)return;
+    if(!kindOK(r))return;
     if(r.vt!=='C'&&!isVoted(r))return;               // flip sequence uses C vs voted only
     if(!bySubj.has(r.subj))bySubj.set(r.subj,[]);
     bySubj.get(r.subj).push(r);});
@@ -1524,18 +1547,19 @@ function flipStats(){
     out.push({subj,rows,h1,h2,diff:h2-h1,dir:h2<h1?'breakdown':'rapprochement'});});
   _flips=out;return out;
 }
-let _cnStatic=false;
+let _cnStatic=null;
 function renderConsensus(){
   if(!RA.length){$('cn-tiles').innerHTML='<div class="note">Rebuild data.js to include the full catalogue (resAll missing).</div>';return;}
-  if(!_cnStatic){_cnStatic=true;
-    const considered=RA.filter(isConsidered),nC=RA.filter(r=>r.vt==='C').length;
+  if(_cnStatic!==gKind){_cnStatic=gKind;
+    const RAS=RA.filter(kindOK);
+    const considered=RAS.filter(isConsidered),nC=RAS.filter(r=>r.vt==='C').length;
     const flips=flipStats(),nBk=flips.filter(f=>f.dir==='breakdown').length,nRp=flips.length-nBk;
-    const wd=RA.filter(r=>r.vt==='WD'),wdRecent=wd.filter(r=>r.year>=2010).length;
+    const wd=RA.filter(r=>r.vt==='WD'),wdRecent=wd.filter(r=>r.year>=2010).length;   // all withdrawn ARE amendments — scope-independent
     $('cn-tiles').innerHTML=[
-      ['Catalogued resolutions',fmt(RA.length),''],
+      [gKind==='amd'?'Catalogued amendments':'Catalogued resolutions',fmt(RAS.length),gKind==='res'?'amendments excluded':''],
       ['Adopted without a vote',fmt(nC),Math.round(nC/considered.length*100)+'% of considered'],
       ['Mode flips detected',fmt(flips.length),nBk+' breakdown · '+nRp+' rapprochement'],
-      ['Withdrawn drafts',fmt(wd.length),Math.round(wdRecent/wd.length*100)+'% since 2010']
+      ['Withdrawn amendments',fmt(wd.length),Math.round(wdRecent/wd.length*100)+'% since 2010']
     ].map(t=>`<div class="tile"><div class="tk">${t[0]}</div><div class="tv">${t[1]}<small class="tvs">${t[2]}</small></div></div>`).join('');
     /* 01 flips */
     const mkRow=f=>({label:tc(f.subj),note:Math.round(f.h1*100)+'%→'+Math.round(f.h2*100)+'%',
@@ -1565,7 +1589,7 @@ function renderConsensus(){
       rows:ero.map(d=>[d.y,d.body,d.tot,d.c,d.v,d.o,Math.round(d.share*100)])};
     /* 03 stack (all catalogued incl. withdrawn) */
     const byY2=new Map();
-    RA.forEach(r=>{if(r.year==null)return;let d=byY2.get(r.year);if(!d){d={y:r.year,parts:{C:0,V:0,WD:0,O:0},tot:0};byY2.set(r.year,d);}
+    RAS.forEach(r=>{if(r.year==null)return;let d=byY2.get(r.year);if(!d){d={y:r.year,parts:{C:0,V:0,WD:0,O:0},tot:0};byY2.set(r.year,d);}
       const b=r.vt==='C'?'C':(r.vt==='V'||r.vt==='VC')?'V':r.vt==='WD'?'WD':'O';
       d.parts[b]++;d.tot++;});
     const stack=[...byY2.values()].sort((a,b)=>a.y-b.y);
@@ -1604,7 +1628,7 @@ function renderConsensus(){
 function renderCNExplorer(){
   const q=$('cn-q').value.trim().toLowerCase(),mode=$('cn-mode').value,[ymin,ymax]=yearPair('cn-ymin','cn-ymax');
   const inMode=r=>!mode||(mode==='V'?(r.vt==='V'||r.vt==='VC'):mode==='NRT'?(r.vt==='NR'||r.vt==='NRU'||r.vt==='NRX'):r.vt===mode);
-  const rows=RA.filter(r=>r.year!=null&&r.year>=ymin&&r.year<=ymax&&inMode(r)&&
+  const rows=RA.filter(r=>kindOK(r)&&r.year!=null&&r.year>=ymin&&r.year<=ymax&&inMode(r)&&
     (!q||(r.subj||'').toLowerCase().includes(q)||(r.t||'').toLowerCase().includes(q)||(r.sym||'').toLowerCase().includes(q)))
     .sort((a,b)=>(b.year||0)-(a.year||0)||(a.sym<b.sym?-1:1));
   const CAP=400,shown=rows.slice(0,CAP);
@@ -1614,10 +1638,13 @@ function renderCNExplorer(){
   $('cn-rows').innerHTML=shown.map(r=>{
     const canOpen=(r.vt==='V'||r.vt==='VC')&&byIdRES[r.id]!=null;
     const symCell=canOpen
-      ?`<span class="gtc rescell" title="${esc(r.t)}"><a class="reslink" role="button" tabindex="0" data-ri="${byIdRES[r.id]}" title="View roll-call">${esc(r.sym||'—')}</a><a class="srclink" href="${recUrl(r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(r.sym||'record')} on OHCHR (new tab)"><span aria-hidden="true">↗</span></a></span>`
-      :`<span class="gtc rescell" title="${esc(r.t)}"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.sym||'—')}</span><a class="srclink" href="${recUrl(r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(r.sym||'record')} on OHCHR (new tab)"><span aria-hidden="true">↗</span></a></span>`;
+      ?`<span class="gtc rescell" title="${esc(r.t)}"><a class="reslink" role="button" tabindex="0" data-ri="${byIdRES[r.id]}" title="View roll-call">${esc(r.sym||'—')}</a>${r.am?'<span class="pill pX" style="margin-left:5px;font-size:8px;padding:0 4px;flex:0 0 auto" title="Amendment to a draft text">AMD</span>':''}<a class="srclink" href="${recUrl(r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(r.sym||'record')} on OHCHR (new tab)"><span aria-hidden="true">↗</span></a></span>`
+      :`<span class="gtc rescell" title="${esc(r.t)}"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.sym||'—')}</span>${r.am?'<span class="pill pX" style="margin-left:5px;font-size:8px;padding:0 4px;flex:0 0 auto" title="Amendment to a draft text">AMD</span>':''}<a class="srclink" href="${recUrl(r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(r.sym||'record')} on OHCHR (new tab)"><span aria-hidden="true">↗</span></a></span>`;
     return `<div class="gtr colsc2"><span class="gtc">${r.year==null?'—':r.year}</span>${symCell}<span class="gtc mut" title="${esc(r.t)}">${r.subj?esc(tc(r.subj)):esc(r.t.slice(0,60))}</span><span class="gtc">${pill(r.vt)}</span><span class="gtc">${r.body}</span></div>`;}).join('');
-  $('cn-count').textContent=fmt(rows.length)+' of '+fmt(RA.length)+' resolutions'+(rows.length>CAP?' · showing first '+CAP+' — narrow the filters or download the CSV':'');
+  const scopedN=RA.filter(kindOK).length;
+  let hint=rows.length>CAP?' · showing first '+CAP+' — narrow the filters or download the CSV':'';
+  if(!rows.length&&gKind==='res'&&(mode==='WD'||mode==='NC'))hint=' — withdrawn / not-considered items are all amendments; switch Scope (top right) to see them';
+  $('cn-count').textContent=fmt(rows.length)+' of '+fmt(scopedN)+' in scope'+hint;
   CSVDATA.cexplorer={name:'resolutions-explorer',title:'All catalogued resolutions (filtered view)',
     headers:['year','symbol','subject','title','mode','body','yes','no','abstain','record_url'],
     rows:rows.map(r=>[r.year,r.sym,r.subj,r.t,MODE_WORD[r.vt]||r.vt,r.body,('y' in r)?r.y:'',('y' in r)?r.n:'',('y' in r)?r.a:'',recUrl(r.id)])};
@@ -1749,7 +1776,7 @@ function openResolution(ri){
   if(r.urlD)links.push('<a href="'+esc(r.urlD)+'" target="_blank" rel="noopener">Draft ↗</a>');
   const bodyName=r.body==='HRC'?'Human Rights Council':'Commission on Human Rights';
   $('rc-head').innerHTML=
-    '<div class="rc-sym">'+esc(r.sym||'')+'</div>'+
+    '<div class="rc-sym">'+esc(r.sym||'')+(r.am?' <span class="pill pX" style="font-size:8px;padding:0 5px;vertical-align:middle" title="Amendment to a draft text">AMENDMENT</span>':'')+'</div>'+
     '<div class="rc-title">'+esc(r.title||'')+'</div>'+
     '<div class="rc-meta">'+bodyName+(r.date?' · '+fmtDate(r.date):(r.year?' · '+r.year:''))+(r.item?' · '+esc(r.item):'')+
       (r.spon?'<br>Main sponsors: '+esc(r.spon):'')+(r.mtg?(r.spon?' · ':'<br>')+esc(r.mtg):'')+'</div>'+
@@ -1806,6 +1833,12 @@ function fillYears(sel,def){const s=$(sel);let h='';for(let y=M.yearMin;y<=M.yea
     ttMode=b.dataset.ttmode;document.querySelectorAll('[data-ttmode]').forEach(x=>x.classList.toggle('on',x===b));renderTopics();}));
   document.querySelectorAll('[data-tsmode]').forEach(b=>b.addEventListener('click',()=>{
     tsMode=b.dataset.tsmode;document.querySelectorAll('[data-tsmode]').forEach(x=>x.classList.toggle('on',x===b));renderTopics();}));
+  $('g-kind').value=gKind;
+  $('g-kind').addEventListener('change',()=>{
+    gKind=$('g-kind').value;try{localStorage.setItem('hrc-scope',gKind)}catch(e){}
+    _heatCache.key=null;_consCache.key=null;_cohCache.key=null;_isoCache.key=null;
+    _flips=null;_cnStatic=null;_rcCache={};
+    rescopeSubjects();renderTopicChips();renderCurrent();});
   ['b-set','b-ymin','b-ymax','b-order','b-poleX','b-poleY'].forEach(id=>$(id).addEventListener('change',renderBlocs));
   /* palette from storage */
   let pal=null;try{pal=localStorage.getItem('vrPalette')}catch(e){}

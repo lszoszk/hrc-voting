@@ -59,7 +59,9 @@ with sync_playwright() as p:
     csv_cflips = grab(pg, '[data-csv="cflips"]', "cflips")
     png_strips = grab(pg, '[data-png="cn-strips"]', "cn-strips")
     csv_cero = grab(pg, '[data-csv="cero"]', "cero")
+    pg.select_option("#g-kind", "all"); pg.wait_for_timeout(500)   # full catalogue for the explorer CSV
     csv_cexp = grab(pg, '[data-csv="cexplorer"]', "cexplorer")
+    pg.select_option("#g-kind", "res"); pg.wait_for_timeout(400)
 
     # --- Blocs (heatmap + alignment-geometry panels) ---
     pg.click('.tab[data-view="blocs"]'); pg.wait_for_timeout(400)

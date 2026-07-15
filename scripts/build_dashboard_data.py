@@ -99,6 +99,11 @@ def main():
         return re.sub(r"\s*:\s*(draft\s+)?(resolution|decision|amendment)s?\s*/.*$",
                       "", t.strip(), flags=re.I).strip()
 
+    def is_amendment(r):
+        # two independent catalogue signals; union of both (agree on 717/731)
+        return bool(re.search(r":\s*amendment", r["title"], re.I)
+                    or re.match(r"\s*amendment", r.get("draft", ""), re.I))
+
     res_all = []
     for r in res_rows:
         row = {
@@ -108,6 +113,8 @@ def main():
             "subj": r["agenda_subject"].strip(),
             "vt": VT_CODE.get(r["vote_type"], "O"),
         }
+        if is_amendment(r):
+            row["am"] = 1
         if r["yes"].isdigit() and (int(r["yes"]) + int(r["no"]) + int(r["abstain"])) > 0:
             row["y"], row["n"], row["a"] = int(r["yes"]), int(r["no"]), int(r["abstain"])
         res_all.append(row)
@@ -126,6 +133,7 @@ def main():
         "y": int(r["yes"]) if r["yes"].isdigit() else None,
         "n": int(r["no"]) if r["no"].isdigit() else None,
         "a": int(r["abstain"]) if r["abstain"].isdigit() else None,
+        **({"am": 1} if is_amendment(r) else {}),
     } for r in recorded]
 
     # per-country vote matrix + latest display name

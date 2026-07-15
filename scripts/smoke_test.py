@@ -31,6 +31,13 @@ with sync_playwright() as p:
     checks["overview tiles"] = pg.evaluate("document.querySelectorAll('#ov-tiles .tile').length")
     checks["ov legend"] = pg.evaluate("document.getElementById('ov-legend').textContent.includes('Commission')")
     checks["most divided rows"] = pg.evaluate("document.querySelectorAll('#ov-close .gtr').length")
+    # global amendments scope: default excludes amendments; counts shift per scope
+    checks["scope default"] = pg.evaluate("document.getElementById('g-kind').value")
+    checks["ov tile (res)"] = pg.evaluate("document.querySelector('#ov-tiles .tv').textContent")
+    pg.select_option("#g-kind", "all"); pg.wait_for_timeout(400)
+    checks["ov tile (all)"] = pg.evaluate("document.querySelector('#ov-tiles .tv').textContent")
+    checks["amd pills (all)"] = pg.evaluate("document.querySelectorAll('#ov-close .pill').length")
+    pg.select_option("#g-kind", "res"); pg.wait_for_timeout(400)
     pg.screenshot(path=str(SHOTS / "01_overview_paper.png"))
     # single-resolution roll-call overlay (drill-down from a table row)
     pg.evaluate("document.querySelector('#ov-close .reslink').click()")
@@ -99,10 +106,11 @@ with sync_playwright() as p:
     checks["consensus strip dots"] = pg.evaluate("document.querySelectorAll('#cn-strips circle').length")
     checks["consensus erosion bars"] = pg.evaluate("document.querySelectorAll('#cn-erosion rect').length")
     checks["consensus explorer rows"] = pg.evaluate("document.querySelectorAll('#cn-rows .gtr').length")
+    pg.select_option("#g-kind", "all"); pg.wait_for_timeout(400)
     pg.select_option("#cn-mode", "WD")
     pg.wait_for_timeout(300)
     checks["consensus WD filter"] = pg.evaluate("document.getElementById('cn-count').textContent")
-    pg.select_option("#cn-mode", "")
+    pg.select_option("#cn-mode", ""); pg.select_option("#g-kind", "res"); pg.wait_for_timeout(300)
 
     pg.click('.tab[data-view="method"]')
     checks["method total"] = pg.evaluate("document.getElementById('m-tile-total').textContent")
@@ -145,7 +153,9 @@ ok = (checks["DATA loaded"] and checks["overview tiles"] == 4 and checks["countr
       and checks["chip border"] == "1px" and checks["cmdk opens"]
       and checks["rollcall opens"] and checks["rollcall map paths"] > 150 and checks["rollcall list cols"] >= 3
       and checks["group trend series"] >= 4 and "regional groups" in checks["group stance title"]
-      and "breakdowns" in checks["consensus flipnote"] and checks["consensus strip dots"] > 300
+      and checks["scope default"] == "res" and "1,248" in checks["ov tile (res)"]
+      and "1,705" in checks["ov tile (all)"] and checks["amd pills (all)"] >= 5
+      and "breakdowns" in checks["consensus flipnote"] and checks["consensus strip dots"] > 100
       and checks["consensus erosion bars"] > 60 and checks["consensus explorer rows"] > 100
       and checks["consensus WD filter"].startswith("236")
       and checks["file:// GA script absent"] and checks["file:// consent banner absent"]
