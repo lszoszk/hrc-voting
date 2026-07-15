@@ -31,6 +31,7 @@ with sync_playwright() as p:
     checks["overview tiles"] = pg.evaluate("document.querySelectorAll('#ov-tiles .tile').length")
     checks["ov legend"] = pg.evaluate("document.getElementById('ov-legend').textContent.includes('Commission')")
     checks["most divided rows"] = pg.evaluate("document.querySelectorAll('#ov-close .gtr').length")
+    checks["hrc line (overview)"] = pg.evaluate("[...document.querySelectorAll('#ov-timeline svg line')].some(l=>l.getAttribute('stroke-dasharray')==='3 3')")
     # global amendments scope: default excludes amendments; counts shift per scope
     checks["scope default"] = pg.evaluate("document.getElementById('g-kind').value")
     checks["ov tile (res)"] = pg.evaluate("document.querySelector('#ov-tiles .tv').textContent")
@@ -105,6 +106,7 @@ with sync_playwright() as p:
     checks["consensus flipnote"] = pg.evaluate("document.getElementById('cn-flipnote').textContent")
     checks["consensus strip dots"] = pg.evaluate("document.querySelectorAll('#cn-strips circle').length")
     checks["consensus erosion bars"] = pg.evaluate("document.querySelectorAll('#cn-erosion rect').length")
+    checks["hrc line (erosion)"] = pg.evaluate("[...document.querySelectorAll('#cn-erosion svg line')].some(l=>l.getAttribute('stroke-dasharray')==='3 3'&&l.getAttribute('x1')===l.getAttribute('x2'))")
     checks["consensus explorer rows"] = pg.evaluate("document.querySelectorAll('#cn-rows .gtr').length")
     pg.select_option("#g-kind", "all"); pg.wait_for_timeout(400)
     pg.select_option("#cn-mode", "WD")
@@ -153,6 +155,7 @@ ok = (checks["DATA loaded"] and checks["overview tiles"] == 4 and checks["countr
       and checks["chip border"] == "1px" and checks["cmdk opens"]
       and checks["rollcall opens"] and checks["rollcall map paths"] > 150 and checks["rollcall list cols"] >= 3
       and checks["group trend series"] >= 4 and "regional groups" in checks["group stance title"]
+      and checks["hrc line (overview)"] and checks["hrc line (erosion)"]
       and checks["scope default"] == "res" and "1,248" in checks["ov tile (res)"]
       and "1,705" in checks["ov tile (all)"] and checks["amd pills (all)"] >= 5
       and "breakdowns" in checks["consensus flipnote"] and checks["consensus strip dots"] > 100

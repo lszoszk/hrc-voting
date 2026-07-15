@@ -512,7 +512,8 @@
 <section id="view-method" style="display:none">
   <div class="panel">
     <div class="p-head"><span class="p-idx">01</span><span class="p-title">Source &amp; scope</span></div>
-    <div class="p-body ptext">All data comes from the <a href="https://searchlibrary.ohchr.org/search?c=Voting" target="_blank" rel="noopener">OHCHR Search Library — Voting collection</a>, harvested in full (<span id="m-total-inline">…</span> records — matching the collection's own reported total) via its MARCXML export. It covers every voting record catalogued for the <b>Commission on Human Rights</b> (1946–2006) and its successor, the <b>Human Rights Council</b> (2006–present).</div>
+    <div class="p-body ptext">All data comes from the <a href="https://searchlibrary.ohchr.org/search?c=Voting" target="_blank" rel="noopener">OHCHR Search Library — Voting collection</a>, harvested in full (<span id="m-total-inline">…</span> records — matching the collection's own reported total) via its MARCXML export. It covers every voting record catalogued for the <b>Commission on Human Rights</b> (1946–2006) and its successor, the <b>Human Rights Council</b> (2006–present).
+      <br>• <b>The 2006 institutional break</b> — the Council did not merely rename the Commission: it introduced new membership, election rules, the Universal Periodic Review and a different sessional rhythm. Because voting dynamics before and after differ substantially, every time-axis chart carries a dashed <b>HRC</b> reference line at 2006; treat trends read straight across it with care.</div>
   </div>
   <div class="panel">
     <div class="p-head"><span class="p-idx">02</span><span class="p-title">Why most views show ~1,700 resolutions, not <span id="m-total-head">6,346</span></span></div>
@@ -630,6 +631,19 @@ function ensureTT(){if(!tt||!tt.isConnected){tt=document.createElement('div');tt
 function show(html,x,y){const t=ensureTT();t.innerHTML=html;t.style.opacity='1';const w=t.offsetWidth,h=t.offsetHeight;t.style.left=Math.min(x+14,innerWidth-w-8)+'px';t.style.top=Math.max(8,y-h-12)+'px';}
 function hide(){if(tt)tt.style.opacity='0';}
 function hov(node,html){node.addEventListener('mousemove',e=>show(html,e.clientX,e.clientY));node.addEventListener('mouseleave',hide);}
+/* The Human Rights Council replaced the Commission on Human Rights in 2006 — a hard
+   institutional break (new membership, procedures, dynamics). Draw a clear reference
+   line on every time axis so trends are never read straight across the discontinuity. */
+const HRC_YEAR=2006;
+function hrcMark(s,px,yTop,yBot,o){o=o||{};
+  el('line',{x1:px,x2:px,y1:yTop,y2:yBot,stroke:'var(--ink-2)','stroke-width':1.3,'stroke-dasharray':'3 3',opacity:0.72},s);
+  if(o.label!==false){const left=!!o.labelLeft;
+    txt({x:px+(left?-4:4),y:o.labelY!=null?o.labelY:yTop+9,'font-size':'8.5','font-weight':'700',
+         fill:'var(--ink-2)','text-anchor':left?'end':'start'},s,o.text||'HRC ›');}
+  const hit=el('rect',{x:px-4,y:yTop,width:8,height:Math.max(1,yBot-yTop),fill:'transparent',style:'cursor:help'},s);
+  hov(hit,'<b>2006 — Human Rights Council</b><br>replaces the Commission on Human Rights.<br>New membership, procedures &amp; dynamics — read trends across this line with care.');}
+/* slot-based charts (uniform per-year columns): index of the first HRC-era slot, or -1 */
+function hrcSlot(ys){for(let i=0;i<ys.length;i++)if(ys[i].y>=HRC_YEAR)return i>0?i:-1;return -1;}
 function esc(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
 function divColor(v){if(v==null)return 'var(--paper-3)';const t=(v-0.5)*2,p=Math.round(Math.abs(t)*100);return t>=0?('color-mix(in oklab, var(--div-hi) '+p+'%, var(--div-mid))'):('color-mix(in oklab, var(--div-lo) '+p+'%, var(--div-mid))');}
 
@@ -649,6 +663,7 @@ VRC.ovTimeline=function(host,o){host.innerHTML='';
       const r=el('rect',{x:x(y)-bw/2,y:yb,width:bw,height:Math.max(hh-1,0.5),fill:kc[1]},s);
       hov(r,'<b>'+y+'</b><br>CHR '+d.CHR+' · HRC '+d.HRC);});});
   for(let y=Math.ceil(ymin/10)*10;y<=ymax;y+=10)txt({x:x(y),y:H-6,'text-anchor':'middle'},s,y);
+  if(ymin<HRC_YEAR&&ymax>=HRC_YEAR)hrcMark(s,x(HRC_YEAR-0.5),PT,PT+ih);
   host.appendChild(s);};
 
 /* Margin distribution: horizontal bars */
@@ -705,6 +720,7 @@ VRC.cComposition=function(host,o){host.innerHTML='';
   /* x labels on member-year slots */
   const step=Math.max(1,Math.ceil(n/14));
   for(let i=0;i<n;i+=step)txt({x:cx(i),y:H-6,'text-anchor':'middle'},s,ys[i].y);
+  const hi=hrcSlot(ys);if(hi>0)hrcMark(s,PL+hi*slot,PT,vy0);
   host.appendChild(s);};
 
 /* Country profile: world choropleth of voting agreement with the selected state */
@@ -800,6 +816,7 @@ VRC.trend=function(host,o){host.innerHTML='';
   means.forEach(m=>{el('circle',{cx:X(m.year),cy:Yc(m.mean),r:3.5,fill:'var(--yes)',stroke:'var(--paper)','stroke-width':2},s);
     const hit=el('circle',{cx:X(m.year),cy:Yc(m.mean),r:10,fill:'transparent'},s);
     hov(hit,'<b>'+m.year+'</b><br>Avg support '+Math.round(m.mean*100)+'% · '+m.n+' resolution'+(m.n>1?'s':''));});
+  if(y0<HRC_YEAR&&y1>=HRC_YEAR)hrcMark(s,X(HRC_YEAR-0.5),PT,PT+ih);
   host.appendChild(s);};
 
 /* Topics: multi-line support trend — one line per UN regional group */
@@ -825,6 +842,7 @@ VRC.trendMulti=function(host,o){host.innerHTML='';
       el('circle',{cx:X(p.year),cy:Yc(p.share),r:2.8,fill:col,stroke:'var(--paper)','stroke-width':1},s);
       const hit=el('circle',{cx:X(p.year),cy:Yc(p.share),r:8,fill:'transparent'},s);
       hov(hit,'<b>'+esc(sr.glabel)+'</b> · '+p.year+'<br>'+Math.round(p.share*100)+'% Yes · '+p.n+' votes cast');});});
+  if(y0<HRC_YEAR&&y1>=HRC_YEAR)hrcMark(s,X(HRC_YEAR-0.5),PT,PT+ih);
   host.appendChild(s);};
 
 /* Topics: per-state Yes/Abstain/No stacked shares */
@@ -926,6 +944,7 @@ VRC.modeStrips=function(host,o){host.innerHTML='';
         hov(c,'<b>'+esc(it.sym||'')+'</b> · '+it.year+'<br>'+it.word+(it.ri!=null?'<br><span style="opacity:.7">click for roll-call</span>':''));
         if(it.ri!=null&&o.onOpen)c.addEventListener('click',()=>o.onOpen(it.ri));});
       yy+=rowh;});});
+  if(o.ymin<HRC_YEAR&&o.ymax>=HRC_YEAR)hrcMark(s,X(HRC_YEAR-0.5),AXT,H-4,{labelY:AXT+10});
   host.appendChild(s);};
 
 /* Percent-share bars per year (consensus erosion), coloured by body */
@@ -941,6 +960,7 @@ VRC.shareBars=function(host,o){host.innerHTML='';
     const r=el('rect',{x:x(d.y)-bw/2,y:PT+ih-hh,width:bw,height:Math.max(hh,0.8),fill:d.body==='HRC'?'var(--hrc)':'var(--chr)'},s);
     hov(r,'<b>'+d.y+'</b> · '+Math.round(d.share*100)+'% without a vote<br>'+d.c+' consensus · '+d.v+' voted'+(d.o?' · '+d.o+' other':''));});
   for(let y=Math.ceil(y0/10)*10;y<=y1;y+=10)txt({x:x(y),y:H-6,'text-anchor':'middle'},s,y);
+  if(y0<HRC_YEAR&&y1>=HRC_YEAR)hrcMark(s,x(HRC_YEAR-0.5),PT,PT+ih);
   host.appendChild(s);};
 
 /* 100% stacked adoption-mode composition per year + volume strip */
@@ -968,6 +988,7 @@ VRC.stackShare=function(host,o){host.innerHTML='';
     el('line',{x1:gx,x2:gx,y1:PT,y2:vy0,stroke:'var(--dimmer)','stroke-width':1,'stroke-dasharray':'2 3'},s);}}
   const step=Math.max(1,Math.ceil(n/14));
   for(let i=0;i<n;i+=step)txt({x:cx(i),y:H-6,'text-anchor':'middle'},s,ys[i].y);
+  const hi=hrcSlot(ys);if(hi>0)hrcMark(s,PL+hi*slot,PT,vy0);
   host.appendChild(s);};
 
 window.VRC=VRC;
