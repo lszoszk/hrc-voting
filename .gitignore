@@ -5,3 +5,4 @@ __pycache__/
 *.pyc
 .DS_Store
 notes/exports/
+data/ap_mirror/

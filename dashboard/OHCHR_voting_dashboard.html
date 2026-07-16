@@ -148,6 +148,9 @@
 .pV{color:var(--div-lo);border-color:var(--div-lo);background:color-mix(in oklab, var(--div-lo) 10%, transparent)}
 .pWD{color:var(--abstain);border-color:var(--abstain);background:color-mix(in oklab, var(--abstain) 10%, transparent)}
 .swC{background:var(--div-hi)}.swV{background:var(--div-lo)}.swWD{background:var(--abstain)}.swO{background:var(--dimmer)}
+.mnote{margin-top:8px;font-size:10px;line-height:1.6;color:var(--dimmer)}
+.mnote a{color:var(--dim);text-decoration:none;border-bottom:1px dotted var(--line)}
+.mnote a:hover{color:var(--accent);border-color:var(--accent)}
 .exp-badge{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent-soft);padding:1px 6px;margin-left:8px;vertical-align:middle}
 /* chips (light 1px border per design — clickable subject labels) */
 .chiprow{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
@@ -312,6 +315,7 @@
     <div class="p-body">
       <div class="p-desc">Each column = share of that year's votes cast Yes / Abstain / No (absences excluded; in tooltip). Grey strip below: how many votes that year. Dashed gaps: years outside CHR/HRC membership.</div>
       <div id="c-timeline"></div>
+      <div class="mnote">Method note — abstention is often a deliberate middle position — scholars treat Yes/Abstain/No as ordered, not binary (<a href="https://doi.org/10.1177/0022002715595700" target="_blank" rel="noopener">Bailey, Strezhnev &amp; Voeten 2017</a>); absences can be strategic rather than random (<a href="https://doi.org/10.1007/s11558-024-09538-3" target="_blank" rel="noopener">Morse &amp; Coggins 2024</a>).</div>
       <div class="legend"><span class="li"><i class="sw swyes"></i>Yes</span><span class="li"><i class="sw swab"></i>Abstain</span><span class="li"><i class="sw swno"></i>No</span><span class="li"><i class="sw swabs"></i>votes-per-year strip</span></div>
     </div>
   </div>
@@ -319,6 +323,7 @@
     <div class="p-head"><span class="p-idx">02</span><span class="p-title">Closest &amp; furthest voting partners</span><span class="p-exp"><button class="expb" data-csv="cal" title="Download data as CSV">CSV</button><button class="expb" data-png="c-align-top,c-align-bot" data-pngname="country-partners" title="Download chart as PNG">PNG</button></span></div>
     <div class="p-body">
       <div class="p-desc">Voting coincidence over shared recorded votes (min. <span id="c-minco">20</span> in common). Bar colour = UN regional group.</div>
+      <div class="mnote">Method note — raw agreement shares are inflated when majorities are lopsided — two states can co-vote often by chance alone (<a href="https://doi.org/10.1093/pan/mpr023" target="_blank" rel="noopener">Häge 2011</a>); shares also cover only windows when both states sat in the body.</div>
       <div class="grid2">
         <div><div class="flbl">Closest 30</div><div class="scrolly" style="max-height:220px;border:1px solid var(--line-2)"><div id="c-align-top"></div></div></div>
         <div><div class="flbl">Furthest 30</div><div class="scrolly" style="max-height:220px;border:1px solid var(--line-2)"><div id="c-align-bot"></div></div></div>
@@ -331,6 +336,7 @@
     <div class="p-body">
       <div class="p-desc">Every state coloured by its voting coincidence with <b id="c-mapself">—</b> over the selected window. Dots mark small states; grey = fewer than 20 shared votes. Historical entities (USSR, Yugoslavia, …) appear only in the lists above — the map shows present-day borders.</div>
       <div id="c-map"></div>
+      <div class="mnote">Method note — same caveat as the partner lists: raw agreement, uncorrected for chance co-voting under lopsided majorities (<a href="https://doi.org/10.1093/pan/mpr023" target="_blank" rel="noopener">Häge 2011</a>).</div>
       <div class="legend"><span>Vote apart</span><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 100%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 70%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 40%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 20%, var(--div-mid))"></i><i class="sw" style="background:var(--div-mid)"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 20%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 40%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 70%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 100%, var(--div-mid))"></i><span>Vote alike</span><span class="li" style="margin-left:8px"><i class="sw" style="background:color-mix(in oklab, var(--ink) 14%, var(--paper));outline:1.5px solid var(--ink)"></i>selected state</span></div>
     </div>
   </div>
@@ -367,6 +373,8 @@
     <div class="panel">
       <div class="p-head"><span class="p-idx">01</span><span class="p-title">Support over time</span><span style="display:inline-flex;gap:4px;margin-left:10px"><button class="palbtn on" data-ttmode="all" type="button">overall</button><button class="palbtn" data-ttmode="groups" type="button">by regional group</button></span><span class="p-note" id="t-trendnote"></span><span class="p-exp"><button class="expb" data-csv="ttrend" title="Download data as CSV">CSV</button><button class="expb" data-png="t-trend" data-pngname="topic-support-over-time" title="Download chart as PNG">PNG</button></span></div>
       <div class="p-body"><div class="p-desc" id="tt-desc">Yearly average share voting Yes — of those casting Yes / No / Abstain (official totals). Faint dots: individual resolutions.</div><div id="t-trend"></div>
+        
+      <div class="mnote">Method note — a moving average can reflect a changing mix of agenda items rather than changed positions (<a href="https://doi.org/10.1177/0022002715595700" target="_blank" rel="noopener">Bailey, Strezhnev &amp; Voeten 2017</a>); in the HRC era the voting sample also changes with each membership cycle.</div>
         <div class="legend" id="tt-legend" style="display:none"><span class="li"><i class="sw swg-af"></i>African</span><span class="li"><i class="sw swg-ap"></i>Asia-Pacific</span><span class="li"><i class="sw swg-ee"></i>Eastern Europe</span><span class="li"><i class="sw swg-gr"></i>Latin America &amp; Caribbean</span><span class="li"><i class="sw swg-we"></i>Western Europe &amp; Others</span><span class="mut">· line breaks where the group cast fewer than 3 votes that year</span></div></div>
     </div>
     <div class="grid2">
@@ -381,6 +389,7 @@
         <div class="p-head"><span class="p-idx">03</span><span class="p-title" id="ts-title">How states voted on this topic</span><span style="display:inline-flex;gap:4px;margin-left:10px"><button class="palbtn on" data-tsmode="states" type="button">states</button><button class="palbtn" data-tsmode="groups" type="button">UN groups</button></span><span class="p-exp"><button class="expb" data-csv="tstance" title="Download data as CSV">CSV</button><button class="expb" data-png="t-stance" data-pngname="topic-stance" title="Download chart as PNG">PNG</button></span></div>
         <div class="p-body">
           <div class="p-desc" id="ts-desc">Each state's Yes / Abstain / No share across these votes (min. 5 cast), ranked by support.</div>
+      <div class="mnote">Method note — country votes are not independent — they cluster strongly by region (<a href="https://doi.org/10.1007/s11127-010-9598-5" target="_blank" rel="noopener">Boockmann &amp; Dreher 2011</a>); compare a state with its regional group (toggle above) before reading intent.</div>
           <div id="t-stance" class="scrolly h460"></div>
           <div class="legend"><span class="li"><i class="sw swyes"></i>Yes</span><span class="li"><i class="sw swab"></i>Abstain</span><span class="li"><i class="sw swno"></i>No</span></div>
         </div>
@@ -413,6 +422,7 @@
     <div class="p-body">
       <div class="p-desc">Every state is placed by how often it votes the same way as two <b>anchor states</b> — right = agrees with the first, up = agrees with the second (dashed diagonal = equal agreement with both). The <b>selected country set</b> (the <i>Country set</i> control above) is highlighted in colour and labelled; all other states are grey — hover any dot for its name and figures. <label style="margin-left:4px">Anchors: <select class="sel" id="b-poleX" style="padding:3px 6px"></select> <span class="mut">(→)</span> <select class="sel" id="b-poleY" style="padding:3px 6px"></select> <span class="mut">(↑)</span></label></div>
       <div id="b-mds"></div>
+      <div class="mnote">Method note — agreement with each anchor is raw co-voting share, uncorrected for chance agreement under lopsided majorities (<a href="https://doi.org/10.1093/pan/mpr023" target="_blank" rel="noopener">Häge 2011</a>).</div>
       <div class="legend"><span class="li"><i class="sw swg-af"></i>African</span><span class="li"><i class="sw swg-ap"></i>Asia-Pacific</span><span class="li"><i class="sw swg-ee"></i>Eastern Europe</span><span class="li"><i class="sw swg-gr"></i>Latin America &amp; Caribbean</span><span class="li"><i class="sw swg-we"></i>Western Europe &amp; Others</span></div>
     </div>
   </div>
@@ -422,6 +432,7 @@
       <div class="p-body">
         <div class="p-desc">How unified each UN regional group votes over the window — Agreement Index (1 = unanimous, 0 = evenly split), across all its members. Independent of the country set above.</div>
         <div id="b-cohesion"></div>
+      <div class="mnote">Method note — the Agreement Index (<a href="https://doi.org/10.1017/S0007123405000128" target="_blank" rel="noopener">Hix, Noury &amp; Roland 2005</a>) runs high mechanically when the agenda itself is consensual — compare groups within one window rather than across eras (<a href="https://doi.org/10.1093/pan/mpr023" target="_blank" rel="noopener">Häge 2011</a>).</div>
       </div>
     </div>
     <div class="panel">
@@ -429,6 +440,7 @@
       <div class="p-body">
         <div class="p-desc">Share of each state's votes that differ from the outcome's majority position — the winning Yes / No / Abstain side pooled across the whole chamber (min. 20 votes in the window). A high rate often means siding with a cohesive minority bloc, not voting alone — compare the cohesion panel. Bar colour = UN regional group.</div>
         <div id="b-isolation" class="scrolly" style="max-height:420px"></div>
+      <div class="mnote">Method note — computed on recorded votes only — the contested minority of Council output; which texts get a roll-call at all is itself political (<a href="https://doi.org/10.1007/s11558-024-09580-1" target="_blank" rel="noopener">Fjelstul, Hug &amp; Kilby 2025</a>).</div>
         <div class="legend"><span class="li"><i class="sw swg-af"></i>African</span><span class="li"><i class="sw swg-ap"></i>Asia-Pacific</span><span class="li"><i class="sw swg-ee"></i>Eastern Europe</span><span class="li"><i class="sw swg-gr"></i>Latin America &amp; Caribbean</span><span class="li"><i class="sw swg-we"></i>Western Europe &amp; Others</span></div>
       </div>
     </div>
@@ -438,6 +450,7 @@
     <div class="p-body">
       <div class="p-desc">Every pair of states in the selected set, by how often they voted the same way — blue = vote alike, red = vote apart. The densest view: the whole matrix at once, for those who want the pairwise detail. Hover any cell for the figure.</div>
       <div id="b-heat"></div>
+      <div class="mnote">Method note — raw coincidence is inflated by lopsided majorities (<a href="https://doi.org/10.1093/pan/mpr023" target="_blank" rel="noopener">Häge 2011</a>); roll-calls are the contested minority of all adoptions (<a href="https://doi.org/10.1007/s11558-024-09580-1" target="_blank" rel="noopener">Fjelstul, Hug &amp; Kilby 2025</a>). On preference-vs-bloc voting in the HRC, cf. <a href="https://doi.org/10.1007/s11558-013-9172-2" target="_blank" rel="noopener">Hug &amp; Lukács 2014</a>.</div>
       <div class="legend"><span>Vote apart</span><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 100%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 70%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 40%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 20%, var(--div-mid))"></i><i class="sw" style="background:var(--div-mid)"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 20%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 40%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 70%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 100%, var(--div-mid))"></i><span>Vote alike</span><span class="mut">· grey = too few shared votes</span></div>
       <div class="legend"><span class="mut">Labels:</span><span class="li"><i class="sw swg-af"></i>African</span><span class="li"><i class="sw swg-ap"></i>Asia-Pacific</span><span class="li"><i class="sw swg-ee"></i>Eastern Europe</span><span class="li"><i class="sw swg-gr"></i>Latin America &amp; Caribbean</span><span class="li"><i class="sw swg-we"></i>Western Europe &amp; Others</span></div>
     </div>
@@ -451,7 +464,7 @@
   <div class="panel">
     <div class="p-head"><span class="p-idx">01</span><span class="p-title">Breakdowns &amp; rapprochements<span class="exp-badge">experimental</span></span><span class="p-note" id="cn-flipnote"></span><span class="p-exp"><button class="expb" data-csv="cflips" title="Download data as CSV">CSV</button><button class="expb" data-png="cn-strips" data-pngname="consensus-flips" title="Download chart as PNG">PNG</button></span></div>
     <div class="p-body">
-      <div class="p-desc">Subjects whose <b>mode of adoption flipped</b> over time — each dot is one resolution on a shared timeline. <b>Breakdown</b>: adopted by consensus early, forced to votes later (a failure of consensus diplomacy). <b>Rapprochement</b>: voted early, consensual later. Heuristic: subjects with ≥6 resolutions and both modes, where the consensus share differs by ≥40 percentage points between the first and second half of the subject's history — treat small series as candidates, not conclusions. Click a voted dot for its roll-call.</div>
+      <div class="p-desc">Subjects whose <b>mode of adoption flipped</b> over time — each dot is one resolution on a shared timeline. <b>Breakdown</b>: adopted by consensus early, forced to votes later (a failure of consensus diplomacy). <b>Rapprochement</b>: voted early, consensual later. Heuristic: subjects with ≥6 resolutions and both modes, where the consensus share differs by ≥40 percentage points between the first and second half of the subject's history — treat small series as candidates, not conclusions (on position switching in recurring texts, cf. <a href="https://doi.org/10.1177/0192512115616540" target="_blank" rel="noopener">Brazys &amp; Panke 2017</a>). Click a voted dot for its roll-call.</div>
       <div id="cn-strips"></div>
       <div class="legend"><span class="li"><i class="sw swC"></i>adopted without a vote</span><span class="li"><i class="sw swV"></i>voted</span><span class="li"><i class="sw swWD"></i>withdrawn</span><span class="li"><i class="sw swO"></i>other</span></div>
     </div>
@@ -461,6 +474,7 @@
     <div class="p-body">
       <div class="p-desc">Share of considered resolutions adopted <b>without a vote</b>, per year (withdrawn and not-considered texts excluded from the denominator). Column colour = deciding body.</div>
       <div id="cn-erosion"></div>
+      <div class="mnote">Method note — whether consensus adoptions are counted alongside roll-calls changes agreement and cohesion measures substantially (<a href="https://doi.org/10.1080/03050629.2016.1138107" target="_blank" rel="noopener">Häge &amp; Hug 2016</a>); adoption without a vote is not unanimity (see Methodology).</div>
       <div class="legend"><span class="li"><i class="sw swchr"></i>Commission on Human Rights</span><span class="li"><i class="sw swhrc"></i>Human Rights Council</span></div>
     </div>
   </div>
@@ -573,7 +587,7 @@
     <div class="p-head"><span class="p-idx">08</span><span class="p-title">Alignment methods</span></div>
     <div class="p-body ptext">The <b>Blocs &amp; alignment</b> tab uses three standard measures from the study of legislative and UN voting, all computed client-side from the recorded roll-calls (no external data):
       <br>• <b>Alignment map</b> — a <b>reference-pole scatter</b>: each state is placed by its voting agreement with two anchor states you choose (horizontal = agreement with the first, vertical = agreement with the second, each 0–100% over shared recorded votes). Positions are directly interpretable; the dashed diagonal marks equal agreement with both anchors. The axes are drawn to an <b>identical scale</b> on a square plot over the full, uncropped 0–100% domain — so the diagonal is exactly 45° and distance from it reads directly as a state's net leaning toward one anchor.
-      <br>• <b>Regional-group cohesion</b> — the <b>Agreement Index</b> (Hix, Noury &amp; Roland): for each resolution, (largest bloc − ½·the rest) ÷ total among a group's members, averaged over the window; 1 = unanimous, 0 = evenly split.
+      <br>• <b>Regional-group cohesion</b> — the <b>Agreement Index</b> (<a href="https://doi.org/10.1017/S0007123405000128" target="_blank" rel="noopener">Hix, Noury &amp; Roland 2005</a>): for each resolution, (largest bloc − ½·the rest) ÷ total among a group's members, averaged over the window; 1 = unanimous, 0 = evenly split.
       <br>• <b>Most often outvoted</b> — the share of a state's votes that <b>differ from the majority position</b> (the winning Yes/No/Abstain side, from official whole-chamber totals), over states with at least 20 votes in the window. It measures being on the losing side, which is not the same as being isolated — a state can be in a large, cohesive minority bloc.</div>
   </div>
   <div class="panel">
@@ -583,7 +597,19 @@
       <br>• <b>Caveat</b> — adoption <i>without a vote</i> is not unanimity: delegations may dissociate from consensus in explanations of position after adoption, which the catalogue (and therefore this tab) does not capture.
       <br>• <b>Flip heuristic</b> — subjects with ≥6 resolutions in both modes, comparing the consensus share of the first vs the second half of the subject's chronology; |Δ| ≥ 40 percentage points is flagged as a <i>breakdown</i> (consensus→votes) or <i>rapprochement</i> (votes→consensus). Small series (n≈6–9) should be read as candidates for investigation, not findings.
       <br>• <b>Withdrawn</b> — some withdrawals are procedural (texts merged or resubmitted), not defeats; the panel counts them without attributing motive.
-      <br>• <b>Amendments &amp; the Scope filter</b> — 731 catalogued items are <i>amendments</i> to draft texts (27% of recorded roll-calls, almost all post-2010; every withdrawn or not-considered item is an amendment). A Yes on a hostile amendment frequently opposes the parent resolution's aim — e.g. votes supporting amendments to women's-rights texts are typically votes to weaken them — so mixing amendments with resolutions inverts meaning. The global <b>Scope</b> control (top right) therefore defaults to <i>resolutions only</i>; amendments can be analysed separately or together, are tagged <b>AMD</b> in tables, and detection uses two agreeing catalogue signals (the title marker ": amendment /" and the 993 draft note).</div>
+      <br>• <b>Amendments &amp; the Scope filter</b> — 731 catalogued items are <i>amendments</i> to draft texts (27% of recorded roll-calls, almost all post-2010; every withdrawn or not-considered item is an amendment). A Yes on a hostile amendment frequently opposes the parent resolution's aim — e.g. votes supporting amendments to women's-rights texts are typically votes to weaken them — so mixing amendments with resolutions inverts meaning (final-passage-only datasets are known to bias inference: <a href="https://doi.org/10.1007/s11558-024-09580-1" target="_blank" rel="noopener">Fjelstul, Hug &amp; Kilby 2025</a>). The global <b>Scope</b> control (top right) therefore defaults to <i>resolutions only</i>; amendments can be analysed separately or together, are tagged <b>AMD</b> in tables, and detection uses two agreeing catalogue signals (the title marker ": amendment /" and the 993 draft note).</div>
+  </div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">10</span><span class="p-title">Method caveats &amp; further reading</span></div>
+    <div class="p-body ptext">Short method notes under individual charts link to the literature they draw on. The recurring caveats, in one place:
+      <br>• <b>Chance agreement</b> — with the lopsided majorities typical of this body, any two states "agree" often by chance; raw coincidence and cohesion therefore overstate alignment. <a href="https://doi.org/10.1093/pan/mpr023" target="_blank" rel="noopener">Häge 2011</a>, <i>Political Analysis</i> 19(3).
+      <br>• <b>Selection into roll-calls</b> — recorded votes are the contested minority of output; which texts get a roll-call is itself political, so roll-call-only statistics describe contested politics, not the Council's full record. <a href="https://doi.org/10.1007/s11558-024-09580-1" target="_blank" rel="noopener">Fjelstul, Hug &amp; Kilby 2025</a>, <i>Review of International Organizations</i>.
+      <br>• <b>Agenda composition</b> — averages over time move when the mix of agenda items moves, even if no state changes position; ideal-point methods exist precisely to separate the two. <a href="https://doi.org/10.1177/0022002715595700" target="_blank" rel="noopener">Bailey, Strezhnev &amp; Voeten 2017</a>, <i>Journal of Conflict Resolution</i> 61(2).
+      <br>• <b>Consensus inclusion</b> — similarity and cohesion measures change substantially depending on whether consensus adoptions are counted as unanimous pseudo-votes. <a href="https://doi.org/10.1080/03050629.2016.1138107" target="_blank" rel="noopener">Häge &amp; Hug 2016</a>, <i>International Interactions</i> 42(3).
+      <br>• <b>Abstention &amp; absence</b> — abstention is a meaningful middle category, not noise; absence can be strategic (a state that voted on other items the same session chose not to vote). <a href="https://doi.org/10.1177/0022002715595700" target="_blank" rel="noopener">Bailey, Strezhnev &amp; Voeten 2017</a>; <a href="https://doi.org/10.1007/s11558-024-09538-3" target="_blank" rel="noopener">Morse &amp; Coggins 2024</a>, <i>Review of International Organizations</i>; on capacity-driven absenteeism, <a href="https://doi.org/10.1057/ip.2014.34" target="_blank" rel="noopener">Panke 2014</a>, <i>International Politics</i>.
+      <br>• <b>Regional clustering</b> — country votes are strongly regionally dependent; read country-level results against the group baseline. <a href="https://doi.org/10.1007/s11127-010-9598-5" target="_blank" rel="noopener">Boockmann &amp; Dreher 2011</a>, <i>Public Choice</i>; on preferences vs blocs in the HRC, <a href="https://doi.org/10.1007/s11558-013-9172-2" target="_blank" rel="noopener">Hug &amp; Lukács 2014</a>, <i>Review of International Organizations</i>.
+      <br>• <b>Group cohesion measure</b> — the Agreement Index used here is <a href="https://doi.org/10.1017/S0007123405000128" target="_blank" rel="noopener">Hix, Noury &amp; Roland 2005</a>, <i>British Journal of Political Science</i> 35(2).
+      <br>• <b>Position switching</b> — on why states change positions between iterations of recurring texts, <a href="https://doi.org/10.1177/0192512115616540" target="_blank" rel="noopener">Brazys &amp; Panke 2017</a>, <i>International Political Science Review</i> 38(1).</div>
   </div>
 </section>
 
