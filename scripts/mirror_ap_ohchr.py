@@ -9,10 +9,9 @@ Resumable: skips symbols already on disk (or logged as missing). ~1.5 s/request.
 
 Output: data/ap_mirror/<safe_symbol>.<ext> + mirror_log.csv (symbol,status,file)
 """
-import csv, re, time, sys
+import csv, re, time, subprocess
 from pathlib import Path
 from urllib.parse import quote
-from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "data" / "ap_mirror"
@@ -30,15 +29,20 @@ def in_scope(r):
     return bool(m and int(m.group(1)) <= 11)
 
 def fetch(url, binary=True, timeout=40):
-    with urlopen(Request(url, headers=UA), timeout=timeout) as h:
-        return h.read() if binary else h.read().decode("utf-8", "replace")
+    # curl instead of urllib: framework Python lacks SSL certs (known project gotcha)
+    r = subprocess.run(["curl", "-sf", "-m", str(timeout), "-A", UA["User-Agent"], url],
+                       capture_output=True)
+    if r.returncode != 0:
+        raise RuntimeError(f"curl exit {r.returncode}")
+    return r.stdout if binary else r.stdout.decode("utf-8", "replace")
 
 def main():
     rows = [r for r in csv.DictReader(open(ROOT / "data/csv/resolutions.csv", encoding="utf-8"))
             if in_scope(r)]
     done = set()
     if LOG.exists():
-        done = {r[0] for r in csv.reader(open(LOG, encoding="utf-8")) if r}
+        done = {r[0] for r in csv.reader(open(LOG, encoding="utf-8"))
+                if r and not r[1].startswith("error")}
     todo = [r for r in rows if r["symbol"] not in done]
     print(f"in scope: {len(rows)} · already logged: {len(done & {r['symbol'] for r in rows})} · to do: {len(todo)}", flush=True)
 
