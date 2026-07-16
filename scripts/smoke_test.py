@@ -94,6 +94,10 @@ with sync_playwright() as p:
     # alignment-geometry panels
     checks["mds points"] = pg.evaluate("document.querySelectorAll('#b-mds circle').length")
     checks["mds anchors note"] = pg.evaluate("document.getElementById('b-mds-note').textContent")
+    pg.click('#b-mds-xl'); pg.wait_for_timeout(300)
+    checks["scatter fullscreen"] = pg.evaluate("document.getElementById('xl-wrap').classList.contains('open') && document.querySelectorAll('#xl-host svg circle').length>100")
+    pg.keyboard.press("Escape"); pg.wait_for_timeout(200)
+    checks["scatter fullscreen closes"] = pg.evaluate("!document.getElementById('xl-wrap').classList.contains('open')")
     checks["cohesion bars"] = pg.evaluate("document.querySelectorAll('#b-cohesion rect').length")
     checks["isolation labels"] = pg.evaluate("document.querySelectorAll('#b-isolation text').length")
     pg.select_option("#b-poleY", "RUS")  # change an anchor
@@ -155,6 +159,7 @@ ok = (checks["DATA loaded"] and checks["overview tiles"] == 4 and checks["countr
       and checks["chip border"] == "1px" and checks["cmdk opens"]
       and checks["rollcall opens"] and checks["rollcall map paths"] > 150 and checks["rollcall list cols"] >= 3
       and checks["group trend series"] >= 4 and "regional groups" in checks["group stance title"]
+      and checks["scatter fullscreen"] and checks["scatter fullscreen closes"]
       and checks["hrc line (overview)"] and checks["hrc line (erosion)"]
       and checks["scope default"] == "res" and "1,248" in checks["ov tile (res)"]
       and "1,705" in checks["ov tile (all)"] and checks["amd pills (all)"] >= 5
