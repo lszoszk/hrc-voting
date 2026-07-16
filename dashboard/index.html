@@ -491,13 +491,11 @@
   </div>
   <div class="grid2">
     <div class="panel">
-      <div class="p-head"><span class="p-idx">04</span><span class="p-title">Most &amp; least consensual subjects</span><span class="p-exp"><button class="expb" data-csv="csubjcons" title="Download data as CSV">CSV</button><button class="expb" data-png="cn-subj-top,cn-subj-bot" data-pngname="subject-consensus" title="Download chart as PNG">PNG</button></span></div>
+      <div class="p-head"><span class="p-idx">04</span><span class="p-title">Most &amp; least consensual subjects</span><span class="p-note" id="cn-subj-note"></span><span class="p-exp"><button class="expb" data-csv="csubjcons" title="Download data as CSV">CSV</button><button class="expb" data-png="cn-subj" data-pngname="subject-consensus" title="Download chart as PNG">PNG</button></span></div>
       <div class="p-body">
         <div class="p-desc">Share of a subject's resolutions adopted without a vote (subjects with ≥6 resolutions; withdrawn/not-considered excluded).</div>
-        <div class="flbl">Most consensual 15</div>
-        <div id="cn-subj-top"></div>
-        <div class="flbl" style="margin-top:10px">Least consensual 15</div>
-        <div id="cn-subj-bot"></div>
+        <div class="flbl" id="cn-subj-cap">All subjects, ranked</div>
+        <div id="cn-subj" class="scrolly" style="max-height:460px"></div>
       </div>
     </div>
     <div class="panel">
@@ -954,7 +952,8 @@ VRC.hbars=function(host,o){host.innerHTML='';
   const W=520,rowh=o.rowh||22,LBL=o.lbl||150,barx=LBL,barmax=W-LBL-52,max=o.max||1;
   const s=svg(W,rows.length*rowh+6);
   rows.forEach((d,i)=>{const yy=i*rowh+4;
-    txt({x:0,y:yy+14,fill:'var(--ink-2)'},s,d.label.length>26?d.label.slice(0,25)+'…':d.label);
+    const lt=txt({x:0,y:yy+14,fill:'var(--ink-2)'},s,d.label.length>26?d.label.slice(0,25)+'…':d.label);
+    if(d.hover)hov(lt,d.hover);
     el('rect',{x:barx,y:yy+3,width:barmax,height:14,fill:'var(--paper-2)',stroke:'var(--line-2)'},s);
     const ww=barmax*(d.value/max);
     const r=el('rect',{x:barx,y:yy+3,width:Math.max(ww,1),height:14,fill:d.color||'var(--accent)'},s);
@@ -1073,7 +1072,7 @@ const nVotesTotal=C.reduce((a,c)=>a+c.n,0);
 
 const fmt=n=>n==null?'—':n.toLocaleString('en-US');
 const esc=s=>(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const tc=s=>s.toLowerCase().replace(/\b([a-z])/g,(m,c)=>c.toUpperCase()).replace(/\b(Of|And|The|In|To|For|On)\b/g,m=>m.toLowerCase()).replace(/(['\u2019])S\b/g,'$1s');
+const tc=s=>s.toLowerCase().replace(/(^|\P{L})(\p{Ll})/gu,(m,pre,c)=>pre+c.toUpperCase()).replace(/\b(Of|And|The|In|To|For|On)\b/g,m=>m.toLowerCase()).replace(/(['\u2019])S\b/g,'$1s');
 const $=id=>document.getElementById(id);
 const recUrl=id=>'https://searchlibrary.ohchr.org/record/'+id;
 
@@ -1671,10 +1670,12 @@ function renderConsensus(){
     considered.forEach(r=>{if(!r.subj)return;let d=sb.get(r.subj);if(!d){d={n:0,c:0};sb.set(r.subj,d);}d.n++;if(r.vt==='C')d.c++;});
     const subj=[...sb.entries()].filter(e=>e[1].n>=6).map(e=>({s:e[0],n:e[1].n,share:e[1].c/e[1].n}))
       .sort((a,b)=>b.share-a.share||b.n-a.n);
-    const mkBar=(d,col)=>({label:tc(d.s),value:d.share,color:col,right:Math.round(d.share*100)+'%',
+    const mkBar=d=>({label:tc(d.s),value:d.share,color:VRC.divColor(d.share),right:Math.round(d.share*100)+'%',
       hover:'<b>'+esc(tc(d.s))+'</b><br>'+Math.round(d.share*100)+'% without a vote · '+d.n+' resolutions'});
-    VRC.hbars($('cn-subj-top'),{lbl:190,max:1,rowh:20,rows:subj.slice(0,15).map(d=>mkBar(d,'var(--div-hi)'))});
-    VRC.hbars($('cn-subj-bot'),{lbl:190,max:1,rowh:20,rows:subj.slice(-15).reverse().map(d=>mkBar(d,'var(--div-lo)'))});
+    VRC.hbars($('cn-subj'),{lbl:190,max:1,rowh:20,rows:subj.map(mkBar)});
+    const nFull=subj.filter(d=>d.share>=0.995).length,nZero=subj.filter(d=>d.share<=0.005).length;
+    $('cn-subj-cap').textContent='All '+subj.length+' subjects with ≥6 considered resolutions — scroll to see the full ranking';
+    $('cn-subj-note').textContent=nFull+' of '+subj.length+' fully consensual · '+nZero+' always voted';
     CSVDATA.csubjcons={name:'subject-consensus-share',title:'Consensus share by subject (≥6 considered resolutions)',
       headers:['subject','considered_resolutions','without_vote','consensus_share_pct'],
       rows:subj.map(d=>[d.s,d.n,Math.round(d.share*d.n),Math.round(d.share*100)])};
