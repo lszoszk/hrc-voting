@@ -27,6 +27,7 @@ fails = []
 with sync_playwright() as p:
     b = p.chromium.launch(headless=True)
     ctx = b.new_context(viewport={"width":1440,"height":1000}, accept_downloads=True)
+    ctx.add_init_script("try{localStorage.setItem('hrc-tour-done','1')}catch(e){}")
     pg = ctx.new_page()
     pg.on("pageerror", lambda e: fails.append(f"pageerror: {e}"))
     pg.goto(INDEX.as_uri()); pg.wait_for_timeout(700)

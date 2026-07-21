@@ -210,6 +210,44 @@
 .xlwrap{position:fixed;inset:0;display:none;z-index:70;background:color-mix(in srgb, var(--ink) 30%, transparent);align-items:center;justify-content:center;padding:16px}
 .xlwrap.open{display:flex}
 .xl-box{position:relative;background:var(--paper);border:1px solid var(--line);box-shadow:0 18px 60px rgba(0,0,0,.25);padding:16px 20px 12px;max-width:96vw;max-height:96vh;overflow:auto}
+/* ---- first-run tour ---- */
+.tourwrap{position:fixed;inset:0;display:none;z-index:80;background:color-mix(in srgb, var(--ink) 38%, transparent);align-items:center;justify-content:center;padding:18px}
+.tourwrap.open{display:flex}
+.tour-box{position:relative;width:min(780px,94vw);background:var(--paper);border:1px solid var(--line);box-shadow:0 22px 70px rgba(0,0,0,.3);overflow:hidden}
+.tour-slides{position:relative;height:clamp(430px,68vh,580px)}
+.tslide{position:absolute;inset:0;padding:38px 46px 20px;opacity:0;transform:translateX(30px);transition:opacity .32s ease,transform .32s ease;pointer-events:none;overflow:auto}
+.tslide.on{opacity:1;transform:none;pointer-events:auto}
+.tslide.gone{transform:translateX(-30px)}
+@media (prefers-reduced-motion: reduce){.tslide{transition:none}}
+.tour-kicker{font:10px var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.tour-h{font-family:"Instrument Serif",Georgia,serif;font-size:clamp(26px,4.2vw,36px);line-height:1.12;color:var(--ink);margin:0 0 14px;font-weight:400}
+.tour-lead{font:12px/1.75 var(--mono);color:var(--dim);max-width:56ch}
+.tour-stats{display:flex;gap:26px;flex-wrap:wrap;margin:20px 0 6px}
+.tour-stats b{display:block;font-family:"Instrument Serif",Georgia,serif;font-size:26px;font-weight:400;color:var(--ink)}
+.tour-stats span{font:9.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dimmer)}
+.tour-spark{margin-top:18px}
+.tour-cap{font:9.5px var(--mono);color:var(--dimmer);margin-top:6px}
+.tview{display:flex;gap:14px;align-items:baseline;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line-2);padding:11px 2px;cursor:pointer;font:inherit}
+.tview:hover{background:var(--paper-2)}
+.tview .ti{font:10px var(--mono);color:var(--accent);flex:0 0 20px}
+.tview .tn{font:12px var(--mono);font-weight:700;color:var(--ink);flex:0 0 150px}
+.tview .td{font:11px/1.6 var(--mono);color:var(--dim)}
+.tour-list{font:12px/1.9 var(--mono);color:var(--dim);margin:6px 0 0;padding-left:0;list-style:none}
+.tour-list li{margin-bottom:10px;padding-left:18px;position:relative}
+.tour-list li::before{content:"—";position:absolute;left:0;color:var(--accent)}
+.tstart{display:grid;grid-template-columns:1fr;gap:10px;margin-top:18px;max-width:420px}
+.tstart button{font:12px var(--mono);text-align:left;padding:13px 16px;border:1px solid var(--line);background:var(--paper-2);color:var(--ink);cursor:pointer}
+.tstart button:hover{border-color:var(--accent);color:var(--accent)}
+.tour-foot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding:12px 20px;background:var(--paper-2)}
+.tour-skip{font:10px var(--mono);letter-spacing:.1em;text-transform:uppercase;background:none;border:0;color:var(--dimmer);cursor:pointer;padding:6px}
+.tour-skip:hover{color:var(--ink)}
+.tdots{display:flex;gap:8px}
+.tdot{width:7px;height:7px;border-radius:50%;border:0;padding:0;background:var(--dim);opacity:.45;cursor:pointer}
+#tour-map svg{max-width:540px;margin:0 auto}
+.tdot.on{background:var(--accent);opacity:1}
+.tour-next{font:11px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:9px 18px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer}
+.tour-next:hover{background:var(--accent);border-color:var(--accent)}
+@media(max-width:760px){.tslide{padding:24px 20px 14px}.tview .tn{flex-basis:110px}.tour-stats{gap:18px}.ft-tour-lbl{display:none}.fr{flex-wrap:wrap;row-gap:6px}}
 .rc-head{padding:16px 18px 12px;border-bottom:1px solid var(--line);background:var(--paper-2)}
 .rc-sym{font:11px var(--mono);letter-spacing:.06em;color:var(--accent)}
 .rc-title{font-family:var(--serif);font-size:22px;line-height:1.18;margin:4px 44px 6px 0}
@@ -625,7 +663,7 @@
 
 <footer class="foot">
   <div class="fl"><span class="sup">CHR·HRC VR</span><span>Source: <a href="https://searchlibrary.ohchr.org/search?c=Voting" target="_blank" rel="noopener">OHCHR Search Library — Voting collection</a></span><span class="fsep">·</span><span id="f-note">loading dataset…</span></div>
-  <div class="fr"><span class="pallbl">Palette</span><button class="palbtn on" data-pal="paper">paper</button><button class="palbtn" data-pal="terminal">terminal</button><button class="palbtn" data-pal="ink">ink</button></div>
+  <div class="fr"><span class="pallbl">Palette</span><button class="palbtn on" data-pal="paper">paper</button><button class="palbtn" data-pal="terminal">terminal</button><button class="palbtn" data-pal="ink">ink</button><span class="pallbl ft-tour-lbl" style="margin-left:16px">First visit?</span><button class="palbtn" id="ft-tour" type="button">✦ tour</button></div>
 </footer>
 
 <div class="kwrap" id="k-wrap">
@@ -636,6 +674,16 @@
   </div>
 </div>
 
+<div class="tourwrap" id="tour-wrap" role="dialog" aria-modal="true" aria-label="Introduction tour">
+  <div class="tour-box">
+    <div class="tour-slides" id="tour-slides"></div>
+    <div class="tour-foot">
+      <button class="tour-skip" id="tour-skip" type="button">Skip tour</button>
+      <div class="tdots" id="tour-dots"></div>
+      <button class="tour-next" id="tour-next" type="button">Next →</button>
+    </div>
+  </div>
+</div>
 <div class="xlwrap" id="xl-wrap" role="dialog" aria-modal="true" aria-label="Expanded chart">
   <div class="xl-box">
     <button class="rc-close" id="xl-close" type="button" aria-label="Close">✕</button>
@@ -1887,6 +1935,101 @@ $('b-mds-xl').addEventListener('click',openXL);
 $('xl-close').addEventListener('click',closeXL);
 $('xl-wrap').addEventListener('click',e=>{if(e.target.id==='xl-wrap')closeXL();});
 window.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('xl-wrap').classList.contains('open'))closeXL();});
+
+/* ---------- first-run tour ---------- */
+let tourI=0,tourBuilt=false;
+function tourSpark(){
+  const y0=M.yearMin,y1=M.yearMax,per={};
+  RES.forEach(r=>{if(r.year!=null)per[r.year]=(per[r.year]||0)+1;});
+  const W=640,H=92,PB=14,max=Math.max(...Object.values(per));
+  const bw=W/(y1-y0+1);let bars='';
+  for(let y=y0;y<=y1;y++){const n=per[y]||0;if(!n)continue;
+    const h=(n/max)*(H-PB-6),x=(y-y0)*bw;
+    bars+=`<rect x="${x.toFixed(1)}" y="${(H-PB-h).toFixed(1)}" width="${Math.max(bw-1,1).toFixed(1)}" height="${h.toFixed(1)}" fill="var(--${y<2006?'chr':'hrc'})"/>`;}
+  const hx=((2005.5-y0)*bw).toFixed(1);
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block">${bars}
+    <line x1="${hx}" x2="${hx}" y1="4" y2="${H-PB}" stroke="var(--ink-2)" stroke-width="1.2" stroke-dasharray="3 3" opacity=".7"/>
+    <text x="${y0===1947?6:0}" y="${H-2}" font-family="JetBrains Mono,monospace" font-size="9" fill="var(--dimmer)">${y0}</text>
+    <text x="${W-6}" y="${H-2}" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="9" fill="var(--dimmer)">${y1}</text>
+    <text x="${hx}" y="${H-2}" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="var(--ink-2)">2006 · HRC</text></svg>`;
+}
+function buildTour(){
+  if(tourBuilt)return;tourBuilt=true;
+  const host=$('tour-slides');
+  const nRec=fmt(RES.length),nAll=fmt((D.resAll||[]).length||M.coverage&&M.coverage.totalResolutions||6346),nCells=fmt(nVotesTotal);
+  const slides=[
+  `<div class="tour-kicker">First time here · a 90-second tour</div>
+   <h2 class="tour-h">Eighty years of human-rights votes, on one page.</h2>
+   <div class="tour-lead">Every voting record of the UN Commission on Human Rights (1946–2006) and the Human Rights Council (2006–) — harvested in full from the OHCHR Search Library and rebuilt as an interactive research tool.</div>
+   <div class="tour-stats"><div><b>${nAll}</b><span>catalogued texts</span></div><div><b>${nRec}</b><span>roll-call votes</span></div><div><b>${nCells}</b><span>country-votes</span></div><div><b>${M.yearMin}–${M.yearMax}</b><span>years covered</span></div></div>
+   <div class="tour-spark">${tourSpark()}</div>
+   <div class="tour-cap">Recorded votes per year — gold: Commission · red: Council. The dashed line marks the 2006 institutional break.</div>`,
+  `<div class="tour-kicker">The views</div>
+   <h2 class="tour-h">Five ways in.</h2>
+   ${[['overview','Overview','the record at a glance — volume over time, how contested votes were, the most divided decisions'],
+      ['country','Country profile','any state\'s full record: yearly positions, closest &amp; furthest partners, an agreement world map'],
+      ['topics','Topics','browse by OHCHR\'s own subject tags — support trends over time, by state or by regional group'],
+      ['blocs','Blocs &amp; alignment','who votes with whom: coincidence matrix, alignment map, group cohesion, most-outvoted states'],
+      ['consensus','Consensus','how texts get adopted — being forced to a vote is itself a diplomatic signal (experimental)']]
+     .map((v,i)=>`<button class="tview" data-goto="${v[0]}"><span class="ti">0${i+1}</span><span class="tn">${v[1]}</span><span class="td">${v[2]}</span></button>`).join('')}
+   <div class="tour-cap" style="margin-top:12px">Click any row to open that view.</div>`,
+  `<div class="tour-kicker">Every number opens</div>
+   <h2 class="tour-h">From chart to roll-call to source.</h2>
+   <div class="tour-lead">Every resolution symbol on this site is clickable. It opens the full roll-call sheet: a world map of positions, the Yes / Abstain / No lists, and links to the official documents. The small ↗ next to a symbol jumps straight to the OHCHR record.</div>
+   <div id="tour-map" class="tour-spark"></div>
+   <div class="tour-cap" id="tour-map-cap"></div>`,
+  `<div class="tour-kicker">Built for research</div>
+   <h2 class="tour-h">Honest by default.</h2>
+   <ul class="tour-list">
+     <li>The <b>Scope</b> filter separates <b>amendments</b> (27% of roll-calls, often hostile) from resolutions — mixing them misreads support. Resolutions-only is the default.</li>
+     <li>The <b>2006 CHR→HRC break</b> is marked on every time axis — a different body, a different dynamic.</li>
+     <li><b>Method notes</b> under the charts link each caveat to the peer-reviewed literature.</li>
+     <li>Every chart exports <b>CSV + PNG with a source citation</b>; the full dataset is on Zenodo.</li>
+   </ul>
+   <div class="tour-lead" style="margin-top:14px">Defaults are chosen to not mislead. The Methodology tab documents every choice.</div>`,
+  `<div class="tour-kicker">Start anywhere</div>
+   <h2 class="tour-h">Where to first?</h2>
+   <div class="tstart">
+     <button data-goto="country">→ &nbsp;My country's record</button>
+     <button data-goto="topics">→ &nbsp;Browse by topic</button>
+     <button id="tour-k">⌘K &nbsp;Search anything — views, countries, subjects</button>
+   </div>
+   <div class="tour-cap" style="margin-top:16px">Reopen this tour anytime: footer → ✦ tour.</div>`];
+  host.innerHTML=slides.map((s,i)=>`<div class="tslide${i===0?' on':''}" data-i="${i}">${s}</div>`).join('');
+  $('tour-dots').innerHTML=slides.map((_,i)=>`<button class="tdot${i===0?' on':''}" data-i="${i}" aria-label="Slide ${i+1}"></button>`).join('');
+  /* slide 3: a real roll-call mini map (best-attended recent resolution) */
+  try{
+    let best=null,bestN=0;
+    RES.forEach(r=>{if(r.year>=2015&&!r.am&&r.y!=null&&(r.y+r.n+r.a)>bestN){bestN=r.y+r.n+r.a;best=r;}});
+    if(best&&window.WORLD){const vb={};
+      C.forEach(c=>{const code=vmap(c.iso3).get(best.i);if(code)vb[c.iso3]=code;});
+      VRC.rollcallMap($('tour-map'),{voteByIso:vb,names:Object.fromEntries(C.map(c=>[c.iso3,c.name]))});
+      $('tour-map-cap').textContent=best.sym+' — '+tc((best.subj||'').toLowerCase()||best.title.slice(0,50))+' · '+best.y+' yes / '+best.n+' no / '+best.a+' abstain';}
+  }catch(e){}
+  host.addEventListener('click',e=>{const g=e.target.closest('[data-goto]');
+    if(g){closeTour();switchTab(g.dataset.goto);return;}
+    if(e.target.closest('#tour-k')){closeTour();openK();}});
+}
+function tourGo(i){
+  const n=$('tour-slides').children.length;i=Math.max(0,Math.min(n-1,i));
+  [...$('tour-slides').children].forEach((s,k)=>{s.classList.toggle('on',k===i);s.classList.toggle('gone',k<i);});
+  [...$('tour-dots').children].forEach((d,k)=>d.classList.toggle('on',k===i));
+  $('tour-next').textContent=i===n-1?'Start exploring':'Next →';
+  tourI=i;
+}
+function openTour(){buildTour();tourGo(0);$('tour-wrap').classList.add('open');document.body.style.overflow='hidden';}
+function closeTour(){$('tour-wrap').classList.remove('open');document.body.style.overflow='';
+  try{localStorage.setItem('hrc-tour-done','1')}catch(e){}}
+$('tour-next').addEventListener('click',()=>{tourI>=$('tour-slides').children.length-1?closeTour():tourGo(tourI+1);});
+$('tour-skip').addEventListener('click',closeTour);
+$('tour-dots').addEventListener('click',e=>{const d=e.target.closest('.tdot');if(d)tourGo(+d.dataset.i);});
+$('tour-wrap').addEventListener('click',e=>{if(e.target.id==='tour-wrap')closeTour();});
+$('ft-tour').addEventListener('click',openTour);
+window.addEventListener('keydown',e=>{if(!$('tour-wrap').classList.contains('open'))return;
+  if(e.key==='Escape')closeTour();
+  else if(e.key==='ArrowRight')tourGo(tourI+1);
+  else if(e.key==='ArrowLeft')tourGo(tourI-1);});
+try{if(!localStorage.getItem('hrc-tour-done'))setTimeout(openTour,450);}catch(e){}
 
 /* ---------- boot ---------- */
 function fillYears(sel,def){const s=$(sel);let h='';for(let y=M.yearMin;y<=M.yearMax;y++)h+=`<option${y===def?' selected':''}>${y}</option>`;s.innerHTML=h;}

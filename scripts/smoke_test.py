@@ -13,7 +13,9 @@ errors = []
 
 with sync_playwright() as p:
     b = p.chromium.launch(headless=True)
-    pg = b.new_context(viewport={"width": 1440, "height": 1000}).new_page()
+    ctx = b.new_context(viewport={"width": 1440, "height": 1000})
+    ctx.add_init_script("try{localStorage.setItem('hrc-tour-done','1')}catch(e){}")  # keep the first-run tour out of the way
+    pg = ctx.new_page()
     pg.on("console", lambda m: errors.append(f"[console.{m.type}] {m.text}")
           if m.type == "error" else None)
     pg.on("pageerror", lambda e: errors.append(f"[pageerror] {e}"))
@@ -141,6 +143,27 @@ with sync_playwright() as p:
         if pal != "paper":
             pg.screenshot(path=str(SHOTS / f"06_overview_{pal}.png"))
 
+    # --- first-run tour: fresh profile (no localStorage) must auto-open it ---
+    ctx2 = b.new_context(viewport={"width": 1440, "height": 1000})
+    pg2 = ctx2.new_page()
+    pg2.on("pageerror", lambda e: errors.append(f"[tour pageerror] {e}"))
+    pg2.on("console", lambda m: errors.append(f"[tour console] {m.text}") if m.type == "error" else None)
+    pg2.goto(INDEX.as_uri()); pg2.wait_for_timeout(1300)
+    checks["tour auto-opens"] = pg2.evaluate("document.getElementById('tour-wrap').classList.contains('open')")
+    checks["tour slides"] = pg2.evaluate("document.querySelectorAll('#tour-slides .tslide').length")
+    checks["tour sparkline"] = pg2.evaluate("document.querySelectorAll('#tour-slides svg rect').length > 40")
+    checks["tour minimap"] = pg2.evaluate("document.querySelectorAll('#tour-map path').length > 100")
+    for _ in range(4):
+        pg2.click("#tour-next"); pg2.wait_for_timeout(220)
+    pg2.click('.tstart [data-goto="country"]'); pg2.wait_for_timeout(300)
+    checks["tour goto view"] = pg2.evaluate("document.querySelector('.tab.on').dataset.view")
+    checks["tour closed + flag"] = pg2.evaluate("!document.getElementById('tour-wrap').classList.contains('open') && localStorage.getItem('hrc-tour-done')==='1'")
+    pg2.reload(); pg2.wait_for_timeout(900)
+    checks["tour stays closed on revisit"] = pg2.evaluate("!document.getElementById('tour-wrap').classList.contains('open')")
+    pg2.click("#ft-tour"); pg2.wait_for_timeout(250)
+    checks["footer reopens tour"] = pg2.evaluate("document.getElementById('tour-wrap').classList.contains('open')")
+    ctx2.close()
+
     b.close()
 
 print("--- file:// smoke (design build) ---")
@@ -159,6 +182,9 @@ ok = (checks["DATA loaded"] and checks["overview tiles"] == 4 and checks["countr
       and checks["chip border"] == "1px" and checks["cmdk opens"]
       and checks["rollcall opens"] and checks["rollcall map paths"] > 150 and checks["rollcall list cols"] >= 3
       and checks["group trend series"] >= 4 and "regional groups" in checks["group stance title"]
+      and checks["tour auto-opens"] and checks["tour slides"] == 5 and checks["tour sparkline"]
+      and checks["tour minimap"] and checks["tour goto view"] == "country"
+      and checks["tour closed + flag"] and checks["tour stays closed on revisit"] and checks["footer reopens tour"]
       and checks["scatter fullscreen"] and checks["scatter fullscreen closes"]
       and checks["hrc line (overview)"] and checks["hrc line (erosion)"]
       and checks["scope default"] == "res" and "1,248" in checks["ov tile (res)"]

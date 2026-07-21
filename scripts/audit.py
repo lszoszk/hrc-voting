@@ -38,7 +38,9 @@ with sync_playwright() as p:
     b = p.chromium.launch(headless=True)
     for vp, label in [({"width":1440,"height":1000},"desktop"), ({"width":375,"height":740},"mobile")]:
         errors = []
-        pg = b.new_context(viewport=vp, device_scale_factor=2).new_page()
+        ctx = b.new_context(viewport=vp, device_scale_factor=2)
+        ctx.add_init_script("try{localStorage.setItem('hrc-tour-done','1')}catch(e){}")
+        pg = ctx.new_page()
         pg.on("console", lambda m: errors.append(f"{m.type}: {m.text}") if m.type=="error" else None)
         pg.on("pageerror", lambda e: errors.append(f"pageerror: {e}"))
         pg.goto(INDEX.as_uri()); pg.wait_for_timeout(700)
