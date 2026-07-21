@@ -211,6 +211,7 @@
 .xlwrap.open{display:flex}
 .xl-box{position:relative;background:var(--paper);border:1px solid var(--line);box-shadow:0 18px 60px rgba(0,0,0,.25);padding:16px 20px 12px;max-width:96vw;max-height:96vh;overflow:auto}
 /* ---- first-run tour ---- */
+body.touring .ga-consent{display:none}
 .tourwrap{position:fixed;inset:0;display:none;z-index:80;background:color-mix(in srgb, var(--ink) 38%, transparent);align-items:center;justify-content:center;padding:18px}
 .tourwrap.open{display:flex}
 .tour-box{position:relative;width:min(780px,94vw);background:var(--paper);border:1px solid var(--line);box-shadow:0 22px 70px rgba(0,0,0,.3);overflow:hidden}
@@ -2011,8 +2012,8 @@ function tourGo(i){
   $('tour-next').textContent=i===n-1?'Start exploring':'Next →';
   tourI=i;
 }
-function openTour(){buildTour();tourGo(0);$('tour-wrap').classList.add('open');document.body.style.overflow='hidden';}
-function closeTour(){$('tour-wrap').classList.remove('open');document.body.style.overflow='';
+function openTour(){buildTour();tourGo(0);$('tour-wrap').classList.add('open');document.body.classList.add('touring');document.body.style.overflow='hidden';}
+function closeTour(){$('tour-wrap').classList.remove('open');document.body.classList.remove('touring');document.body.style.overflow='';
   try{localStorage.setItem('hrc-tour-done','1')}catch(e){}}
 $('tour-next').addEventListener('click',()=>{tourI>=$('tour-slides').children.length-1?closeTour():tourGo(tourI+1);});
 $('tour-skip').addEventListener('click',closeTour);
