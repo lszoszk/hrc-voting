@@ -157,6 +157,8 @@
 .tx-cl-k{color:var(--accent);font-size:9px;letter-spacing:.1em;margin-right:6px}
 .vr mark{background:color-mix(in oklab, var(--accent) 22%, transparent);color:var(--ink);padding:0 1px}
 .tx-status{font:10.5px var(--mono);color:var(--dimmer);margin:10px 0}
+.rc-text{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
+.rc-text .flbl{margin-bottom:8px}
 .mnote{margin-top:8px;font-size:10px;line-height:1.6;color:var(--dimmer)}
 .mnote a{color:var(--dim);text-decoration:none;border-bottom:1px dotted var(--line)}
 .mnote a:hover{color:var(--accent);border-color:var(--accent)}
@@ -727,9 +729,10 @@ body.touring .ga-consent{display:none}
     <button class="rc-close" id="rc-close" type="button" aria-label="Close">✕</button>
     <div class="rc-head" id="rc-head"></div>
     <div class="rc-body">
-      <div class="p-desc" style="margin:0 0 6px">How each state voted on this resolution — <span class="li"><i class="sw swyes"></i>Yes</span> <span class="li"><i class="sw swab"></i>Abstain</span> <span class="li"><i class="sw swno"></i>No</span> <span class="li"><i class="sw swabs"></i>absent / not a member</span>. Hover the map for a state.</div>
+      <div class="p-desc" id="rc-votedesc" style="margin:0 0 6px">How each state voted on this resolution — <span class="li"><i class="sw swyes"></i>Yes</span> <span class="li"><i class="sw swab"></i>Abstain</span> <span class="li"><i class="sw swno"></i>No</span> <span class="li"><i class="sw swabs"></i>absent / not a member</span>. Hover the map for a state.</div>
       <div id="rc-map"></div>
       <div class="rc-lists" id="rc-lists"></div>
+      <div id="rc-text"></div>
     </div>
   </div>
 </div>
@@ -1944,8 +1947,8 @@ async function txRenderMore(reset){
     const ri=byIdRES[id],canOpen=ri!=null;
     out.push('<div class="tx-card"><div class="tx-head">'+
       '<span class="tx-year">'+year+'</span>'+
-      (canOpen?'<a class="reslink" role="button" tabindex="0" data-ri="'+ri+'" title="View roll-call">'+esc(sym)+'</a>'
-              :'<span style="font:12px var(--mono);color:var(--ink)">'+esc(sym)+'</span>')+
+      (canOpen?'<a class="reslink" role="button" tabindex="0" data-ri="'+ri+'" title="View roll-call + text">'+esc(sym)+'</a>'
+              :'<a class="reslink" role="button" tabindex="0" data-tx="'+h.i+'" title="View adopted text">'+esc(sym)+'</a>')+
       '<a class="srclink" style="margin-left:0" href="'+recUrl(id)+'" target="_blank" rel="noopener" aria-label="Open '+esc(sym)+' on OHCHR (new tab)"><span aria-hidden="true">↗</span></a>'+
       (am?'<span class="pill pX" style="font-size:8px;padding:0 4px">AMD</span>':'')+
       '<span class="pill '+(vt==='C'?'pC':(vt==='V'||vt==='VC')?'pV':'pX')+'" style="font-size:8px;padding:0 5px">'+(vt==='C'?'No vote':(vt==='V'||vt==='VC')?'Voted':esc(vt))+'</span>'+
@@ -2109,15 +2112,53 @@ function openResolution(ri){
       (arr.length?arr.map(c=>'<div class="rc-row"><i class="sw swg-'+(GRP_SW[c.group]||'')+'"></i>'+esc(c.name)+'</div>').join(''):'<span class="mut">—</span>')+
       '</div></div>';};
   $('rc-lists').innerHTML=col('Yes',bk.Y)+col('Abstain',bk.A)+col('No',bk.N)+(bk.o.length?col('Absent / non-member',bk.o):'');
+  ['rc-votedesc','rc-map','rc-lists'].forEach(id=>$(id).style.display='');
+  rcText(r.id);
+  $('rc-box').scrollTop=0;$('rc-wrap').classList.add('open');
+}
+/* inject the adopted text (clauses) into the overlay when the corpus has it */
+async function rcText(recordId){
+  const host=$('rc-text');host.innerHTML='';
+  if(location.protocol==='file:')return;
+  try{
+    await txInit();if(TX.err||!TX.cat)return;
+    if(!TX.byId){TX.byId=new Map();TX.cat.docs.forEach((d,i)=>TX.byId.set(d[1],i));}
+    const di=TX.byId.get(recordId);if(di==null)return;
+    const d=TX.cat.docs[di];
+    const b=await txBundle(d[2]);const cls=(b||{})[d[0]]||[];if(!cls.length)return;
+    const hl=(VIEW==='texts'&&TX.q&&TX.q.hlRe)?TX.q.hlRe:null;
+    host.innerHTML='<div class="rc-text"><div class="flbl">Adopted text — '+cls.length+' clauses (PP = preambular, OP = operative)</div>'+
+      cls.map(c=>{let x=esc(c[1]);if(hl)x=x.replace(hl,'<mark>$1</mark>');
+        return '<div class="tx-clause"><span class="tx-cl-k">'+c[0]+'</span>'+x+'</div>';}).join('')+'</div>';
+  }catch(e){}
+}
+/* text-only preview for documents without a roll-call (consensus, decisions, amendments) */
+function openTextDoc(di){
+  const d=TX.cat&&TX.cat.docs[di];if(!d)return;
+  const [sym,id,year,body,vt,am,subj,title]=d;
+  const bodyName=body==='HRC'?'Human Rights Council':'Commission on Human Rights';
+  const links=['<a href="'+recUrl(id)+'" target="_blank" rel="noopener">OHCHR record ↗</a>',
+               '<a href="https://docs.un.org/en/'+encodeURIComponent(sym)+'" target="_blank" rel="noopener">Official document ↗</a>'];
+  $('rc-head').innerHTML=
+    '<div class="rc-sym">'+esc(sym)+(am?' <span class="pill pX" style="font-size:8px;padding:0 5px;vertical-align:middle" title="Amendment to a draft text">AMENDMENT</span>':'')+'</div>'+
+    '<div class="rc-title">'+esc(title||'')+'</div>'+
+    '<div class="rc-meta">'+bodyName+(year?' · '+year:'')+(subj?' · '+esc(tc(subj)):'')+'</div>'+
+    '<div class="rc-tot"><span class="pill '+(vt==='C'?'pC':(vt==='V'||vt==='VC')?'pV':'pX')+'">'+esc(MODE_WORD[vt]||vt)+'</span>'+
+      '<span class="mut">· '+links.join(' · ')+'</span></div>'+
+    (vt==='C'?'<div class="rc-meta" style="margin-top:6px;color:var(--dimmer)">Adopted without a vote — no per-country roll-call exists for this text (consensus is not unanimity; see Methodology).</div>':'');
+  ['rc-votedesc','rc-map','rc-lists'].forEach(x=>$(x).style.display='none');
+  rcText(id);
   $('rc-box').scrollTop=0;$('rc-wrap').classList.add('open');
 }
 function closeResolution(){$('rc-wrap').classList.remove('open');}
 document.addEventListener('click',e=>{
   const rl=e.target.closest('.reslink');if(rl&&rl.dataset.ri!=null){e.preventDefault();openResolution(+rl.dataset.ri);return;}
+  if(rl&&rl.dataset.tx!=null){e.preventDefault();openTextDoc(+rl.dataset.tx);return;}
   if(e.target.id==='rc-close'||e.target.id==='rc-wrap')closeResolution();
 });
 document.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){const rl=e.target.closest&&e.target.closest('.reslink');
-  if(rl&&rl.dataset.ri!=null){e.preventDefault();openResolution(+rl.dataset.ri);}}});
+  if(rl&&rl.dataset.ri!=null){e.preventDefault();openResolution(+rl.dataset.ri);}
+  else if(rl&&rl.dataset.tx!=null){e.preventDefault();openTextDoc(+rl.dataset.tx);}}});
 window.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('rc-wrap').classList.contains('open'))closeResolution();});
 function openXL(){if(!_poleOpts)return;
   $('xl-title').textContent='Alignment map — agreement with '+_poleOpts.xlab+' (→) vs '+_poleOpts.ylab+' (↑) · equal-scale axes, full 0–100% domain';
