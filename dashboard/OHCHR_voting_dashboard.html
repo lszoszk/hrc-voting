@@ -577,13 +577,15 @@ body.touring .ga-consent{display:none}
   <div class="panel">
     <div class="p-head"><span class="p-idx">01</span><span class="p-title">Search inside the resolutions<span class="exp-badge">experimental</span></span><span class="p-note" id="tx-cov"></span></div>
     <div class="p-body">
-      <div class="p-desc">Full-text search over the adopted texts — results are shown <b>clause by clause</b> (preambular / operative), so you see exactly where a term appears. Words combine with AND; use <b>OR</b> for alternatives (<i>digital OR online</i>) and quotes for exact phrases (<i>"religion or belief"</i> stays one phrase). Respects the global Scope filter.</div>
+      <div class="p-desc">Full-text search over the adopted texts — results are shown <b>clause by clause</b> (preambular / operative), so you see exactly where a term appears. Words combine with AND and <b>fold plurals automatically</b>; <b>OR</b> makes alternatives, quotes make exact phrases (<i>"religion or belief"</i> stays one phrase), a trailing <b>*</b> searches prefixes (<i>indigen*</i>), and <b>-word</b> excludes. Respects the global Scope filter.</div>
       <div class="fbar" style="margin:10px 0 4px">
-        <div class="fitem fgrow"><label class="flbl" for="tx-q">Keywords or "exact phrase"</label><input class="tin w100" type="text" id="tx-q" autocomplete="off" placeholder="e.g. arbitrary detention · torture prevention · "climate change""></div>
+        <div class="fitem fgrow"><label class="flbl" for="tx-q">Keywords or "exact phrase"</label><input class="tin w100" type="text" id="tx-q" autocomplete="off" placeholder="e.g. arbitrary detention · digital OR online · &quot;religion or belief&quot; · indigen* · -committee"></div>
         <div class="fitem"><label class="flbl" for="tx-body">Body</label><select class="sel" id="tx-body"><option value="">Both bodies</option><option value="CHR">Commission</option><option value="HRC">Council</option></select></div>
         <div class="fitem"><label class="flbl" for="tx-ymin">From</label><select class="sel" id="tx-ymin"></select></div>
         <div class="fitem"><label class="flbl" for="tx-ymax">To</label><select class="sel" id="tx-ymax"></select></div>
+        <div class="fitem"><label class="flbl" for="tx-sort">Sort</label><select class="sel" id="tx-sort"><option value="rel">Relevance</option><option value="new">Newest</option><option value="old">Oldest</option></select></div>
       </div>
+      <div id="tx-chips" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:2px 0 6px"></div>
       <div class="tx-status" id="tx-status"></div>
       <div id="tx-results"></div>
     </div>
@@ -1805,7 +1807,7 @@ function renderCNExplorer(){
 }
 
 /* ---------- 06 TEXTS: client-side FTS over pre-built shards ---------- */
-const TX={cat:null,shard:{},bundle:{},ready:false,err:null};
+const TX={cat:null,shard:{},bundle:{},ready:false,err:null,q:null};
 const TX_STOP=new Set('the of and to in a for on that by with its as at or be is are was were it this their his her they them from which shall will would should may can could an all any such other than into upon under between within without also been being have has had do does not no nor so if but we our us these those there where when who whom whose what how'.split(' '));
 async function txFetch(path){const r=await fetch('texts/'+path);if(!r.ok)throw new Error(path+': '+r.status);return r.json();}
 async function txInit(){
@@ -1814,25 +1816,48 @@ async function txInit(){
   try{TX.cat=await txFetch('catalog.json');TX.ready=true;
     const ys=TX.cat.docs.map(d=>d[2]).filter(Boolean);
     TX.ymin=Math.min(...ys);TX.ymax=Math.max(...ys);
+    const chips=[['arbitrary detention',''],['"religion or belief"','phrase'],['digital OR online','OR'],['disappearance','folds plurals'],['indigen*','prefix'],['torture -committee','exclude']];
+    $('tx-chips').innerHTML='<span class="flbl" style="margin:0 4px 0 0">Try:</span>'+chips.map(c=>'<button class="chip" data-q="'+esc(c[0]).replace(/"/g,'&quot;')+'">'+esc(c[0])+(c[1]?' <span style="color:var(--dimmer)">·'+c[1]+'</span>':'')+'</button>').join('');
   }catch(e){TX.err=String(e);}
 }
 async function txShard(c){if(!(c in TX.shard)){try{TX.shard[c]=await txFetch('idx/'+c+'.json');}catch(e){TX.shard[c]={};}}return TX.shard[c];}
 async function txBundle(y){if(!(y in TX.bundle)){try{TX.bundle[y]=await txFetch('docs-'+y+'.json');}catch(e){TX.bundle[y]={};}}return TX.bundle[y];}
 function txParse(q){
-  /* quote-safe OR groups: phrases are lifted out first, so "religion or belief"
-     stays one phrase while  digital OR online  becomes two alternatives */
-  const ph=[];q=q.replace(/[“”]/g,'"').replace(/"([^"]+)"/g,(m,x)=>{ph.push(x.toLowerCase().trim());return ' \u00a7'+(ph.length-1)+'\u00a7 ';});
+  /* quote-safe OR groups; -word exclusions; trailing * = explicit prefix */
+  const ph=[];q=q.replace(/[“”]/g,'"').replace(/"([^"]+)"/g,(m,x)=>{ph.push(x.toLowerCase().trim());return ' §'+(ph.length-1)+'§ ';});
+  const minus=[...q.matchAll(/(?:^|\s)-([a-z0-9]{3,}\*?)/gi)].map(m=>m[1].toLowerCase());
+  q=q.replace(/(?:^|\s)-[a-z0-9]{3,}\*?/gi,' ');
   const groups=q.split(/\s+or\s+/i).map(g=>{
-    const phrases=[...g.matchAll(/\u00a7(\d+)\u00a7/g)].map(m=>ph[+m[1]]);
-    const words=(g.replace(/\u00a7\d+\u00a7/g,' ').toLowerCase().match(/[a-z0-9]{2,}/g)||[]).filter(w=>!TX_STOP.has(w));
-    const need=[...new Set([...words,...phrases.flatMap(x=>(x.match(/[a-z0-9]{2,}/g)||[]).filter(w=>!TX_STOP.has(w)))])];
-    return {phrases,words,need};
+    const phrases=[...g.matchAll(/§(\d+)§/g)].map(m=>ph[+m[1]]);
+    const words=(g.replace(/§\d+§/g,' ').toLowerCase().match(/[a-z0-9*]{2,}/g)||[]).filter(w=>!TX_STOP.has(w.replace(/\*/g,'')));
+    const need=[...new Set([...words,...phrases.flatMap(x=>(x.match(/[a-z0-9]{2,}/g)||[]).filter(w=>!TX_STOP.has(w)))])].filter(w=>w.replace(/\*/g,'').length>=2);
+    return {phrases,need};
   }).filter(g=>g.need.length);
-  return groups;
+  return {groups,minus};
 }
-let _txSeq=0;
+/* resolve a query word to index terms: explicit prefix (tail *) or plural folding */
+async function txResolve(word){
+  const pref=word.endsWith('*'),base=word.replace(/\*+$/,'');
+  if(base.length<2)return null;
+  const sh=await txShard(base[0].match(/[a-z]/)?base[0]:'0');
+  let terms=[];
+  if(pref){terms=Object.keys(sh).filter(k=>k.startsWith(base)).slice(0,80);}
+  else{
+    const cand=new Set([base,base+'s',base+'es']);
+    if(base.endsWith('y'))cand.add(base.slice(0,-1)+'ies');
+    if(base.endsWith('ies'))cand.add(base.slice(0,-3)+'y');
+    if(base.endsWith('es'))cand.add(base.slice(0,-2));
+    if(base.endsWith('s'))cand.add(base.slice(0,-1));
+    terms=[...cand].filter(k=>k in sh);
+  }
+  if(!terms.length)return {word,terms:[],posts:new Map(),df:0};
+  const posts=new Map();
+  for(const k of terms)for(const [id,tf] of sh[k])posts.set(id,Math.max(posts.get(id)||0,tf));
+  return {word,terms,posts,df:posts.size};
+}
+let _txSeq=0,_txT=null;
 async function txSearch(){
-  const q=$('tx-q').value.trim(),seq=++_txSeq,res=$('tx-results'),st=$('tx-status');
+  const qraw=$('tx-q').value.trim(),seq=++_txSeq,res=$('tx-results'),st=$('tx-status');
   await txInit();
   if(TX.err){st.textContent=TX.err==='offline'
     ?'Full-text search needs the online version — it loads its index over HTTP, which file:// cannot do. Open lszoszk.github.io/hrc-voting.'
@@ -1841,48 +1866,80 @@ async function txSearch(){
   if($('tx-ymin').options.length===0){
     for(let y=TX.ymin;y<=TX.ymax;y++){$('tx-ymin').add(new Option(y,y));$('tx-ymax').add(new Option(y,y));}
     $('tx-ymax').value=TX.ymax;}
-  if(q.length<3){st.textContent='Type at least 3 characters. '+fmt(TX.cat.n)+' adopted texts are searchable, clause by clause.';res.innerHTML='';return;}
-  const groups=txParse(q);
-  if(!groups.length){st.textContent='Only very common words — add something more specific.';res.innerHTML='';return;}
+  if(qraw.length<3){st.textContent='Type at least 3 characters — or try an example above. '+fmt(TX.cat.n)+' adopted texts are searchable, clause by clause.';res.innerHTML='';TX.q=null;return;}
+  const {groups,minus}=txParse(qraw);
+  if(!groups.length){st.textContent='Only very common words — add something more specific.';res.innerHTML='';TX.q=null;return;}
   st.textContent='Searching…';
-  /* each OR-group is an AND-intersection; results are the union of groups */
+  /* resolve every distinct word once (with plural folding / prefix expansion) */
+  const rmap=new Map();
+  for(const w of new Set(groups.flatMap(g=>g.need))){const r=await txResolve(w);if(seq!==_txSeq)return;if(r)rmap.set(w,r);}
+  /* each OR-group is an AND-intersection over resolved postings; union of groups */
   const docGroups=new Map();
   for(const g of groups){
-    let gids=null;
+    let ids=null;
     for(const w of g.need){
-      const sh=await txShard(w[0].match(/[a-z]/)?w[0]:'0');if(seq!==_txSeq)return;
-      const post=sh[w]||[];
-      gids=gids===null?new Set(post):new Set(post.filter(i=>gids.has(i)));
-      if(!gids.size)break;
+      const r=rmap.get(w);const post=r?[...r.posts.keys()]:[];
+      ids=ids===null?new Set(post):new Set(post.filter(i=>ids.has(i)));
+      if(!ids.size)break;
     }
-    for(const i of (gids||[])){if(!docGroups.has(i))docGroups.set(i,[]);docGroups.get(i).push(g);}
+    for(const i of (ids||[])){if(!docGroups.has(i))docGroups.set(i,[]);docGroups.get(i).push(g);}
   }
-  const ids=new Set(docGroups.keys());
-  const all=[...new Set(groups.flatMap(g=>g.need))];
-  const phrases=groups.flatMap(g=>g.phrases);
+  /* exclusions */
+  for(const m of minus){const r=await txResolve(m);if(seq!==_txSeq)return;
+    if(r)for(const id of r.posts.keys())docGroups.delete(id);}
+  const N=TX.cat.n;
   const y0=+($('tx-ymin').value||TX.ymin),y1=+($('tx-ymax').value||TX.ymax),bod=$('tx-body').value;
-  let hits=[...(ids||[])].map(i=>({i,d:TX.cat.docs[i]}))
+  /* BM25-lite: idf(term)*log(1+tf) + title/subject token boosts */
+  let hits=[...docGroups.keys()].map(i=>({i,d:TX.cat.docs[i],g:docGroups.get(i)}))
     .filter(h=>kindOK({am:h.d[5]})&&h.d[2]>=y0&&h.d[2]<=y1&&(!bod||h.d[3]===bod));
-  /* rank: title/subject hits first, then recency */
-  const ql=all;
-  hits.forEach(h=>{const tl=(h.d[7]||'').toLowerCase(),sj=(h.d[6]||'').toLowerCase();
-    h.s=ql.reduce((s,w)=>s+(tl.includes(w)?3:0)+(sj.includes(w)?2:0),0);});
-  hits.sort((a,b)=>b.s-a.s||b.d[2]-a.d[2]);
-  const CAP=40,shown=hits.slice(0,CAP),years=[...new Set(shown.map(h=>h.d[2]))];
-  await Promise.all(years.map(txBundle));if(seq!==_txSeq)return;
-  const esc_=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-  const hlRe=new RegExp('('+[...phrases.map(esc_),...ql.map(esc_)].join('|')+')','gi');
+  const terms=[...rmap.values()].filter(r=>r.df>0);
+  hits.forEach(h=>{
+    let s=0;const tl=(h.d[7]||'').toLowerCase(),sj=(h.d[6]||'').toLowerCase();
+    for(const r of terms){const tf=r.posts.get(h.i);if(tf==null)continue;
+      const idf=Math.log(1+N/r.df);s+=idf*Math.log(1+tf);
+      const re=new RegExp('\\b'+r.word.replace(/\*/g,''),'i');
+      if(re.test(tl))s+=2*idf;if(re.test(sj))s+=idf;}
+    h.s=s;});
+  const allTerms=[...new Set(terms.flatMap(r=>r.terms))];
+  const phrases=groups.flatMap(g=>g.phrases);
+  const esc_=x=>x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  TX.q={hits,phrases,shown:0,seq,
+        hlRe:new RegExp('('+[...phrases.map(esc_),...allTerms.map(esc_)].join('|')+')','gi')};
+  /* phrase queries: verify against clause text up-front so counts are exact */
+  if(phrases.length){
+    const years=[...new Set(hits.map(h=>h.d[2]))];
+    await Promise.all(years.map(txBundle));if(seq!==_txSeq)return;
+    TX.q.hits=hits.filter(h=>{
+      const cls=(TX.bundle[h.d[2]]||{})[h.d[0]]||[];
+      const full=cls.map(c=>c[1]).join(' ').toLowerCase();
+      const ok=h.g.some(g=>g.phrases.every(ph=>full.includes(ph)));
+      if(ok)h.s+=4*h.g[0].phrases.length;
+      return ok;});
+  }
+  txSort();
+  await txRenderMore(true);
+}
+function txSort(){
+  if(!TX.q)return;
+  const m=$('tx-sort').value;
+  TX.q.hits.sort(m==='new'?((a,b)=>b.d[2]-a.d[2]||b.s-a.s)
+               :m==='old'?((a,b)=>a.d[2]-b.d[2]||b.s-a.s)
+               :((a,b)=>b.s-a.s||b.d[2]-a.d[2]));
+}
+async function txRenderMore(reset){
+  const Q=TX.q;if(!Q)return;
+  const res=$('tx-results'),st=$('tx-status');
+  if(reset){res.innerHTML='';Q.shown=0;}
+  const slice=Q.hits.slice(Q.shown,Q.shown+40);
+  const years=[...new Set(slice.map(h=>h.d[2]))];
+  await Promise.all(years.map(txBundle));if(Q.seq!==_txSeq)return;
+  const old=$('tx-more');if(old)old.remove();
   const out=[];
-  for(const h of shown){
+  for(const h of slice){
     const [sym,id,year,body,vt,am,subj,title]=h.d;
     const cls=(TX.bundle[year]||{})[sym]||[];
-    const full=cls.map(c=>c[1]).join(' ').toLowerCase();
-    /* doc survives if at least one matched OR-group has ALL its phrases in the text */
-    const gOK=(docGroups.get(h.i)||[]).filter(g=>g.phrases.every(ph=>full.includes(ph)));
-    if(!gOK.length)continue;
-    let snips=cls.map(c=>({k:c[0],t:c[1],n:(c[1].toLowerCase().match(hlRe)||[]).length}))
-      .filter(c=>c.n>0);
-    if(phrases.length){const ps=snips.filter(c=>phrases.some(ph=>c.t.toLowerCase().includes(ph)));if(ps.length)snips=ps;}
+    let snips=cls.map(c=>({k:c[0],t:c[1],n:(c[1].match(Q.hlRe)||[]).length})).filter(c=>c.n>0);
+    if(Q.phrases.length){const ps=snips.filter(c=>Q.phrases.some(ph=>c.t.toLowerCase().includes(ph)));if(ps.length)snips=ps;}
     snips.sort((a,b)=>b.n-a.n);
     const ri=byIdRES[id],canOpen=ri!=null;
     out.push('<div class="tx-card"><div class="tx-head">'+
@@ -1895,16 +1952,18 @@ async function txSearch(){
       (subj?'<span class="tx-subj">'+esc(tc(subj))+'</span>':'')+'</div>'+
       '<div class="tx-title">'+esc(title||'')+'</div>'+
       snips.slice(0,3).map(c=>'<div class="tx-clause"><span class="tx-cl-k">'+c.k+'</span>'+
-        esc(c.t.length>420?c.t.slice(0,400)+'…':c.t).replace(hlRe,'<mark>$1</mark>')+'</div>').join('')+
+        esc(c.t.length>420?c.t.slice(0,400)+'…':c.t).replace(Q.hlRe,'<mark>$1</mark>')+'</div>').join('')+
       (snips.length>3?'<div class="tx-status">+ '+(snips.length-3)+' more matching clause'+(snips.length>4?'s':'')+'</div>':'')+
       '</div>');
   }
-  res.innerHTML=out.join('');
-  st.textContent=out.length
-    ?fmt(hits.length)+' matching text'+(hits.length>1?'s':'')+(hits.length>CAP?' · showing the '+CAP+' best-ranked':'')+' — clause labels: PP = preambular, OP = operative'
+  Q.shown+=slice.length;
+  res.insertAdjacentHTML('beforeend',out.join(''));
+  const left=Q.hits.length-Q.shown;
+  if(left>0)res.insertAdjacentHTML('beforeend','<button class="palbtn" id="tx-more" type="button" style="margin:4px 0 8px">Show '+Math.min(40,left)+' more ('+fmt(left)+' left)</button>');
+  st.textContent=Q.hits.length
+    ?fmt(Q.hits.length)+' matching text'+(Q.hits.length>1?'s':'')+' · sorted by '+({rel:'relevance',new:'newest first',old:'oldest first'})[$('tx-sort').value]+' — clause labels: PP = preambular, OP = operative'
     :'No match in the indexed corpus — currently '+fmt(TX.cat.n)+' texts, '+TX.ymin+'–'+TX.ymax+'. Texts up to 2026 are still being harvested, so recent-era vocabulary (digital, internet, climate…) appears only as coverage grows.';
 }
-let _txT=null;
 function renderTexts(){txInit().then(()=>txSearch());}
 
 /* ---------- 07 METHODOLOGY ---------- */
@@ -2183,6 +2242,10 @@ function fillYears(sel,def){const s=$(sel);let h='';for(let y=M.yearMin;y<=M.yea
   ['cn-mode','cn-ymin','cn-ymax'].forEach(id=>$(id).addEventListener('change',renderCNExplorer));
   $('tx-q').addEventListener('input',()=>{clearTimeout(_txT);_txT=setTimeout(txSearch,260);});
   ['tx-body','tx-ymin','tx-ymax'].forEach(id=>$(id).addEventListener('change',txSearch));
+  $('tx-sort').addEventListener('change',()=>{if(TX.q){txSort();txRenderMore(true);}});
+  $('tx-chips').addEventListener('click',e=>{const c=e.target.closest('.chip');
+    if(c){$('tx-q').value=c.dataset.q;txSearch();}});
+  $('tx-results').addEventListener('click',e=>{if(e.target.id==='tx-more')txRenderMore(false);});
   /* controls */
   ['c-country','c-ymin','c-ymax','c-body'].forEach(id=>$(id).addEventListener('change',()=>{if(id==='c-country'){cSortKey='year';cSortDir=1;try{localStorage.setItem('hrc-country',$('c-country').value);}catch(e){}}renderCountry();}));
   $('t-type').addEventListener('change',()=>{topicState.subject=null;renderTopicChips();renderTopics();renderSuggest();});

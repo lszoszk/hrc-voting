@@ -129,9 +129,10 @@ def segment(paras):
             title = next((x for x in body if 20 < len(x) < 220), "")
     return title, clauses
 
-def tokens(text: str):
+def token_counts(text: str):
     t = unicodedata.normalize("NFKD", text.lower())
-    return {w for w in re.findall(r"[a-z0-9]{2,}", t) if w not in STOP}
+    from collections import Counter
+    return Counter(w for w in re.findall(r"[a-z0-9]{2,}", t) if w not in STOP)
 
 def main():
     meta = {r["symbol"]: r for r in csv.DictReader(
@@ -151,7 +152,7 @@ def main():
         seen.add(sym); docs.append((sym, path))
     print(f"texts on disk: {len(docs)}")
 
-    catalog, bundles, post = [], defaultdict(dict), defaultdict(set)
+    catalog, bundles, post = [], defaultdict(dict), defaultdict(dict)
     skipped = 0
     for sym, path in sorted(docs, key=lambda d: (meta[d[0]]["year"], d[0])):
         m = meta[sym]
@@ -170,9 +171,8 @@ def main():
                         m["agenda_subject"].strip(),
                         title or m["title"].split(" : ")[0][:180]])
         bundles[year][sym] = clauses
-        toks = tokens(title + " " + " ".join(c[1] for c in clauses))
-        for w in toks:
-            post[w].add(did)
+        for w, n in token_counts(title + " " + " ".join(c[1] for c in clauses)).items():
+            post[w][did] = min(n, 30)          # tf capped — enough for idf*log(1+tf)
     print(f"indexed: {len(catalog)} docs · skipped {skipped} (empty/unparsable) · vocabulary {len(post)}")
 
     (OUTDIR / "catalog.json").write_text(json.dumps(
@@ -182,9 +182,9 @@ def main():
         (OUTDIR / f"docs-{year}.json").write_text(
             json.dumps(b, separators=(",", ":"), ensure_ascii=False), encoding="utf-8")
     shards = defaultdict(dict)
-    for w, ids in post.items():
+    for w, m in post.items():
         c = w[0] if w[0].isalpha() else "0"
-        shards[c][w] = sorted(ids)
+        shards[c][w] = sorted(m.items())       # [[docId, tf], ...]
     for c, d in shards.items():
         (OUTDIR / "idx" / f"{c}.json").write_text(
             json.dumps(d, separators=(",", ":")), encoding="utf-8")
