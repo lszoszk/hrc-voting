@@ -123,6 +123,9 @@ with sync_playwright() as p:
     pg.click('.tab[data-view="texts"]')
     pg.wait_for_timeout(400)
     checks["texts offline note (file://)"] = pg.evaluate("document.getElementById('tx-status').textContent.includes('online version')")
+    pg.click('.tab[data-view="language"]')
+    pg.wait_for_timeout(400)
+    checks["language offline note (file://)"] = pg.evaluate("document.getElementById('lg-desc').textContent.includes('over HTTP')")
 
     pg.click('.tab[data-view="method"]')
     checks["method total"] = pg.evaluate("document.getElementById('m-tile-total').textContent")
@@ -159,6 +162,10 @@ with sync_playwright() as p:
     pgh.fill("#tx-q", "torture"); pgh.wait_for_timeout(1400)
     checks["texts FTS results"] = pgh.evaluate("document.querySelectorAll('.tx-card').length")
     checks["texts FTS highlights"] = pgh.evaluate("document.querySelectorAll('#tx-results mark').length > 10")
+    pgh.click('.tab[data-view="language"]'); pgh.wait_for_timeout(700)
+    checks["language trend pts"] = pgh.evaluate("document.querySelectorAll('#lg-trend circle').length")
+    checks["language ladder rows"] = pgh.evaluate("document.querySelectorAll('#lg-lad-dir .lad-row, #lg-lad-val .lad-row').length")
+    checks["language scatter dots"] = pgh.evaluate("document.querySelectorAll('#lg-scatter circle').length")
     pgh.close(); srv.shutdown()
 
     # --- first-run tour: fresh profile (no localStorage) must auto-open it ---
@@ -201,6 +208,7 @@ ok = (checks["DATA loaded"] and checks["overview tiles"] == 4 and checks["countr
       and checks["rollcall opens"] and checks["rollcall map paths"] > 150 and checks["rollcall list cols"] >= 3
       and checks["group trend series"] >= 4 and "regional groups" in checks["group stance title"]
       and checks["texts offline note (file://)"] and checks["texts FTS results"] > 5 and checks["texts FTS highlights"]
+      and checks["language offline note (file://)"] and checks["language trend pts"] > 20 and checks["language ladder rows"] > 40 and checks["language scatter dots"] > 100
       and checks["tour auto-opens"] and checks["tour slides"] == 5 and checks["tour sparkline"]
       and checks["tour minimap"] and checks["tour goto view"] == "country"
       and checks["tour closed + flag"] and checks["tour stays closed on revisit"] and checks["footer reopens tour"]

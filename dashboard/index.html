@@ -157,6 +157,14 @@
 .tx-cl-k{color:var(--accent);font-size:9px;letter-spacing:.1em;margin-right:6px}
 .vr mark{background:color-mix(in oklab, var(--accent) 22%, transparent);color:var(--ink);padding:0 1px}
 .tx-status{font:10.5px var(--mono);color:var(--dimmer);margin:10px 0}
+.lseg{display:inline-flex;gap:4px;margin-left:10px}
+.ladder{margin-top:6px}
+.lad-h{font:9.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:12px 0 5px;border-bottom:1px solid var(--line-2);padding-bottom:3px}
+.lad-row{display:grid;grid-template-columns:118px 1fr 46px;align-items:center;gap:8px;padding:1.5px 0;font:11px var(--mono)}
+.lad-name{color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lad-bar{height:11px;background:var(--accent);min-width:1px}
+.lad-n{color:var(--dimmer);text-align:right;font-size:10px}
+.lad-cap{font:9.5px var(--mono);color:var(--dimmer);margin-top:4px}
 .rc-text{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
 .rc-text .flbl{margin-bottom:8px}
 .mnote{margin-top:8px;font-size:10px;line-height:1.6;color:var(--dimmer)}
@@ -324,7 +332,8 @@ body.touring .ga-consent{display:none}
   <button class="tab" data-view="blocs"><span class="tidx">04</span><span class="tlbl">Blocs &amp; alignment</span></button>
   <button class="tab" data-view="consensus"><span class="tidx">05</span><span class="tlbl">Consensus</span></button>
   <button class="tab" data-view="texts"><span class="tidx">06</span><span class="tlbl">Texts</span></button>
-  <button class="tab" data-view="method"><span class="tidx">07</span><span class="tlbl">Methodology</span></button>
+  <button class="tab" data-view="language"><span class="tidx">07</span><span class="tlbl">Language</span></button>
+  <button class="tab" data-view="method"><span class="tidx">08</span><span class="tlbl">Methodology</span></button>
   <span style="margin-left:auto;display:inline-flex;align-items:center;gap:7px;padding:0 12px;flex-shrink:0"><span class="flbl" style="margin:0" title="Amendments answer a different question than resolutions — a Yes on a hostile amendment often opposes the parent text. See Methodology.">Scope</span><select class="sel" id="g-kind" style="min-width:0;padding:4px 6px"><option value="res">Resolutions only</option><option value="all">Resolutions + amendments</option><option value="amd">Amendments only</option></select></span>
 </nav>
 
@@ -594,7 +603,56 @@ body.touring .ga-consent{display:none}
   </div>
 </section>
 
-<!-- ================= 07 METHODOLOGY ================= -->
+<!-- ================= 07 LANGUAGE ================= -->
+<section id="view-language" style="display:none">
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">01</span><span class="p-title">The language of commitment, over time<span class="exp-badge">experimental</span></span><span class="lseg"><button class="palbtn on" data-lmetric="dir" type="button">directive force</button><button class="palbtn" data-lmetric="val" type="button">sentiment</button><button class="palbtn" data-lmetric="deleg" type="button">delegation</button></span><span class="p-note" id="lg-note"></span><span class="p-exp"><button class="expb" data-csv="lgyear" title="Download data as CSV">CSV</button><button class="expb" data-png="lg-trend" data-pngname="commitment-language" title="Download chart as PNG">PNG</button></span></div>
+    <div class="p-body">
+      <div class="p-desc" id="lg-desc"></div>
+      <div id="lg-trend"></div>
+      <div class="mnote">Method note — each operative paragraph is scored by its <b>leading verb</b> under a two-axis scheme (directive force · sentiment) adapted from the <a href="https://doi.org/10.1162/002081800551271" target="_blank" rel="noopener">Legalization framework (Abbott et&nbsp;al. 2000)</a> and <a href="https://doi.org/10.1177/00220027211044205" target="_blank" rel="noopener">Benson &amp; Tucker 2022</a>. This measures <b>rhetorical / directive hardness, not legal bindingness</b> — CHR/HRC resolutions are non-binding whatever the verb. See Methodology.</div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">02</span><span class="p-title">The vocabulary of commitment</span><span class="p-note">verbs ranked within each tier by how often they open an operative paragraph</span><span class="p-exp"><button class="expb" data-csv="lgverbs" title="Download data as CSV">CSV</button></span></div>
+    <div class="p-body">
+      <div class="p-desc">Every operative paragraph opens with a controlled verb (UNITAR <i>Terms Used in Resolutions</i>). The <b>directive</b> verbs form an obligation ladder; the <b>expressive</b> verbs register the organ's stance from condemnation to commendation. Bars = clause frequency across <span id="lg-nres"></span> resolutions.</div>
+      <div class="grid2">
+        <div><div class="lad-h" style="color:var(--accent)">Directive force — the obligation ladder</div><div id="lg-lad-dir" class="ladder"></div></div>
+        <div><div class="lad-h" style="color:var(--accent)">Expressive — the sentiment axis</div><div id="lg-lad-val" class="ladder"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="panel">
+      <div class="p-head"><span class="p-idx">03</span><span class="p-title">Directive vs hortatory topics</span><span class="p-exp"><button class="expb" data-csv="lgsubj" title="Download data as CSV">CSV</button><button class="expb" data-png="lg-subj-top,lg-subj-bot" data-pngname="topic-directive-force" title="Download chart as PNG">PNG</button></span></div>
+      <div class="p-body">
+        <div class="p-desc">Mean directive force (1–5) of a subject's operative clauses (subjects with ≥6 resolutions).</div>
+        <div class="flbl">Most directive</div><div id="lg-subj-top"></div>
+        <div class="flbl" style="margin-top:10px">Most hortatory</div><div id="lg-subj-bot"></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="p-head"><span class="p-idx">04</span><span class="p-title">Beyond the 2010 glossary</span></div>
+      <div class="p-body">
+        <div class="p-desc">Verbs used operatively across the corpus that the UNITAR 2010 list does <b>not</b> carry as operative terms, plus force-amplified forms — a small window on how drafting practice has drifted.</div>
+        <div id="lg-new"></div>
+        <div class="flbl" style="margin-top:12px">Force-amplified forms</div>
+        <div id="lg-intens"></div>
+      </div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">05</span><span class="p-title">Loud vs binding</span><span class="p-note">directive force × institutional follow-through</span><span class="p-exp"><button class="expb" data-png="lg-scatter" data-pngname="loud-vs-binding" title="Download chart as PNG">PNG</button></span></div>
+    <div class="p-body">
+      <div class="p-desc">Each dot is a subject: horizontal = mean <b>directive force</b>, vertical = share of operative clauses that <b>create machinery</b> (a mandate, report, inquiry — the delegation axis of legalization). Top-right = loud <i>and</i> institutionalized; bottom-right = loud but empty; top-left = quiet but binding.</div>
+      <div id="lg-scatter"></div>
+      <div class="mnote">Method note — delegation is detected from the clause object (Secretary-General / High Commissioner / Special Rapporteur / mandate / report / inquiry), operationalizing the third axis of <a href="https://doi.org/10.1162/002081800551271" target="_blank" rel="noopener">Abbott et&nbsp;al. (2000)</a>. Leading-verb tagging captures illocutionary force but not addressee or precision — read as a first-order signal.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 08 METHODOLOGY ================= -->
 <section id="view-method" style="display:none">
   <div class="panel">
     <div class="p-head"><span class="p-idx">01</span><span class="p-title">Source &amp; scope</span></div>
@@ -689,6 +747,14 @@ body.touring .ga-consent{display:none}
       <br>• <a href="https://doi.org/10.1007/s11558-024-09538-3" target="_blank" rel="noopener">Morse &amp; Coggins 2024</a>, <i>RIO</i> 19 — strategic absence: weak GA states abstain by staying away. Marginal here (1.7% absence) but worth remembering for the CHR era.
       <br>• <a href="https://doi.org/10.1057/ip.2014.34" target="_blank" rel="noopener">Panke 2014</a>, <i>International Politics</i> 51(6) — capacity, not politics, drives much GA absenteeism.
       <br>• <a href="https://doi.org/10.1177/0192512115616540" target="_blank" rel="noopener">Brazys &amp; Panke 2017</a>, <i>IPSR</i> 38(1) — why states switch positions between iterations of recurring GA texts.</div>
+  </div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">11</span><span class="p-title">Commitment language &amp; operative verbs<span class="exp-badge">experimental</span></span></div>
+    <div class="p-body ptext">The <b>Language</b> tab reads each resolution's <i>operative verbs</i> as a signal of how strongly the organ commits. Every operative paragraph opens, by drafting convention, with a controlled present-tense verb; we match it against the UNITAR glossary <i>Terms Used in Resolutions</i> (JG-1/02/10 — 103 operative verbs, 56 preambular openers) over the clause-segmented texts of the Texts tab.
+      <br>• <b>Two axes, not one</b> — the vocabulary mixes two illocutionary types, so a single strength scale is not defensible. <b>Axis 1, directive force</b> ranks verbs that direct an addressee to act: D5 decisional (<i>Decides, Demands, Establishes</i>) &gt; D4 strong exhortation (<i>Urges, Calls upon</i>) &gt; D3 tasking (<i>Requests, Recommends</i>) &gt; D2 invitation (<i>Invites, Encourages</i>). <b>Axis 2, sentiment</b> ranks expressive verbs from condemnation (−2 <i>Condemns</i>) through neutral registering (0 <i>Notes, Reaffirms</i>) to commendation (+2 <i>Commends</i>). A third flag, <b>delegation</b>, marks clauses that create machinery (a mandate, report or inquiry).
+      <br>• <b>Grounding</b> — the framework is the "legalization" triad of obligation, precision and delegation (<a href="https://doi.org/10.1162/002081800551271" target="_blank" rel="noopener">Abbott, Keohane, Moravcsik, Slaughter &amp; Snidal 2000</a>, <i>International Organization</i> 54(3); <a href="https://doi.org/10.1162/002081800551280" target="_blank" rel="noopener">Abbott &amp; Snidal 2000</a>); the directive-vs-sentiment split follows content-analysis practice on resolution "level of action" and sentiment (<a href="https://doi.org/10.1177/00220027211044205" target="_blank" rel="noopener">Benson &amp; Tucker 2022</a>, <i>JCR</i> 66(3)); the graded naming-and-shaming reading extends <a href="https://doi.org/10.1111/j.1468-2478.2006.00429.x" target="_blank" rel="noopener">Lebovic &amp; Voeten 2006</a>. The <i>tiers</i> and their order are scholarly-grounded; the exact rank within a tier and the numeric spacing are an author-defined coding — a practitioner gloss notes there are "no official UN guidelines" fixing precise meanings.
+      <br>• <b>Critical caveat</b> — this measures <b>rhetorical / directive hardness, not legal bindingness</b>. Even "Decides" binds only under Security-Council Chapter VII; CHR and HRC resolutions are formally non-binding whatever the verb. Tagging only the <i>leading</i> verb also omits the addressee and the precision of the ask — read the score as a first-order signal, not a legal determination.
+      <br>• <b>New terms</b> — the corpus uses operative verbs absent from the 2010 UNITAR list, above all <i>Encourages</i> (~3,100 clauses), plus <i>Calls for, Underscores</i> and appreciation verbs — a small measure of drafting drift toward hortatory language.</div>
   </div>
 </section>
 
@@ -1117,6 +1183,33 @@ VRC.stackShare=function(host,o){host.innerHTML='';
   const hi=hrcSlot(ys);if(hi>0)hrcMark(s,PL+hi*slot,PT,vy0);
   host.appendChild(s);};
 
+VRC.metricLine=function(host,o){host.innerHTML='';
+  const items=o.items.filter(d=>d.v!=null);if(items.length<2){host.innerHTML='<div style="color:var(--dim)">No data.</div>';return;}
+  const W=1140,H=220,PL=46,PR=14,PT=12,PB=24,iw=W-PL-PR,ih=H-PT-PB;
+  const s=svg(W,H),y0=o.ymin,y1=o.ymax,lo=o.lo,hi=o.hi;
+  const X=y=>PL+(y-y0)/(y1-y0)*iw,Y=v=>PT+ih-(v-lo)/(hi-lo)*ih;
+  o.ticks.forEach(v=>{el('line',{x1:PL,x2:W-PR,y1:Y(v),y2:Y(v),stroke:'var(--line-2)'},s);
+    txt({x:PL-6,y:Y(v)+3,'text-anchor':'end'},s,o.fmt(v));});
+  if(o.zero!=null)el('line',{x1:PL,x2:W-PR,y1:Y(o.zero),y2:Y(o.zero),stroke:'var(--ink-2)','stroke-dasharray':'2 2',opacity:.55},s);
+  ['CHR','HRC'].forEach(b=>{const p=items.filter(d=>d.body===b).sort((a,c)=>a.y-c.y);if(p.length<2)return;
+    let d='';p.forEach((q,i)=>{d+=(i?'L':'M')+X(q.y).toFixed(1)+' '+Y(q.v).toFixed(1)+' ';});
+    el('path',{d:d.trim(),fill:'none',stroke:b==='HRC'?'var(--hrc)':'var(--chr)','stroke-width':1.9,'stroke-linejoin':'round'},s);});
+  items.forEach(d=>{const c=el('circle',{cx:X(d.y),cy:Y(d.v),r:2.8,fill:d.body==='HRC'?'var(--hrc)':'var(--chr)'},s);
+    hov(c,'<b>'+d.y+'</b> · '+d.body+'<br>'+o.label+': '+o.fmt(d.v)+'<br>'+d.nop+' operative clauses');});
+  for(let y=Math.ceil(y0/10)*10;y<=y1;y+=10)txt({x:X(y),y:H-6,'text-anchor':'middle'},s,y);
+  if(y0<HRC_YEAR&&y1>=HRC_YEAR)hrcMark(s,X(HRC_YEAR-0.5),PT,PT+ih);
+  host.appendChild(s);};
+VRC.langScatter=function(host,o){host.innerHTML='';
+  const pts=o.points;const W=1140,H=440,PL=48,PR=16,PT=14,PB=40,iw=W-PL-PR,ih=H-PT-PB;
+  const s=svg(W,H),X=v=>PL+(v-o.xlo)/(o.xhi-o.xlo)*iw,Y=v=>PT+ih-v*ih;
+  [3,3.5,4,4.5].forEach(v=>{if(v<o.xlo||v>o.xhi)return;el('line',{x1:X(v),x2:X(v),y1:PT,y2:PT+ih,stroke:'var(--line-2)'},s);txt({x:X(v),y:PT+ih+15,'text-anchor':'middle'},s,v);});
+  [0,.25,.5,.75,1].forEach(v=>{el('line',{x1:PL,x2:W-PR,y1:Y(v),y2:Y(v),stroke:'var(--line-2)'},s);txt({x:PL-6,y:Y(v)+3,'text-anchor':'end'},s,Math.round(v*100)+'%');});
+  txt({x:PL+iw/2,y:H-6,'text-anchor':'middle',fill:'var(--ink-2)','font-size':'11'},s,'directive force →');
+  el('text',{x:14,y:PT+ih/2,fill:'var(--ink-2)','font-size':'11','text-anchor':'middle','font-family':'JetBrains Mono,monospace',transform:'rotate(-90 14 '+(PT+ih/2)+')'},s).textContent='creates machinery (delegation) →';
+  pts.forEach(p=>{const c=el('circle',{cx:X(p.x),cy:Y(p.y),r:Math.min(3+Math.sqrt(p.n),9),fill:'var(--g-'+(p.grp||'')+')','fill-opacity':.5,stroke:'var(--paper)','stroke-width':.6},s);
+    hov(c,'<b>'+esc(p.label)+'</b><br>directive '+p.x.toFixed(2)+' · delegation '+Math.round(p.y*100)+'%<br>'+p.n+' resolutions · mostly '+esc(p.top));});
+  host.appendChild(s);};
+
 window.VRC=VRC;
 })();
 </script>
@@ -1247,7 +1340,7 @@ document.querySelectorAll('.palbtn').forEach(b=>b.addEventListener('click',()=>s
 
 /* ---------- tabs ---------- */
 let VIEW='overview';
-const VIEWS=['overview','country','topics','blocs','consensus','texts','method'];
+const VIEWS=['overview','country','topics','blocs','consensus','texts','language','method'];
 function switchTab(v){VIEW=v;
   VIEWS.forEach(x=>{$('view-'+x).style.display=x===v?'':'none';});
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.view===v));
@@ -1262,6 +1355,7 @@ function renderCurrent(){
   else if(VIEW==='blocs')renderBlocs();
   else if(VIEW==='consensus')renderConsensus();
   else if(VIEW==='texts')renderTexts();
+  else if(VIEW==='language')renderLanguage();
   else if(VIEW==='method')renderMethod();
 }
 
@@ -1963,7 +2057,88 @@ async function txRenderMore(reset){
 }
 function renderTexts(){txInit().then(()=>txSearch());}
 
-/* ---------- 07 METHODOLOGY ---------- */
+/* ---------- 07 LANGUAGE: operative-verb commitment analysis ---------- */
+const LANG={data:null,err:null,metric:'dir'};
+const LMET={dir:{lo:2.5,hi:4.2,ticks:[2.5,3,3.5,4],zero:null,label:'directive force (1–5)',
+    key:'dir',fmt:v=>v.toFixed(1),
+    desc:'Mean <b>directive force</b> of operative paragraphs each year — the obligation ladder from Decides/Demands (5) down to Invites/Encourages (2). Line colour = deciding body.'},
+  val:{lo:-0.4,hi:0.4,ticks:[-0.3,0,0.3],zero:0,key:'val',label:'sentiment (−2…+2)',fmt:v=>(v>0?'+':'')+v.toFixed(2),
+    desc:'Mean <b>sentiment</b> of expressive operative clauses — from condemnation (−2) to commendation (+2). A downward drift is a hardening of naming-and-shaming tone.'},
+  deleg:{lo:0.2,hi:0.65,ticks:[0.2,0.35,0.5,0.65],zero:null,key:'delegShare',label:'delegation share',fmt:v=>Math.round(v*100)+'%',
+    desc:'Share of operative clauses that <b>create machinery</b> (a mandate, report, inquiry) — the delegation axis of legalization. A high value means the resolution builds institutions, not just rhetoric.'}};
+async function langInit(){
+  if(LANG.data||LANG.err)return;
+  if(location.protocol==='file:'){LANG.err='offline';return;}
+  try{const r=await fetch('texts/lang.json');if(!r.ok)throw new Error('lang.json '+r.status);LANG.data=await r.json();}
+  catch(e){LANG.err=String(e);}
+}
+function lgLadder(host,rows,groups,colorfn){
+  const max=Math.max(...rows.map(r=>r[1]),1);let html='';
+  groups.forEach(g=>{const rs=rows.filter(g.pick).sort((a,b)=>b[1]-a[1]);if(!rs.length)return;
+    html+='<div class="lad-h">'+g.label+'</div>';
+    rs.forEach(r=>{html+='<div class="lad-row"><span class="lad-name" title="'+esc(r[0])+'">'+esc(r[0])+'</span>'+
+      '<span class="lad-bar" style="width:'+Math.max(r[1]/max*100,1).toFixed(1)+'%;background:'+colorfn(r)+'"></span>'+
+      '<span class="lad-n">'+fmt(r[1])+'</span></div>';});});
+  host.innerHTML=html;
+}
+function renderLanguage(){langInit().then(()=>{
+  const st=$('lg-desc');
+  if(LANG.err){$('lg-trend').innerHTML='';
+    st.innerHTML=LANG.err==='offline'
+      ?'The Language analysis loads its data over HTTP, which the offline file cannot do. Open <b>lszoszk.github.io/hrc-voting</b>.'
+      :'Language data unavailable ('+esc(LANG.err)+').';return;}
+  const D=LANG.data;
+  /* 01 trend */
+  const drawTrend=()=>{const m=LMET[LANG.metric];
+    VRC.metricLine($('lg-trend'),{items:D.byYear.map(o=>({y:o.y,body:o.body,v:o[m.key],nop:o.nop})),
+      ymin:M.yearMin,ymax:M.yearMax,lo:m.lo,hi:m.hi,ticks:m.ticks,zero:m.zero,label:m.label,fmt:m.fmt});
+    $('lg-desc').innerHTML=m.desc;
+    const b=D.byYear;const chr=b.filter(o=>o.body==='CHR'),hrc=b.filter(o=>o.body==='HRC');
+    const mean=(a,k)=>a.length?a.reduce((s,o)=>s+(o[k]||0),0)/a.length:0;
+    $('lg-note').textContent='Commission '+m.fmt(mean(chr,m.key))+' → Council '+m.fmt(mean(hrc,m.key));
+    CSVDATA.lgyear={name:'commitment-language-by-year',title:'Operative-verb commitment language, by year',
+      headers:['year','body','operative_clauses','directive_force','sentiment','encourage_share_pct','condemn_share_pct','delegation_share_pct'],
+      rows:D.byYear.map(o=>[o.y,o.body,o.nop,o.dir,o.val,Math.round(o.encShare*100),Math.round(o.condShare*100),Math.round(o.delegShare*100)])};};
+  drawTrend();LANG._drawTrend=drawTrend;
+  /* 02 ladder */
+  $('lg-nres').textContent=fmt(D.byYear.reduce((s,o)=>s+o.nres,0));
+  const dirV=D.verbs.filter(v=>v[2]>0),expV=D.verbs.filter(v=>v[2]===0);
+  const dirCol=r=>'color-mix(in oklab, var(--accent) '+(30+r[2]*14)+'%, var(--paper-2))';
+  const valCol=r=>r[3]>0?'color-mix(in oklab, var(--yes) '+(40+r[3]*25)+'%, var(--paper-2))'
+    :r[3]<0?'color-mix(in oklab, var(--no) '+(40+(-r[3])*25)+'%, var(--paper-2))':'var(--dimmer)';
+  lgLadder($('lg-lad-dir'),dirV,[
+    {label:'D5 · decisional — Decides / Demands / Establishes',pick:r=>r[2]===5},
+    {label:'D4 · strong exhortation — Urges / Calls upon',pick:r=>r[2]===4},
+    {label:'D3 · tasking — Requests / Recommends',pick:r=>r[2]===3},
+    {label:'D2 · invitation — Invites / Encourages',pick:r=>r[2]===2}],dirCol);
+  lgLadder($('lg-lad-val'),expV,[
+    {label:'+2 · commendation — Commends / Congratulates',pick:r=>r[3]>=2},
+    {label:'+1 · approval — Welcomes / Endorses',pick:r=>r[3]===1},
+    {label:'0 · neutral registering — Notes / Reaffirms / Stresses',pick:r=>r[3]===0},
+    {label:'−1 · disapproval — Deplores / Regrets / Rejects',pick:r=>r[3]===-1},
+    {label:'−2 · condemnation — Condemns / Denounces',pick:r=>r[3]<=-2}],valCol);
+  CSVDATA.lgverbs={name:'operative-verb-coding',title:'Operative verbs — frequency and two-axis coding',
+    headers:['verb','operative_clauses','directive_force','sentiment'],rows:D.verbs};
+  /* 03 subjects */
+  const sub=D.bySubject;
+  const mk=r=>({label:tc(r[0]),value:r[2]/5,max:1,color:VRC.divColor?null:'var(--accent)',right:r[2].toFixed(2),
+    hover:'<b>'+esc(tc(r[0]))+'</b><br>directive force '+r[2].toFixed(2)+' · '+r[1]+' resolutions<br>mostly '+esc(r[5])});
+  VRC.hbars($('lg-subj-top'),{lbl:200,max:1,rowh:20,rows:sub.slice(0,12).map(mk)});
+  VRC.hbars($('lg-subj-bot'),{lbl:200,max:1,rowh:20,rows:sub.slice(-12).reverse().map(mk)});
+  CSVDATA.lgsubj={name:'subject-directive-force',title:'Directive force by subject (≥6 resolutions)',
+    headers:['subject','resolutions','directive_force','sentiment','delegation_share','top_verb'],rows:sub};
+  /* 04 new + intensified */
+  const chip=(pairs)=>pairs.map(p=>'<div class="lad-row"><span class="lad-name">'+esc(p[0])+'</span>'+
+    '<span class="lad-bar" style="width:'+Math.max(p[1]/pairs[0][1]*100,2).toFixed(0)+'%;background:var(--chr)"></span><span class="lad-n">'+fmt(p[1])+'</span></div>').join('');
+  $('lg-new').innerHTML=chip(D.newVerbs.filter(p=>p[0]!=='Calls'));
+  $('lg-intens').innerHTML=chip(D.intensified);
+  /* 05 scatter */
+  VRC.langScatter($('lg-scatter'),{xlo:2.4,xhi:4.6,
+    points:sub.map(r=>({x:r[2],y:r[4],n:r[1],label:tc(r[0]),top:r[5],
+      grp:r[4]>0.5?'AFRICAN':r[2]>3.8?'WEOG':'ASIA_PACIFIC'}))});
+});}
+
+/* ---------- 08 METHODOLOGY ---------- */
 function renderMethod(){
   const cov=M.coverage;
   $('m-total-inline').textContent=fmt(cov.totalResolutions);
@@ -2036,6 +2211,7 @@ const GA_VIEWS={
   topics:['CHR·HRC Voting — Topics','/hrc-voting/topics'],
   blocs:['CHR·HRC Voting — Blocs & alignment','/hrc-voting/blocs'],
   consensus:['CHR·HRC Voting — Consensus','/hrc-voting/consensus'],
+  language:['CHR·HRC Voting — Language','/hrc-voting/language'],
   texts:['CHR·HRC Voting — Texts','/hrc-voting/texts'],
   method:['CHR·HRC Voting — Methodology','/hrc-voting/methodology'],
 };
@@ -2275,6 +2451,9 @@ function fillYears(sel,def){const s=$(sel);let h='';for(let y=M.yearMin;y<=M.yea
   fillYears('cn-ymin',M.yearMin);fillYears('cn-ymax',M.yearMax);
   $('cn-q').addEventListener('input',renderCNExplorer);
   ['cn-mode','cn-ymin','cn-ymax'].forEach(id=>$(id).addEventListener('change',renderCNExplorer));
+  document.querySelectorAll('[data-lmetric]').forEach(b=>b.addEventListener('click',()=>{
+    LANG.metric=b.dataset.lmetric;document.querySelectorAll('[data-lmetric]').forEach(x=>x.classList.toggle('on',x===b));
+    if(LANG._drawTrend)LANG._drawTrend();}));
   $('tx-q').addEventListener('input',()=>{clearTimeout(_txT);_txT=setTimeout(txSearch,260);});
   ['tx-body','tx-ymin','tx-ymax'].forEach(id=>$(id).addEventListener('change',txSearch));
   $('tx-sort').addEventListener('change',()=>{if(TX.q){txSort();txRenderMore(true);}});
