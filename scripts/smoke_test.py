@@ -120,6 +120,10 @@ with sync_playwright() as p:
     checks["consensus WD filter"] = pg.evaluate("document.getElementById('cn-count').textContent")
     pg.select_option("#cn-mode", ""); pg.select_option("#g-kind", "res"); pg.wait_for_timeout(300)
 
+    pg.click('.tab[data-view="texts"]')
+    pg.wait_for_timeout(400)
+    checks["texts offline note (file://)"] = pg.evaluate("document.getElementById('tx-status').textContent.includes('online version')")
+
     pg.click('.tab[data-view="method"]')
     checks["method total"] = pg.evaluate("document.getElementById('m-tile-total').textContent")
     checks["method vt rows"] = pg.evaluate("document.querySelectorAll('#m-vt .gtr').length")
@@ -142,6 +146,20 @@ with sync_playwright() as p:
         checks[f"palette {pal}"] = pg.evaluate("document.getElementById('vr').dataset.palette")
         if pal != "paper":
             pg.screenshot(path=str(SHOTS / f"06_overview_{pal}.png"))
+
+    # --- Texts FTS over HTTP (fetch() cannot run on file://) ---
+    import functools, http.server, socketserver, threading
+    handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(ROOT / "dashboard"))
+    srv = socketserver.TCPServer(("127.0.0.1", 8768), handler)
+    srv.allow_reuse_address = True
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    pgh = ctx.new_page()
+    pgh.goto("http://127.0.0.1:8768/index.html"); pgh.wait_for_timeout(800)
+    pgh.click('.tab[data-view="texts"]'); pgh.wait_for_timeout(700)
+    pgh.fill("#tx-q", "torture"); pgh.wait_for_timeout(1400)
+    checks["texts FTS results"] = pgh.evaluate("document.querySelectorAll('.tx-card').length")
+    checks["texts FTS highlights"] = pgh.evaluate("document.querySelectorAll('#tx-results mark').length > 10")
+    pgh.close(); srv.shutdown()
 
     # --- first-run tour: fresh profile (no localStorage) must auto-open it ---
     ctx2 = b.new_context(viewport={"width": 1440, "height": 1000})
@@ -182,6 +200,7 @@ ok = (checks["DATA loaded"] and checks["overview tiles"] == 4 and checks["countr
       and checks["chip border"] == "1px" and checks["cmdk opens"]
       and checks["rollcall opens"] and checks["rollcall map paths"] > 150 and checks["rollcall list cols"] >= 3
       and checks["group trend series"] >= 4 and "regional groups" in checks["group stance title"]
+      and checks["texts offline note (file://)"] and checks["texts FTS results"] > 5 and checks["texts FTS highlights"]
       and checks["tour auto-opens"] and checks["tour slides"] == 5 and checks["tour sparkline"]
       and checks["tour minimap"] and checks["tour goto view"] == "country"
       and checks["tour closed + flag"] and checks["tour stays closed on revisit"] and checks["footer reopens tour"]
