@@ -83,6 +83,7 @@
 .fgrow{flex:0 1 560px;margin-right:auto}  /* cap the search width; push the filter selects to the right */
 .flbl{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:var(--dimmer);margin-bottom:5px}
 .sel{font-family:var(--mono);font-size:11px;padding:6px 8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);min-width:130px;border-radius:0}
+.sel:disabled{opacity:.45;cursor:not-allowed;background:var(--paper-2)}
 .sel:focus{outline:none;border-color:var(--accent)}
 .tin{font-family:var(--mono);font-size:11px;padding:6px 9px;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:0}
 .tin:focus{outline:none;border-color:var(--accent)}
@@ -169,6 +170,9 @@
 .rc-text{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
 .rc-text .flbl{margin-bottom:8px}
 .mnote{margin-top:8px;font-size:10px;line-height:1.6;color:var(--dimmer)}
+.cite-box{display:flex;align-items:center;gap:10px;margin:10px 0;padding:10px 12px;background:var(--paper-2);border:1px solid var(--line);border-left:2px solid var(--accent)}
+.cite-box code{flex:1;font:11px var(--mono);color:var(--ink-2);line-height:1.6;word-break:break-word;background:none;padding:0}
+.cite-box .expb{flex-shrink:0}
 .mnote a{color:var(--dim);text-decoration:none;border-bottom:1px dotted var(--line)}
 .mnote a:hover{color:var(--accent);border-color:var(--accent)}
 .exp-badge{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent-soft);padding:1px 6px;margin-left:8px;vertical-align:middle}
@@ -194,7 +198,7 @@
 .fl{display:flex;gap:10px;align-items:center;overflow:hidden;min-width:0}
 /* the source citation truncates first; the dataset stat is never clipped */
 .fl .fsrc{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;flex:0 1 auto}
-.fl .sup,.fl #f-note{flex:0 0 auto}
+.fl .sup,.fl #f-note,.fl .fauthor{flex:0 0 auto}
 .fr{display:flex;gap:6px;align-items:center;flex-shrink:0}
 .fsep{color:var(--dimmer)}
 .sup{border:1px solid var(--line);padding:1px 6px;letter-spacing:.12em;text-transform:uppercase;font-size:9px;flex-shrink:0}
@@ -297,6 +301,7 @@ body.touring .ga-consent{display:none}
   .inner{padding:14px 12px 32px}
   .foot{height:auto;flex-wrap:nowrap;padding:6px 12px;white-space:nowrap;font-size:9px;gap:8px}
   .fl .fsrc{display:none}          /* source citation lives in Methodology on small screens */
+  #ft-cite{display:none}           /* citation copy-box lives in Methodology §12 on small screens */
   .ft-tour-lbl{display:none}
   .mh-cmdk{flex-basis:100%;max-width:none}
   /* all tabs visible (no hidden horizontal scroll), filters + headers shrink cleanly */
@@ -776,20 +781,30 @@ body.touring .ga-consent{display:none}
   </div>
   <div class="panel">
     <div class="p-head"><span class="p-idx">11</span><span class="p-title">Commitment language &amp; operative verbs<span class="exp-badge">experimental</span></span></div>
-    <div class="p-body ptext">The <b>Language</b> tab reads each resolution's <i>operative verbs</i> as a signal of how strongly the organ commits. Every operative paragraph opens, by drafting convention, with a controlled present-tense verb; we match it against the UNITAR glossary <i>Terms Used in Resolutions</i> (JG-1/02/10), cross-checked term-by-term against a second, publicly downloadable UNITAR source — <a href="https://unitar.org/sites/default/files/media/publication/doc/UN%20Resolution%20Guidelines_Handbook_English-7x10-Unitar_1.pdf" target="_blank" rel="noopener">UNITAR NYO, <i>Guidelines for United Nations Resolutions</i> (2020)</a>, Annex VII "Resolutions: frequently used terms" — over the clause-segmented texts of the Texts tab — <span id="m-unitar"></span>. Those texts begin in <b>1993</b>, so this tab covers a shorter period than the rest of the dashboard; amendments (edit instructions, not commitments) and the articles of annexed declarations and protocols (treaty-style text, not resolutions of the organ) are excluded from scoring.
+    <div class="p-body ptext">The <b>Language</b> tab reads each resolution's <i>operative verbs</i> as a signal of how strongly the organ commits. Every operative paragraph opens, by drafting convention, with a controlled present-tense verb; we match it against the UNITAR glossary <i>Terms Used in Resolutions</i> (JG-1/02/10), cross-checked term-by-term against a second, publicly downloadable UNITAR source — <a href="https://unitar.org/sites/default/files/media/publication/doc/UN%20Resolution%20Guidelines_Handbook_English-7x10-Unitar_1.pdf" target="_blank" rel="noopener">UNITAR NYO, <i>Guidelines for United Nations Resolutions</i> (2020)</a>, Annex VII "Resolutions: frequently used terms" — over the clause-segmented texts of the Texts tab — <span id="m-unitar"></span>. Those texts begin in <b>1993</b>, so this tab covers a shorter period than the rest of the dashboard; amendments (edit instructions, not commitments) and the articles of annexed declarations and protocols (treaty-style text, not resolutions of the organ) are excluded from scoring — unlike the other seven tabs, the global <b>Scope</b> filter has nothing to switch between here, so it is disabled while this tab is open rather than implying a control it cannot exercise.
       <br>• <b>Two axes, not one</b> — the vocabulary mixes two illocutionary types, so a single strength scale is not defensible. <b>Axis 1, directive force</b> ranks verbs that direct an addressee to act: D5 decisional (<i>Decides, Demands, Establishes</i>) &gt; D4 strong exhortation (<i>Urges, Calls upon</i>) &gt; D3 tasking (<i>Requests, Recommends</i>) &gt; D2 invitation (<i>Invites, Encourages</i>). <b>Axis 2, sentiment</b> ranks expressive verbs from condemnation (−2 <i>Condemns</i>) through neutral registering (0 <i>Notes, Reaffirms</i>) to commendation (+2 <i>Commends</i>). A third flag, <b>delegation</b>, marks clauses that create or task machinery: a <i>directive</i> clause that establishes, renews or extends a mechanism, or that names a UN actor and gives it something to do. A passing reference to a rapporteur or a report is not delegation — scoring mentions put 40% of all operative clauses on this axis and imported a spurious trend, since OHCHR and the special-procedures system only expanded after 1993.
       <br>• <b>Grounding</b> — the framework is the "legalization" triad of obligation, precision and delegation (<a href="https://doi.org/10.1162/002081800551271" target="_blank" rel="noopener">Abbott, Keohane, Moravcsik, Slaughter &amp; Snidal 2000</a>, <i>International Organization</i> 54(3); <a href="https://doi.org/10.1162/002081800551280" target="_blank" rel="noopener">Abbott &amp; Snidal 2000</a>); the directive-vs-sentiment split adapts a content-analysis approach developed for <b>UN Security Council</b> resolutions (<a href="https://doi.org/10.1177/00220027211044205" target="_blank" rel="noopener">Benson &amp; Tucker 2022</a>, <i>JCR</i> 66(3) — a different, treaty-binding body; borrowed here only as a coding method); the graded naming-and-shaming reading extends <a href="https://doi.org/10.1111/j.1468-2478.2006.00429.x" target="_blank" rel="noopener">Lebovic &amp; Voeten 2006</a>. The <i>tiers</i> and their order are scholarly-grounded; the exact rank within a tier and the numeric spacing are an author-defined coding — a practitioner gloss notes there are "no official UN guidelines" fixing precise meanings.
       <br>• <b>Why "Notes" / "Takes note" / "Expresses" / "Recognizes" are context-scored</b> — these four verbs carry no fixed valence; the score is resolved per clause from the object ("<i>expresses grave concern</i>" → −1, "<i>expresses appreciation</i>" → +1, bare "<i>notes</i>" → neutral). This is not an ad hoc reading: a 2001 UN Office of Legal Affairs opinion, endorsed by the General Assembly in decision 55/488 and reproduced in the same UNITAR handbook (Annex VI), holds that the bare terms "takes note of" and "notes" are neutral, constituting neither approval nor disapproval — while UNITAR's own glossary separately catalogues the valenced compound forms ("notes with appreciation", "notes with concern") as distinct entries. The per-clause split is shown inline on the vocabulary ladder below wherever it applies.
       <br>• <b>Critical caveat</b> — this measures <b>rhetorical / directive hardness, not legal bindingness</b>. Even "Decides" binds only under Security-Council Chapter VII; CHR and HRC resolutions are formally non-binding whatever the verb. Tagging only the <i>leading</i> verb also omits the addressee and the precision of the ask — read the score as a first-order signal, not a legal determination.
       <br>• <b>New terms</b> — the corpus uses operative verbs absent from both UNITAR sources, above all <i>Encourages</i> (~3,100 clauses), plus low-volume <i>Applauds, Thanks, Highlights, Observes</i> — a small measure of drafting drift toward hortatory language. (Four terms once flagged here — <i>Appreciates, Underscores, Calls for</i>, and the unused <i>Discourages</i> — turned out to be attested in Annex VII of the second UNITAR source and were moved into the canonical count.)</div>
   </div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">12</span><span class="p-title">How to cite this dashboard</span></div>
+    <div class="p-body ptext">This dashboard, the harvest and parsing pipeline, and the derived CSVs are a piece of research software with a versioned <a href="https://doi.org/10.5281/zenodo.21281232" target="_blank" rel="noopener">Zenodo DOI</a> — cite it if you use it, quote a figure from it, or build on the underlying dataset.
+      <div class="cite-box"><code id="m-cite-text"></code><button class="expb" id="m-cite-copy" type="button" title="Copy to clipboard">Copy</button></div>
+      <br>• The <b>footer's "Cite" button</b> (bottom right, on every tab) copies the same line — useful mid-read, without navigating here. Both read from one place in the source (<code>CITE_ACADEMIC</code> in <code>index.html</code>) so they cannot drift apart.
+      <br>• <b>Machine-readable metadata</b> — <a href="https://github.com/lszoszk/hrc-voting/blob/main/CITATION.cff" target="_blank" rel="noopener">CITATION.cff</a> in the repository carries the same record in <a href="https://citation-file-format.github.io/" target="_blank" rel="noopener">Citation File Format</a>; GitHub's own "Cite this repository" button on the repo page generates APA or BibTeX from it directly. The <a href="https://doi.org/10.5281/zenodo.21281232" target="_blank" rel="noopener">Zenodo record</a> offers the same in a dozen further formats (BibTeX, RIS, DataCite XML, …).
+      <br>• <b>What the DOI covers</b> — the concept DOI above always resolves to the latest release; cite a specific version (data snapshot + dashboard code as they stood on a given date) via the versioned DOI on the Zenodo record if reproducibility of an exact figure matters.
+      <br>• <b>Citing the underlying votes themselves</b>, rather than this software: the source is the OHCHR Search Library's <a href="https://searchlibrary.ohchr.org/search?c=Voting" target="_blank" rel="noopener">Voting collection</a> — every export from this dashboard (CSV and PNG) stamps that citation plus an access date automatically, so a chart pulled from here always carries its own provenance without needing this section.
+      <br>• Built and maintained by <a href="https://lszoszk.github.io/" target="_blank" rel="noopener">Łukasz Szoszkiewicz</a> (Adam Mickiewicz University, Poznań) — <a href="https://orcid.org/0000-0001-6671-2893" target="_blank" rel="noopener">ORCID 0000-0001-6671-2893</a>. Source and issues on <a href="https://github.com/lszoszk/hrc-voting" target="_blank" rel="noopener">GitHub</a>.</div>
+  </div>
 </section>
 
 </div></main>
 
 <footer class="foot">
-  <div class="fl"><span class="sup">CHR·HRC VR</span><span class="fsrc">Source: <a href="https://searchlibrary.ohchr.org/search?c=Voting" target="_blank" rel="noopener">OHCHR Search Library — Voting collection</a></span><span class="fsep fsrc">·</span><span id="f-note">loading dataset…</span></div>
-  <div class="fr"><span class="pallbl">Palette</span><button class="palbtn on" data-pal="paper">paper</button><button class="palbtn" data-pal="terminal">terminal</button><button class="palbtn" data-pal="ink">ink</button><span class="pallbl ft-tour-lbl" style="margin-left:16px">First visit?</span><button class="palbtn" id="ft-tour" type="button">✦ tour</button></div>
+  <div class="fl"><span class="sup">CHR·HRC VR</span><span class="fauthor">by <a href="https://lszoszk.github.io/" target="_blank" rel="noopener">Łukasz Szoszkiewicz</a></span><span class="fsrc">Source: <a href="https://searchlibrary.ohchr.org/search?c=Voting" target="_blank" rel="noopener">OHCHR Search Library — Voting collection</a></span><span class="fsep fsrc">·</span><span id="f-note">loading dataset…</span></div>
+  <div class="fr"><span class="pallbl">Palette</span><button class="palbtn on" data-pal="paper">paper</button><button class="palbtn" data-pal="terminal">terminal</button><button class="palbtn" data-pal="ink">ink</button><button class="palbtn" id="ft-cite" type="button" style="margin-left:16px" title="Copy an academic citation for this dashboard">Cite</button><span class="pallbl ft-tour-lbl" style="margin-left:16px">First visit?</span><button class="palbtn" id="ft-tour" type="button">✦ tour</button></div>
 </footer>
 
 <div class="kwrap" id="k-wrap">
@@ -1312,6 +1327,26 @@ const CSVDATA={};
 const CITE_BASE='Source: OHCHR Search Library — Voting collection (searchlibrary.ohchr.org) · CHR·HRC Voting Records · https://lszoszk.github.io/hrc-voting';
 function citeLine(){const d=new Date(),p=n=>String(n).padStart(2,'0');
   return CITE_BASE+' · accessed '+d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());}
+/* Academic citation for the SOFTWARE (this dashboard + pipeline), distinct from
+   CITE_BASE above (data-provenance stamp on individual chart exports). Single source
+   of truth for both the footer "Cite" button and Methodology §12 — keep in sync with
+   CITATION.cff and .zenodo.json (version, date-released, DOI) when either changes. */
+const CITE_ACADEMIC='Szoszkiewicz, Ł. (2026). OHCHR Voting Records — CHR · HRC (v1.0.0) [Software]. Zenodo. https://doi.org/10.5281/zenodo.21281232';
+function copyCite(btn){
+  const done=ok=>{const orig=btn.textContent;btn.textContent=ok?'✓ copied':'copy failed';
+    btn.disabled=true;setTimeout(()=>{btn.textContent=orig;btn.disabled=false;},1600);};
+  const fallback=()=>{try{
+      const ta=document.createElement('textarea');ta.value=CITE_ACADEMIC;
+      ta.style.cssText='position:fixed;opacity:0;top:0;left:0';
+      document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+      done(true);
+    }catch(e){done(false);}};
+  if(navigator.clipboard&&navigator.clipboard.writeText)
+    navigator.clipboard.writeText(CITE_ACADEMIC).then(()=>done(true)).catch(fallback);
+  else fallback();
+}
+document.querySelectorAll('#ft-cite,#m-cite-copy').forEach(b=>b.addEventListener('click',()=>copyCite(b)));
+const mCiteText=$('m-cite-text');if(mCiteText)mCiteText.textContent=CITE_ACADEMIC;
 function toCSV(headers,rows){
   const q=v=>{v=v==null?'':String(v);return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;};
   return [headers.map(q).join(','),...rows.map(r=>r.map(q).join(','))].join('\r\n');
@@ -1398,12 +1433,17 @@ function resSet(ymin,ymax,body){const a=Math.min(ymin,ymax),b=Math.max(ymin,ymax
 function yearPair(idMin,idMax){const a=+$(idMin).value,b=+$(idMax).value;return a<=b?[a,b]:[b,a];}
 
 /* ---------- palette switcher ---------- */
+/* .palbtn is a shared small-button LOOK (Cite, ✦ tour and the three palette swatches
+   all use it), not a behavior — scope the click-wiring to [data-pal] specifically, so
+   adding another .palbtn-styled button never again fires setPalette(undefined) and
+   silently resets a terminal/ink reader back to paper (and persists that reset to
+   localStorage). Tour was already class="palbtn" and already had this bug. */
 function setPalette(p){$('vr').dataset.palette=p;
-  document.querySelectorAll('.palbtn').forEach(b=>b.classList.toggle('on',b.dataset.pal===p));
+  document.querySelectorAll('.palbtn[data-pal]').forEach(b=>b.classList.toggle('on',b.dataset.pal===p));
   try{localStorage.setItem('vrPalette',p)}catch(e){}
   renderCurrent(); /* charts re-read CSS vars via var() live, but rebuild keeps SVG strokes crisp */
 }
-document.querySelectorAll('.palbtn').forEach(b=>b.addEventListener('click',()=>setPalette(b.dataset.pal)));
+document.querySelectorAll('.palbtn[data-pal]').forEach(b=>b.addEventListener('click',()=>setPalette(b.dataset.pal)));
 
 /* ---------- tabs ---------- */
 let VIEW='overview';
@@ -1411,6 +1451,16 @@ const VIEWS=['overview','country','topics','blocs','consensus','texts','language
 function switchTab(v){VIEW=v;
   VIEWS.forEach(x=>{$('view-'+x).style.display=x===v?'':'none';});
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.view===v));
+  /* Language always scores resolutions only (amendments are edit instructions, not
+     commitments — see the corpus banner). The global Scope selector can't change that,
+     so leaving it live here would let the masthead say "amendments only" while the tab
+     underneath keeps showing resolutions-only numbers. Disable it rather than let that
+     contradiction appear on screen. */
+  const gk=$('g-kind');
+  gk.disabled=(v==='language');
+  gk.title=v==='language'
+    ?'Language always scores resolutions only — amendments are edit instructions, not commitments'
+    :'';
   renderCurrent();
   trackView(v);
 }
@@ -2234,7 +2284,7 @@ function renderLanguage(){langInit().then(()=>{
   {const yy=D.byYear.map(o=>o.y),nres=D.byYear.reduce((s,o)=>s+o.nres,0);
    $('lg-corpus').innerHTML=fmt(nres)+' resolution texts · <b>'+Math.min(...yy)+'–'+Math.max(...yy)
      +'</b> — the text corpus starts in 1993, so this tab covers a shorter period than the '
-     +M.yearMin+'–'+M.yearMax+' voting record. Amendments and annexed instruments are excluded.';}
+     +M.yearMin+'–'+M.yearMax+' voting record. <b>Scope is fixed to resolutions only</b> here (the selector top-right is disabled on this tab) — an amendment is an instruction to edit a draft, not a commitment of the organ, so it carries no directive force or sentiment of its own to score. Annexed instruments (declarations, protocols reproduced after the text) are excluded the same way.';}
   /* 01 trend */
   const drawTrend=()=>{const m=LMET[LANG.metric];
     /* Axis spans the TEXT corpus (1993–), not the voting record (1947–). Drawing the

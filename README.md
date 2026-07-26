@@ -234,6 +234,17 @@ button generates APA/BibTeX from it):
 > Szoszkiewicz, Ł. (2026). *OHCHR Voting Records — CHR · HRC* (v1.0.0)
 > [Software]. Zenodo. https://doi.org/10.5281/zenodo.21281232
 
+The dashboard surfaces the same line in two places: a **Cite** button in the footer
+(copies it to the clipboard from any tab) and **Methodology §12**, which also explains
+the concept-vs-version DOI distinction and how to cite the underlying UN votes rather
+than this software. Both read from a single constant (`CITE_ACADEMIC` in
+`dashboard/index.html`) — **keep it in sync with `CITATION.cff` and `.zenodo.json`**
+whenever the version, release date or DOI changes.
+
+Built and maintained by [Łukasz Szoszkiewicz](https://lszoszk.github.io/)
+(Adam Mickiewicz University, Poznań) ·
+[ORCID 0000-0001-6671-2893](https://orcid.org/0000-0001-6671-2893).
+
 ## License
 
 Code and data are released under the **PolyForm Noncommercial License 1.0.0**
