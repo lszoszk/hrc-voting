@@ -6,6 +6,7 @@ Parse harvested MARCXML (data/raw/page_*.xml) into dashboard-ready CSVs:
 
 Dedupes records by MARC 001 (control number).
 """
+import collections
 import csv
 import glob
 import re
@@ -142,6 +143,32 @@ def parse_record(rec):
     return row, votes
 
 
+def repair_iso(seen):
+    """Repair 967$b codes that contradict the country name in 967$e.
+
+    Two catalogued rows carry another state's ISO code (record 21028 has NORWAY as
+    'PER', record 30508 has BRAZIL as 'BEN'). Left alone they move a vote from one
+    country's profile to another's and make the same state appear twice on one
+    resolution. The name is authoritative: build name -> iso3 from the corpus
+    majority, then correct rows that disagree.  Returns the list of repairs.
+    """
+    tally = collections.defaultdict(collections.Counter)
+    for _, votes in seen.values():
+        for v in votes:
+            if v["iso3"] and v["country"]:
+                tally[v["country"].strip().upper()][v["iso3"]] += 1
+    canon = {n: c.most_common(1)[0][0] for n, c in tally.items()
+             if c.most_common(1)[0][1] >= 3}          # needs corroboration
+    fixed = []
+    for rid, (row, votes) in seen.items():
+        for v in votes:
+            want = canon.get(v["country"].strip().upper())
+            if want and v["iso3"] and want != v["iso3"]:
+                fixed.append((rid, row["symbol"], v["country"], v["iso3"], want))
+                v["iso3"] = want
+    return fixed
+
+
 def main():
     seen = {}
     order = []
@@ -154,6 +181,9 @@ def main():
                 continue
             seen[rid] = (row, votes)
             order.append(rid)
+
+    for rid, sym, name, was, now in repair_iso(seen):
+        print(f"iso3 repaired: rec {rid} {sym} — {name} was '{was}', now '{now}'")
 
     res_cols = ["record_id", "symbol", "title", "statement", "date", "year",
                 "body", "collection", "vote_type", "meeting", "meeting_type",

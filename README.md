@@ -17,14 +17,29 @@ harvest methods).
 ## Layout
 
 ```
+# voting record (1946-2026)
 scripts/harvest.py             # download all MARCXML (per-year partitioning)
 scripts/parse_marcxml.py       # MARCXML -> resolutions.csv + votes_long.csv
 scripts/build_dashboard_data.py# CSVs -> dashboard/data.js (compact payload)
+scripts/build_world_map.py     # Natural Earth 110m -> dashboard/world.js
 data/raw/                      # harvested MARCXML, one file per year (git-ignored)
 data/csv/resolutions.csv       # one row per resolution (metadata + vote totals)
 data/csv/votes_long.csv        # one row per (resolution, country) roll-call vote
+
+# resolution texts (1993-2026) — powers the Texts and Language tabs
+scripts/mirror_ap_ohchr.py     # mirror CHR 1993-2005 .doc + HRC s1-11 .pdf
+scripts/harvest_ods_texts.py   # HRC s12+ .pdf from documents.un.org
+scripts/build_text_index.py    # extract -> clause-segment -> dashboard/texts/ (FTS index)
+scripts/tag_terms.py           # operative-verb coding -> dashboard/texts/lang.json
+data/ap_mirror/, data/ods_texts/, data/text_cache/   # sources + extraction cache
+dashboard/texts/               # catalog.json, docs-<year>.json, idx/, lang.json
+
+# app + checks
 dashboard/index.html           # self-contained static dashboard (open directly)
-dashboard/data.js              # embedded data payload (~970 KB)
+dashboard/data.js              # embedded data payload (~2.4 MB)
+scripts/smoke_test.py          # file:// regression check, must pass before shipping
+scripts/audit.py               # desktop + mobile overflow / console sweep
+scripts/export_test.py         # downloads and validates every CSV + PNG
 ```
 
 ## Dashboard
@@ -32,13 +47,15 @@ dashboard/data.js              # embedded data payload (~970 KB)
 `dashboard/index.html` (+ `data.js`) is a self-contained static page (no build
 step, no CDN — works offline and on GitHub Pages). Open it directly or serve the
 folder. **For sharing by e-mail, use `dashboard/OHCHR_voting_dashboard.html`** —
-a single ~1.1 MB file with the data inlined (regenerate by re-running the inline
-step in the audit notes, or just re-copy after `build_dashboard_data.py`).
+a single ~2.7 MB file with `data.js` and `world.js` inlined; regenerate it with
+`python scripts/build_single_file.py` after any rebuild (the Texts and Language
+tabs fetch shards over HTTP and stay inert there by design, with a notice).
 `scripts/smoke_test.py` loads the page from `file://` in headless Chromium (light
 + dark), clicks through every tab and key interaction, and fails on any console
-error — run it before sending the prototype onward. Six views — five over the
-~1,705 recorded (roll-call) votes, plus an experimental Consensus view over all
-6,346 catalogued resolutions:
+error — run it before sending the prototype onward. Eight views: five over the
+~1,705 recorded (roll-call) votes, an experimental Consensus view over all 6,346
+catalogued resolutions, two experimental views over the 4,437 harvested resolution
+**texts** (1993–2026), and Methodology:
 
 - **Overview** — volume over time (CHR→HRC), how contested votes were, most divided votes.
 - **Country profile** — per-state yearly Yes/Abstain/No **composition** chart (100%
@@ -74,10 +91,31 @@ error — run it before sending the prototype onward. Six views — five over th
   drafts panel (a post-2010 phenomenon), and a filterable explorer of the full
   catalogue. Modes, thresholds and caveats (without-a-vote ≠ unanimity; small-n flips
   are candidates, not findings) documented in Methodology.
+- **Texts** *(experimental)* — clause-level full-text search over the **4,437 harvested
+  resolution texts (1993–2026)**, the earliest the OHCHR/ODS document mirrors reach.
+  Results are shown clause by clause with preambular / operative labels; AND / OR /
+  `"exact phrase"` / `prefix*` / `-exclude`, plural folding, relevance or date sort.
+  Index built by `build_text_index.py` into per-year bundles + per-initial posting
+  shards, intersected client-side. Needs HTTP (it fetches shards), so it is inert in
+  the single-file offline build.
+- **Language** *(experimental)* — operative-verb commitment analysis over the same
+  1993– corpus. Each operative paragraph is scored by its leading verb on two axes:
+  **directive force** (D5 *Decides* … D2 *Invites*) and **sentiment** (−2 *Condemns* …
+  +2 *Commends*), plus a **delegation** flag for clauses that create or task machinery.
+  Context-scored verbs (*Expresses its grave concern* vs *its appreciation*) resolve
+  per clause and ship their split — grounded in a 2001 UN Office of Legal Affairs
+  opinion on "takes note of" / "notes" (GA decision 55/488). Amendments and the
+  articles of annexed declarations and protocols are excluded — they are edit
+  instructions and treaty-style text, not commitments of the organ. Vocabulary is
+  cross-checked against [UNITAR NYO, *Guidelines for United Nations Resolutions*
+  (2020)](https://unitar.org/sites/default/files/media/publication/doc/UN%20Resolution%20Guidelines_Handbook_English-7x10-Unitar_1.pdf),
+  Annex VI–VII, in addition to the JG-1/02/10 glossary; caveats in `tag_terms.py` and
+  Methodology.
 - **Methodology** — explains, with live numbers pulled from `meta.coverage`, why the
-  other three views operate on ~1,705 resolutions instead of the full 6,346 (only
+  vote-based views operate on ~1,705 resolutions instead of the full 6,346 (only
   recorded/roll-call votes carry a per-country breakdown), the vote-code legend, how
-  topics are identified, and the known data-quality caveats below.
+  topics are identified, every alignment/consensus/language measure defined, and the
+  known data-quality caveats below.
 
 **Exports.** Every chart carries a `CSV` button (the exact data behind it) and a
 `PNG` button (the chart itself, rasterised client-side — resolved palette colours
@@ -150,7 +188,18 @@ were adopted without a vote or only totals were published (totals are still in
   a discrepancy in **abstentions / non-participation**, occasionally a blank vote
   code where the total implies a position. These are inconsistencies in OHCHR's
   own MARC cataloguing; the data is preserved as-is (996 = official totals).
-- One typo (`y` → `Y`, UK 2011) is normalised; nothing else is altered.
+- **Three 967$b codes contradict the country name in 967$e** and are repaired by
+  `parse_marcxml.py` (`repair_iso`), which trusts the name and takes the code from
+  the corpus majority: rec 21027 HUNGARY was `HND`, rec 21028 NORWAY was `PER`,
+  rec 30508 BRAZIL was `BEN`. Left alone each moved one vote onto another state's
+  profile. Every repair is printed at parse time.
+- One vote-code typo (`y` → `Y`, UK 2011) is normalised; nothing else is altered.
+- **12 calendar years (1949, 1951, 1953, 1956–57, 1959–63, 1965, 1973) contain no
+  recorded vote at all.** A state casting no roll-call in one of those years says
+  nothing about its membership, so the Country profile draws no marker there.
+- One roll-call row (rec 24737, `E/CN.4/RES/6(XX)`) has a malformed 967 with no
+  country and is dropped from the dashboard payload — hence 80,158 country-votes in
+  the app against 80,159 rows in `votes_long.csv`.
 
 ## Deploy (GitHub Pages)
 
@@ -161,9 +210,17 @@ To refresh the data end-to-end:
 
 ```bash
 python scripts/harvest.py            # re-harvest MARCXML (needs Playwright + a browser)
-python scripts/parse_marcxml.py      # -> data/csv/*.csv
+python scripts/parse_marcxml.py      # -> data/csv/*.csv  (prints any iso3 repairs)
 python scripts/build_dashboard_data.py   # -> dashboard/data.js
 python scripts/build_world_map.py    # -> dashboard/world.js  (only if geography changes)
+
+# texts (only when new resolution documents are mirrored)
+python scripts/mirror_ap_ohchr.py    # -> data/ap_mirror/
+python scripts/harvest_ods_texts.py  # -> data/ods_texts/
+python scripts/build_text_index.py   # -> dashboard/texts/{catalog,docs-*,idx}
+python scripts/tag_terms.py          # -> dashboard/texts/{lang,terms}.json
+
+python scripts/build_single_file.py  # -> dashboard/OHCHR_voting_dashboard.html
 python scripts/smoke_test.py         # file:// regression check, must pass
 git commit -am "refresh data" && git push   # Actions redeploys Pages
 ```

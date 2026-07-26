@@ -123,8 +123,16 @@ def segment(raw):
     sub-item '(x)', preambular participle openers) rather than on blank lines, which
     are unreliable across the varied UN PDF templates. Continuation lines are joined;
     furniture lines are skipped without breaking a clause across a page boundary.
+    Annexed instruments (declarations, protocols, guidelines reproduced after the
+    resolution) restart their own numbering at 1. Their articles are not operative
+    paragraphs of the adopting organ — "Peasants ... have the right to" is treaty-style
+    text, not a Council commitment — so once the numbering restarts everything after is
+    labelled AX*. It stays fully searchable in the Texts tab but is excluded from the
+    operative-verb scoring, which keys on OP*.
+
     Returns ("", clauses) — the catalogue title (MARC 245) is used downstream."""
     clauses, cur, label, in_body, op, pp = [], [], None, False, 0, 0
+    peak_op, annex, ax = 0, False, 0
 
     def flush():
         nonlocal cur, label
@@ -153,9 +161,18 @@ def segment(raw):
                 continue                          # skip masthead / pre-body furniture
         mnum, msub = OP_LINE.match(s), SUB_LINE.match(s)
         if mnum:
-            flush(); op = int(mnum.group(1)); label = f"OP{op}"; cur = [s]
+            n = int(mnum.group(1))
+            if not annex and n <= 2 and peak_op >= 3:
+                annex = True                  # numbering restarted: an annexed instrument
+            flush(); op = n; peak_op = max(peak_op, n)
+            if annex:
+                ax += 1; label = f"AX{ax}"
+            else:
+                label = f"OP{op}"
+            cur = [s]
         elif msub and op:
-            flush(); label = f"OP{op}({msub.group(1)})"; cur = [s]
+            flush(); label = (f"AX{ax}({msub.group(1)})" if annex
+                              else f"OP{op}({msub.group(1)})"); cur = [s]
         elif op == 0 and PSTART_RE.match(s):
             flush(); pp += 1; label = f"PP{pp}"; cur = [s]
         else:

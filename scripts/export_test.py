@@ -96,7 +96,7 @@ bheat_rows = check_csv(csv_bheat, 30, "state")
 print(f"  bheat matrix is square-ish: {len(bheat_rows[0])} cols × {len(bheat_rows)-1} rows")
 check_csv(csv_bmds, 20, "shared_votes")
 check_csv(csv_bcoh, 5, "agreement_index")
-check_csv(csv_biso, 40, "minority_side_pct")
+check_csv(csv_biso, 40, "losing_side_pct")   # renamed: measured against the side that prevailed
 check_csv(csv_cflips, 30, "delta_pp")
 check_csv(csv_cero, 60, "consensus_share_pct")
 check_csv(csv_cexp, 6000, "mode")

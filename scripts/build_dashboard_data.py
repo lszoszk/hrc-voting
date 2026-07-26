@@ -38,6 +38,40 @@ GROUP_LABEL = {"WEOG": "Western Europe & Others", "EEG": "Eastern Europe",
                "GRULAC": "Latin America & Caribbean", "AFRICAN": "African",
                "ASIA_PACIFIC": "Asia-Pacific", "": "Other/Unassigned"}
 
+# Display names. The catalogue stores names in caps; str.title() then yields "Bosnia
+# And Herzegovina" / "Cote D'Ivoire", which reach the picker, every chart label and
+# every CSV export. Fixed here so there is one source of truth for name rendering.
+_MINOR = {"and", "of", "the", "in", "to", "for", "on"}
+NAME_OVERRIDE = {
+    "BIH": "Bosnia and Herzegovina", "CIV": "Côte d'Ivoire", "GNB": "Guinea-Bissau",
+    "KOR": "Republic of Korea", "MDA": "Republic of Moldova",
+    "STP": "São Tomé and Príncipe", "PRK": "DPR Korea", "COD": "DR Congo",
+    "VEN": "Venezuela", "BOL": "Bolivia", "IRN": "Iran", "TZA": "Tanzania",
+    "GER": "Germany (FRG)", "DDR": "Germany (GDR)", "LAO": "Laos",
+    "SYR": "Syria", "MKD": "North Macedonia", "CSK": "Czechoslovakia",
+    "SUN": "Soviet Union", "YUG": "Yugoslavia",
+}
+# States that no longer exist — flagged so the picker can mark them as historical
+# rather than listing them as peers of their successors.
+HISTORICAL = {"CSK", "SUN", "YUG", "DDR", "GER", "ZAR"}
+# One ISO code spans a change of representation rather than a change of state: the
+# China seat passed from the Republic of China to the PRC in October 1971, but the
+# catalogue records both as CHN. Surfaced so a "China 1947-2026" series is not read
+# as one continuous actor.
+REPRESENTATION_BREAK = {"CHN": {"year": 1971,
+                                "note": "China's seat passed from the Republic of China "
+                                        "to the People's Republic of China in October 1971; "
+                                        "the catalogue records both as CHN."}}
+
+
+def display_name(iso, raw):
+    if iso in NAME_OVERRIDE:
+        return NAME_OVERRIDE[iso]
+    words = raw.strip().title().split()
+    out = [w if i == 0 or w.lower() not in _MINOR else w.lower()
+           for i, w in enumerate(words)]
+    return " ".join(out)
+
 
 def main():
     res_rows = list(csv.DictReader(open(CSV / "resolutions.csv", encoding="utf-8")))
@@ -141,9 +175,11 @@ def main():
     latest_name = {}  # iso3 -> (year, name)
     res_tally = collections.defaultdict(collections.Counter)  # ri -> Counter(code)
     code_map = {"Y": "Y", "N": "N", "A": "A", ".": ".", "": "-"}
+    dropped = []
     for v in vote_rows:
         iso = v["iso3"]
         if not iso or v["record_id"] not in idx:
+            dropped.append((v["record_id"], v["symbol"]))   # malformed 967, no country
             continue
         ri = idx[v["record_id"]]
         code = code_map.get(v["vote"], "-")
@@ -153,7 +189,7 @@ def main():
         res_tally[ri][code] += 1
         yr = int(v["year"]) if v["year"].isdigit() else 0
         if iso not in latest_name or yr >= latest_name[iso][0]:
-            latest_name[iso] = (yr, v["country"].title())
+            latest_name[iso] = (yr, display_name(iso, v["country"]))
 
     # reconciliation: roll-call tally (967) vs official totals (996), recorded only
     reconciled, mismatched = 0, 0
@@ -181,13 +217,23 @@ def main():
             "absent": codes.count("."), "blank": codes.count("-"),
             "first": min(yrs) if yrs else None,
             "last": max(yrs) if yrs else None,
+            **({"hist": 1} if iso in HISTORICAL else {}),
+            **({"repBreak": REPRESENTATION_BREAK[iso]} if iso in REPRESENTATION_BREAK else {}),
         })
 
     # --- subject index (topic chips) with country-situation detection ---
+    # The name list is built from states that CAST roll-call votes, so territories and
+    # states that never sat on the CHR/HRC are invisible to it. PLACES closes that gap
+    # explicitly — without it "GOLAN HEIGHTS" (32 resolutions) reads as a thematic topic.
     cnames = {n.upper() for (_, n) in latest_name.values()}
-    cnames |= {"PALESTINE", "STATE OF PALESTINE", "OCCUPIED ARAB TERRITORIES",
-               "OCCUPIED PALESTINIAN TERRITORY", "SOUTHERN AFRICA", "KOSOVO",
-               "WESTERN SAHARA", "IRAN", "SYRIA", "BURMA"}
+    PLACES = {"PALESTINE", "STATE OF PALESTINE", "PALESTINIANS", "OCCUPIED ARAB TERRITORIES",
+              "OCCUPIED PALESTINIAN TERRITORY", "SOUTHERN AFRICA", "KOSOVO", "GOLAN HEIGHTS",
+              "WESTERN SAHARA", "IRAN", "SYRIA", "BURMA", "MYANMAR", "SOUTH SUDAN", "YEMEN",
+              "TIMOR-LESTE", "EAST TIMOR", "XIZANG", "TIBET", "DARFUR", "CHECHNYA",
+              "ABKHAZIA", "CRIMEA", "SREBRENICA", "ZAIRE", "RHODESIA", "NAMIBIA",
+              "BOSNIA AND HERZEGOVINA", "REPUBLIC OF KOREA",
+              "DEMOCRATIC PEOPLE'S REPUBLIC OF KOREA"}
+    cnames |= PLACES
 
     def is_country_subject(s):
         u = s.upper().strip()
@@ -195,7 +241,7 @@ def main():
             return False
         if u in cnames:
             return True
-        # e.g. "HUMAN RIGHTS - BELARUS", "ISRAEL - ARAB COUNTRIES"
+        # e.g. "HUMAN RIGHTS - BELARUS", "ISRAEL - ARAB COUNTRIES", "DARFUR (SUDAN)"
         return any(len(c) > 5 and c in u for c in cnames)
 
     subj_counts = collections.Counter(r["subj"] for r in res if r["subj"])
@@ -237,7 +283,10 @@ def main():
     unassigned = [c["iso3"] for c in countries if not c["group"]]
     print(f"data.js written: {size/1024:.0f} KB")
     print(f"  {len(res)} resolutions, {len(countries)} countries")
+    print(f"  roll-call rows: {sum(c['n'] for c in countries)} of {len(vote_rows)} in CSV")
     print(f"  unassigned to a UN group ({len(unassigned)}): {unassigned}")
+    if dropped:
+        print(f"  DROPPED {len(dropped)} malformed roll-call row(s) (no iso3): {dropped}")
 
 
 if __name__ == "__main__":

@@ -3,7 +3,9 @@ operative verbs and preambular openers, and report statistics + newly-used terms
 
 Reads dashboard/texts/{catalog.json, docs-*.json} (built by build_text_index.py).
 Writes dashboard/texts/terms.json (per-doc verb tags + corpus aggregates) and prints
-a stats report.  UNITAR reference: JG-1/02/10.
+a stats report.  UNITAR reference: JG-1/02/10, cross-checked against UNITAR NYO,
+"Guidelines for United Nations Resolutions" (2020), Annex VI-VII:
+https://unitar.org/sites/default/files/media/publication/doc/UN%20Resolution%20Guidelines_Handbook_English-7x10-Unitar_1.pdf
 """
 import json, re, collections
 from pathlib import Path
@@ -12,12 +14,24 @@ ROOT = Path(__file__).resolve().parent.parent
 TX = ROOT / "dashboard" / "texts"
 
 # ---- UNITAR controlled vocabulary (canonical heads) ----
+# Cross-checked term-by-term against UNITAR NYO, "Guidelines for United Nations
+# Resolutions" (2020), Annex VII "Resolutions: frequently used terms" — a second,
+# publicly downloadable UNITAR source, independent of the JG-1/02/10 glossary this
+# module was originally built from. Four operative verbs (Appreciates, Underscores,
+# Calls for, Discourages) and twelve preambular openers were attested there but
+# missing here, which meant real UNITAR vocabulary was being reported to readers as
+# "drafting drift beyond the glossary" on the Language tab. Added below, each tagged
+# `# Annex VII` at the point it was added.
 OPERATIVE = [
     "Accepts", "Acknowledges", "Adopts", "Affirms", "Agrees", "Appeals", "Appoints",
+    "Appreciates",  # Annex VII
     "Approves", "Authorizes", "Believes", "Calls the attention", "Calls attention",
+    "Calls for",  # Annex VII
     "Calls upon", "Commends", "Compliments", "Concurs", "Condemns", "Confirms",
     "Congratulates", "Considers", "Decides", "Declares", "Demands", "Denounces",
-    "Deplores", "Designates", "Determines", "Dissolves", "Draws the attention", "Elects",
+    "Deplores", "Designates", "Determines",
+    "Discourages",  # Annex VII — scored as DIR tier 2, mirroring "Encourages"
+    "Dissolves", "Draws the attention", "Elects",
     "Emphasizes", "Empowers", "Endorses", "Entrusts", "Envisages", "Establishes",
     "Exhorts", "Expresses", "Extends", "Firmly supports", "Insists", "Instructs",
     "Invites the attention", "Invites", "Is of the opinion", "Looks forward",
@@ -25,24 +39,46 @@ OPERATIVE = [
     "Proposes", "Reaffirms", "Realizes", "Reasserts", "Recalls", "Recognizes",
     "Recommends", "Refers", "Regrets", "Reiterates", "Rejects", "Reminds", "Renews",
     "Requests", "Resolves", "Solemnly adopts", "Stresses", "Suggests", "Supports",
-    "Takes note", "Transmits", "Trusts", "Underlines", "Urgently requests", "Urges",
+    "Takes note", "Transmits", "Trusts", "Underlines",
+    "Underscores",  # Annex VII — same register as "Underlines" ("underlining, underscoring")
+    "Urgently requests", "Urges",
     "Welcomes",
 ]
 PREAMBLE = [
     "Acknowledging", "Acting", "Adhering", "Affirming", "Agreeing", "Alarmed",
-    "Appreciating", "Aware", "Bearing in mind", "Believing", "Cognizant", "Concerned",
-    "Concurring", "Condemning", "Conscious", "Considering", "Convinced", "Deploring",
-    "Desirous", "Emphasizing", "Encouraged", "Expressing", "Faithful", "Fearing",
-    "Fully aware", "Guided by", "Having considered", "Hopeful", "Indignant", "Inspired",
-    "Keeping in mind", "Mindful", "Noting", "Persuaded", "Reaffirming", "Recalling",
-    "Recognizing", "Regretting", "Reiterating", "Sharing the concern", "Stressing",
+    "Appreciating", "Aware", "Bearing in mind", "Believing", "Cognizant",
+    "Commending",  # Annex VII
+    "Concerned", "Concurring", "Condemning", "Conscious", "Considering", "Convinced",
+    "Deploring",
+    "Desiring", "Desirous",  # Annex VII adds "Desiring"; "Desirous" already present
+    "Determined",  # Annex VII
+    "Disturbed",  # Annex VII
+    "Emphasizing", "Encouraged", "Expressing", "Faithful", "Fearing",
+    "Fully aware", "Guided",  # Annex VII (bare "Guided", distinct from "Guided by" below)
+    "Guided by", "Having considered",
+    "Having received",  # Annex VII
+    "Hopeful", "Indignant", "Inspired",
+    "Keeping in mind", "Mindful", "Noting", "Persuaded",
+    "Realizing",  # Annex VII
+    "Reaffirming", "Recalling",
+    "Recognizing", "Regretting", "Reiterating",
+    "Renewing its commitment",  # Annex VII
+    "Sharing the concern", "Stressing",
     "Striving", "Taking into account", "Taking into consideration", "Taking note",
-    "Underlining", "Viewing with concern", "Welcoming", "Wishing",
+    "Thanking",  # Annex VII
+    "Underlining",
+    "Underscoring",  # Annex VII
+    "Viewing with concern", "Welcoming", "Wishing",
 ]
 # generic intensifiers/adverbs that precede a verb but are not part of a UNITAR entry
 INTENS = ["strongly", "deeply", "gravely", "seriously", "vigorously", "categorically",
           "unequivocally", "emphatically", "resolutely", "also", "further", "again",
           "once again", "in this regard", "in particular"]
+# A clause-opening word followed by one of these is a subject noun ("States should…",
+# "Peasants … have the right"), not an operative verb.
+SUBJECT_FOLLOWERS = {"shall", "should", "must", "may", "might", "can", "could", "will",
+                     "would", "have", "has", "had", "are", "is", "was", "were", "and",
+                     "or", "who", "which", "that"}
 
 # ---- two-axis coding scheme (grounded: Abbott/Keohane/Moravcsik/Slaughter/Snidal 2000
 # "Legalization" IO 54(3); Benson & Tucker 2022 JCR level-of-action + sentiment; Lebovic
@@ -54,9 +90,10 @@ DIR = {5: ["Decides", "Demands", "Resolves", "Declares", "Determines", "Adopts",
            "Dissolves", "Designates", "Empowers", "Entrusts", "Proclaims", "Mandates",
            "Renews", "Extends"],
        4: ["Urges", "Calls upon", "Exhorts", "Appeals", "Calls for", "Insists",
-           "Instructs", "Urgently requests", "Makes an urgent appeal", "Demands"],
+           "Instructs", "Urgently requests", "Makes an urgent appeal"],
        3: ["Requests", "Recommends"],
-       2: ["Invites", "Encourages", "Suggests", "Proposes", "Envisages"]}
+       2: ["Invites", "Encourages", "Suggests", "Proposes", "Envisages", "Discourages"]}
+assert not (set(DIR[5]) & set(DIR[4])), "a verb may sit in only one directive tier"
 VAL = {2:  ["Commends", "Compliments", "Congratulates", "Pays tribute"],
        1:  ["Welcomes", "Appreciates", "Applauds", "Thanks", "Endorses", "Approves",
             "Accepts", "Supports", "Firmly supports", "Confirms"],
@@ -72,10 +109,39 @@ VAL_OF = {v: t for t, vs in VAL.items() for v in vs}
 # "Expresses X" and "Notes with X" carry valence in the object, resolved per clause:
 NEG_OBJ = re.compile(r"\b(concern|regret|indignation|dismay|alarm|disappoint|condemn)", re.I)
 POS_OBJ = re.compile(r"\b(appreciation|satisfaction|solidarity|gratitude|confidence|support|hope)", re.I)
-DELEG = re.compile(r"\b(secretary-general|high commissioner|ohchr|special rapporteur|"
-                   r"independent expert|working group|commission of inquiry|fact-finding|"
-                   r"to (?:report|submit|present|prepare|convene|establish|appoint)|"
-                   r"the mandate|a panel|a report)", re.I)
+# Delegation: the clause CREATES or TASKS machinery. A bare mention of a body or a
+# report is not delegation ("Expresses its appreciation for the report of the Special
+# Rapporteur" creates nothing), so all three conditions must hold:
+#   1. the clause is directive at all (dir tier > 0), and either
+#   2. it establishes / renews / extends a mechanism, or
+#   3. a UN actor is the OBJECT of that directive verb (within DELEG_WIN characters of
+#      the clause opening) and is followed by an infinitival task.
+DELEG_ACTOR = re.compile(
+    r"\b(secretary-general|high commissioner|office of the high commissioner|ohchr|"
+    r"centre for human rights|special rapporteur|independent expert|special representative|"
+    r"working group|commission of inquiry|advisory committee|sub-commission|"
+    r"group of experts|panel of experts|fact-finding mission|special procedures?)\b", re.I)
+# "to <verb>", excluding "to the/its/a/…" noun phrases ("to bring X to the attention of")
+_NOT_VERB = (r"(?:the|its|his|her|their|our|this|that|these|those|all|any|such|a|an|which|"
+             r"whom|it|them|him|and|or|as|in|on|at|for|of|with|from|by|international|human|"
+             r"present|above|full|date|end|extent|effect|attention|situation|question|report|"
+             r"states?|governments?|members?)")
+DELEG_TASK = re.compile(r"\bto\s+(?!" + _NOT_VERB + r"\b)[a-z]{3,}\b")
+DELEG_CREATE = re.compile(
+    r"\b(establish|create|set up|appoint|renew|extend|prolong|continue)\w*\b[^.;]{0,90}?"
+    r"\b(mandate|working group|special rapporteur|independent expert|special representative|"
+    r"commission of inquiry|fact-finding|panel|forum|group of experts|special procedure|"
+    r"advisory committee|open-ended)\b", re.I)
+DELEG_WIN = 80          # actor must be the verb's object, not a citation deep in the clause
+
+
+def is_delegation(text, dir_tier):
+    if not dir_tier:
+        return False
+    if DELEG_CREATE.search(text):
+        return True
+    m = DELEG_ACTOR.search(text[:DELEG_WIN])
+    return bool(m and DELEG_TASK.search(text, m.end()))
 
 def _byword(terms):
     # longest-first so "Calls upon" wins over a bare "Calls"
@@ -90,6 +156,25 @@ def match(head, terms):
         if head == t or head.startswith(t + " "):
             return t
     return None
+
+
+# Intensifiers can also sit INSIDE a multiword term ("Calls once again upon"), which a
+# prefix-strip alone cannot reach. Deleting them anywhere in the head recovers the term.
+_INFIX = re.compile(r"\b(?:" + "|".join(sorted((re.escape(a) for a in INTENS),
+                                               key=len, reverse=True)) + r")\b")
+
+
+def match_relaxed(head, terms):
+    """(term, intensifier-removed?) allowing intensifiers anywhere in the head."""
+    m = match(head, terms)
+    if m:
+        return m, False
+    squeezed = re.sub(r"\s+", " ", _INFIX.sub("", head)).strip()
+    if squeezed and squeezed != head:
+        m = match(squeezed, terms)
+        if m:
+            return m, True
+    return None, False
 
 def op_head(text):
     """Leading operative phrase of an OP clause: drop the 'N.' and any label prefix."""
@@ -112,53 +197,62 @@ def tag_preamble(head):
     m = match(head, PP_L)
     return CANON[m] if m else None
 
-NEWCANON = {"calls for": "Calls for", "encourages": "Encourages", "underscores": "Underscores",
-            "appreciates": "Appreciates", "applauds": "Applauds", "thanks": "Thanks",
-            "highlights": "Highlights", "observes": "Observes", "deplores": "Deplores",
-            "regrets": "Regrets", "rejects": "Rejects", "denounces": "Denounces", "condemns": "Condemns"}
-# extended operative vocabulary = UNITAR + the codeable "new" verbs (finding: Encourages)
-OP_EXT = _byword(OPERATIVE + ["Encourages", "Calls for", "Underscores", "Appreciates",
-                              "Applauds", "Thanks", "Highlights", "Observes", "Deplores",
-                              "Regrets", "Rejects", "Denounces", "Condemns"])
+# These five are attested in the corpus (Applauds/Thanks/Highlights/Observes at low
+# volume) but not in either UNITAR source consulted, so they stay OUT of the canonical
+# OPERATIVE list and are scored as "beyond the glossary" — Encourages (~3,400 clauses)
+# is the one that matters at scale.
+NEWCANON = {"encourages": "Encourages", "applauds": "Applauds", "thanks": "Thanks",
+            "highlights": "Highlights", "observes": "Observes"}
+# extended operative vocabulary = UNITAR (canonical) + the still-uncanonical "new" verbs
+OP_EXT = _byword(OPERATIVE + ["Encourages", "Applauds", "Thanks", "Highlights", "Observes"])
+
+CTX_VERBS = ("Expresses", "Notes", "Takes note", "Recognizes")   # valence sits in the object
+
 
 def code_clause(text):
-    """(verb, dir, val, deleg) for one operative clause under the two-axis scheme."""
+    """(verb, dir, val, deleg) for one operative clause under the two-axis scheme.
+
+    val is None for directive verbs AND for verbs carrying no valence code — 'not
+    coded' must not average in as 'neutral 0'."""
     head = op_head(text)
-    verb = match(head, OP_EXT)
+    verb, _ = match_relaxed(head, OP_EXT)
     if not verb:
-        for a in sorted(INTENS, key=lambda s: -len(s)):
-            if head.startswith(a + " "):
-                verb = match(head[len(a) + 1:], OP_EXT)
-                if verb:
-                    break
-    if not verb:
-        return None, 0, None, bool(DELEG.search(text))
+        return None, 0, None, False       # unrecognized head: nothing can be scored
     v = CANON.get(verb) or NEWCANON.get(verb) or verb.title()
     d = DIR_OF.get(v, 0)
-    if v in ("Expresses", "Notes", "Takes note", "Recognizes"):
+    if v in CTX_VERBS:
         val = -1 if NEG_OBJ.search(text) else (1 if POS_OBJ.search(text) else 0)
     else:
-        val = None if d else VAL_OF.get(v, 0)
-    return v, d, val, bool(DELEG.search(text))
+        val = None if d else VAL_OF.get(v)
+    return v, d, val, is_delegation(text, d)
 
 def build_lang(cat, bundles):
     import statistics
     new_heads = collections.Counter(); intens = collections.Counter()
     UNITAR_L = set(OP_L)
     def track_new(text):
+        """Operative heads the UNITAR list does not carry.
+
+        Detection is by drafting convention, not by a whitelist: an operative clause
+        opens with a third-person-singular present verb. A whitelist could only ever
+        rediscover the verbs its author already suspected, which is not a finding."""
         head = op_head(text)
-        if match(head, OP_L):
+        m, relaxed = match_relaxed(head, OP_L)
+        if m:                                                 # UNITAR term, possibly
+            if relaxed:                                       # with an intensifier
+                for a in sorted(INTENS, key=lambda s: -len(s)):
+                    if a in head:
+                        intens[(CANON[m], a)] += 1; break
             return
-        for a in sorted(INTENS, key=lambda s: -len(s)):
-            if head.startswith(a + " "):
-                m = match(head[len(a) + 1:], OP_L)
-                if m:
-                    intens[(CANON[m], a)] += 1; return
-        w = head.split(" ")[0] if head else ""
-        NEW_OK = {"encourages", "calls", "underscores", "appreciates", "applauds",
-                  "thanks", "highlights", "continues", "remains", "deprecates"}
-        if w in NEW_OK:
-            new_heads["Calls for" if head.startswith("calls for") else w.title()] += 1
+        m, _ = match_relaxed(head, OP_EXT)                     # extras: "Calls for"
+        if m:
+            new_heads[CANON.get(m) or NEWCANON.get(m) or m.title()] += 1; return
+        w, *rest = head.split(" ") if head else [""]
+        # third-person-singular present verb, and not a subject noun: an operative verb
+        # takes an object or a preposition, never a modal/auxiliary/conjunction.
+        if (len(w) >= 4 and w.endswith("s") and not w.endswith("ss")
+                and (not rest or rest[0] not in SUBJECT_FOLLOWERS)):
+            new_heads[w.title()] += 1
     yr = collections.defaultdict(lambda: {"body": "", "nres": 0, "nop": 0, "dirSum": 0,
         "dirN": 0, "valSum": 0, "valN": 0, "tier": collections.Counter(),
         "enc": 0, "cond": 0, "deleg": 0})
@@ -209,11 +303,15 @@ def build_lang(cat, bundles):
         if o["n"] >= 6 and o["dir"]:
             top = o["verbs"].most_common(1)[0][0] if o["verbs"] else ""
             bySubj.append([s, o["n"], round(statistics.mean(o["dir"]), 2),
-                           round(statistics.mean(o["val"]), 2) if o["val"] else 0,
+                           round(statistics.mean(o["val"]), 2) if o["val"] else None,
                            round(o["deleg"] / o["n"], 2), top])
     bySubj.sort(key=lambda r: -r[2])
-    # verb table with axis coordinates for the scheme visualisation
+    # verb table with axis coordinates for the scheme visualisation. Context-scored
+    # verbs ("Expresses its grave concern" vs "…its appreciation") carry no fixed
+    # valence, so we ship the resolved split and place the verb at its modal value —
+    # filing them flat under 0 would misreport the largest expressive verb in the corpus.
     op_freq = collections.Counter()
+    ctx_split = collections.defaultdict(collections.Counter)
     for d in cat:
         if d[5] or not d[2]:
             continue
@@ -222,9 +320,21 @@ def build_lang(cat, bundles):
                 verb, dr, val, dg = code_clause(text)
                 if verb:
                     op_freq[verb] += 1
-    verbs = [[v, c, DIR_OF.get(v, 0), VAL_OF.get(v, 0 if v not in ("Expresses",) else 0)]
-             for v, c in op_freq.most_common()]
+                    if verb in CTX_VERBS:
+                        ctx_split[verb][val] += 1
+    verbs = []
+    for v, c in op_freq.most_common():
+        if v in ctx_split:
+            sp = ctx_split[v]
+            verbs.append([v, c, DIR_OF.get(v, 0), sp.most_common(1)[0][0],
+                          {str(k): n for k, n in sorted(sp.items())}])
+        else:
+            verbs.append([v, c, DIR_OF.get(v, 0), VAL_OF.get(v, 0), None])
     (TX / "lang.json").write_text(json.dumps({
+        # shipped so the Methodology tab quotes the vocabulary actually implemented
+        # rather than a hand-written figure that can drift from it
+        "vocab": {"operative": len(OPERATIVE), "preamble": len(PREAMBLE),
+                  "extended": len(OP_EXT)},
         "scheme": {"dir": DIR, "val": {str(k): v for k, v in VAL.items()}},
         "byYear": byYear, "bySubject": bySubj, "verbs": verbs, "perDoc": per_doc,
         "newVerbs": new_heads.most_common(10),
