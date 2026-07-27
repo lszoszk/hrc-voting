@@ -176,6 +176,7 @@
 .rc-text{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
 .rc-text .flbl{margin-bottom:8px}
 .mnote{margin-top:8px;font-size:10px;line-height:1.6;color:var(--dimmer)}
+.guessnote{font-size:10.5px;line-height:1.6;color:var(--dim);background:var(--paper-2);border:1px solid var(--line);border-left:2px solid var(--abstain);padding:7px 11px;margin:-6px 0 14px}
 .cite-box{display:flex;align-items:center;gap:10px;margin:10px 0;padding:10px 12px;background:var(--paper-2);border:1px solid var(--line);border-left:2px solid var(--accent)}
 .cite-box code{flex:1;font:11px var(--mono);color:var(--ink-2);line-height:1.6;word-break:break-word;background:none;padding:0}
 .cite-box .expb{flex-shrink:0}
@@ -272,6 +273,7 @@ body.touring .ga-consent{display:none}
 .tstart{display:grid;grid-template-columns:1fr;gap:10px;margin-top:18px;max-width:420px}
 .tstart button{font:12px var(--mono);text-align:left;padding:13px 16px;border:1px solid var(--line);background:var(--paper-2);color:var(--ink);cursor:pointer}
 .tstart button:hover{border-color:var(--accent);color:var(--accent)}
+.tstart-sub{display:block;margin-top:3px;font-size:9.5px;color:var(--dimmer)}
 .tour-foot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding:12px 20px;background:var(--paper-2)}
 .tour-skip{font:10px var(--mono);letter-spacing:.1em;text-transform:uppercase;background:none;border:0;color:var(--dimmer);cursor:pointer;padding:6px}
 .tour-skip:hover{color:var(--ink)}
@@ -407,6 +409,7 @@ body.touring .ga-consent{display:none}
     <div class="fitem"><label class="flbl" for="c-ymax">To year</label><select class="sel" id="c-ymax"></select></div>
     <div class="fitem"><label class="flbl" for="c-body">Body</label><select class="sel" id="c-body"><option value="">CHR + HRC</option><option value="CHR">CHR only</option><option value="HRC">HRC only</option></select></div>
   </div>
+  <div class="guessnote" id="c-guess" style="display:none"></div>
   <div class="tiles" id="c-tiles"></div>
   <div class="panel">
     <div class="p-head"><span class="p-idx">01</span><span class="p-title">How it voted, year by year</span><span class="p-exp"><button class="expb" data-csv="ctl" title="Download data as CSV">CSV</button><button class="expb" data-png="c-timeline" data-pngname="country-composition" title="Download chart as PNG">PNG</button></span></div>
@@ -1509,6 +1512,9 @@ function renderOverview(){
 
 /* ---------- 02 COUNTRY PROFILE ---------- */
 let cSortKey='year',cSortDir=1;
+/* true only while the opening country came from a locale guess and the reader has not
+   yet chosen one — drives the "guessed, not detected" note above the profile */
+let COUNTRY_GUESSED=false;
 function countryRows(){
   const iso=$('c-country').value,[ymin,ymax]=yearPair('c-ymin','c-ymax'),body=$('c-body').value;
   const allowed=resSet(ymin,ymax,body),m=vmap(iso),rows=[];
@@ -1528,6 +1534,14 @@ function alignData(iso,allowed){
 }
 function renderCountry(){
   const {rows,allowed,iso}=countryRows();const c=byIso[iso];
+  /* Say plainly that a guessed country is a guess. The alternative — opening on some
+     state and letting the reader assume it was detected — is the kind of quiet
+     overclaim this dashboard tries not to make. */
+  const gn=$('c-guess');
+  if(gn){gn.style.display=COUNTRY_GUESSED?'':'none';
+    if(COUNTRY_GUESSED)gn.innerHTML='Opened on <b>'+esc(c.name)+'</b>, guessed from your browser’s '
+      +'language setting — not from your location, and nothing was sent anywhere. '
+      +'Pick any state above; the choice is remembered on this device only.';}
   const cwin='('+$('c-ymin').value+'–'+$('c-ymax').value+($('c-body').value?', '+$('c-body').value:'')+')';
   const cnt={Y:0,N:0,A:0};let other=0;rows.forEach(x=>{if(cnt[x.code]!=null)cnt[x.code]++;else other++;});
   const nsub=cnt.Y+cnt.N+cnt.A,pct=v=>nsub?Math.round(v/nsub*100)+'%':'—';
@@ -2401,7 +2415,12 @@ function kItems(q){
 function kGo(it){
   closeK();
   if(it.type==='view')switchTab(it.v);
-  else if(it.type==='country'){$('c-country').value=it.v;cSortKey='year';cSortDir=1;switchTab('country');}
+  /* setting .value does not fire 'change', so the persistence and guess-retirement
+     that hang off that listener have to be repeated here — picking a country from
+     ⌘K was previously not remembered at all */
+  else if(it.type==='country'){$('c-country').value=it.v;cSortKey='year';cSortDir=1;
+    COUNTRY_GUESSED=false;try{localStorage.setItem('hrc-country',it.v);}catch(e){}
+    switchTab('country');}
   else {topicState.subject=it.v;$('t-search').value='';renderTopicChips();switchTab('topics');}
 }
 function kRender(){
@@ -2625,7 +2644,7 @@ function buildTour(){
   `<div class="tour-kicker">Start anywhere</div>
    <h2 class="tour-h">Where to first?</h2>
    <div class="tstart">
-     <button data-goto="country">→ &nbsp;My country's record</button>
+     <button data-goto="country">→ &nbsp;My country's record<span class="tstart-sub">opens on a guess from your browser language — change it there</span></button>
      <button data-goto="topics">→ &nbsp;Browse by topic</button>
      <button id="tour-k">⌘K &nbsp;Search anything — views, countries, subjects</button>
    </div>
@@ -2680,7 +2699,24 @@ function refreshStats(){
 function fillYears(sel,def){const s=$(sel);let h='';for(let y=M.yearMin;y<=M.yearMax;y++)h+=`<option${y===def?' selected':''}>${y}</option>`;s.innerHTML=h;}
 (function boot(){
   refreshStats();
-  let defCountry='USA';try{const s=localStorage.getItem('hrc-country');if(s&&byIso[s])defCountry=s;}catch(e){}  // remember last-viewed country (local only)
+  /* Opening country, in priority order:
+       1. the last country this browser actually looked at (an explicit choice)
+       2. a guess from the browser's own locale region — "pl-PL" → Poland
+       3. USA
+     The guess reads navigator.languages only: no network call, no IP, nothing leaves
+     the page. A geo-IP lookup would be more accurate but would contradict the privacy
+     claim in Methodology 07 (an IP is never sent anywhere) and would break the offline
+     single-file build, so it is deliberately not used. Because a locale is a weak
+     proxy — plenty of readers browse in en-US from anywhere — a guessed country says
+     so on screen (see #c-guess) instead of pretending to know. */
+  let defCountry='USA',guessed=false;
+  try{const langs=navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language||''];
+    for(const l of langs){const m=/[-_]([A-Za-z]{2})\b/.exec(l||'');
+      const iso=m&&(D.iso2||{})[m[1].toUpperCase()];
+      if(iso&&byIso[iso]){defCountry=iso;guessed=true;break;}}
+  }catch(e){}
+  try{const s=localStorage.getItem('hrc-country');if(s&&byIso[s]){defCountry=s;guessed=false;}}catch(e){}
+  COUNTRY_GUESSED=guessed;
   /* States that no longer exist are listed as peers of their successors (Czechoslovakia
      next to Czech Republic), so mark them. Deliberately no year range: first/last are
      the years the state cast RECORDED votes, not the years it existed — Czechoslovakia
@@ -2705,7 +2741,7 @@ function fillYears(sel,def){const s=$(sel);let h='';for(let y=M.yearMin;y<=M.yea
     if(c){$('tx-q').value=c.dataset.q;txSearch();}});
   $('tx-results').addEventListener('click',e=>{if(e.target.id==='tx-more')txRenderMore(false);});
   /* controls */
-  ['c-country','c-ymin','c-ymax','c-body'].forEach(id=>$(id).addEventListener('change',()=>{if(id==='c-country'){cSortKey='year';cSortDir=1;try{localStorage.setItem('hrc-country',$('c-country').value);}catch(e){}}renderCountry();}));
+  ['c-country','c-ymin','c-ymax','c-body'].forEach(id=>$(id).addEventListener('change',()=>{if(id==='c-country'){cSortKey='year';cSortDir=1;COUNTRY_GUESSED=false;/* an explicit pick retires the guess for good */try{localStorage.setItem('hrc-country',$('c-country').value);}catch(e){}}renderCountry();}));
   $('t-type').addEventListener('change',()=>{topicState.subject=null;renderTopicChips();renderTopics();renderSuggest();});
   const tSearch=$('t-search');
   tSearch.addEventListener('input',()=>{topicState.subject=null;renderTopicChips();renderTopics();renderSuggest();});

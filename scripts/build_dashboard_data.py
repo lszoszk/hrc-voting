@@ -63,6 +63,40 @@ REPRESENTATION_BREAK = {"CHN": {"year": 1971,
                                         "to the People's Republic of China in October 1971; "
                                         "the catalogue records both as CHN."}}
 
+# ISO 3166-1 alpha-2 -> alpha-3, for turning a browser locale region subtag ("pl-PL")
+# into an opening country on the Country profile. Read from navigator.language in the
+# browser: no network call, no IP, nothing leaves the page — the dashboard promises in
+# Methodology 07 that an IP is never sent anywhere, so a geo-IP lookup is out.
+# Historical states are deliberately absent: a cs-CZ reader wants Czech Republic, not
+# Czechoslovakia. Only pairs whose alpha-3 actually has a roll-call record are emitted.
+ISO2_TO_ISO3 = {
+    "AF": "AFG", "AO": "AGO", "AL": "ALB", "AE": "ARE", "AR": "ARG", "AM": "ARM",
+    "AU": "AUS", "AT": "AUT", "AZ": "AZE", "BI": "BDI", "BE": "BEL", "BJ": "BEN",
+    "BF": "BFA", "BD": "BGD", "BG": "BGR", "BH": "BHR", "BS": "BHS", "BA": "BIH",
+    "BY": "BLR", "BO": "BOL", "BR": "BRA", "BB": "BRB", "BT": "BTN", "BW": "BWA",
+    "CA": "CAN", "CH": "CHE", "CL": "CHL", "CN": "CHN", "CI": "CIV", "CM": "CMR",
+    "CD": "COD", "CG": "COG", "CO": "COL", "CV": "CPV", "CR": "CRI", "CU": "CUB",
+    "CY": "CYP", "CZ": "CZE", "DE": "DEU", "DJ": "DJI", "DK": "DNK", "DO": "DOM",
+    "DZ": "DZA", "EC": "ECU", "EG": "EGY", "ER": "ERI", "ES": "ESP", "EE": "EST",
+    "ET": "ETH", "FI": "FIN", "FJ": "FJI", "FR": "FRA", "GA": "GAB", "GB": "GBR",
+    "GE": "GEO", "GH": "GHA", "GN": "GIN", "GM": "GMB", "GW": "GNB", "GR": "GRC",
+    "GT": "GTM", "HN": "HND", "HR": "HRV", "HU": "HUN", "ID": "IDN", "IN": "IND",
+    "IE": "IRL", "IR": "IRN", "IQ": "IRQ", "IS": "ISL", "IL": "ISR", "IT": "ITA",
+    "JM": "JAM", "JO": "JOR", "JP": "JPN", "KZ": "KAZ", "KE": "KEN", "KG": "KGZ",
+    "KR": "KOR", "KW": "KWT", "LB": "LBN", "LR": "LBR", "LY": "LBY", "LK": "LKA",
+    "LS": "LSO", "LT": "LTU", "LU": "LUX", "LV": "LVA", "MA": "MAR", "MD": "MDA",
+    "MG": "MDG", "MV": "MDV", "MX": "MEX", "MH": "MHL", "MK": "MKD", "ML": "MLI",
+    "ME": "MNE", "MN": "MNG", "MZ": "MOZ", "MR": "MRT", "MU": "MUS", "MW": "MWI",
+    "MY": "MYS", "NA": "NAM", "NE": "NER", "NG": "NGA", "NI": "NIC", "NL": "NLD",
+    "NO": "NOR", "NP": "NPL", "NZ": "NZL", "PK": "PAK", "PA": "PAN", "PE": "PER",
+    "PH": "PHL", "PL": "POL", "PT": "PRT", "PY": "PRY", "QA": "QAT", "RO": "ROU",
+    "RU": "RUS", "RW": "RWA", "SA": "SAU", "SD": "SDN", "SN": "SEN", "SL": "SLE",
+    "SV": "SLV", "SO": "SOM", "ST": "STP", "SK": "SVK", "SI": "SVN", "SE": "SWE",
+    "SZ": "SWZ", "SY": "SYR", "TG": "TGO", "TH": "THA", "TN": "TUN", "TR": "TUR",
+    "TZ": "TZA", "UG": "UGA", "UA": "UKR", "UY": "URY", "US": "USA", "UZ": "UZB",
+    "VE": "VEN", "VN": "VNM", "ZA": "ZAF", "ZM": "ZMB", "ZW": "ZWE",
+}
+
 
 def display_name(iso, raw):
     if iso in NAME_OVERRIDE:
@@ -248,6 +282,11 @@ def main():
     subjects = [{"name": s, "n": n, "cs": is_country_subject(s)}
                 for s, n in subj_counts.most_common()]
 
+    # locale-guess map, pruned to states that actually have a roll-call record here
+    have = {c["iso3"] for c in countries if not c.get("hist")}
+    iso2_map = {a2: a3 for a2, a3 in ISO2_TO_ISO3.items() if a3 in have}
+    unmapped = sorted(have - set(iso2_map.values()))
+
     payload = {
         "meta": {
             "nResolutions": len(res),
@@ -274,6 +313,7 @@ def main():
         "votes": votes,
         "subjects": subjects,
         "resAll": res_all,
+        "iso2": iso2_map,
     }
 
     js = "window.DATA = " + json.dumps(payload, separators=(",", ":"),
@@ -285,6 +325,8 @@ def main():
     print(f"  {len(res)} resolutions, {len(countries)} countries")
     print(f"  roll-call rows: {sum(c['n'] for c in countries)} of {len(vote_rows)} in CSV")
     print(f"  unassigned to a UN group ({len(unassigned)}): {unassigned}")
+    print(f"  locale map: {len(iso2_map)} alpha-2 codes"
+          + (f"; NO alpha-2 for {unmapped}" if unmapped else "; every state covered"))
     if dropped:
         print(f"  DROPPED {len(dropped)} malformed roll-call row(s) (no iso3): {dropped}")
 
