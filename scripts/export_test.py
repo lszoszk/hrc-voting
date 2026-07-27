@@ -38,8 +38,12 @@ with sync_playwright() as p:
     grab(pg, '[data-csv="ovmg"]', "ovmg")
     png_ovmg = grab(pg, '[data-png="ov-margin"]', "ov-margin")
 
-    # --- Country (USA default) ---
+    # --- Country ---
+    # Pin the country explicitly. The profile now opens on a guess from the browser's
+    # time zone, so relying on the old hardcoded USA default made this test pass or
+    # fail depending on where it was run from.
     pg.click('.tab[data-view="country"]'); pg.wait_for_timeout(400)
+    pg.select_option('#c-country', 'USA'); pg.wait_for_timeout(500)
     csv_ctl = grab(pg, '[data-csv="ctl"]', "ctl")
     grab(pg, '[data-png="c-timeline"]', "c-timeline")
     csv_cal = grab(pg, '[data-csv="cal"]', "cal")

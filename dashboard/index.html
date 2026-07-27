@@ -1512,9 +1512,9 @@ function renderOverview(){
 
 /* ---------- 02 COUNTRY PROFILE ---------- */
 let cSortKey='year',cSortDir=1;
-/* true only while the opening country came from a locale guess and the reader has not
-   yet chosen one — drives the "guessed, not detected" note above the profile */
-let COUNTRY_GUESSED=false;
+/* '' when the reader chose a country, otherwise which signal the opening country was
+   guessed from ('time zone' | 'language setting') — drives the note above the profile */
+let COUNTRY_GUESSED='';
 function countryRows(){
   const iso=$('c-country').value,[ymin,ymax]=yearPair('c-ymin','c-ymax'),body=$('c-body').value;
   const allowed=resSet(ymin,ymax,body),m=vmap(iso),rows=[];
@@ -1540,7 +1540,8 @@ function renderCountry(){
   const gn=$('c-guess');
   if(gn){gn.style.display=COUNTRY_GUESSED?'':'none';
     if(COUNTRY_GUESSED)gn.innerHTML='Opened on <b>'+esc(c.name)+'</b>, guessed from your browser’s '
-      +'language setting — not from your location, and nothing was sent anywhere. '
+      +esc(COUNTRY_GUESSED)+' — read on this device, not looked up: your location was never '
+      +'requested and your IP was never sent anywhere. '
       +'Pick any state above; the choice is remembered on this device only.';}
   const cwin='('+$('c-ymin').value+'–'+$('c-ymax').value+($('c-body').value?', '+$('c-body').value:'')+')';
   const cnt={Y:0,N:0,A:0};let other=0;rows.forEach(x=>{if(cnt[x.code]!=null)cnt[x.code]++;else other++;});
@@ -2644,7 +2645,7 @@ function buildTour(){
   `<div class="tour-kicker">Start anywhere</div>
    <h2 class="tour-h">Where to first?</h2>
    <div class="tstart">
-     <button data-goto="country">→ &nbsp;My country's record<span class="tstart-sub">opens on a guess from your browser language — change it there</span></button>
+     <button data-goto="country">→ &nbsp;My country's record<span class="tstart-sub">opens on a guess from your browser's time zone — change it there</span></button>
      <button data-goto="topics">→ &nbsp;Browse by topic</button>
      <button id="tour-k">⌘K &nbsp;Search anything — views, countries, subjects</button>
    </div>
@@ -2701,21 +2702,29 @@ function fillYears(sel,def){const s=$(sel);let h='';for(let y=M.yearMin;y<=M.yea
   refreshStats();
   /* Opening country, in priority order:
        1. the last country this browser actually looked at (an explicit choice)
-       2. a guess from the browser's own locale region — "pl-PL" → Poland
-       3. USA
-     The guess reads navigator.languages only: no network call, no IP, nothing leaves
-     the page. A geo-IP lookup would be more accurate but would contradict the privacy
-     claim in Methodology 07 (an IP is never sent anywhere) and would break the offline
-     single-file build, so it is deliberately not used. Because a locale is a weak
-     proxy — plenty of readers browse in en-US from anywhere — a guessed country says
-     so on screen (see #c-guess) instead of pretending to know. */
-  let defCountry='USA',guessed=false;
-  try{const langs=navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language||''];
-    for(const l of langs){const m=/[-_]([A-Za-z]{2})\b/.exec(l||'');
-      const iso=m&&(D.iso2||{})[m[1].toUpperCase()];
-      if(iso&&byIso[iso]){defCountry=iso;guessed=true;break;}}
+       2. the browser's IANA time zone — "Europe/Warsaw" → Poland
+       3. the browser's locale region — "pl-PL" → Poland
+       4. USA
+     Time zone first because it is the stronger signal: a great many readers browse in
+     en-US from everywhere, but far fewer run a laptop on the wrong zone. Both are read
+     from the browser's own settings — no network call, no IP, nothing leaves the page.
+     A geo-IP lookup would be more accurate still, and is deliberately not used: it
+     would contradict the privacy claim in Methodology 07 (an IP is never sent
+     anywhere) and would break the offline single-file build.
+     Neither signal is location — a VPN, or a laptop never re-zoned after moving, gives
+     the wrong country — so a guessed country says so on screen (see #c-guess) rather
+     than pretending to know. */
+  let defCountry='USA',guessed='';
+  const pick=iso=>{if(iso&&byIso[iso]){defCountry=iso;return true;}return false;};
+  try{const tz=Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if(tz&&pick((D.iso2||{})[(D.tz||{})[tz]]))guessed='time zone';
   }catch(e){}
-  try{const s=localStorage.getItem('hrc-country');if(s&&byIso[s]){defCountry=s;guessed=false;}}catch(e){}
+  if(!guessed)try{
+    const langs=navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language||''];
+    for(const l of langs){const m=/[-_]([A-Za-z]{2})\b/.exec(l||'');
+      if(m&&pick((D.iso2||{})[m[1].toUpperCase()])){guessed='language setting';break;}}
+  }catch(e){}
+  try{const s=localStorage.getItem('hrc-country');if(s&&byIso[s]){defCountry=s;guessed='';}}catch(e){}
   COUNTRY_GUESSED=guessed;
   /* States that no longer exist are listed as peers of their successors (Czechoslovakia
      next to Czech Republic), so mark them. Deliberately no year range: first/last are

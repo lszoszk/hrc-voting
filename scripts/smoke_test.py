@@ -52,9 +52,15 @@ with sync_playwright() as p:
     checks["rollcall closes"] = pg.evaluate("!document.getElementById('rc-wrap').classList.contains('open')")
 
     pg.click('.tab[data-view="country"]')
+    # Pin the starting country: the profile now opens on a guess from the browser's
+    # time zone, so a run from Warsaw would otherwise "switch" from POL to POL and
+    # quietly stop testing the switch at all.
+    pg.select_option("#c-country", "USA"); pg.wait_for_timeout(300)
     checks["country rows"] = pg.evaluate("document.querySelectorAll('#c-rows .gtr').length")
     pg.select_option("#c-country", "POL")
     checks["country switch (POL rows)"] = pg.evaluate("document.querySelectorAll('#c-rows .gtr').length")
+    checks["country switch actually changed"] = (
+        checks["country rows"] != checks["country switch (POL rows)"])
     checks["vote pills"] = pg.evaluate("document.querySelectorAll('#c-rows .pill').length > 0")
     checks["composition rects"] = pg.evaluate("document.querySelectorAll('#c-timeline rect').length")
     checks["align top rows"] = pg.evaluate("document.querySelectorAll('#c-align-top text').length")
@@ -198,6 +204,7 @@ print(f"\nconsole/page errors: {len(errors)}")
 for e in errors[:10]:
     print(" ", e)
 ok = (checks["DATA loaded"] and checks["overview tiles"] == 4 and checks["country rows"]
+      and checks["country switch actually changed"]
       and checks["map paths"] > 150 and checks["composition rects"] > 50
       and checks["align top rows"] and checks["subject col (country)"]
       and checks["suggest items"] and checks["topic rows"] and checks["trend svg"]

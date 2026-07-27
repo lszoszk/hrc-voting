@@ -11,6 +11,8 @@ import csv
 import json
 from pathlib import Path
 
+from tz_countries import TZ_TO_ISO2
+
 ROOT = Path(__file__).resolve().parent.parent
 CSV = ROOT / "data" / "csv"
 OUT = ROOT / "dashboard"
@@ -282,10 +284,11 @@ def main():
     subjects = [{"name": s, "n": n, "cs": is_country_subject(s)}
                 for s, n in subj_counts.most_common()]
 
-    # locale-guess map, pruned to states that actually have a roll-call record here
+    # guess maps, pruned to states that actually have a roll-call record here
     have = {c["iso3"] for c in countries if not c.get("hist")}
     iso2_map = {a2: a3 for a2, a3 in ISO2_TO_ISO3.items() if a3 in have}
     unmapped = sorted(have - set(iso2_map.values()))
+    tz_map = {z: c for z, c in TZ_TO_ISO2.items() if c in iso2_map}
 
     payload = {
         "meta": {
@@ -314,6 +317,7 @@ def main():
         "subjects": subjects,
         "resAll": res_all,
         "iso2": iso2_map,
+        "tz": tz_map,
     }
 
     js = "window.DATA = " + json.dumps(payload, separators=(",", ":"),
@@ -327,6 +331,7 @@ def main():
     print(f"  unassigned to a UN group ({len(unassigned)}): {unassigned}")
     print(f"  locale map: {len(iso2_map)} alpha-2 codes"
           + (f"; NO alpha-2 for {unmapped}" if unmapped else "; every state covered"))
+    print(f"  timezone map: {len(tz_map)} zones -> {len(set(tz_map.values()))} states")
     if dropped:
         print(f"  DROPPED {len(dropped)} malformed roll-call row(s) (no iso3): {dropped}")
 
