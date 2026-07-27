@@ -165,7 +165,13 @@
 .lad-name{color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lad-bar{height:11px;background:var(--accent);min-width:1px}
 .lad-n{color:var(--dimmer);text-align:right;font-size:10px}
-.lad-ctx{color:var(--dimmer);font-size:9px;letter-spacing:.02em;margin-left:6px}
+/* .lad-name is a fixed 118px grid column with ellipsis truncation for long verb
+   names — nesting the valence-split badge inside it silently clipped the badge to
+   "+1 31…" for every row that had one. .lad-split is a plain block sibling AFTER
+   the .lad-row grid (not a cell inside it), so it can run to whatever width its
+   text needs; padding-left just lines it up visually under the bar column. */
+.lad-split{display:inline-block;margin:-1px 0 3px;padding-left:126px;font-size:9.5px;color:var(--dimmer);border-bottom:1px dotted var(--line);cursor:help}
+.lad-split:hover{color:var(--accent);border-color:var(--accent)}
 .lad-cap{font:9.5px var(--mono);color:var(--dimmer);margin-top:4px}
 .rc-text{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
 .rc-text .flbl{margin-bottom:8px}
@@ -647,7 +653,7 @@ body.touring .ga-consent{display:none}
   <div class="panel">
     <div class="p-head"><span class="p-idx">02</span><span class="p-title">The vocabulary of commitment</span><span class="p-note">verbs ranked within each tier by how often they open an operative paragraph</span><span class="p-exp"><button class="expb" data-csv="lgverbs" title="Download data as CSV">CSV</button></span></div>
     <div class="p-body">
-      <div class="p-desc">Every operative paragraph opens with a controlled verb (UNITAR <i>Terms Used in Resolutions</i>). The <b>directive</b> verbs form a directive-force ladder; the <b>expressive</b> verbs register the organ's stance from condemnation to commendation. Bars = clause frequency across <span id="lg-nres"></span> resolutions.</div>
+      <div class="p-desc">Every operative paragraph opens with a controlled verb (UNITAR <i>Terms Used in Resolutions</i>). The <b>directive</b> verbs form a directive-force ladder; the <b>expressive</b> verbs register the organ's stance from condemnation to commendation. Bars = clause frequency across <span id="lg-nres"></span> resolutions. Four verbs — <i>Takes note, Notes, Recognizes, Expresses</i> — carry no fixed sentiment: a dotted line under their name, reading e.g. <span class="lad-split" style="display:inline;padding-left:0;margin:0" title="example only — see the live figures on the rows below">31% positive · 63% neutral · 6% negative</span>, shows how their clauses actually divide — because "<i>notes with concern</i>" and "<i>notes with appreciation</i>" mean opposite things.</div>
       <div class="grid2">
         <div><div class="lad-h" style="color:var(--accent)">Directive force — the commitment ladder</div><div id="lg-lad-dir" class="ladder"></div></div>
         <div><div class="lad-h" style="color:var(--accent)">Expressive — the sentiment axis</div><div id="lg-lad-val" class="ladder"></div></div>
@@ -2257,6 +2263,7 @@ function fillVocab(){const el=$('m-unitar');if(!el)return;
   el.textContent=v?v.operative+' operative verbs and '+v.preamble+' preambular openers, extended to '
     +v.extended+' operative terms by the non-UNITAR verbs the corpus actually uses'
     :'vocabulary size loads with the Language tab';}
+const VAL_WORD={'2':'strongly positive','1':'positive','0':'neutral','-1':'negative','-2':'strongly negative'};
 function lgLadder(host,rows,groups,colorfn){
   const max=Math.max(...rows.map(r=>r[1]),1);let html='';
   groups.forEach(g=>{const rs=rows.filter(g.pick).sort((a,b)=>b[1]-a[1]);if(!rs.length)return;
@@ -2264,12 +2271,20 @@ function lgLadder(host,rows,groups,colorfn){
     rs.forEach(r=>{
       /* r[4] = resolved-valence split for context-scored verbs ("Expresses its grave
          concern" vs "…its appreciation"). Filing these flat under 0 misreported the
-         largest expressive verb in the corpus, so the split is shown inline. */
-      const sp=r[4],note=sp?' <span class="lad-ctx" title="valence resolved per clause from the object">'
-        +Object.keys(sp).sort((a,b)=>b-a).map(k=>(k>0?'+':'')+k+' '+Math.round(sp[k]/r[1]*100)+'%').join(' · ')+'</span>':'';
-      html+='<div class="lad-row"><span class="lad-name" title="'+esc(r[0])+(sp?' — scored per clause':'')+'">'+esc(r[0])+note+'</span>'+
+         largest expressive verb in the corpus, so the split is shown as its own line
+         under the row — in words (not just +1/0/-1 symbols) so it reads without
+         needing to hover at all, since a native title tooltip is unreachable on touch.
+         The tooltip adds the mechanism for readers who do hover. */
+      const sp=r[4];let split='';
+      if(sp){const total=r[1],keys=Object.keys(sp).sort((a,b)=>b-a);
+        const parts=keys.map(k=>Math.round(sp[k]/total*100)+'% '+(VAL_WORD[k]||k));
+        const tt='"'+r[0]+'" has no single score — each of the '+fmt(total)+' clauses is read from what '
+          +'follows it. "…with concern/regret" → negative, "…with appreciation/support" → positive, the '
+          +'bare verb alone → neutral.';
+        split='<div class="lad-split" title="'+esc(tt)+'">'+esc(parts.join(' · '))+'</div>';}
+      html+='<div class="lad-row"><span class="lad-name">'+esc(r[0])+'</span>'+
       '<span class="lad-bar" style="width:'+Math.max(r[1]/max*100,1).toFixed(1)+'%;background:'+colorfn(r)+'"></span>'+
-      '<span class="lad-n">'+fmt(r[1])+'</span></div>';});});
+      '<span class="lad-n">'+fmt(r[1])+'</span></div>'+split;});});
   host.innerHTML=html;
 }
 function renderLanguage(){langInit().then(()=>{
