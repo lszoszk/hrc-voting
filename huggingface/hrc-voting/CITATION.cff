@@ -1,0 +1,38 @@
+cff-version: 1.2.0
+title: "OHCHR Voting Records — CHR · HRC"
+message: >-
+  If you use this software, the data pipeline, or the derived datasets,
+  please cite it using the metadata below.
+type: software
+authors:
+  - family-names: Szoszkiewicz
+    given-names: Łukasz
+    affiliation: "Adam Mickiewicz University, Poznań"
+    orcid: "https://orcid.org/0000-0001-6671-2893"
+repository-code: "https://github.com/lszoszk/hrc-voting"
+url: "https://lszoszk.github.io/hrc-voting/"
+doi: "10.5281/zenodo.21281232"
+abstract: >-
+  Complete harvest of the OHCHR Search Library "Voting" collection — roll-call
+  and summary voting records of the UN Commission on Human Rights (1946–2006)
+  and the Human Rights Council (2006–present) — parsed from customised MARC21
+  cataloguing into dashboard-ready CSVs, with a self-contained interactive
+  dashboard. Coverage: 6,346 resolutions / 80,159 individual country votes.
+keywords:
+  - human rights
+  - United Nations
+  - Human Rights Council
+  - Commission on Human Rights
+  - voting records
+  - roll-call votes
+  - open data
+license: PolyForm-Noncommercial-1.0.0
+version: "1.0.0"
+date-released: "2026-07-09"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.21281232"
+    description: "Concept DOI — always resolves to the latest version"
+  - type: doi
+    value: "10.5281/zenodo.21281233"
+    description: "DOI for version v1.0.0"

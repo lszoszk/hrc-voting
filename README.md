@@ -34,6 +34,10 @@ scripts/tag_terms.py           # operative-verb coding -> dashboard/texts/lang.j
 data/ap_mirror/, data/ods_texts/, data/text_cache/   # sources + extraction cache
 dashboard/texts/               # catalog.json, docs-<year>.json, idx/, lang.json
 
+# Hugging Face package (rebuilt from the committed outputs above)
+scripts/prepare_hf_dataset.py  # -> huggingface/hrc-voting/{README.md, data/*.parquet}
+huggingface/hrc-voting/        # dataset card + 3 parquet configs, ready to upload
+
 # app + checks
 dashboard/index.html           # self-contained static dashboard (open directly)
 dashboard/data.js              # embedded data payload (~2.4 MB)
@@ -224,6 +228,23 @@ python scripts/build_single_file.py  # -> dashboard/OHCHR_voting_dashboard.html
 python scripts/smoke_test.py         # file:// regression check, must pass
 git commit -am "refresh data" && git push   # Actions redeploys Pages
 ```
+
+## Hugging Face dataset
+
+`huggingface/hrc-voting/` holds a ready-to-upload package with three configs —
+`resolutions` (6,346), `votes` (80,159) and `clauses` (96,451, texts 1993–2026) — as
+parquet, plus a dataset card. Rebuild it from the committed CSVs and text index with:
+
+```bash
+python scripts/prepare_hf_dataset.py
+```
+
+The card leads with the four analytical traps in this data (roll-call selection,
+abstentions not being votes against, amendments not being resolutions, the ~9%
+reconciliation gap) and the package ships derived columns — `prevailing_side`,
+`adopted`, `rollcall_reconciles`, `clause_type` — so downstream users do not have to
+rediscover them. Upload with `huggingface-cli upload`; note the **PolyForm
+Noncommercial** licence carries over, so the card declares `license: other`.
 
 ## Citation
 

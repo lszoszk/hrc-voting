@@ -1,0 +1,17 @@
+{
+  "resolutions": 6346,
+  "votes": 80159,
+  "clauses": 96451,
+  "year_min": 1946,
+  "year_max": 2026,
+  "countries": 154,
+  "with_rollcall": 1705,
+  "rollcall_mismatch": 148,
+  "amendments": 731,
+  "clause_years": [
+    1993,
+    2026
+  ],
+  "clause_docs": 4437,
+  "operative_clauses": 42957
+}
