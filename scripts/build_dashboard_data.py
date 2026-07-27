@@ -100,6 +100,39 @@ ISO2_TO_ISO3 = {
 }
 
 
+# Territories and states that never sat on the CHR/HRC, so never appear in the vote
+# data the matcher is otherwise built from. Without these, "GOLAN HEIGHTS" (32
+# resolutions) reads as a thematic topic.
+PLACES = {"PALESTINE", "STATE OF PALESTINE", "PALESTINIANS", "OCCUPIED ARAB TERRITORIES",
+          "OCCUPIED PALESTINIAN TERRITORY", "SOUTHERN AFRICA", "KOSOVO", "GOLAN HEIGHTS",
+          "WESTERN SAHARA", "IRAN", "SYRIA", "BURMA", "MYANMAR", "SOUTH SUDAN", "YEMEN",
+          "TIMOR-LESTE", "EAST TIMOR", "XIZANG", "TIBET", "DARFUR", "CHECHNYA",
+          "ABKHAZIA", "CRIMEA", "SREBRENICA", "ZAIRE", "RHODESIA", "NAMIBIA",
+          "BOSNIA AND HERZEGOVINA", "REPUBLIC OF KOREA",
+          "DEMOCRATIC PEOPLE'S REPUBLIC OF KOREA"}
+
+
+def country_subject_matcher(raw_names):
+    """Predicate: does this catalogued subject tag name a country situation?
+
+    Matches against the RAW catalogued spellings of state names, never the display
+    names — see raw_names at the call site. Shared with scripts/prepare_hf_dataset.py so
+    the Hugging Face package classifies subjects exactly as the dashboard does.
+    """
+    cnames = {n for names in raw_names.values() for n in names if n} | PLACES
+
+    def is_country_subject(s):
+        u = (s or "").upper().strip()
+        if not u:
+            return False
+        if u in cnames:
+            return True
+        # e.g. "HUMAN RIGHTS - BELARUS", "ISRAEL - ARAB COUNTRIES", "DARFUR (SUDAN)"
+        return any(len(c) > 5 and c in u for c in cnames)
+
+    return is_country_subject
+
+
 def display_name(iso, raw):
     if iso in NAME_OVERRIDE:
         return NAME_OVERRIDE[iso]
@@ -208,7 +241,8 @@ def main():
 
     # per-country vote matrix + latest display name
     votes = {}        # iso3 -> {"r":[resIdx...], "v":"codes"}
-    latest_name = {}  # iso3 -> (year, name)
+    latest_name = {}  # iso3 -> (year, display name)
+    raw_names = {}    # iso3 -> {every catalogued spelling}, for subject matching
     res_tally = collections.defaultdict(collections.Counter)  # ri -> Counter(code)
     code_map = {"Y": "Y", "N": "N", "A": "A", ".": ".", "": "-"}
     dropped = []
@@ -226,6 +260,12 @@ def main():
         yr = int(v["year"]) if v["year"].isdigit() else 0
         if iso not in latest_name or yr >= latest_name[iso][0]:
             latest_name[iso] = (yr, display_name(iso, v["country"]))
+        # Every spelling the catalogue ever used for this state, kept RAW. Subject tags
+        # are matched against these, never against display names: shortening SYR to
+        # "Syria" for the picker silently dropped "SYRIAN ARAB REPUBLIC" — the exact
+        # string the catalogue uses — out of the match set, and re-filed the largest
+        # country-situation topic in the data (57 resolutions) as thematic.
+        raw_names.setdefault(iso, set()).add(v["country"].strip().upper())
 
     # reconciliation: roll-call tally (967) vs official totals (996), recorded only
     reconciled, mismatched = 0, 0
@@ -258,27 +298,7 @@ def main():
         })
 
     # --- subject index (topic chips) with country-situation detection ---
-    # The name list is built from states that CAST roll-call votes, so territories and
-    # states that never sat on the CHR/HRC are invisible to it. PLACES closes that gap
-    # explicitly — without it "GOLAN HEIGHTS" (32 resolutions) reads as a thematic topic.
-    cnames = {n.upper() for (_, n) in latest_name.values()}
-    PLACES = {"PALESTINE", "STATE OF PALESTINE", "PALESTINIANS", "OCCUPIED ARAB TERRITORIES",
-              "OCCUPIED PALESTINIAN TERRITORY", "SOUTHERN AFRICA", "KOSOVO", "GOLAN HEIGHTS",
-              "WESTERN SAHARA", "IRAN", "SYRIA", "BURMA", "MYANMAR", "SOUTH SUDAN", "YEMEN",
-              "TIMOR-LESTE", "EAST TIMOR", "XIZANG", "TIBET", "DARFUR", "CHECHNYA",
-              "ABKHAZIA", "CRIMEA", "SREBRENICA", "ZAIRE", "RHODESIA", "NAMIBIA",
-              "BOSNIA AND HERZEGOVINA", "REPUBLIC OF KOREA",
-              "DEMOCRATIC PEOPLE'S REPUBLIC OF KOREA"}
-    cnames |= PLACES
-
-    def is_country_subject(s):
-        u = s.upper().strip()
-        if not u:
-            return False
-        if u in cnames:
-            return True
-        # e.g. "HUMAN RIGHTS - BELARUS", "ISRAEL - ARAB COUNTRIES", "DARFUR (SUDAN)"
-        return any(len(c) > 5 and c in u for c in cnames)
+    is_country_subject = country_subject_matcher(raw_names)
 
     subj_counts = collections.Counter(r["subj"] for r in res if r["subj"])
     subjects = [{"name": s, "n": n, "cs": is_country_subject(s)}

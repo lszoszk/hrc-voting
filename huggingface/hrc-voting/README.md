@@ -48,6 +48,14 @@ configs:
   data_files:
   - split: train
     path: data/clauses-train.parquet
+- config_name: countries
+  data_files:
+  - split: train
+    path: data/countries-train.parquet
+- config_name: subjects
+  data_files:
+  - split: train
+    path: data/subjects-train.parquet
 ---
 
 # UN Human Rights Voting Records — CHR · HRC
@@ -65,21 +73,33 @@ methods. An interactive dashboard over the same data is at
 
 ## Configs
 
+Three fact tables and two dimension tables.
+
 | config | rows | one row is | period |
 |---|---|---|---|
 | `resolutions` *(default)* | 6,346 | a catalogued resolution, decision or amendment | 1946–2026 |
 | `votes` | 80,159 | one country's position on one resolution | 1947–2026 |
 | `clauses` | 96,451 | one preambular / operative / annex clause | 1993–2026 |
+| `countries` | 154 | a state that cast at least one roll-call vote | — |
+| `subjects` | 1,033 | one OHCHR controlled subject heading | — |
 
 ```python
 from datasets import load_dataset
 
-res    = load_dataset("lszoszk/hrc-voting", "resolutions", split="train")
-votes  = load_dataset("lszoszk/hrc-voting", "votes",       split="train")
-clauses= load_dataset("lszoszk/hrc-voting", "clauses",     split="train")
+res       = load_dataset("lszoszk/hrc-voting", "resolutions", split="train")
+votes     = load_dataset("lszoszk/hrc-voting", "votes",       split="train")
+clauses   = load_dataset("lszoszk/hrc-voting", "clauses",     split="train")
+countries = load_dataset("lszoszk/hrc-voting", "countries",   split="train")
+subjects  = load_dataset("lszoszk/hrc-voting", "subjects",    split="train")
 ```
 
-`record_id` is the join key across all three.
+Join keys: `record_id` links the three fact tables; `iso3` links `votes` to `countries`;
+`subject` links `resolutions` / `votes` / `clauses` to `subjects`.
+
+The two dimension tables exist so that caveats which would otherwise be prose are
+machine-readable — which states no longer exist, which ISO code spans a change of
+representation rather than of state, and which subject headings name a country
+situation rather than a theme.
 
 ## Read this before analysing
 
@@ -153,6 +173,9 @@ which exist for many resolutions that have no per-country breakdown.
 - `adopted` — `prevailing_side == "Y"`, null when undetermined
 - `rollcall_reconciles` — whether the roll-call tally matches the official totals; null
   when there is no roll-call — **see caveat 4**
+- `subject_is_country_situation` — whether the subject heading names a state or
+  territory rather than a theme; null only where the record carries no subject (219
+  rows). See the `subjects` config for how this is derived
 - `url_resolution`, `url_draft`, `record_url`
 
 Adoption modes: adopted without a vote 3,835 · recorded vote 1,713 · non-recorded vote
@@ -220,6 +243,44 @@ rank within a tier and the numeric spacing are an author-defined coding.
 Articles of annexed declarations and protocols are labelled `annex`, not `operative` —
 they are treaty-style text, not commitments of the organ, and conflating them shifts
 every operative-verb statistic.
+
+`subject_is_country_situation` is carried here too.
+
+## Config: `countries`
+
+Dimension table, 154 states. Join on `iso3`.
+
+- `iso3`, `name` — display name; the catalogue's own spellings vary over time and are
+  preserved in `votes.country`
+- `un_regional_group`, `un_regional_group_code` — **applied anachronistically**: groups
+  are present-day and the Commission's membership changed over 60 years
+- `n_rollcall_cells`, `n_yes`, `n_no`, `n_abstain`, `n_absent`, `n_no_position`
+- `first_vote_year`, `last_vote_year` — first and last **recorded vote**, not membership.
+  12 calendar years contain no recorded vote at all, so a gap here is not evidence a
+  state was off the Council
+- `is_historical_state` — true for 5 states that no longer exist: `CSK` Czechoslovakia,
+  `SUN` Soviet Union, `YUG` Yugoslavia, `DDR` and `GER` the two Germanys
+- `representation_break_year`, `representation_break_note` — set only for `CHN`: the
+  China seat passed from the Republic of China to the PRC in October 1971 and the
+  catalogue records both under one code, so a continuous 1947–2026 China series is not
+  one continuous actor
+
+## Config: `subjects`
+
+Dimension table, all 1,033 controlled subject headings (MARC 991$d) — OHCHR's own
+cataloguing vocabulary, **not** ML-derived, so every label is traceable to the source.
+Join on `subject`.
+
+- `subject` — the heading as catalogued, upper-case
+- `is_country_situation` — 307 of 1,033 name a state or territory
+- `n_resolutions_all`, `n_resolutions_recorded` — how many resolutions carry it, in the
+  full catalogue and in the roll-call subset
+
+The thematic / country-situation split is a **name-matching heuristic**: catalogued state
+names, plus an explicit list of territories and non-member states that never sat on the
+Council and so never appear in the vote data (Golan Heights, Western Sahara, Kosovo,
+Darfur, Xizang, …). It is imperfect at the margins. The same matcher produces the
+dashboard's Topics filter, so the two cannot disagree.
 
 ## Known data-quality notes
 

@@ -2,12 +2,19 @@
 
     python scripts/prepare_hf_dataset.py
 
-Three configs, because the source is relational and flattening it would either explode
+Five configs, because the source is relational and flattening it would either explode
 the row count or throw away the resolution-level metadata:
 
   resolutions  one row per catalogued resolution           (data/csv/resolutions.csv)
   votes        one row per (resolution, country) roll-call (data/csv/votes_long.csv)
   clauses      one row per clause of a harvested text      (dashboard/texts/)
+  countries    dimension table, 154 states                 (dashboard/data.js)
+  subjects     dimension table, OHCHR's controlled vocab   (dashboard/data.js)
+
+The two dimension tables exist so that caveats which are otherwise only prose become
+machine-readable: which states no longer exist, which ISO code spans a change of
+representation rather than of state, and which subject tags name a country situation
+rather than a theme.
 
 Everything here is derived from files already committed to this repository, so the
 package can be rebuilt from a clean checkout without re-harvesting.
@@ -40,6 +47,7 @@ import pyarrow.parquet as pq
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from tag_terms import code_clause                      # noqa: E402
+from build_dashboard_data import country_subject_matcher  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 CSVD = ROOT / "data" / "csv"
@@ -159,6 +167,53 @@ def clause_type(label):
     return "other"
 
 
+def build_countries(payload, votes_df):
+    """Dimension table. Carries the caveats that are otherwise only prose: which states
+    no longer exist, and which ISO code spans a change of representation rather than of
+    state (the China seat, 1971)."""
+    labels = payload["meta"]["groupLabels"]
+    first_last = votes_df.groupby("iso3")["year"].agg(["min", "max"])
+    rows = []
+    for c in payload["countries"]:
+        fl = first_last.loc[c["iso3"]] if c["iso3"] in first_last.index else None
+        rb = c.get("repBreak") or {}
+        rows.append({
+            "iso3": c["iso3"],
+            "name": c["name"],
+            "un_regional_group": labels.get(c["group"]) or None,
+            "un_regional_group_code": c["group"] or None,
+            "n_rollcall_cells": c["n"],
+            "n_yes": c["y"], "n_no": c["no"], "n_abstain": c["a"],
+            "n_absent": c["absent"], "n_no_position": c["blank"],
+            "first_vote_year": int(fl["min"]) if fl is not None else None,
+            "last_vote_year": int(fl["max"]) if fl is not None else None,
+            "is_historical_state": bool(c.get("hist")),
+            "representation_break_year": rb.get("year"),
+            "representation_break_note": rb.get("note"),
+        })
+    return pd.DataFrame(rows)
+
+
+def build_subjects(res_df, is_country_subject):
+    """OHCHR's own controlled subject vocabulary (MARC 991$d), with the thematic /
+    country-situation split the dashboard uses.
+
+    Covers all 1,033 catalogued subjects, not just the 312 that reach a recorded vote —
+    the dashboard only needs the latter, but a null classification on a third of the
+    resolutions would be a poor dataset. Uses the dashboard's own matcher, so the two
+    can never disagree. The split is a name-matching heuristic against catalogued state
+    names plus an explicit list of territories: imperfect at the margins."""
+    counts_all = res_df.groupby("subject").size()
+    counts_rec = res_df[res_df.has_rollcall].groupby("subject").size()
+    rows = [{
+        "subject": s,
+        "is_country_situation": bool(is_country_subject(s)),
+        "n_resolutions_recorded": int(counts_rec.get(s, 0)),
+        "n_resolutions_all": int(n),
+    } for s, n in counts_all.items()]
+    return pd.DataFrame(rows).sort_values("n_resolutions_all", ascending=False)
+
+
 def build_clauses(res_df):
     cat = json.loads((TX / "catalog.json").read_text())["docs"]
     bundles = {int(f.stem.split("-")[1]): json.loads(f.read_text())
@@ -211,10 +266,25 @@ def main():
               for c in payload["countries"]}
 
     res_df = build_resolutions(res_rows, tally)
+
+    # thematic vs country-situation, using the dashboard's own matcher over the raw
+    # catalogued spellings so the two can never drift apart
+    raw_names = {}
+    for v in vote_rows:
+        if v["iso3"]:
+            raw_names.setdefault(v["iso3"], set()).add(v["country"].strip().upper())
+    is_country_subject = country_subject_matcher(raw_names)
+    cs = {s: is_country_subject(s) for s in res_df["subject"].dropna().unique()}
+
+    res_df["subject_is_country_situation"] = res_df["subject"].map(cs)
     votes_df = build_votes(vote_rows, res_df, groups)
     clauses_df = build_clauses(res_df)
+    clauses_df["subject_is_country_situation"] = clauses_df["subject"].map(cs)
+    countries_df = build_countries(payload, votes_df)
+    subjects_df = build_subjects(res_df, is_country_subject)
 
-    for name, df in [("resolutions", res_df), ("votes", votes_df), ("clauses", clauses_df)]:
+    for name, df in [("resolutions", res_df), ("votes", votes_df), ("clauses", clauses_df),
+                     ("countries", countries_df), ("subjects", subjects_df)]:
         path = DATA / f"{name}-train.parquet"
         # pandas 3 writes object columns as arrow large_string; normalise to string so
         # older `datasets` releases read the files without a type surprise
@@ -231,9 +301,13 @@ def main():
         "resolutions": len(res_df),
         "votes": len(votes_df),
         "clauses": len(clauses_df),
+        "countries": len(countries_df),
+        "subjects": len(subjects_df),
+        "country_situation_subjects": int(subjects_df["is_country_situation"].sum()),
+        "historical_states": int(countries_df["is_historical_state"].sum()),
         "year_min": int(res_df["year"].min()),
         "year_max": int(res_df["year"].max()),
-        "countries": int(votes_df["iso3"].nunique()),
+        "n_voting_states": int(votes_df["iso3"].nunique()),
         "with_rollcall": int(res_df["has_rollcall"].sum()),
         "rollcall_mismatch": int((res_df["rollcall_reconciles"] == False).sum()),  # noqa: E712
         "amendments": int(res_df["is_amendment"].sum()),
