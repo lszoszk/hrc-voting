@@ -2,14 +2,20 @@
 
     python scripts/prepare_hf_dataset.py
 
-Five configs, because the source is relational and flattening it would either explode
+Nine configs, because the source is relational and flattening it would either explode
 the row count or throw away the resolution-level metadata:
 
   resolutions  one row per catalogued resolution           (data/csv/resolutions.csv)
   votes        one row per (resolution, country) roll-call (data/csv/votes_long.csv)
   clauses      one row per clause of a harvested text      (dashboard/texts/)
-  countries    dimension table, 154 states                 (dashboard/data.js)
+  countries    dimension table, 200 states (154 CHR/HRC)   (dashboard/data.js)
   subjects     dimension table, OHCHR's controlled vocab   (dashboard/data.js)
+
+  General Assembly — Third Committee (added September 2026; scripts/ga/):
+  ga_resolutions      one row per GA resolution adopted by recorded vote  (data/csv/ga_resolutions.csv)
+  ga_votes            one row per (GA resolution, State) plenary vote      (data/csv/ga_votes_long.csv)
+  ga_committee_events one row per recorded vote in the Third Committee    (data/csv/ga_committee_events.csv)
+  ga_committee_votes  one row per (committee vote, State)                 (data/csv/ga_committee_votes.csv)
 
 The two dimension tables exist so that caveats which are otherwise only prose become
 machine-readable: which states no longer exist, which ISO code spans a change of
@@ -251,6 +257,113 @@ def build_clauses(res_df):
     return pd.DataFrame(rows)
 
 
+def base_symbol(sym):
+    """A/C.3/63/L.22/Rev.1 → A/C.3/63/L.22 (first symbol of a joined list, Add./Rev. dropped)."""
+    import re
+    s = (sym or "").split("|")[0].strip().upper()
+    return re.sub(r"/(ADD|REV)\.\d+$", "", s)
+
+
+def build_ga(groups, payload):
+    """The four General Assembly configs; None if the GA CSVs are not present."""
+    import re
+    if not (CSVD / "ga_resolutions.csv").exists():
+        return None
+    res_rows = list(csv.DictReader(open(CSVD / "ga_resolutions.csv", encoding="utf-8")))
+    ev_rows = list(csv.DictReader(open(CSVD / "ga_committee_events.csv", encoding="utf-8"))) \
+        if (CSVD / "ga_committee_events.csv").exists() else []
+    cv_rows = list(csv.DictReader(open(CSVD / "ga_committee_votes.csv", encoding="utf-8"))) \
+        if (CSVD / "ga_committee_votes.csv").exists() else []
+    # committee draft vote per base draft symbol (a later re-vote replaces an earlier one),
+    # following the same trust rule as the dashboard build
+    draft_ev = {}
+    for e in ev_rows:
+        if e["kind"] != "draft" or not e["draft_symbol"]:
+            continue
+        if e.get("symbol_source") == "context" and "draft resolution" not in e["subject"].lower():
+            continue
+        draft_ev[base_symbol(e["draft_symbol"])] = e
+    # cross-organ bridge from the dashboard payload: GA record → CHR/HRC symbols
+    idx = {i: r for i, r in enumerate(payload["res"])}
+    related = {}
+    for r in payload["res"]:
+        if r.get("body") == "GA" and r.get("rel"):
+            related[r["id"]] = "|".join(idx[j]["sym"] for j in r["rel"] if j in idx and idx[j].get("sym"))
+    rid_by_draft = {}
+    rows = []
+    for r in res_rows:
+        rid = "ga" + r["undl_id"]
+        y, n, a = as_int(r["yes"]), as_int(r["no"]), as_int(r["abstain"])
+        prevailing = None if (y is None or n is None) else ("Y" if y > n else "N" if n > y else None)
+        b = base_symbol(r["draft"]) if r["draft"].startswith("A/C.3/") else ""
+        e = draft_ev.get(b) if b else None
+        if b:
+            rid_by_draft.setdefault(b, rid)
+        rows.append({
+            "record_id": rid, "undl_id": as_int(r["undl_id"]), "symbol": r["symbol"], "title": r["title"],
+            "session": as_int(r["session"]), "date": r["date"] or None, "year": as_int(r["year"]),
+            "body": "GA", "draft": r["draft"] or None, "committee_report": r["committee_report"] or None,
+            "meeting": r["meeting"] or None, "agenda_title": r["agenda_title"] or None,
+            "subjects": r["subjects"] or None, "vote_note": r["vote_note"] or None,
+            "third_committee_attribution": "draft symbol" if r["c3_source"] == "draft" else "agenda item",
+            "yes": y, "no": n, "abstain": a, "nonvoting": as_int(r["nonvoting"]), "total": as_int(r["total"]),
+            "n_rollcall": as_int(r["n_rollcall"]) or 0,
+            "prevailing_side": prevailing, "adopted": None if prevailing is None else prevailing == "Y",
+            "committee_event_id": e["event_id"] if e else None,
+            "committee_sr_symbol": e["sr_symbol"] if e else None,
+            "committee_date": e["meeting_date"] if e else None,
+            "committee_yes": as_int(e["n_yes"]) if e else None,
+            "committee_no": as_int(e["n_no"]) if e else None,
+            "committee_abstain": as_int(e["n_abstain"]) if e else None,
+            "committee_totals_match": (e["totals_match"] == "1") if e and e["stated_yes"] != "" else None,
+            "related_chr_hrc_symbols": related.get(rid) or None,
+            "url_resolution": f"https://docs.un.org/en/{r['symbol']}" if r["symbol"] else None,
+            "record_url": r["record_url"] or None,
+        })
+    res_df = pd.DataFrame(rows)
+    prevail = res_df.set_index("record_id")["prevailing_side"].to_dict()
+    vrows = []
+    for v in csv.DictReader(open(CSVD / "ga_votes_long.csv", encoding="utf-8")):
+        rid, code = "ga" + v["undl_id"], v["vote"]
+        pside = prevail.get(rid)
+        vrows.append({
+            "record_id": rid, "symbol": v["symbol"], "date": v["date"] or None, "year": as_int(v["year"]),
+            "body": "GA", "iso3": v["iso3"] or None, "country": v["country"] or None,
+            "un_regional_group": groups.get(v["iso3"]) or None,
+            "vote": code or None, "vote_label": VOTE_LABEL.get(code, "unknown"),
+            "is_cast_vote": code in ("Y", "N", "A"), "prevailing_side": pside,
+            "with_prevailing_side": (code == pside) if (pside and code in ("Y", "N", "A")) else None,
+        })
+    votes_df = pd.DataFrame(vrows)
+    erows = []
+    for e in ev_rows:
+        erows.append({
+            "event_id": e["event_id"], "session": as_int(e["session"]), "sr_symbol": e["sr_symbol"],
+            "meeting_no": as_int(e["meeting_no"]), "meeting_date": e["meeting_date"] or None,
+            "kind": e["kind"], "draft_symbol": e["draft_symbol"] or None, "symbol_source": e["symbol_source"] or None,
+            "as_amended": e["as_amended"] == "1", "subject": e["subject"] or None, "result": e["result"] or None,
+            "stated_yes": as_int(e["stated_yes"]), "stated_no": as_int(e["stated_no"]), "stated_abstain": as_int(e["stated_abstain"]),
+            "n_yes": as_int(e["n_yes"]), "n_no": as_int(e["n_no"]), "n_abstain": as_int(e["n_abstain"]),
+            "totals_match": (e["totals_match"] == "1") if e["stated_yes"] != "" else None,
+            "resolution_record_id": rid_by_draft.get(base_symbol(e["draft_symbol"])) if e["kind"] == "draft" else None,
+        })
+    events_df = pd.DataFrame(erows)
+    ev_by_id = events_df.set_index("event_id")
+    crows = []
+    for v in cv_rows:
+        crows.append({
+            "event_id": v["event_id"], "session": as_int(v["session"]), "draft_symbol": v["draft_symbol"] or None,
+            "kind": ev_by_id["kind"].get(v["event_id"]),
+            "resolution_record_id": ev_by_id["resolution_record_id"].get(v["event_id"]),
+            "iso3": v["iso3"] or None, "country": v["country"] or None,
+            "un_regional_group": groups.get(v["iso3"]) or None,
+            "vote": v["vote"] or None, "vote_label": VOTE_LABEL.get(v["vote"], "unknown"),
+        })
+    cvotes_df = pd.DataFrame(crows)
+    return {"ga_resolutions": res_df, "ga_votes": votes_df,
+            "ga_committee_events": events_df, "ga_committee_votes": cvotes_df}
+
+
 def main():
     DATA.mkdir(parents=True, exist_ok=True)
     res_rows = list(csv.DictReader(open(CSVD / "resolutions.csv", encoding="utf-8")))
@@ -283,8 +396,12 @@ def main():
     countries_df = build_countries(payload, votes_df)
     subjects_df = build_subjects(res_df, is_country_subject)
 
-    for name, df in [("resolutions", res_df), ("votes", votes_df), ("clauses", clauses_df),
-                     ("countries", countries_df), ("subjects", subjects_df)]:
+    tables = [("resolutions", res_df), ("votes", votes_df), ("clauses", clauses_df),
+              ("countries", countries_df), ("subjects", subjects_df)]
+    ga = build_ga(groups, payload)
+    if ga:
+        tables += list(ga.items())
+    for name, df in tables:
         path = DATA / f"{name}-train.parquet"
         # pandas 3 writes object columns as arrow large_string; normalise to string so
         # older `datasets` releases read the files without a type surprise
@@ -315,6 +432,20 @@ def main():
         "clause_docs": int(clauses_df["symbol"].nunique()),
         "operative_clauses": int((clauses_df["clause_type"] == "operative").sum()),
     }
+    if ga:
+        g = ga["ga_resolutions"]
+        stats["ga"] = {
+            "resolutions": len(g), "votes": len(ga["ga_votes"]),
+            "session_min": int(g["session"].min()), "session_max": int(g["session"].max()),
+            "year_min": int(g["year"].min()), "year_max": int(g["year"].max()),
+            "by_draft_symbol": int((g["third_committee_attribution"] == "draft symbol").sum()),
+            "by_agenda_item": int((g["third_committee_attribution"] == "agenda item").sum()),
+            "with_committee_rollcall": int(g["committee_event_id"].notna().sum()),
+            "related_to_chr_hrc": int(g["related_chr_hrc_symbols"].notna().sum()),
+            "committee_events": len(ga["ga_committee_events"]),
+            "committee_votes": len(ga["ga_committee_votes"]),
+            "committee_events_by_kind": {k: int(v) for k, v in ga["ga_committee_events"]["kind"].value_counts().items()},
+        }
     (OUT / "dataset_stats.json").write_text(json.dumps(stats, indent=2) + "\n")
     print("\nstats:", json.dumps(stats))
 
