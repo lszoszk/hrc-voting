@@ -1,9 +1,9 @@
 {
-  "title": "OHCHR Voting Records — CHR · HRC",
+  "title": "UN Human Rights Voting Records — CHR · HRC · GA Third Committee",
   "upload_type": "software",
   "access_right": "open",
   "license": "PolyForm-Noncommercial-1.0.0",
-  "description": "Complete harvest of the OHCHR Search Library \"Voting\" collection — roll-call and summary voting records of the UN Commission on Human Rights (1946–2006) and the Human Rights Council (2006–present) — parsed from customised MARC21 cataloguing into dashboard-ready CSVs, with a self-contained, zero-build interactive dashboard. Coverage: 6,346 resolutions / 80,159 individual country votes (1946–2026); record count matches the collection total exactly, verified by three independent harvest methods.",
+  "description": "Complete harvest of the OHCHR Search Library \"Voting\" collection — roll-call and summary voting records of the UN Commission on Human Rights (1946–2006) and the Human Rights Council (2006–present) — parsed from customised MARC21 cataloguing into dashboard-ready CSVs, with a self-contained, zero-build interactive dashboard. Coverage: 6,346 resolutions / 80,159 individual country votes (1946–2026); record count matches the collection total exactly, verified by three independent harvest methods. Version 1.1.0 (September 2026) adds the General Assembly's human rights resolutions — the texts that come out of the Third Committee — as a third organ behind a Bodies selector: 708 resolutions adopted by recorded vote (sessions 25–80, 1970–2025; 130,591 per-State plenary votes, from the UN Dag Hammarskjöld Library's General Assembly voting data v5), the Committee-stage roll-calls parsed from the Third Committee's summary records (747 recorded votes, 126,080 State votes, sessions 55–79; covering 438 of 446 draft-attributed resolutions; cross-checked against the Committee's e-voting sheets, 10,480 of 10,482 State-votes agree), committee-stage records for the Committee's 306 other votes (amendments, paragraphs, motions), a cross-organ title bridge to the Commission/Council texts, and 570 searchable A/RES texts from 1993. The Hugging Face package gains four ga_* configs.",
   "creators": [
     {
       "name": "Szoszkiewicz, Łukasz",
@@ -18,7 +18,10 @@
     "Commission on Human Rights",
     "voting records",
     "roll-call votes",
-    "open data"
+    "open data",
+    "General Assembly",
+    "Third Committee",
+    "summary records"
   ],
   "related_identifiers": [
     {
@@ -32,6 +35,13 @@
       "relation": "isDerivedFrom",
       "scheme": "url",
       "resource_type": "dataset"
+    },
+    {
+      "identifier": "https://digitallibrary.un.org/record/4060887",
+      "relation": "isDerivedFrom",
+      "scheme": "url",
+      "resource_type": "dataset"
     }
-  ]
+  ],
+  "version": "1.1.0"
 }
