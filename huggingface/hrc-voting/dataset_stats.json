@@ -2,10 +2,10 @@
   "resolutions": 6346,
   "votes": 80159,
   "clauses": 96451,
-  "countries": 154,
+  "countries": 200,
   "subjects": 1033,
   "country_situation_subjects": 307,
-  "historical_states": 5,
+  "historical_states": 7,
   "year_min": 1946,
   "year_max": 2026,
   "n_voting_states": 154,
@@ -17,5 +17,26 @@
     2026
   ],
   "clause_docs": 4437,
-  "operative_clauses": 42957
+  "operative_clauses": 42957,
+  "ga": {
+    "resolutions": 708,
+    "votes": 130591,
+    "session_min": 25,
+    "session_max": 80,
+    "year_min": 1970,
+    "year_max": 2025,
+    "by_draft_symbol": 485,
+    "by_agenda_item": 223,
+    "with_committee_rollcall": 438,
+    "related_to_chr_hrc": 430,
+    "committee_events": 747,
+    "committee_votes": 126080,
+    "committee_events_by_kind": {
+      "draft": 459,
+      "amendment": 156,
+      "paragraph": 86,
+      "motion": 42,
+      "unknown": 4
+    }
+  }
 }

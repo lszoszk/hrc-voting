@@ -9,6 +9,7 @@ dashboard/data.js as `window.DATA = {...}` so index.html works from file://
 import collections
 import csv
 import json
+import re
 from pathlib import Path
 
 from tz_countries import TZ_TO_ISO2
@@ -24,7 +25,7 @@ GROUPS = {
     "WEOG": "AND AUS AUT BEL CAN DNK FIN FRA DEU GER GRC ISL IRL ISR ITA LIE LUX MLT MCO "
             "NLD NZL NOR PRT SMR ESP SWE CHE TUR GBR USA".split(),
     "EEG": "ALB ARM AZE BLR BIH BGR HRV CZE CSK EST GEO HUN LVA LTU MNE MKD POL MDA "
-           "ROU RUS SRB SVK SVN UKR YUG DDR SUN".split(),
+           "ROU RUS SRB SVK SVN UKR YUG DDR SUN SCG".split(),
     "GRULAC": "ATG ARG BHS BRB BLZ BOL BRA CHL COL CRI CUB DMA DOM ECU SLV GRD GTM GUY "
               "HTI HND JAM MEX NIC PAN PRY PER KNA LCA VCT SUR TTO URY VEN".split(),
     "AFRICAN": "DZA AGO BEN BWA BFA BDI CPV CMR CAF TCD COM COG COD CIV DJI EGY GNQ ERI "
@@ -33,7 +34,7 @@ GROUPS = {
     "ASIA_PACIFIC": "AFG BHR BGD BTN BRN KHM CHN CYP PRK FJI IND IDN IRN IRQ JPN JOR KAZ "
                     "KWT KGZ LAO LBN MYS MDV MHL FSM MNG MMR NRU NPL OMN PAK PLW PNG PHL "
                     "QAT KOR SAU SGP SLB LKA SYR TJK THA TLS TON TKM TUV ARE UZB VUT VNM "
-                    "YEM WSM KIR".split(),
+                    "YEM WSM KIR YMD".split(),
 }
 ISO2GROUP = {iso: g for g, lst in GROUPS.items() for iso in lst}
 GROUP_LABEL = {"WEOG": "Western Europe & Others", "EEG": "Eastern Europe",
@@ -51,11 +52,11 @@ NAME_OVERRIDE = {
     "VEN": "Venezuela", "BOL": "Bolivia", "IRN": "Iran", "TZA": "Tanzania",
     "GER": "Germany (FRG)", "DDR": "Germany (GDR)", "LAO": "Laos",
     "SYR": "Syria", "MKD": "North Macedonia", "CSK": "Czechoslovakia",
-    "SUN": "Soviet Union", "YUG": "Yugoslavia",
+    "SUN": "Soviet Union", "YUG": "Yugoslavia", "SCG": "Serbia and Montenegro", "YMD": "Democratic Yemen",
 }
 # States that no longer exist — flagged so the picker can mark them as historical
 # rather than listing them as peers of their successors.
-HISTORICAL = {"CSK", "SUN", "YUG", "DDR", "GER", "ZAR"}
+HISTORICAL = {"CSK", "SUN", "YUG", "DDR", "GER", "ZAR", "SCG", "YMD"}
 # One ISO code spans a change of representation rather than a change of state: the
 # China seat passed from the Republic of China to the PRC in October 1971, but the
 # catalogue records both as CHN. Surfaced so a "China 1947-2026" series is not read
@@ -133,6 +134,92 @@ def country_subject_matcher(raw_names):
     return is_country_subject
 
 
+def body_code(r):
+    b = r["body"]
+    if "General Assembly" in b:
+        return "GA"
+    return "HRC" if "Council" in b else "CHR"
+
+
+def load_ga():
+    """General Assembly (Third Committee) rows in the CHR/HRC CSV shape.
+
+    Plenary votes come from scripts/ga/parse_undl.py, the committee-stage votes
+    from scripts/ga/parse_sr_votes.py. Returns (res_rows, vote_rows, committee)
+    where committee maps a resolution record_id to its Third Committee vote
+    event and per-State codes. Absent files mean no GA rows.
+    """
+    ga_res = CSV / "ga_resolutions.csv"
+    if not ga_res.exists():
+        return [], [], {}
+    res_rows, vote_rows = [], []
+    for r in csv.DictReader(open(ga_res, encoding="utf-8")):
+        res_rows.append({
+            "record_id": "ga" + r["undl_id"], "symbol": r["symbol"], "title": r["title"], "statement": "",
+            "date": r["date"], "year": r["year"], "body": "General Assembly", "collection": "UNDL voting data",
+            "vote_type": "RECORDED", "meeting": r["meeting"], "meeting_type": "PLENARY MEETING",
+            "agenda_item_no": "", "agenda_item_title": r["agenda_title"].split("|")[0].strip(),
+            "agenda_symbol": "", "agenda_subject": r["subjects"].split("|")[0].strip(),
+            "main_sponsors": "", "draft": r["draft"],
+            "yes": r["yes"], "no": r["no"], "abstain": r["abstain"], "nonvoting": r["nonvoting"],
+            "total": r["total"], "n_rollcall": r["n_rollcall"],
+            "url_resolution": "https://docs.un.org/en/" + r["symbol"],
+            "url_draft": "https://docs.un.org/en/" + r["draft"].split("|")[0] if r["draft"] else "",
+            "record_url": r["record_url"], "session": r["session"], "c3_source": r["c3_source"],
+        })
+    for v in csv.DictReader(open(CSV / "ga_votes_long.csv", encoding="utf-8")):
+        vote_rows.append({**v, "record_id": "ga" + v["undl_id"]})
+    committee = {}
+    ev_path = CSV / "ga_committee_events.csv"
+    if ev_path.exists():
+        by_draft = {}
+        for e in csv.DictReader(open(ev_path, encoding="utf-8")):
+            if e["kind"] != "draft" or not e["draft_symbol"]:
+                continue
+            # a symbol inferred from the surrounding text is trusted only when the
+            # record itself calls the vote one on "the draft resolution"
+            if e.get("symbol_source") == "context" and "draft resolution" not in e["subject"].lower():
+                continue
+            by_draft[e["draft_symbol"].upper()] = e          # a later re-vote replaces an earlier one
+        codes = collections.defaultdict(dict)
+        for v in csv.DictReader(open(CSV / "ga_committee_votes.csv", encoding="utf-8")):
+            if v["iso3"]:
+                codes[v["event_id"]][v["iso3"]] = v["vote"]
+        by_base = {re.sub(r"/REV\.\d+$", "", k): e for k, e in by_draft.items()}   # L.22 ↔ L.22/Rev.1
+        for r in res_rows:
+            first = r["draft"].split("|")[0].strip().upper()
+            e = (by_draft.get(first) or by_draft.get(re.sub(r"/ADD\.\d+$", "", first))
+                 or by_base.get(re.sub(r"/(ADD|REV)\.\d+$", "", first)))
+            if e:
+                committee[r["record_id"]] = {"event": e, "codes": codes.get(e["event_id"], {})}
+    # igov (sessions 79+): the Committee's vote totals for texts whose summary record
+    # is not out yet — totals only, no per-State list.
+    for path in sorted((ROOT / "data" / "raw" / "ga").glob("igov_c3_*.json")):
+        try:
+            items = json.load(open(path, encoding="utf-8")).get("result") or []
+        except (OSError, ValueError):
+            continue
+        by_l = {}
+        for it in items:
+            stages = it.get("PR_Stage") or []
+            l_syms = {str(st.get("DocSymbol", "")).upper() for st in stages if str(st.get("DocSymbol", "")).upper().startswith("A/C.3/")}
+            for st in stages:
+                if st.get("StageName") == "Adoption by Main Committee" and st.get("Voting") == "Yes":
+                    for ls in l_syms:
+                        by_l[re.sub(r"/REV\.\d+$", "", ls)] = st
+        for r in res_rows:
+            if r["record_id"] in committee:
+                continue
+            first = re.sub(r"/(ADD|REV)\.\d+$", "", r["draft"].split("|")[0].strip().upper())
+            st = by_l.get(first)
+            if st:
+                committee[r["record_id"]] = {"event": {
+                    "n_yes": st.get("VoteY", 0), "n_no": st.get("VoteN", 0), "n_abstain": st.get("VoteAbstain", 0),
+                    "sr_symbol": "", "meeting_date": str(st.get("StageD", ""))[:10], "as_amended": 1 if st.get("DocAmended") == "Yes" else 0,
+                    "session": r["session"], "source": "igov", "meeting_no": str(st.get("MeetingNo", ""))}, "codes": {}}
+    return res_rows, vote_rows, committee
+
+
 def display_name(iso, raw):
     if iso in NAME_OVERRIDE:
         return NAME_OVERRIDE[iso]
@@ -145,6 +232,9 @@ def display_name(iso, raw):
 def main():
     res_rows = list(csv.DictReader(open(CSV / "resolutions.csv", encoding="utf-8")))
     vote_rows = list(csv.DictReader(open(CSV / "votes_long.csv", encoding="utf-8")))
+    ga_res, ga_votes, ga_committee = load_ga()
+    res_rows += ga_res
+    vote_rows += ga_votes
 
     # recorded resolutions only (those with roll-call rows)
     recorded = [r for r in res_rows
@@ -162,8 +252,7 @@ def main():
                    "hasRollcall": vote_type_rollcall.get(t, 0)}
                   for t, c in vote_type_counts.most_common()]
 
-    body_all = collections.Counter(
-        "HRC" if "Council" in r["body"] else "CHR" for r in res_rows)
+    body_all = collections.Counter(body_code(r) for r in res_rows)
 
     no_rollcall_rows = [r for r in res_rows if r["record_id"] not in idx]
     totals_no_rollcall = sum(1 for r in no_rollcall_rows if has_totals(r))
@@ -209,10 +298,12 @@ def main():
 
     res_all = []
     for r in res_rows:
+        if body_code(r) == "GA":
+            continue        # the GA file holds recorded votes only, not a full catalogue
         row = {
             "id": r["record_id"], "sym": r["symbol"], "t": trim_title(r["title"]),
             "year": int(r["year"]) if r["year"].isdigit() else None,
-            "body": "HRC" if "Council" in r["body"] else "CHR",
+            "body": body_code(r),
             "subj": r["agenda_subject"].strip(),
             "vt": VT_CODE.get(r["vote_type"], "O"),
         }
@@ -226,7 +317,7 @@ def main():
         "id": r["record_id"], "sym": r["symbol"], "title": r["title"],
         "year": int(r["year"]) if r["year"].isdigit() else None,
         "date": r["date"].strip(),                    # 269$a raw YYYYMMDD (may be partial)
-        "body": "HRC" if "Council" in r["body"] else "CHR",
+        "body": body_code(r),
         "subj": r["agenda_subject"].strip(),          # 991$d controlled subject tag
         "item": clean_item(r["agenda_item_title"]),   # 991$c formal agenda item
         "spon": r["main_sponsors"].strip(),           # 500$a main sponsors
@@ -237,7 +328,58 @@ def main():
         "n": int(r["no"]) if r["no"].isdigit() else None,
         "a": int(r["abstain"]) if r["abstain"].isdigit() else None,
         **({"am": 1} if is_amendment(r) else {}),
+        **({"c": {"y": int(ga_committee[r["record_id"]]["event"]["n_yes"]),
+                  "n": int(ga_committee[r["record_id"]]["event"]["n_no"]),
+                  "a": int(ga_committee[r["record_id"]]["event"]["n_abstain"]),
+                  "sr": ga_committee[r["record_id"]]["event"]["sr_symbol"],
+                  "date": ga_committee[r["record_id"]]["event"]["meeting_date"],
+                  "am": int(ga_committee[r["record_id"]]["event"]["as_amended"]),
+                  **({"igov": ga_committee[r["record_id"]]["event"]["meeting_no"]} if ga_committee[r["record_id"]]["event"].get("source") == "igov" else {})}}
+           if r["record_id"] in ga_committee else {}),
+        **({"src": r["c3_source"]} if r.get("c3_source") == "agenda" else {}),
     } for r in recorded]
+
+    # Cross-organ bridge: the same text often travels between the Council and the
+    # Assembly (e.g. "The right to development"). Link a GA resolution to CHR/HRC
+    # resolutions whose catalogued title shares most of its words, and vice versa,
+    # so a roll-call page can show the other organ's votes on the same subject.
+    STOP = {"the", "of", "and", "on", "in", "to", "for", "a", "an", "its", "by", "with", "as", "at",
+            "human", "rights", "resolution", "adopted", "general", "assembly", "council", "commission",
+            "situation", "question", "report", "reports", "draft", "decision"}
+    def title_tokens(t):
+        t = re.sub(r"\s*:\s*(draft\s+)?(resolution|decision)s?\s*/.*$", "", t or "", flags=re.I)
+        return {w for w in re.findall(r"[a-z0-9]+", t.lower()) if w not in STOP and len(w) > 2}
+    toks = [title_tokens(r["title"]) for r in recorded]
+    ga_idx = [i for i, r in enumerate(recorded) if body_code(r) == "GA" and not is_amendment(r)]
+    oh_idx = [i for i, r in enumerate(recorded) if body_code(r) != "GA" and not is_amendment(r)]
+    related = collections.defaultdict(list)
+    for i in ga_idx:
+        a = toks[i]
+        if len(a) < 2:
+            continue
+        for j in oh_idx:
+            b = toks[j]
+            if len(b) < 2:
+                continue
+            jac = len(a & b) / len(a | b)
+            if jac >= 0.6:
+                related[i].append((jac, j))
+                related[j].append((jac, i))
+    for i, lst in related.items():
+        lst.sort(key=lambda x: (-x[0], -(recorded[x[1]]["year"].isdigit() and int(recorded[x[1]]["year"]))))
+        res[i]["rel"] = [j for _, j in lst[:8]]
+    n_bridged = sum(1 for i in ga_idx if i in related)
+
+    # Third Committee stage roll-calls, same parallel-array shape as `votes`.
+    cvotes = {}
+    for rid, cv in ga_committee.items():
+        ri = idx.get(rid)
+        if ri is None:
+            continue
+        for iso, code in cv["codes"].items():
+            cvotes.setdefault(iso, {"r": [], "v": ""})
+            cvotes[iso]["r"].append(ri)
+            cvotes[iso]["v"] += code
 
     # per-country vote matrix + latest display name
     votes = {}        # iso3 -> {"r":[resIdx...], "v":"codes"}
@@ -310,6 +452,28 @@ def main():
     unmapped = sorted(have - set(iso2_map.values()))
     tz_map = {z: c for z, c in TZ_TO_ISO2.items() if c in iso2_map}
 
+    ga_recorded = [r for r in recorded if body_code(r) == "GA"]
+    ga_sessions = sorted({int(r["session"]) for r in ga_recorded if r.get("session", "").isdigit()})
+    ga_meta = {
+        "resolutions": len(ga_recorded),
+        "votes": sum(1 for v in vote_rows if v["record_id"].startswith("ga")),
+        "sessionMin": ga_sessions[0] if ga_sessions else None,
+        "sessionMax": ga_sessions[-1] if ga_sessions else None,
+        "byDraft": sum(1 for r in ga_recorded if r.get("c3_source") == "draft"),
+        "byAgenda": sum(1 for r in ga_recorded if r.get("c3_source") == "agenda"),
+        "committee": len(ga_committee),
+        "bridged": n_bridged,
+        "committeeSessions": sorted({int(cv["event"]["session"]) for cv in ga_committee.values() if cv["codes"]}),
+        "committeeTotalsOnly": sum(1 for cv in ga_committee.values() if not cv["codes"]),
+    }
+    # coverage of the summary-record stage: draft-attributed resolutions of the sessions
+    # whose records were harvested, and how many of them found their committee roll-call
+    sr_sessions = {int(cv["event"]["session"]) for cv in ga_committee.values() if cv["codes"]}
+    if sr_sessions:
+        eligible = [r for r in ga_recorded if r.get("c3_source") == "draft"
+                    and r.get("session", "").isdigit() and min(sr_sessions) <= int(r["session"]) <= max(sr_sessions)]
+        ga_meta["committeeCoverage"] = {"eligible": len(eligible),
+                                        "matched": sum(1 for r in eligible if ga_committee.get(r["record_id"], {}).get("codes"))}
     payload = {
         "meta": {
             "nResolutions": len(res),
@@ -329,11 +493,13 @@ def main():
                 "nSubjectsRecorded": len(subjects),
                 "reconciled": reconciled,
                 "mismatched": mismatched,
+                "ga": ga_meta,
             },
         },
         "res": res,
         "countries": countries,
         "votes": votes,
+        "cvotes": cvotes,
         "subjects": subjects,
         "resAll": res_all,
         "iso2": iso2_map,
@@ -347,6 +513,8 @@ def main():
     unassigned = [c["iso3"] for c in countries if not c["group"]]
     print(f"data.js written: {size/1024:.0f} KB")
     print(f"  {len(res)} resolutions, {len(countries)} countries")
+    print(f"  GA (Third Committee): {ga_meta['resolutions']} resolutions, {ga_meta['votes']} plenary votes, "
+          f"{ga_meta['committee']} with a committee-stage roll-call, {n_bridged} linked to a CHR/HRC text by title")
     print(f"  roll-call rows: {sum(c['n'] for c in countries)} of {len(vote_rows)} in CSV")
     print(f"  unassigned to a UN group ({len(unassigned)}): {unassigned}")
     print(f"  locale map: {len(iso2_map)} alpha-2 codes"

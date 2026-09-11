@@ -41,7 +41,15 @@ FURNITURE = re.compile(
     r"page \d+|Page \d+|\d{1,3}\s*$|[A-Z]$|Human Rights Council\s*$|Commission on Human Rights\s*$|"
     r".{0,7}session\s*$|Agenda item|RES/|Dec\.|Resolution \d|Decision \d|Annex\b|"
     r"(?:Human Rights Council|Commission on Human Rights) \S+ session|"   # ODS masthead line
-    r"\d{1,2} A/HRC)", re.I)                                              # page-foot footnote ref
+    r"\d{1,2} A/HRC|"                                                     # page-foot footnote ref
+    r"A/RES/\d+/\d+\b|\d{2}-\d{4,6}\s*\(E\)|\*\d{6,8}\*|Please recycle)", re.I)  # A/RES running header, job code, barcode
+FOOTNOTE_RULE = re.compile(r"^_{5,}$")                      # A/RES pages: footnotes follow a rule, until the job code
+PAGE_FOOT = re.compile(r"^(?:\d{2}-\d{4,6}\b|\*\d{6,8}\*|A/RES/\d+/\d+\b|/\.\.\.$|Page \d+|A/HRC|GE\.\d)")
+FOOTNOTE_SLASH = re.compile(r"^\d{1,2}/\s+\S")                 # 1994–1995 layout: "3/ See Official Records ..."
+# 1990s A/RES layout: no rule — a bare footnote number on its own line, then the note
+FOOTNOTE_NUM = re.compile(r"^\d{1,2}$")
+FOOTNOTE_TEXT = re.compile(r"^(?:See |Ibid|Resolution \d|Official Records|United Nations, Treaty|Formerly |Report of|"
+                           r"A/\d|E/\d|S/\d|CRC/|Adopted |General Assembly resolution|Document )", re.I)
 
 BODY_START = re.compile(r"^[\"“]?The (Human Rights Council|Commission on Human Rights|General Assembly)\s*,?\s*", re.I)
 DECISION_START = re.compile(r"^[\"“]?At its .{0,60}meeting", re.I)
@@ -142,10 +150,26 @@ def segment(raw):
                 clauses.append([label, t])
         cur, label = [], None
 
+    in_footnotes, after_num = False, False
     for raw_ln in raw.split("\n"):
         s = raw_ln.strip().lstrip("﻿\x0c")
         if not s:
             continue
+        if FOOTNOTE_RULE.match(s) or FOOTNOTE_SLASH.match(s):
+            in_footnotes = True                   # A/RES page foot: footnote block starts
+            continue
+        if in_footnotes:
+            if PAGE_FOOT.match(s):
+                in_footnotes = False              # job code / barcode / next page header ends it
+                continue
+            if OP_LINE.match(s) or PSTART_RE.match(s):
+                in_footnotes = False              # safety valve: a clause start means body text again
+            else:
+                continue
+        if after_num and FOOTNOTE_TEXT.match(s):
+            in_footnotes, after_num = True, False # bare number + note text: 1990s footnote block
+            continue
+        after_num = bool(FOOTNOTE_NUM.match(s))
         if FURNITURE.match(s):
             continue                              # drop furniture; keep clause intact
         if not in_body:
@@ -198,6 +222,17 @@ def token_counts(text: str):
 def main():
     meta = {r["symbol"]: r for r in csv.DictReader(
         open(ROOT / "data/csv/resolutions.csv", encoding="utf-8"))}
+    # General Assembly (Third Committee) resolutions, same keys as the CHR/HRC rows
+    ga_path = ROOT / "data/csv/ga_resolutions.csv"
+    if ga_path.exists():
+        for r in csv.DictReader(open(ga_path, encoding="utf-8")):
+            if not r["year"].isdigit() or int(r["year"]) < 1993:
+                continue          # pre-1993 A/RES PDFs are scanned Official Records pages: no usable text layer
+            meta.setdefault(r["symbol"], {
+                "symbol": r["symbol"], "record_id": "ga" + r["undl_id"], "year": r["year"],
+                "body": "General Assembly", "vote_type": "RECORDED", "title": r["title"],
+                "draft": r["draft"], "agenda_subject": r["subjects"].split("|")[0].strip(),
+            })
     sources = []
     for logf, base in [(ROOT / "data/ap_mirror/mirror_log.csv", ROOT / "data/ap_mirror"),
                        (ROOT / "data/ods_texts/ods_log.csv", ROOT / "data/ods_texts")]:
@@ -227,7 +262,7 @@ def main():
         year = int(m["year"]) if m["year"].isdigit() else None
         did = len(catalog)
         catalog.append([sym, m["record_id"], year,
-                        "HRC" if "Council" in m["body"] else "CHR",
+                        "GA" if "General Assembly" in m["body"] else ("HRC" if "Council" in m["body"] else "CHR"),
                         VT.get(m["vote_type"], "O"),
                         1 if is_amendment(m["title"], m.get("draft", "")) else 0,
                         m["agenda_subject"].strip(),

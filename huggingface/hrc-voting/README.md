@@ -22,12 +22,14 @@ task_categories:
 task_ids:
 - multi-class-classification
 size_categories:
-- 10K<n<100K
+- 100K<n<1M
 tags:
 - human-rights
 - united-nations
 - human-rights-council
 - commission-on-human-rights
+- general-assembly
+- third-committee
 - roll-call-votes
 - voting-records
 - international-relations
@@ -56,6 +58,22 @@ configs:
   data_files:
   - split: train
     path: data/subjects-train.parquet
+- config_name: ga_resolutions
+  data_files:
+  - split: train
+    path: data/ga_resolutions-train.parquet
+- config_name: ga_votes
+  data_files:
+  - split: train
+    path: data/ga_votes-train.parquet
+- config_name: ga_committee_events
+  data_files:
+  - split: train
+    path: data/ga_committee_events-train.parquet
+- config_name: ga_committee_votes
+  data_files:
+  - split: train
+    path: data/ga_committee_votes-train.parquet
 ---
 
 # UN Human Rights Voting Records — CHR · HRC
@@ -63,7 +81,10 @@ configs:
 Every voting record catalogued by the OHCHR Search Library for the **UN Commission on
 Human Rights (1946–2006)** and its successor the **Human Rights Council (2006–present)**:
 6,346 resolutions, 80,159 individual country roll-call votes, and 96,451 clause-segmented
-paragraphs of the adopted texts.
+paragraphs of the adopted texts. Since September 2026 four further configs (`ga_*`) add
+the **General Assembly's** human rights resolutions — the texts that come out of its
+Third Committee — with both the committee-stage and the plenary roll-call (see
+*General Assembly — Third Committee* below).
 
 Harvested from the OHCHR Search Library's MARCXML export and parsed with the pipeline in
 [`lszoszk/hrc-voting`](https://github.com/lszoszk/hrc-voting). The record count matches
@@ -73,14 +94,14 @@ methods. An interactive dashboard over the same data is at
 
 ## Configs
 
-Three fact tables and two dimension tables.
+Three fact tables and two dimension tables for the Commission and the Council; four `ga_*` tables for the General Assembly (below).
 
 | config | rows | one row is | period |
 |---|---|---|---|
 | `resolutions` *(default)* | 6,346 | a catalogued resolution, decision or amendment | 1946–2026 |
 | `votes` | 80,159 | one country's position on one resolution | 1947–2026 |
 | `clauses` | 96,451 | one preambular / operative / annex clause | 1993–2026 |
-| `countries` | 154 | a state that cast at least one roll-call vote | — |
+| `countries` | 200 | a state that cast at least one roll-call vote in any of the three organs (154 in the CHR/HRC tables) | — |
 | `subjects` | 1,033 | one OHCHR controlled subject heading | — |
 
 ```python
@@ -248,7 +269,7 @@ every operative-verb statistic.
 
 ## Config: `countries`
 
-Dimension table, 154 states. Join on `iso3`.
+Dimension table, 200 states — the 154 that cast a roll-call vote in the Commission or the Council plus 46 that appear only in the General Assembly tables. Join on `iso3`.
 
 - `iso3`, `name` — display name; the catalogue's own spellings vary over time and are
   preserved in `votes.country`
@@ -281,6 +302,57 @@ names, plus an explicit list of territories and non-member states that never sat
 Council and so never appear in the vote data (Golan Heights, Western Sahara, Kosovo,
 Darfur, Xizang, …). It is imperfect at the margins. The same matcher produces the
 dashboard's Topics filter, so the two cannot disagree.
+
+## General Assembly — Third Committee (`ga_*` configs, added September 2026)
+
+The Assembly's human rights resolutions are a different record from the OHCHR collection
+above and are kept in their own tables; they share the `iso3` / `un_regional_group` keys
+and the `vote` / `vote_label` coding, so a State's positions can be followed across the
+three organs.
+
+| config | rows | one row is | period |
+|---|---|---|---|
+| `ga_resolutions` | 708 | a GA resolution adopted **by recorded vote** on a Third Committee text | sessions 25–80 (1970–2025) |
+| `ga_votes` | 130,591 | one State's plenary vote on one GA resolution | 1970–2025 |
+| `ga_committee_events` | 747 | one recorded vote in the Third Committee (draft, amendment, paragraph or motion) | sessions 55–79 (2000–2024) |
+| `ga_committee_votes` | 126,080 | one State's vote in one committee-stage roll-call | 2000–2024 |
+
+**Sources.** Plenary votes: UN Dag Hammarskjöld Library, *General Assembly voting data*,
+version 5 (February 2026), <https://digitallibrary.un.org/record/4060887> — one row per
+Member State and resolution, "Copyright, United Nations; non-commercial use, with
+attribution". Only recorded votes exist in that file, so there are no consensus texts
+here. Committee-stage votes: the Third Committee's **summary records**
+(`A/C.3/<session>/SR.n`, "In favour / Against / Abstaining" lists) from UN Documents,
+parsed by `scripts/ga/parse_sr_votes.py`.
+
+**Which resolutions are the Third Committee's.** From session 55 the source names the
+draft (`A/C.3/…/L.n`; `third_committee_attribution = "draft symbol"`, 485 rows). Earlier
+records carry no draft symbol and are attributed by agenda item (`"agenda item"`, 223
+rows) — the items the Committee is known to handle (human rights questions and
+situations, self-determination, racism, the Covenants, social development, women,
+children, crime and drugs), excluding items that sound like human rights but sat
+elsewhere (apartheid, UNRWA, the Israeli-practices committee). Where both signals exist
+(sessions 55–80) the rule recovers 484 of 485 draft-attributed resolutions.
+
+**Committee stage.** `ga_resolutions.committee_*` carry the Committee's own vote on the
+draft (438 of the 446 draft-attributed resolutions of sessions 55–79; the rest were
+adopted without a vote in committee or their record is missing), and
+`ga_committee_events` / `ga_committee_votes` hold every recorded vote the records
+report, including amendments, paragraph votes and procedural motions
+(`kind`). `totals_match` says whether the parsed list agrees with the totals the record
+states (716 of 733); `symbol_source` says whether the draft symbol was read from the
+record's own description of the vote (`subject`), inferred from the surrounding text
+(`context`), or corrected for a session typo. As an independent check the same lists
+were compared with the Committee's e-voting board printouts for sessions 75–77:
+10,480 of 10,482 State-votes agree.
+
+**Texts.** The Assembly's adopted texts (1993 onward; earlier A/RES documents are scans
+without a text layer) are searchable in the dashboard's Texts tab but are not part of the
+`clauses` config, which stays a Commission/Council table.
+
+**Cross-organ link.** `related_chr_hrc_symbols` lists the Commission/Council
+resolutions whose catalogued title matches the GA text (token Jaccard ≥ 0.6; 430 of
+708 GA resolutions) — the usual pattern of a Council text re-adopted by the Assembly.
 
 ## Known data-quality notes
 

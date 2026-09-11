@@ -1,0 +1,748 @@
+event_id,session,sr_symbol,meeting_no,meeting_date,kind,draft_symbol,symbol_source,as_amended,subject,result,stated_yes,stated_no,stated_abstain,n_yes,n_no,n_abstain,totals_match
+55-SR37-1,55,A/C.3/55/SR.37,37,26 October 2000,draft,A/C.3/55/L.23,subject,0,draft resolution A/C.3/55/L.23,adopted,92,16,33,92,16,33,1
+55-SR47-1,55,A/C.3/55/SR.47,47,6 November 2000,draft,A/C.3/55/L.32,subject,0,the draft resolution,adopted,147,2,3,147,2,3,1
+55-SR52-1,55,A/C.3/55/SR.52,52,8 November 2000,draft,A/C.3/55/L.45,subject,0,Draft resolution A/C.3/55/L.45,adopted,94,2,64,94,2,64,1
+55-SR52-2,55,A/C.3/55/SR.52,52,8 November 2000,draft,A/C.3/55/L.59,subject,0,Draft resolution A/C.3/55/L.59,adopted,103,46,8,104,46,8,0
+55-SR53-1,55,A/C.3/55/SR.53,53,9 November 2000,draft,A/C.3/55/L.35,subject,0,draft resolution A/C.3/55/L.35,adopted,151,0,9,151,0,9,1
+55-SR53-2,55,A/C.3/55/SR.53,53,9 November 2000,draft,A/C.3/55/L.40,subject,0,draft resolution A/C.3/55/L.40,adopted,145,0,14,145,0,14,1
+55-SR53-3,55,A/C.3/55/SR.53,53,9 November 2000,draft,A/C.3/55/L.49,subject,0,draft resolution A/C.3/55/L.49,adopted,58,53,48,58,53,48,1
+55-SR53-4,55,A/C.3/55/SR.53,53,9 November 2000,draft,A/C.3/55/L.50,subject,0,draft resolution A/C.3/55/L.50,adopted,89,2,56,89,2,56,1
+55-SR54-1,55,A/C.3/55/SR.54,54,10 November 2000,draft,A/C.3/55/L.48/Rev.1,subject,0,the draft resolution,adopted,91,44,15,91,44,15,1
+55-SR55-1,55,A/C.3/55/SR.55,55,10 November 2000,paragraph,A/C.3/55/L.67,context,0,paragraph 20,adopted,118,0,30,118,0,30,1
+55-SR55-2,55,A/C.3/55/SR.55,55,10 November 2000,draft,A/C.3/55/L.47,subject,1,"Draft resolution A/C.3/55/L.47/Rev. 1, as orally revised",adopted,78,51,21,78,51,21,1
+55-SR55-3,55,A/C.3/55/SR.55,55,10 November 2000,draft,A/C.3/55/L.56,subject,0,Draft resolution A/C.3/55/L.56/Rev. 1,adopted,91,50,13,91,50,13,1
+55-SR55-4,55,A/C.3/55/SR.55,55,10 November 2000,draft,A/C.3/55/L.62/Rev.1,subject,1,"Draft resolution A/C.3/55/L.62/Rev.1, as orally revised",adopted,94,4,55,94,4,55,1
+55-SR55-5,55,A/C.3/55/SR.55,55,10 November 2000,draft,A/C.3/55/L.51,subject,1,"Draft resolution A/C.3/55/L.51, as orally revised",adopted,75,30,45,75,30,45,1
+56-SR47-1,56,A/C.3/56/SR.47,47,21 November 2001,paragraph,A/C.3/56/L.29,context,0,paragraph 1 of the draft resolution,adopted,148,2,0,148,2,0,1
+56-SR47-2,56,A/C.3/56/SR.47,47,21 November 2001,draft,A/C.3/56/L.33,subject,0,draft resolution A/C.3/56/L.33 on the right of the Palestinian people to self-determination,adopted,152,2,0,152,2,0,1
+56-SR47-3,56,A/C.3/56/SR.47,47,21 November 2001,draft,A/C.3/56/L.38,subject,0,the draft resolution,adopted,97,44,5,97,44,5,1
+56-SR50-1,56,A/C.3/56/SR.50,50,27 November 2001,draft,A/C.3/56/L.31,subject,0,draft resolution A/C.3/56/L.31,adopted,92,20,30,92,20,30,1
+56-SR50-2,56,A/C.3/56/SR.50,50,27 November 2001,draft,A/C.3/56/L.41,subject,0,draft resolution A/C.3/56/L.41,adopted,94,47,3,94,47,3,1
+56-SR50-3,56,A/C.3/56/SR.50,50,27 November 2001,draft,A/C.3/56/L.44,subject,0,draft resolution A/C.3/56/L.44,adopted,90,48,7,90,48,7,1
+56-SR50-4,56,A/C.3/56/SR.50,50,27 November 2001,draft,A/C.3/56/L.45,subject,0,draft resolution A/C.3/56/L.45,adopted,86,48,17,86,48,17,1
+56-SR50-5,56,A/C.3/56/SR.50,50,27 November 2001,draft,A/C.3/56/L.47,subject,0,draft resolution A/C.3/56/L.47,adopted,87,8,53,87,8,53,1
+56-SR50-6,56,A/C.3/56/SR.50,50,27 November 2001,draft,A/C.3/56/L.48,subject,0,draft resolution A/C.3/56/L.48,adopted,146,2,2,146,2,2,1
+56-SR51-1,56,A/C.3/56/SR.51,51,28 November 2001,draft,A/C.3/56/L.53,subject,0,draft resolution A/C.3/56/L.53,adopted,146,0,6,146,0,6,1
+56-SR53-1,56,A/C.3/56/SR.53,53,30 November 2001,draft,A/C.3/56/L.43/Rev.1,subject,0,draft resolution A/C.3/56/L.43/Rev.1,adopted,116,3,42,116,3,42,1
+56-SR53-2,56,A/C.3/56/SR.53,53,30 November 2001,draft,A/C.3/56/L.64,subject,0,draft resolution A/C.3/56/L.64,adopted,109,44,10,109,44,10,1
+56-SR53-3,56,A/C.3/56/SR.53,53,30 November 2001,draft,A/C.3/56/L.50,subject,0,draft resolution A/C.3/56/L.50,adopted,71,53,41,71,53,41,1
+56-SR53-4,56,A/C.3/56/SR.53,53,30 November 2001,draft,A/C.3/56/L.58/Rev.1,subject,0,draft resolution A/C.3/56/L.58/Rev.1,adopted,82,34,45,82,34,45,1
+56-SR54-1,56,A/C.3/56/SR.54,54,30 November 2001,draft,A/C.3/56/L.56/Rev.1,subject,0,Draft resolution A/C.3/56/L.56/Rev.1,adopted,88,2,66,88,2,66,1
+56-SR55-1,56,A/C.3/56/SR.55,55,30 November 2001,draft,A/C.3/56/L.57,subject,0,draft resolution A/C.3/56/L.57,adopted,91,3,55,91,3,55,1
+56-SR55-2,56,A/C.3/56/SR.55,55,30 November 2001,draft,A/C.3/56/L.59,subject,0,draft resolution A/C.3/56/L.59,adopted,84,0,64,84,0,64,1
+56-SR61-1,56,A/C.3/56/SR.61,61,26 February 2002,draft,A/C.3/56/L.84/Rev.1,subject,0,draft resolution A/C.3/56/L.84/Rev.1,adopted,137,2,2,137,2,2,1
+57-SR31-1,57,A/C.3/57/SR.31,31,31 October 2002,paragraph,A/C.3/57/L.24/Rev.1,subject,0,paragraph 1 of draft resolution A/C.3/57/L.24/Rev.1,adopted,144,2,3,144,2,3,1
+57-SR40-1,57,A/C.3/57/SR.40,40,7 November 2002,paragraph,A/C.3/57/L.32,subject,0,"the proposal to retain chapter I, paragraph 10, of draft resolution A/C.3/57/L.32",adopted,154,2,2,154,2,2,1
+57-SR40-2,57,A/C.3/57/SR.40,40,7 November 2002,draft,A/C.3/57/L.31,subject,0,Draft resolution A/C.3/57/L.31,adopted,108,19,32,108,19,32,1
+57-SR40-3,57,A/C.3/57/SR.40,40,7 November 2002,draft,A/C.3/57/L.35,subject,0,Draft resolution A/C.3/57/L.35,adopted,156,3,3,156,3,3,1
+57-SR40-4,57,A/C.3/57/SR.40,40,7 November 2002,motion,A/C.3/57/L.30,context,0,The motion,rejected,12,85,43,12,85,43,1
+57-SR40-5,57,A/C.3/57/SR.40,40,7 November 2002,amendment,A/C.3/57/L.39,subject,0,the amendment proposed by the United States of America in document A/C.3/57/L.39,rejected,11,98,37,11,98,37,1
+57-SR40-6,57,A/C.3/57/SR.40,40,7 November 2002,draft,A/C.3/57/L.30,subject,0,Draft resolution A/C.3/57/L.30,adopted,104,8,37,104,8,37,1
+57-SR51-1,57,A/C.3/57/SR.51,51,15 November 2002,draft,A/C.3/57/L.16/Rev.1,subject,0,Draft resolution A/C.3/57/L.16/Rev.1,adopted,124,7,29,124,7,27,0
+57-SR51-2,57,A/C.3/57/SR.51,51,15 November 2002,draft,A/C.3/57/L.23,subject,0,Draft resolution A/C.3/57/L.23,adopted,95,3,58,95,3,58,1
+57-SR53-1,57,A/C.3/57/SR.53,53,19 November 2002,draft,A/C.3/57/L.58,subject,0,Draft resolution A/C.3/57/L.58,adopted,90,50,14,90,50,14,1
+57-SR53-2,57,A/C.3/57/SR.53,53,19 November 2002,draft,A/C.3/57/L.59,subject,0,Draft resolution A/C.3/57/L.59,adopted,93,51,17,93,51,17,1
+57-SR53-3,57,A/C.3/57/SR.53,53,19 November 2002,draft,A/C.3/57/L.64,subject,0,Draft resolution A/C.3/57/L.64,adopted,106,51,1,106,51,1,1
+57-SR53-4,57,A/C.3/57/SR.53,53,19 November 2002,draft,A/C.3/57/L.69,subject,0,Draft resolution A/C.3/57/L.69,adopted,86,2,71,86,2,71,1
+57-SR54-1,57,A/C.3/57/SR.54,54,19 November 2002,paragraph,A/C.3/57/L.57,subject,0,the seventh preambular paragraph,adopted,148,1,8,148,1,8,1
+57-SR55-1,57,A/C.3/57/SR.55,55,20 November 2002,draft,A/C.3/57/L.25/Rev.1,subject,0,draft resolution A/C.3/57/L.25/Rev.1,adopted,164,1,0,164,1,0,1
+57-SR55-2,57,A/C.3/57/SR.55,55,20 November 2002,draft,A/C.3/57/L.44,subject,0,Draft resolution A/C.3/57/L.44,adopted,105,49,8,105,49,8,1
+57-SR55-3,57,A/C.3/57/SR.55,55,20 November 2002,draft,A/C.3/57/L.55,subject,0,Draft resolution A/C.3/57/L.55,adopted,98,52,8,98,52,8,1
+57-SR56-1,57,A/C.3/57/SR.56,56,20 November 2002,amendment,A/C.3/57/L.68,subject,0,The proposed amendment to draft resolution A/C.3/57/L.68,rejected,15,118,28,15,118,28,1
+57-SR56-2,57,A/C.3/57/SR.56,56,20 November 2002,draft,A/C.3/57/L.68,subject,0,Draft resolution A/C.3/57/L.68,adopted,160,2,4,160,2,4,1
+57-SR56-3,57,A/C.3/57/SR.56,56,20 November 2002,draft,,,0,The request that voting on the draft resolution should be postponed for 24 hours,rejected,14,90,59,14,90,59,1
+57-SR56-4,57,A/C.3/57/SR.56,56,20 November 2002,draft,A/C.3/57/L.70,subject,0,Draft resolution A/C.3/57/L.70,adopted,123,0,37,123,0,37,1
+57-SR56-5,57,A/C.3/57/SR.56,56,20 November 2002,draft,A/C.3/57/L.43/Rev.1,subject,0,Draft resolution A/C.3/57/L.43/Rev.1,adopted,74,53,29,74,53,29,1
+57-SR57-1,57,A/C.3/57/SR.57,57,21 November 2002,draft,A/C.3/57/L.65,subject,0,draft resolution A/C.3/57/L.65,adopted,114,3,47,114,3,47,1
+57-SR57-2,57,A/C.3/57/SR.57,57,21 November 2002,paragraph,,,0,paragraph 4 (a),adopted,76,8,72,76,8,72,1
+57-SR57-3,57,A/C.3/57/SR.57,57,21 November 2002,paragraph,,,0,paragraph 4 (b),adopted,76,8,71,76,8,71,1
+57-SR57-4,57,A/C.3/57/SR.57,57,21 November 2002,paragraph,,,0,paragraph 4 (e),adopted,76,8,71,76,8,71,1
+57-SR57-5,57,A/C.3/57/SR.57,57,21 November 2002,paragraph,,,0,paragraph 4 (f),adopted,77,8,71,77,8,71,1
+57-SR57-6,57,A/C.3/57/SR.57,57,21 November 2002,draft,A/C.3/57/L.49,subject,1,"draft resolution A/C.3/57/L.49 as a whole, as orally revised",adopted,86,4,71,86,4,71,1
+57-SR57-7,57,A/C.3/57/SR.57,57,21 November 2002,paragraph,A/C.3/57/L.50,context,0,paragraph 1(i),adopted,125,1,26,125,1,26,1
+57-SR57-8,57,A/C.3/57/SR.57,57,21 November 2002,draft,A/C.3/57/L.50,subject,1,"A/C.3/57/L.50 as a whole, as orally revised",adopted,83,3,72,83,3,72,1
+57-SR58-1,57,A/C.3/57/SR.58,58,21 November 2002,amendment,A/C.3/57/L.86,subject,0,"The first proposed amendment, contained in paragraph 1 of document A/C.3/57/L.86",rejected,35,79,38,35,79,38,1
+57-SR58-2,57,A/C.3/57/SR.58,58,21 November 2002,amendment,A/C.3/57/L.86,subject,0,"The second proposed amendment, contained in paragraph 2 of document A/C.3/57/L.86",rejected,49,72,29,49,72,29,1
+57-SR58-3,57,A/C.3/57/SR.58,58,21 November 2002,amendment,A/C.3/57/L.86,subject,0,"The third proposed amendment, contained in paragraph 3 of document A/C.3/57/L.86",rejected,64,67,22,64,67,22,1
+57-SR58-4,57,A/C.3/57/SR.58,58,21 November 2002,amendment,A/C.3/57/L.87,subject,0,"The first proposed amendment, contained in paragraph 1 of document A/C.3/57/L.87",rejected,44,80,30,44,80,30,1
+57-SR58-5,57,A/C.3/57/SR.58,58,21 November 2002,amendment,A/C.3/57/L.87,subject,0,"The second proposed amendment, contained in paragraph 2 of document A/C.3/57/L.87",rejected,55,69,32,55,69,32,1
+57-SR58-6,57,A/C.3/57/SR.58,58,21 November 2002,amendment,A/C.3/57/L.87,subject,0,"The third proposed amendment, contained in paragraph 3 of document A/C.3/57/L.87",rejected,52,73,28,52,73,28,1
+57-SR59-1,57,A/C.3/57/SR.59,59,25 November 2002,paragraph,A/C.3/57/L.56/Rev.1,context,0,the third preambular paragraph,adopted,87,24,35,87,24,35,1
+57-SR59-2,57,A/C.3/57/SR.59,59,25 November 2002,paragraph,,,0,paragraph 6,adopted,92,34,28,92,34,28,1
+57-SR59-3,57,A/C.3/57/SR.59,59,25 November 2002,paragraph,,,0,paragraph 11,adopted,91,28,33,91,28,33,1
+57-SR59-4,57,A/C.3/57/SR.59,59,25 November 2002,paragraph,,,0,paragraph 12,adopted,89,33,31,89,33,31,1
+57-SR59-5,57,A/C.3/57/SR.59,59,25 November 2002,paragraph,,,0,paragraph 18,retained,77,34,39,77,34,39,1
+57-SR59-6,57,A/C.3/57/SR.59,59,25 November 2002,paragraph,,,0,paragraph 22,retained,97,23,34,97,23,34,1
+57-SR59-7,57,A/C.3/57/SR.59,59,25 November 2002,paragraph,,,0,the seventh preambular paragraph and paragraph 3,adopted,125,2,30,125,2,30,1
+57-SR59-8,57,A/C.3/57/SR.59,59,25 November 2002,draft,A/C.3/57/L.56/Rev.1,subject,0,draft resolution A/C.3/57/L.56/Rev.1 as a whole,adopted,112,0,48,112,0,48,1
+57-SR60-1,57,A/C.3/57/SR.60,60,25 November 2002,draft,A/C.3/57/L.34/Rev.1,subject,0,Draft resolution A/C.3/57/L.34/Rev.1,adopted,153,2,3,153,2,3,1
+58-SR16-1,58,A/C.3/58/SR.16,16,17 October 2003,motion,,,0,a proposal to invite the Special Rapporteur of the Commission on Human Rights on the Situation of Human Rights in the Occupied Palestinian Territories to present his report to the Third Committee,adopted,140,2,1,140,2,1,1
+58-SR34-1,58,A/C.3/58/SR.34,34,6 November 2003,draft,A/C.3/58/L.24,subject,1,"draft resolution A/C.3/58/L.24, as revised",adopted,88,4,58,87,4,57,0
+58-SR43-1,58,A/C.3/58/SR.43,43,13 November 2003,draft,A/C.3/58/L.32,subject,0,draft resolution A/C.3/58/L.32,adopted,111,23,27,111,23,26,0
+58-SR43-2,58,A/C.3/58/SR.43,43,13 November 2003,draft,A/C.3/58/L.35,subject,0,draft resolution A/C.3/58/L.35,adopted,159,2,0,159,2,0,1
+58-SR53-1,58,A/C.3/58/SR.53,53,20 November 2003,draft,A/C.3/58/L.31,subject,0,the draft resolution,adopted,88,3,64,88,3,64,1
+58-SR53-2,58,A/C.3/58/SR.53,53,20 November 2003,draft,A/C.3/58/L.51,subject,0,the draft resolution,adopted,118,50,1,118,50,1,1
+58-SR53-3,58,A/C.3/58/SR.53,53,20 November 2003,draft,A/C.3/58/L.53,subject,0,the draft resolution,adopted,166,1,5,166,1,5,1
+58-SR53-4,58,A/C.3/58/SR.53,53,20 November 2003,draft,A/C.3/58/L.54,subject,0,draft resolution A/C.3/58/L.54,adopted,111,39,17,111,39,17,1
+58-SR53-5,58,A/C.3/58/SR.53,53,20 November 2003,draft,A/C.3/58/L.60,subject,1,"the draft resolution, as orally amended",adopted,167,1,0,167,1,0,1
+58-SR54-1,58,A/C.3/58/SR.54,54,21 November 2003,amendment,A/C.3/58/L.44,context,0,the amendment proposed by the United States of America,rejected,13,116,24,13,116,24,1
+58-SR54-2,58,A/C.3/58/SR.54,54,21 November 2003,draft,A/C.3/58/L.72,subject,0,Draft resolution A/C.3/58/L.72,adopted,105,51,19,105,51,19,1
+58-SR54-3,58,A/C.3/58/SR.54,54,21 November 2003,draft,A/C.3/58/L.69,subject,0,Draft resolution A/C.3/58/L.69,adopted,73,49,50,73,49,50,1
+58-SR55-1,58,A/C.3/58/SR.55,55,24 November 2003,draft,A/C.3/58/L.70,subject,0,Draft resolution A/C.3/58/L.70,adopted,156,1,2,156,1,2,1
+58-SR55-2,58,A/C.3/58/SR.55,55,24 November 2003,draft,A/C.3/58/L.73,subject,1,"Draft resolution A/C.3/58/L.73, as orally revised",adopted,100,9,51,100,9,51,1
+58-SR55-3,58,A/C.3/58/SR.55,55,24 November 2003,draft,A/C.3/58/L.76,subject,0,Draft resolution A/C.3/58/L.76,adopted,108,50,10,108,50,10,1
+58-SR55-4,58,A/C.3/58/SR.55,55,24 November 2003,draft,A/C.3/58/L.77,subject,0,Draft resolution A/C.3/58/L.77,adopted,113,50,4,113,50,4,1
+58-SR55-5,58,A/C.3/58/SR.55,55,24 November 2003,draft,A/C.3/58/L.67,subject,0,Draft resolution A/C.3/58/L.67,adopted,72,37,53,72,37,53,1
+58-SR57-1,58,A/C.3/58/SR.57,57,26 November 2003,draft,A/C.3/58/L.36,subject,0,draft resolution A/C.3/58/L.36,adopted,126,5,33,126,5,33,1
+58-SR57-2,58,A/C.3/58/SR.57,57,26 November 2003,draft,A/C.3/58/L.52,subject,0,draft resolution A/C.3/58/L.52,adopted,158,2,6,158,2,6,1
+58-SR57-3,58,A/C.3/58/SR.57,57,26 November 2003,draft,A/C.3/58/L.61,subject,0,draft resolution A/C.3/58/L.61,adopted,156,0,7,156,0,7,1
+58-SR59-1,58,A/C.3/58/SR.59,59,28 November 2003,draft,A/C.3/58/L.28,subject,0,draft resolution A/C.3/58/L.28,adopted,106,21,29,106,21,29,1
+58-SR59-2,58,A/C.3/58/SR.59,59,28 November 2003,amendment,A/C.3/58/L.83,context,0,amendment 1,adopted,72,54,25,72,54,25,1
+58-SR59-3,58,A/C.3/58/SR.59,59,28 November 2003,amendment,A/C.3/58/L.83,context,0,amendments 2-6,adopted,77,48,26,77,48,26,1
+58-SR59-4,58,A/C.3/58/SR.59,59,28 November 2003,motion,A/C.3/58/L.23/Rev.1,subject,0,"the no-action motion proposed by the representative of Egypt on draft resolution A/C.3/58/L.23/Rev.1, as further revised",adopted,66,63,13,66,63,13,1
+58-SR60-1,58,A/C.3/58/SR.60,60,28 November 2003,draft,A/C.3/58/L.29/Rev.1,subject,0,draft resolution A/C.3/58/L.29/Rev.1 as a whole,adopted,159,1,0,159,1,0,1
+58-SR60-2,58,A/C.3/58/SR.60,60,28 November 2003,paragraph,A/C.3/58/L.34,context,0,paragraph 31,adopted,105,40,8,105,40,8,1
+58-SR60-3,58,A/C.3/58/SR.60,60,28 November 2003,draft,A/C.3/58/L.34,subject,0,draft resolution A/C.3/58/L.34 as a whole,adopted,155,2,2,155,2,2,1
+58-SR60-4,58,A/C.3/58/SR.60,60,28 November 2003,paragraph,A/C.3/58/L.71,subject,0,paragraphs 10 and 11 of draft resolution A/C.3/58/L.71,adopted,136,1,15,136,1,15,1
+58-SR60-5,58,A/C.3/58/SR.60,60,28 November 2003,draft,A/C.3/58/L.71,subject,0,draft resolution A/C.3/58/L.71 as a whole,adopted,157,0,1,157,0,1,1
+58-SR61-1,58,A/C.3/58/SR.61,61,1 December 2003,paragraph,A/C.3/58/L.79/Rev.1,subject,0,the fourth preambular paragraph of draft resolution A/C.3/58/L.79/Rev.1,adopted,82,4,75,82,4,75,1
+58-SR61-2,58,A/C.3/58/SR.61,61,1 December 2003,paragraph,A/C.3/58/L.79/Rev.1,subject,0,paragraphs 3 (b) and 6 (e) of draft resolution A/C.3/58/L.79/Rev.1,adopted,73,50,35,73,50,35,1
+58-SR61-3,58,A/C.3/58/SR.61,61,1 December 2003,amendment,A/C.3/58/L.79/Rev.1,context,0,the United States amendment to paragraph 6 (g),rejected,2,93,55,2,93,55,1
+58-SR61-4,58,A/C.3/58/SR.61,61,1 December 2003,motion,A/C.3/58/L.79/Rev.1,context,0,The appeal against the Chairman’s ruling,rejected,70,82,0,70,82,0,1
+58-SR61-5,58,A/C.3/58/SR.61,61,1 December 2003,draft,,,0,The draft resolution,adopted,74,3,85,74,3,85,1
+59-SR37-1,59,A/C.3/59/SR.37,37,4 November 2004,draft,A/C.3/59/L.26,subject,0,the draft resolution,adopted,128,10,29,127,10,29,0
+59-SR42-1,59,A/C.3/59/SR.42,42,11 November 2004,draft,A/C.3/59/L.52,subject,0,draft resolution A/C.3/59/L.52,adopted,109,49,5,109,49,5,1
+59-SR44-1,59,A/C.3/59/SR.44,44,16 November 2004,amendment,A/C.3/59/L.61,subject,0,the amendment proposed by the United States of America,rejected,3,114,32,3,114,32,1
+59-SR45-1,59,A/C.3/59/SR.45,45,17 November 2004,draft,A/C.3/59/L.50,subject,0,draft resolution A/C.3/59/L.50,adopted,69,55,51,69,55,51,1
+59-SR46-1,59,A/C.3/59/SR.46,46,18 November 2004,draft,A/C.3/59/L.28,subject,0,Draft resolution A/C.3/59/L.28,adopted,105,5,61,105,5,61,1
+59-SR46-2,59,A/C.3/59/SR.46,46,18 November 2004,draft,A/C.3/59/L.37,subject,0,the draft resolution,adopted,166,2,4,165,2,4,0
+59-SR46-3,59,A/C.3/59/SR.46,46,18 November 2004,draft,A/C.3/59/L.65,subject,0,draft resolution A/C.3/59/L.65,adopted,107,3,63,107,3,63,1
+59-SR46-4,59,A/C.3/59/SR.46,46,18 November 2004,draft,A/C.3/59/L.53,subject,0,draft resolution A/C.3/59/L.53,adopted,65,49,56,65,49,56,1
+59-SR47-1,59,A/C.3/59/SR.47,47,18 November 2004,draft,A/C.3/59/L.32,subject,0,draft resolution A/C.3/59/L.32 as a whole,adopted,112,51,5,112,51,5,1
+59-SR47-2,59,A/C.3/59/SR.47,47,18 November 2004,draft,A/C.3/59/L.47,subject,0,the draft resolution,adopted,115,55,4,115,55,4,1
+59-SR47-3,59,A/C.3/59/SR.47,47,18 November 2004,motion,A/C.3/59/L.55,subject,0,the motion to adjourn the debate on the draft resolution,adopted,75,65,28,75,65,28,1
+59-SR48-1,59,A/C.3/59/SR.48,48,19 November 2004,draft,A/C.3/59/L.35,subject,0,Draft resolution A/C.3/59/L.35,adopted,118,50,3,118,50,3,1
+59-SR48-2,59,A/C.3/59/SR.48,48,19 November 2004,draft,A/C.3/59/L.40,subject,1,"the draft resolution, as orally revised",adopted,115,51,0,115,51,0,1
+59-SR49-1,59,A/C.3/59/SR.49,49,19 November 2004,draft,,,0,the draft resolution,adopted,115,44,10,113,45,10,0
+59-SR49-2,59,A/C.3/59/SR.49,49,19 November 2004,draft,A/C.3/59/L.64/Rev.1,subject,0,the draft resolution,adopted,167,2,0,167,2,0,1
+59-SR49-3,59,A/C.3/59/SR.49,49,19 November 2004,draft,A/C.3/59/L.66,subject,1,draft resolution A/C.3/59/L.66 as orally revised,adopted,106,54,10,106,54,10,1
+59-SR50-1,59,A/C.3/59/SR.50,50,22 November 2004,amendment,A/C.3/59/L.57/Rev.1,subject,0,the proposed amendment to paragraph 7,rejected,60,74,26,60,74,26,1
+59-SR50-2,59,A/C.3/59/SR.50,50,22 November 2004,amendment,A/C.3/59/L.57/Rev.1,subject,0,the proposed amendment to paragraph 8 (c),rejected,52,75,32,52,75,32,1
+59-SR50-3,59,A/C.3/59/SR.50,50,22 November 2004,paragraph,A/C.3/59/L.57/Rev.1,subject,0,paragraph 7,adopted,84,41,39,84,41,39,1
+59-SR50-4,59,A/C.3/59/SR.50,50,22 November 2004,paragraph,A/C.3/59/L.57/Rev.1,subject,0,paragraph 8 (c),adopted,93,42,29,93,42,29,1
+59-SR50-5,59,A/C.3/59/SR.50,50,22 November 2004,amendment,A/C.3/59/L.57/Rev.1,subject,0,the oral amendment to paragraph 6 of draft resolution A/C.3/59/L.57/Rev.1,rejected,4,117,41,4,117,41,1
+59-SR50-6,59,A/C.3/59/SR.50,50,22 November 2004,draft,A/C.3/59/L.57/Rev.1,subject,0,draft resolution A/C.3/59/L.57/Rev.1 as a whole,adopted,130,0,45,130,0,45,1
+59-SR50-7,59,A/C.3/59/SR.50,50,22 November 2004,amendment,A/C.3/59/L.59,context,0,The amendment to paragraph 9,rejected,45,85,29,45,85,29,1
+59-SR50-8,59,A/C.3/59/SR.50,50,22 November 2004,paragraph,A/C.3/59/L.59,subject,0,paragraph 9 of draft resolution A/C.3/59/L.59,adopted,99,33,21,99,33,21,1
+59-SR50-9,59,A/C.3/59/SR.50,50,22 November 2004,draft,A/C.3/59/L.59,subject,0,draft resolution A/C.3/59/L.59,,,,,177,0,0,0
+59-SR51-1,59,A/C.3/59/SR.51,51,23 November 2004,motion,A/C.3/59/L.48,subject,0,the motion to defer action on draft resolution A/C.3/59/L.48,,,,,92,67,12,0
+59-SR52-1,59,A/C.3/59/SR.52,52,23 November 2004,draft,A/C.3/59/L.70/Rev.1,subject,0,the draft resolution,adopted,169,5,4,169,5,4,1
+59-SR52-2,59,A/C.3/59/SR.52,52,23 November 2004,amendment,A/C.3/59/L.81,subject,0,"The amendments appearing in document A/C.3/59/L.81, with the exception of paragraphs 3 bis and 14",rejected,2,126,36,2,126,36,1
+59-SR52-3,59,A/C.3/59/SR.52,52,23 November 2004,paragraph,A/C.3/59/L.81,context,0,Paragraph 3 bis,rejected,30,112,10,30,112,10,1
+59-SR52-4,59,A/C.3/59/SR.52,52,23 November 2004,paragraph,A/C.3/59/L.81,context,0,Paragraph 14,rejected,3,139,16,3,139,16,1
+59-SR52-5,59,A/C.3/59/SR.52,52,23 November 2004,amendment,A/C.3/59/L.83,subject,0,The amendment in document A/C.3/59/L.83,rejected,38,97,22,38,97,22,1
+59-SR52-6,59,A/C.3/59/SR.52,52,23 November 2004,unknown,A/C.3/59/L.29/Rev.1,context,0,,,,,,114,30,14,0
+59-SR52-7,59,A/C.3/59/SR.52,52,23 November 2004,unknown,A/C.3/59/L.29/Rev.1,context,0,,,,,,123,7,32,0
+59-SR52-8,59,A/C.3/59/SR.52,52,23 November 2004,unknown,A/C.3/59/L.29/Rev.1,context,0,,,,,,130,4,33,0
+59-SR52-9,59,A/C.3/59/SR.52,52,23 November 2004,draft,A/C.3/59/L.29/Rev.1,subject,0,Draft resolution A/C.3/59/L.29/Rev.1 as a whole,adopted,170,2,3,170,2,3,1
+59-SR53-1,59,A/C.3/59/SR.53,53,24 November 2004,draft,A/C.3/59/L.71,subject,1,"draft resolution A/C.3/59/L.71, as orally revised",adopted,175,2,2,174,2,2,0
+59-SR53-2,59,A/C.3/59/SR.53,53,24 November 2004,draft,A/C.3/59/L.62,subject,1,"Draft resolution A/C.3/59/L.62, as orally amended",adopted,161,0,20,161,0,20,1
+59-SR54-1,59,A/C.3/59/SR.54,54,24 November 2004,motion,,,0,the motion to adjourn debate on the draft resolution,adopted,92,72,9,92,72,9,1
+59-SR54-2,59,A/C.3/59/SR.54,54,24 November 2004,motion,,,0,the motion to adjourn debate on the draft resolution,adopted,91,74,11,91,74,11,1
+59-SR54-3,59,A/C.3/59/SR.54,54,24 November 2004,amendment,A/C.3/59/L.54,context,1,"the amendment to paragraph 6 (f) of the draft resolution, as amended",rejected,2,116,38,2,116,38,1
+59-SR54-4,59,A/C.3/59/SR.54,54,24 November 2004,paragraph,A/C.3/59/L.54,context,0,the third line of the preamble,,,,,101,2,61,0
+59-SR54-5,59,A/C.3/59/SR.54,54,24 November 2004,paragraph,A/C.3/59/L.54,context,0,the fourth line of the preamble,,,,,100,2,61,0
+59-SR54-6,59,A/C.3/59/SR.54,54,24 November 2004,paragraph,,,1,"paragraph 6 of the text, as amended",,,,,93,2,67,0
+59-SR54-7,59,A/C.3/59/SR.54,54,24 November 2004,draft,,,0,the draft resolution as a whole,adopted,72,2,94,72,2,94,1
+60-SR29-1,60,A/C.3/60/SR.29,29,28 October 2005,paragraph,A/C.3/60/L.17,subject,0,paragraph 14 of the draft resolution,adopted,147,2,6,147,2,6,1
+60-SR29-2,60,A/C.3/60/SR.29,29,28 October 2005,paragraph,A/C.3/60/L.17,context,0,the inclusion of paragraph 15 of the draft resolution,adopted,128,13,7,128,13,7,1
+60-SR29-3,60,A/C.3/60/SR.29,29,28 October 2005,draft,A/C.3/60/L.17,subject,0,draft resolution A/C.3/60/L.17 as a whole,adopted,160,1,0,160,1,0,1
+60-SR41-1,60,A/C.3/60/SR.41,41,2 November 2005,amendment,A/C.3/60/L.18/Rev.1,subject,0,the amendments proposed to draft resolution A/C.3/60/L.18/Rev.1,rejected,2,157,2,2,157,2,1
+60-SR42-1,60,A/C.3/60/SR.42,42,17 November 2005,draft,A/C.3/60/L.60,subject,0,Draft resolution A/C.3/60/L.60,adopted,97,4,63,97,4,63,1
+60-SR42-2,60,A/C.3/60/SR.42,42,17 November 2005,draft,A/C.3/60/L.62,subject,0,Draft resolution A/C.3/60/L.62,adopted,162,4,3,162,4,3,1
+60-SR42-3,60,A/C.3/60/SR.42,42,17 November 2005,draft,A/C.3/60/L.48,subject,0,Draft resolution A/C.3/60/L.48,adopted,84,22,62,84,22,62,1
+60-SR43-1,60,A/C.3/60/SR.43,43,18 November 2005,draft,A/C.3/60/L.15/Rev.1,subject,0,the draft resolution,adopted,138,12,26,138,12,26,1
+60-SR43-2,60,A/C.3/60/SR.43,43,18 November 2005,motion,A/C.3/60/L.45,subject,0,the proposal to adjourn the debate on draft resolution A/C.3/60/L.45,rejected,70,77,23,70,77,23,1
+60-SR43-3,60,A/C.3/60/SR.43,43,18 November 2005,draft,A/C.3/60/l.45,subject,0,draft resolution A/C.3/60/l.45,adopted,77,51,46,77,51,46,1
+60-SR44-1,60,A/C.3/60/SR.44,44,18 November 2005,motion,A/C.3/60/L.53,subject,0,the motion to adjourn the debate on draft resolution A/C.3/60/L.53,rejected,54,77,35,54,77,35,1
+60-SR44-2,60,A/C.3/60/SR.44,44,18 November 2005,paragraph,A/C.3/60/L.22/Rev.1,context,0,the proposed insertion of a new subparagraph following paragraph 15 (c),rejected,39,111,13,39,111,13,1
+60-SR44-3,60,A/C.3/60/SR.44,44,18 November 2005,amendment,A/C.3/60/L.22/Rev.1,context,0,the amendment proposed to paragraph 15 (d),rejected,23,119,19,23,119,19,1
+60-SR44-4,60,A/C.3/60/SR.44,44,18 November 2005,amendment,A/C.3/60/L.22/Rev.1,context,0,the amendment proposed to paragraph 27,rejected,36,106,21,36,106,21,1
+60-SR44-5,60,A/C.3/60/SR.44,44,18 November 2005,amendment,,,0,the amendment proposed to paragraph 28,rejected,23,116,21,23,116,21,1
+60-SR44-6,60,A/C.3/60/SR.44,44,18 November 2005,paragraph,A/C.3/60/L.22/Rev.1,context,0,the retention of paragraph 35,approved,163,3,0,163,3,0,1
+60-SR44-7,60,A/C.3/60/SR.44,44,18 November 2005,paragraph,A/C.3/60/L.22/Rev.1,context,0,paragraph 15 (d),retained,125,17,13,125,17,13,1
+60-SR44-8,60,A/C.3/60/SR.44,44,18 November 2005,paragraph,A/C.3/60/L.22/Rev.1,context,0,paragraph 27,retained,109,28,21,109,28,21,1
+60-SR44-9,60,A/C.3/60/SR.44,44,18 November 2005,paragraph,A/C.3/60/L.22/Rev.1,context,0,paragraph 28,retained,123,14,20,123,14,20,1
+60-SR44-10,60,A/C.3/60/SR.44,44,18 November 2005,draft,A/C.3/60/L.22/Rev.1,subject,0,draft resolution A/C.3/60/L.22/Rev.1,adopted,173,1,1,173,1,1,1
+60-SR45-1,60,A/C.3/60/SR.45,45,21 November 2005,draft,A/C.3/60/L.29,subject,0,Draft resolution A/C.3/60/L.29,adopted,88,52,23,88,52,23,1
+60-SR45-2,60,A/C.3/60/SR.45,45,21 November 2005,draft,A/C.3/60/L.34,subject,0,Draft resolution A/C.3/60/L.34,adopted,121,52,0,121,52,0,1
+60-SR45-3,60,A/C.3/60/SR.45,45,21 November 2005,draft,A/C.3/60/L.49,subject,1,"Draft resolution A/C.3/60/L.49, as orally revised",adopted,113,51,8,113,51,8,1
+60-SR45-4,60,A/C.3/60/SR.45,45,21 November 2005,draft,A/C.3/60/L.50,context,0,Draft resolution A/60/C.3/L.50,adopted,106,4,61,106,4,61,1
+60-SR45-5,60,A/C.3/60/SR.45,45,21 November 2005,draft,A/C.3/60/L.52/Rev.1,subject,0,Draft resolution A/C.3/60/L.52/Rev.1,adopted,171,1,1,171,1,1,1
+60-SR45-6,60,A/C.3/60/SR.45,45,21 November 2005,motion,A/C.3/60/L.46,subject,0,the proposal to adjourn the debate on draft resolution A/C.3/60/L.46,rejected,64,70,26,64,70,26,1
+60-SR45-7,60,A/C.3/60/SR.45,45,21 November 2005,draft,A/C.3/60/L.46,subject,0,draft resolution A/C.3/60/L.46,adopted,70,38,58,70,38,58,1
+60-SR46-1,60,A/C.3/60/SR.46,46,22 November 2005,motion,,,0,the motion for adjournment of debate,rejected,65,75,28,65,75,28,1
+60-SR46-2,60,A/C.3/60/SR.46,46,22 November 2005,draft,A/C.3/60/L.51,context,0,The draft resolution,adopted,73,38,58,73,38,58,1
+60-SR47-1,60,A/C.3/60/SR.47,47,23 November 2005,draft,A/C.3/60/L.31,subject,1,"Draft resolution A/C.3/60/L.31, as orally revised",adopted,117,51,4,117,51,4,1
+60-SR47-2,60,A/C.3/60/SR.47,47,23 November 2005,draft,A/C.3/60/L.36,subject,1,"Draft resolution A/C.3/60/L.36, as orally revised",adopted,172,2,5,172,2,5,1
+60-SR47-3,60,A/C.3/60/SR.47,47,23 November 2005,paragraph,A/C.3/60/L.43,context,1,"the fifth preambular paragraph, as orally revised",retained,123,0,35,123,0,35,1
+60-SR47-4,60,A/C.3/60/SR.47,47,23 November 2005,draft,A/C.3/60/L.43,subject,0,the draft resolution,adopted,173,0,3,173,0,3,1
+60-SR47-5,60,A/C.3/60/SR.47,47,23 November 2005,motion,A/C.3/60/L.47,subject,0,the motion to adjourn debate on draft resolution A/C.3/60/L.47,adopted,84,79,12,84,79,12,1
+60-SR48-1,60,A/C.3/60/SR.48,48,23 November 2005,draft,A/C.3/60/L.63/Rev.1,subject,1,"draft resolution A/C.3/60/L.63/Rev.1, as orally revised",adopted,172,3,2,172,3,2,1
+60-SR48-2,60,A/C.3/60/SR.48,48,23 November 2005,paragraph,A/C.3/60/L.41/Rev.1,subject,0,the fourth preambular paragraph,adopted,92,3,62,92,3,62,1
+60-SR48-3,60,A/C.3/60/SR.48,48,23 November 2005,paragraph,A/C.3/60/L.41/Rev.1,context,0,paragraph 9 (c),adopted,92,3,62,92,3,62,1
+60-SR48-4,60,A/C.3/60/SR.48,48,23 November 2005,draft,A/C.3/60/L.41/Rev.1,subject,0,draft resolution A/C.3/60/L.41/Rev.1 as a whole,adopted,96,2,66,96,2,66,1
+61-SR46-1,61,A/C.3/61/SR.46,46,16 November 2006,draft,A/C.3/61/L.48,subject,0,draft resolution A/C.3/61/L.48,adopted,107,3,53,107,3,53,1
+61-SR46-2,61,A/C.3/61/SR.46,46,16 November 2006,draft,A/C.3/61/L.51,subject,0,draft resolution A/C.3/61/L.51,adopted,162,4,4,162,4,4,1
+61-SR46-3,61,A/C.3/61/SR.46,46,16 November 2006,draft,A/C.3/61/L.20,subject,0,draft resolution A/C.3/61/L.20,adopted,113,53,4,113,53,4,1
+61-SR47-1,61,A/C.3/61/SR.47,47,16 November 2006,draft,A/C.3/61/L.23,subject,0,draft resolution A/C.3/61/L.23,adopted,112,6,54,112,6,54,1
+61-SR47-2,61,A/C.3/61/SR.47,47,16 November 2006,draft,A/C.3/61/L.24,subject,0,draft resolution A/C.3/61/L.24,adopted,117,56,3,117,56,3,1
+61-SR47-3,61,A/C.3/61/SR.47,47,16 November 2006,draft,A/C.3/61/L.26,subject,0,draft resolution A/C.3/61/L.26*,adopted,116,3,58,116,3,58,1
+61-SR47-4,61,A/C.3/61/SR.47,47,16 November 2006,draft,A/C.3/61/L.27,subject,0,draft resolution A/C.3/61/L.27,adopted,175,1,0,175,1,0,1
+61-SR47-5,61,A/C.3/61/SR.47,47,16 November 2006,draft,A/C.3/61/L.31/Rev.1,subject,0,draft resolution A/C.3/61/L.31/Rev.1,adopted,77,63,26,77,63,26,1
+61-SR47-6,61,A/C.3/61/SR.47,47,16 November 2006,amendment,A/C.3/61/L.59,subject,0,paragraph 1 of the amendment contained in document A/C.3/61/L.59,rejected,62,71,23,62,71,23,1
+61-SR47-7,61,A/C.3/61/SR.47,47,16 November 2006,amendment,A/C.3/61/L.59,subject,0,paragraph 2 of the amendment contained in document A/C.3/61/L.59,rejected,57,69,25,57,69,25,1
+61-SR47-8,61,A/C.3/61/SR.47,47,16 November 2006,paragraph,A/C.3/61/L.45/Rev.1,subject,1,"paragraph 4 of draft resolution A/C.3/61/L.45/Rev.1, as orally revised",retained,89,38,26,89,38,26,1
+61-SR47-9,61,A/C.3/61/SR.47,47,16 November 2006,paragraph,A/C.3/61/L.45/Rev.1,subject,1,"paragraph 5 (b) of draft resolution A/C.3/61/L.45/Rev.1, as orally revised",retained,93,30,28,93,30,28,1
+61-SR47-10,61,A/C.3/61/SR.47,47,16 November 2006,draft,A/C.3/61/L.45/Rev.1,subject,1,"draft resolution A/C.3/61/L.45/Rev.1 as a whole, as orally revised",adopted,129,0,42,129,0,42,1
+61-SR48-1,61,A/C.3/61/SR.48,48,17 November 2006,draft,A/C.3/61/L.28,subject,1,"draft resolution A/C.3/61/L.28, as orally revised",adopted,101,53,20,101,53,20,1
+61-SR48-2,61,A/C.3/61/SR.48,48,17 November 2006,draft,A/C.3/61/L.37,subject,0,draft resolution A/C.3/61/L.37,adopted,91,21,60,91,21,60,1
+61-SR49-1,61,A/C.3/61/SR.49,49,20 November 2006,draft,A/C.3/61/L.50,subject,0,Draft resolution A/C.3/61/L.50,adopted,116,49,5,116,49,5,1
+61-SR49-2,61,A/C.3/61/SR.49,49,20 November 2006,motion,A/C.3/61/L.39,subject,0,the motion for the adjournment of debate concerning draft resolution A/C.3/61/L.39,,,,,74,69,24,0
+61-SR50-1,61,A/C.3/61/SR.50,50,21 November 2006,motion,A/C.3/61/L.41,context,0,the motion for adjournment of debate,rejected,75,77,24,75,77,24,1
+61-SR50-2,61,A/C.3/61/SR.50,50,21 November 2006,draft,A/C.3/61/L.41,subject,0,draft resolution A/C.3/61/L.41,adopted,70,48,55,70,48,55,1
+61-SR51-1,61,A/C.3/61/SR.51,51,22 November 2006,draft,A/C.3/61/L.16/Rev.1,subject,0,draft resolution A/C.3/61/L.16/Rev.1,adopted,176,1,0,176,1,0,1
+61-SR51-2,61,A/C.3/61/SR.51,51,22 November 2006,draft,A/C.3/61/L.53/Rev.1,subject,1,"draft resolution A/C.3/61/L.53/Rev.1, as orally revised",adopted,174,2,3,174,2,3,1
+61-SR51-3,61,A/C.3/61/SR.51,51,22 November 2006,draft,A/C.3/61/L.13/Rev.1,subject,0,Draft resolution A/C.3/61/L.13/Rev.1,adopted,109,7,59,109,7,59,1
+61-SR51-4,61,A/C.3/61/SR.51,51,22 November 2006,draft,A/C.3/61/L.35,subject,0,draft resolution A/C.3/61/L.35,adopted,122,53,0,122,53,0,1
+61-SR52-1,61,A/C.3/61/SR.52,52,22 November 2006,motion,A/C.3/61/L.38/Rev.1,subject,0,the motion for the adjournment of the debate on draft resolution A/C.3/61/L.38/Rev.1,rejected,64,77,30,64,77,30,1
+61-SR52-2,61,A/C.3/61/SR.52,52,22 November 2006,draft,A/C.3/61/L.38/Rev.1,subject,0,draft resolution A/C.3/61/L.38/Rev.1,adopted,79,28,63,79,28,63,1
+61-SR52-3,61,A/C.3/61/SR.52,52,22 November 2006,motion,A/C.3/61/L.40,subject,0,the motion to adjourn the debate on draft resolution A/C.3/61/L.40,rejected,67,75,31,67,75,31,1
+61-SR52-4,61,A/C.3/61/SR.52,52,22 November 2006,draft,A/C.3/61/L.40,subject,1,"draft resolution A/C.3/61/L.40, as orally revised",adopted,70,31,67,70,31,67,1
+61-SR52-5,61,A/C.3/61/SR.52,52,22 November 2006,draft,A/C.3/61/L.42,subject,0,draft resolution A/C.3/61/L.42,rejected,6,114,45,6,114,45,1
+61-SR52-6,61,A/C.3/61/SR.52,52,22 November 2006,draft,A/C.3/61/L.43,subject,0,draft resolution A/C.3/61/L.43,rejected,6,107,49,6,107,49,1
+61-SR53-1,61,A/C.3/61/SR.53,53,28 November 2006,draft,A/C.3/61/L.34,subject,1,"draft resolution A/C.3/61/L.34, as orally revised",adopted,126,51,1,126,51,1,1
+61-SR53-2,61,A/C.3/61/SR.53,53,28 November 2006,draft,A/C.3/61/L.57/Rev.1,subject,0,draft resolution A/C.3/61/L.57/Rev.1,adopted,82,67,25,82,67,25,1
+61-SR53-3,61,A/C.3/61/SR.53,53,28 November 2006,unknown,A/C.3/61/L.18/Rev.1,context,0,,,,,,83,0,91,0
+62-SR1-1,62,A/C.3/62/SR.1,1,8 October 2007,motion,A/C.3/62/L.1,context,0,the motion proposed by the United States of America under rule 118 of the rules of procedure,rejected,65,71,13,65,71,13,1
+62-SR1-2,62,A/C.3/62/SR.1,1,8 October 2007,motion,A/C.3/62/L.1,subject,0,the proposal by Benin to delete the reference to documents A/62/346 and A/62/347 in document A/C.3/62/L.1/Add.2,adopted,76,54,20,76,54,20,1
+62-SR44-1,62,A/C.3/62/SR.44,44,14 November 2007,amendment,A/C.3/62/L.29,subject,0,the proposed amendment to draft resolution A/C.3/62/L.29 contained in document A/C.3/62/L.68,rejected,73,82,15,73,82,15,1
+62-SR44-2,62,A/C.3/62/SR.44,44,14 November 2007,amendment,A/C.3/62/L.29,subject,0,the proposed amendment to draft resolution A/C.3/62/L.29 contained in document A/C.3/62/L.69,rejected,68,83,18,68,83,18,1
+62-SR44-3,62,A/C.3/62/SR.44,44,14 November 2007,amendment,A/C.3/62/L.29,subject,0,the proposed amendment to draft resolution A/C.3/62/L.29 contained in document A/C.3/62/L.70,rejected,72,83,15,72,83,15,1
+62-SR44-4,62,A/C.3/62/SR.44,44,14 November 2007,amendment,A/C.3/62/L.29,subject,0,the proposed amendment to draft resolution A/C.3/62/L.29 contained in document A/C.3/62/L.71,rejected,68,82,19,68,82,19,1
+62-SR44-5,62,A/C.3/62/SR.44,44,14 November 2007,amendment,A/C.3/62/L.29,subject,0,the proposed amendment to draft resolution A/C.3/62/L.29 contained in document A/C.3/62/L.72,rejected,65,82,22,65,82,22,1
+62-SR44-6,62,A/C.3/62/SR.44,44,14 November 2007,amendment,A/C.3/62/L.29,subject,0,the proposed amendment to draft resolution A/C.3/62/L.29 contained in document A/C.3/62/L.73,rejected,67,82,19,67,82,19,1
+62-SR44-7,62,A/C.3/62/SR.44,44,14 November 2007,amendment,A/C.3/62/L.29,subject,0,the proposed amendment to draft resolution A/C.3/62/L.29 contained in document A/C.3/62/L.74,rejected,71,83,15,71,83,15,1
+62-SR44-8,62,A/C.3/62/SR.44,44,14 November 2007,amendment,A/C.3/62/L.29,subject,0,the proposed amendment to draft resolution A/C.3/62/L.29 contained in document A/C.3/62/L.75,rejected,72,83,14,72,83,14,1
+62-SR44-9,62,A/C.3/62/SR.44,44,14 November 2007,amendment,A/C.3/62/L.29,subject,0,the proposed amendment to draft resolution A/C.3/62/L.29 contained in document A/C.3/62/L.76,rejected,67,83,15,67,83,15,1
+62-SR44-10,62,A/C.3/62/SR.44,44,14 November 2007,amendment,A/C.3/62/L.29,subject,0,the proposed amendment to draft resolution A/C.3/62/L.29 contained in document A/C.3/62/L.77,rejected,70,81,15,70,81,15,1
+62-SR45-1,62,A/C.3/62/SR.45,45,15 November 2007,amendment,A/C.3/62/L.78,subject,0,the proposed amendment contained in document A/C.3/62/L.78,rejected,66,78,17,66,78,17,1
+62-SR45-2,62,A/C.3/62/SR.45,45,15 November 2007,amendment,A/C.3/62/L.29,subject,0,the proposed amendment to draft resolution A/C.3/62/L.29 contained in document A/C.3/62/L.79,rejected,59,82,19,59,82,19,1
+62-SR45-3,62,A/C.3/62/SR.45,45,15 November 2007,amendment,A/C.3/62/L.29,subject,0,the proposed amendment to draft resolution A/C.3/62/L.29 contained in document A/C.3/62/L.80,rejected,68,83,15,68,83,15,1
+62-SR45-4,62,A/C.3/62/SR.45,45,15 November 2007,amendment,A/C.3/62/L.29,subject,0,the amendment to draft resolution A/C.3/62/L.29 contained in document A/C.3/62/L.81,rejected,67,86,17,66,110,16,0
+62-SR45-5,62,A/C.3/62/SR.45,45,15 November 2007,amendment,A/C.3/62/L.29,subject,0,the oral amendment to draft resolution A/C.3/62/L.29 proposed by the representative of Malaysia,rejected,68,84,19,68,84,19,1
+62-SR45-6,62,A/C.3/62/SR.45,45,15 November 2007,amendment,A/C.3/62/L.29,subject,0,the first oral amendment to draft resolution A/C.3/62/L.29 proposed by Egypt,rejected,28,83,47,28,83,47,1
+62-SR45-7,62,A/C.3/62/SR.45,45,15 November 2007,amendment,A/C.3/62/L.29,subject,0,the second oral amendment to draft resolution A/C.3/62/L.29 proposed by Egypt,rejected,26,84,46,26,84,46,1
+62-SR45-8,62,A/C.3/62/SR.45,45,15 November 2007,motion,A/C.3/62/L.29,context,0,the motion to oppose division made by the representative of the Philippines under rule 129 of the rules of procedure,adopted,86,62,23,86,62,23,1
+62-SR46-1,62,A/C.3/62/SR.46,46,15 November 2007,draft,A/C.3/62/L.29,subject,0,draft resolution A/C.3/62/L.29,adopted,99,52,33,99,52,33,1
+62-SR47-1,62,A/C.3/62/SR.47,47,16 November 2007,draft,A/C.3/62/L.32,subject,1,"draft resolution A/C.3/62/L.32, as amended",adopted,165,7,3,165,7,3,1
+62-SR48-1,62,A/C.3/62/SR.48,48,19 November 2007,draft,A/C.3/62/L.31,subject,0,draft resolution A/C.3/62/L.31,adopted,112,52,3,112,52,3,1
+62-SR48-2,62,A/C.3/62/SR.48,48,19 November 2007,draft,A/C.3/62/L.50,subject,0,draft resolution A/C.3/62/L.50,adopted,122,52,0,122,52,0,1
+62-SR48-3,62,A/C.3/62/SR.48,48,19 November 2007,draft,A/C.3/62/L.52,subject,0,draft resolution A/C.3/62/L.52,adopted,114,52,6,114,52,6,1
+62-SR48-4,62,A/C.3/62/SR.48,48,19 November 2007,draft,A/C.3/62/L.55,subject,0,draft resolution A/C.3/62/L.55,adopted,102,53,11,102,53,11,1
+62-SR49-1,62,A/C.3/62/SR.49,49,20 November 2007,draft,A/C.3/62/L.66,subject,0,draft resolution A/C.3/62/L.66,adopted,169,2,4,169,2,4,1
+62-SR49-2,62,A/C.3/62/SR.49,49,20 November 2007,draft,A/C.3/62/L.63,subject,0,draft resolution A/C.3/62/L.63,adopted,172,5,5,172,5,5,1
+62-SR49-3,62,A/C.3/62/SR.49,49,20 November 2007,draft,A/C.3/62/L.35,subject,1,"draft resolution A/C.3/62/L.35, as orally revised",adopted,95,52,30,95,52,30,1
+62-SR49-4,62,A/C.3/62/SR.49,49,20 November 2007,draft,A/C.3/62/L.37/Rev.1,subject,0,draft resolution A/C.3/62/L.37/Rev.1,adopted,97,23,60,97,23,60,1
+62-SR50-1,62,A/C.3/62/SR.50,50,20 November 2007,motion,A/C.3/62/L.41/Rev.1,subject,0,the motion for the adjournment of the debate on draft resolution A/C.3/62/L.41/Rev.1,rejected,54,88,34,54,88,34,1
+62-SR50-2,62,A/C.3/62/SR.50,50,20 November 2007,draft,A/C.3/62/L.41/Rev.1,subject,0,draft resolution A/C.3/62/L.41/Rev.1,adopted,88,24,66,88,24,66,1
+62-SR50-3,62,A/C.3/62/SR.50,50,20 November 2007,motion,A/C.3/62/L.43,subject,0,the motion for the adjournment of the debate on draft resolution A/C.3/62/L.43,rejected,78,79,24,78,79,24,1
+62-SR50-4,62,A/C.3/62/SR.50,50,20 November 2007,draft,A/C.3/62/L.43,subject,0,draft resolution A/C.3/62/L.43,adopted,72,50,55,72,50,55,1
+62-SR51-1,62,A/C.3/62/SR.51,51,21 November 2007,motion,A/C.3/62/L.51,subject,0,the motion for the adjournment of the debate on draft resolution A/C.3/62/L.51,rejected,65,79,31,65,79,31,1
+62-SR51-2,62,A/C.3/62/SR.51,51,21 November 2007,draft,A/C.3/62/L.51,subject,0,draft resolution A/C.3/62/L.51,adopted,68,32,76,68,32,76,1
+62-SR51-3,62,A/C.3/62/SR.51,51,21 November 2007,draft,A/C.3/62/L.61,subject,1,"A/C.3/62/L.61, as orally revised",adopted,122,1,52,122,1,52,1
+62-SR51-4,62,A/C.3/62/SR.51,51,21 November 2007,draft,A/C.3/62/L.62,subject,0,draft resolution A/C.3/62/L.62,adopted,122,51,6,122,51,6,1
+62-SR51-5,62,A/C.3/62/SR.51,51,21 November 2007,paragraph,A/C.3/62/L.30/Rev.1,subject,0,the fifth preambular paragraph of draft resolution A/C.3/62/L.30/Rev.1,adopted,142,0,24,142,0,24,1
+62-SR51-6,62,A/C.3/62/SR.51,51,21 November 2007,draft,A/C.3/62/L.30/Rev.1,subject,0,the draft resolution as a whole,adopted,173,0,2,173,0,2,1
+62-SR52-1,62,A/C.3/62/SR.52,52,21 November 2007,draft,A/C.3/62/L.53/Rev.1,subject,1,"draft resolution A/C.3/62/L.53/Rev.1, as orally revised",adopted,176,1,0,176,1,0,1
+62-SR53-1,62,A/C.3/62/SR.53,53,27 November 2007,paragraph,A/C.3/62/L.20/Rev.1,subject,0,paragraph 14 of draft resolution A/C.3/62/L.20/Rev.1,adopted,158,1,9,158,1,9,1
+62-SR53-2,62,A/C.3/62/SR.53,53,27 November 2007,paragraph,A/C.3/62/L.20/Rev.1,subject,0,paragraph 15 of draft resolution A/C.3/62/L.20/Rev.1,adopted,143,3,22,143,3,22,1
+62-SR53-3,62,A/C.3/62/SR.53,53,27 November 2007,draft,A/C.3/62/L.20/Rev.1,subject,0,draft resolution A/C.3/62/L.20/Rev.1 as a whole,adopted,173,1,0,173,1,0,1
+62-SR53-4,62,A/C.3/62/SR.53,53,27 November 2007,draft,A/C.3/62/L.24/Rev.1,subject,1,"draft resolution A/C.3/62/L.24/Rev.1, as orally revised",adopted,176,1,0,176,1,0,1
+62-SR54-1,62,A/C.3/62/SR.54,54,28 November 2007,draft,A/C.3/62/L.49,subject,0,draft resolution A/C.3/62/L.49,adopted,121,52,1,121,52,1,1
+62-SR54-2,62,A/C.3/62/SR.54,54,28 November 2007,draft,A/C.3/62/L.65/Rev.1,subject,1,"draft resolution A/C.3/62/L.65/Rev.1, as orally revised",,,,,119,45,6,0
+63-SR40-1,63,A/C.3/63/SR.40,40,18 November 2008,draft,A/C.3/63/L.49,subject,1,"draft resolution A/C.3/63/L.49, as orally revised",adopted,122,1,54,122,1,54,1
+63-SR41-1,63,A/C.3/63/SR.41,41,18 November 2008,amendment,A/C.3/63/L.19/Rev.1,subject,0,the proposed amendment to draft resolution A/C.3/63/L.19/Rev.1 contained in document A/C.3/63/L.62,rejected,67,81,23,67,81,23,1
+63-SR41-2,63,A/C.3/63/SR.41,41,18 November 2008,amendment,A/C.3/63/L.19/Rev.1,subject,0,the proposed amendment to draft resolution A/C.3/63/L.19/Rev.1 contained in document A/C.3/63/L.63,rejected,60,87,22,60,87,22,1
+63-SR41-3,63,A/C.3/63/SR.41,41,18 November 2008,amendment,A/C.3/63/L.19/Rev.1,subject,0,the proposed amendment to draft resolution A/C.3/63/L.19/Rev.1 contained in document A/C.3/63/L.64,rejected,57,87,22,57,87,22,1
+63-SR41-4,63,A/C.3/63/SR.41,41,18 November 2008,amendment,A/C.3/63/L.19/Rev.1,subject,0,the proposed amendment to draft resolution A/C.3/63/L.19/Rev.1 contained in document A/C.3/63/L.65,rejected,59,86,24,59,86,24,1
+63-SR41-5,63,A/C.3/63/SR.41,41,18 November 2008,amendment,A/C.3/63/L.19/Rev.1,subject,0,the proposed amendment to draft resolution A/C.3/63/L.19/Rev.1 contained in document A/C.3/63/L.66,rejected,62,87,20,62,87,20,1
+63-SR41-6,63,A/C.3/63/SR.41,41,18 November 2008,amendment,A/C.3/63/L.19/Rev.1,subject,0,the proposed amendment to draft resolution A/C.3/63/L.19/Rev.1 contained in document A/C.3/63/L.67,rejected,59,88,20,59,88,20,1
+63-SR41-7,63,A/C.3/63/SR.41,41,18 November 2008,amendment,A/C.3/63/L.19/Rev.1,subject,0,the proposed amendment to draft resolution A/C.3/63/L.19/Rev.1 contained in document A/C.3/63/L.68,rejected,56,87,24,56,87,24,1
+63-SR42-1,63,A/C.3/63/SR.42,42,20 November 2008,amendment,A/C.3/63/L.19/Rev.1,subject,0,the oral amendment to paragraph 2 submitted by the representative of Malaysia,rejected,55,88,24,55,88,24,1
+63-SR42-2,63,A/C.3/63/SR.42,42,20 November 2008,amendment,A/C.3/63/L.19/Rev.1,subject,0,the oral amendment to paragraph 3 submitted by the representative of Malaysia,rejected,53,90,23,53,90,23,1
+63-SR42-3,63,A/C.3/63/SR.42,42,20 November 2008,paragraph,A/C.3/63/L.19/Rev.1,subject,0,the proposal of the representative of Barbados for a separate vote on the first preambular paragraph of draft resolution A/C.3/63/L.19/Rev.1,rejected,53,88,24,53,88,24,1
+63-SR42-4,63,A/C.3/63/SR.42,42,20 November 2008,paragraph,,,0,the motion for division proposed by the representative of Singapore concerning paragraph 1 of the draft resolution,rejected,55,88,24,55,88,24,1
+63-SR42-5,63,A/C.3/63/SR.42,42,20 November 2008,draft,A/C.3/63/L.19/Rev.1,subject,0,draft resolution A/C.3/63/L.19/Rev.1 as a whole,adopted,105,48,31,105,48,31,1
+63-SR43-1,63,A/C.3/63/SR.43,43,20 November 2008,draft,A/C.3/63/L.28,subject,0,draft resolution A/C.3/63/L.28,adopted,125,53,3,125,53,3,1
+63-SR43-2,63,A/C.3/63/SR.43,43,20 November 2008,draft,A/C.3/63/L.43,subject,0,draft resolution A/C.3/63/L.43,adopted,118,3,60,118,3,60,1
+63-SR43-3,63,A/C.3/63/SR.43,43,20 November 2008,draft,A/C.3/63/L.45,subject,0,draft resolution A/C.3/63/L.45,adopted,122,53,4,122,53,4,1
+63-SR43-4,63,A/C.3/63/SR.43,43,20 November 2008,draft,A/C.3/63/L.52,subject,0,draft resolution A/C.3/63/L.52,adopted,175,5,5,175,5,5,1
+63-SR44-1,63,A/C.3/63/SR.44,44,21 November 2008,draft,A/C.3/63/L.31,subject,0,draft resolution A/C.3/63/L.31,adopted,124,52,0,124,52,0,1
+63-SR44-2,63,A/C.3/63/SR.44,44,21 November 2008,draft,A/C.3/63/L.44,subject,0,draft resolution A/C.3/63/L.44,adopted,120,52,7,120,52,7,1
+63-SR44-3,63,A/C.3/63/SR.44,44,21 November 2008,draft,A/C.3/63/L.26,subject,0,draft resolution A/C.3/63/L.26,adopted,95,24,62,95,24,62,1
+63-SR44-4,63,A/C.3/63/SR.44,44,21 November 2008,motion,A/C.3/63/L.33,subject,0,the motion to adjourn the debate on draft resolution A/C.3/63/L.33,rejected,54,90,34,54,90,34,1
+63-SR45-1,63,A/C.3/63/SR.45,45,21 November 2008,draft,A/C.3/63/L.33,subject,0,draft resolution A/C.3/63/L.33,adopted,89,29,63,89,29,63,1
+63-SR45-2,63,A/C.3/63/SR.45,45,21 November 2008,motion,A/C.3/63/L.40,subject,0,the motion for the adjournment of the debate on draft resolution A/C.3/63/L.40,rejected,71,81,28,71,81,28,1
+63-SR45-3,63,A/C.3/63/SR.45,45,21 November 2008,draft,A/C.3/63/L.40,subject,0,draft resolution A/C.3/63/L.40,adopted,70,51,60,70,51,60,1
+63-SR45-4,63,A/C.3/63/SR.45,45,21 November 2008,paragraph,A/C.3/63/L.53/Rev.1,subject,0,paragraph 13 of draft resolution A/C.3/63/L.53/Rev.1,retained,165,1,8,165,1,8,1
+63-SR45-5,63,A/C.3/63/SR.45,45,21 November 2008,draft,A/C.3/63/L.53/Rev.1,subject,0,draft resolution A/C.3/63/L.53/Rev.1,adopted,178,0,0,178,0,0,1
+63-SR46-1,63,A/C.3/63/SR.46,46,24 November 2008,draft,A/C.3/63/L.50/Rev.1,subject,0,Draft resolution A/C.3/63/L.50/Rev.1,adopted,122,51,5,122,51,5,1
+63-SR46-2,63,A/C.3/63/SR.46,46,24 November 2008,draft,A/C.3/63/L.22/Rev.1,corrected,1,"draft resolution A/C.3/62/L.22/Rev.1, as orally revised",adopted,85,50,42,85,50,42,1
+63-SR46-3,63,A/C.3/63/SR.46,46,24 November 2008,draft,A/C.3/63/L.42/Rev.1,corrected,1,"draft resolution A/C.3/62/L.42/Rev.1, as orally revised",adopted,180,1,0,180,1,0,1
+63-SR46-4,63,A/C.3/63/SR.46,46,24 November 2008,draft,A/C.3/63/L.30/Rev.1,subject,1,"draft resolution A/C.3/63/L.30/Rev.1, as orally revised",adopted,177,1,2,177,1,2,1
+63-SR46-5,63,A/C.3/63/SR.46,46,24 November 2008,amendment,A/C.3/63/L.35/Rev.1,subject,0,paragraph 1 (a) and (b) of the amendment to draft resolution A/C.3/63/L.35/Rev.1 contained in document A/C.3/63/L.75,rejected,60,78,29,60,78,29,1
+63-SR47-1,63,A/C.3/63/SR.47,47,24 November 2008,amendment,A/C.3/63/L.75,subject,0,the third amendment contained in document A/C.3/63/L.75 (paragraph 1 (c)),rejected,59,77,25,59,77,25,1
+63-SR47-2,63,A/C.3/63/SR.47,47,24 November 2008,draft,A/C.3/63/L.35,subject,0,draft resolution A/C.3/63/L.35/Rev.l,adopted,121,0,57,121,0,57,1
+63-SR47-3,63,A/C.3/63/SR.47,47,24 November 2008,draft,A/C.3/63/L.16/Rev.1,subject,1,"draft resolution A/C.3/63/L.16/Rev.1, as orally revised",adopted,180,1,0,180,1,0,1
+63-SR48-1,63,A/C.3/63/SR.48,48,25 November 2008,amendment,A/C.3/63/L.3/Rev.1,subject,0,the oral amendment to draft resolution A/C.3/63/L.3/Rev.1 proposed by Uganda,adopted,67,41,52,67,41,52,1
+63-SR48-2,63,A/C.3/63/SR.48,48,25 November 2008,draft,A/C.3/63/L.3/Rev.1,subject,1,"draft resolution A/C.3/63/L.3/Rev.1, as orally amended",adopted,176,0,0,176,0,0,1
+63-SR48-3,63,A/C.3/63/SR.48,48,25 November 2008,draft,A/C.3/63/L.57,subject,1,draft resolution A/C.3/63/L.57* as orally amended,adopted,117,5,55,117,5,55,1
+63-SR48-4,63,A/C.3/63/SR.48,48,25 November 2008,draft,A/C.3/63/L.51/Rev.1,subject,0,draft resolution A/C.3/63/L.51/Rev.1,adopted,130,11,35,130,11,35,1
+63-SR49-1,63,A/C.3/63/SR.49,49,26 November 2008,amendment,A/C.3/63/L.79,subject,0,the Chairman’s ruling that the Committee could consider the proposed oral amendment to draft decision A/C.3/63/L.79,,,,,74,57,24,0
+63-SR49-2,63,A/C.3/63/SR.49,49,26 November 2008,amendment,A/C.3/63/L.79,subject,0,the proposed amendment to paragraph 19.11 (d) of the annex to draft decision A/C.3/63/L.79,rejected,4,105,55,4,105,55,1
+63-SR49-3,63,A/C.3/63/SR.49,49,26 November 2008,draft,A/C.3/63/L.79,subject,0,draft decision A/C.3/63/L.79,adopted,167,2,2,167,2,2,1
+64-SR41-1,64,A/C.3/64/SR.41,41,12 November 2009,draft,A/C.3/64/L.56,subject,0,draft resolution A/C.3/64/L.56,adopted,171,6,5,171,6,5,1
+64-SR41-2,64,A/C.3/64/SR.41,41,12 November 2009,amendment,,,0,the proposed amendment to paragraph 9 of the draft resolution,adopted,70,69,25,70,69,25,1
+64-SR41-3,64,A/C.3/64/SR.41,41,12 November 2009,amendment,,,0,the proposed amendment to paragraph 10 of the draft resolution,rejected,71,72,23,71,72,23,1
+64-SR42-1,64,A/C.3/64/SR.42,42,12 November 2009,amendment,A/C.3/64/L.22,subject,0,proposals to which one or more amendments had been made,adopted,111,0,66,111,0,66,1
+64-SR42-2,64,A/C.3/64/SR.42,42,12 November 2009,draft,A/C.3/64/L.22,subject,0,draft resolution A/C.3/64/L.22,adopted,111,0,66,111,0,66,1
+64-SR42-3,64,A/C.3/64/SR.42,42,12 November 2009,draft,A/C.3/64/L.31,subject,0,draft resolution A/C.3/64/L.31,adopted,125,54,3,125,54,3,1
+64-SR42-4,64,A/C.3/64/SR.42,42,12 November 2009,draft,A/C.3/64/L.45,subject,0,draft resolution A/C.3/64/L.45,adopted,128,52,0,128,52,0,1
+64-SR42-5,64,A/C.3/64/SR.42,42,12 November 2009,draft,A/C.3/64/L.27,subject,1,"draft resolution A/C.3/64/L.27, as orally revised",adopted,81,55,43,81,55,43,1
+64-SR42-6,64,A/C.3/64/SR.42,42,12 November 2009,draft,A/C.3/64/L.48,subject,0,draft resolution A/C.3/64/L.48,adopted,125,51,3,125,51,3,1
+64-SR43-1,64,A/C.3/64/SR.43,43,19 November 2009,draft,A/C.3/64/L.53,subject,1,"draft resolution A/C.3/64/L.53, as orally revised",adopted,124,1,55,124,1,55,1
+64-SR43-2,64,A/C.3/64/SR.43,43,19 November 2009,draft,A/C.3/64/L.57,subject,1,"draft resolution A/C.3/64/L.57, as orally revised",adopted,122,53,5,122,53,5,1
+64-SR43-3,64,A/C.3/64/SR.43,43,19 November 2009,draft,A/C.3/64/L.28,subject,0,draft resolution A/C.3/64/L.28,adopted,121,54,5,121,54,5,1
+64-SR44-1,64,A/C.3/64/SR.44,44,19 November 2009,draft,A/C.3/64/L.47,subject,0,Draft resolution A/C.3/64/L.47,adopted,130,22,30,130,22,30,1
+64-SR44-2,64,A/C.3/64/SR.44,44,19 November 2009,draft,A/C.3/64/L.35,subject,0,draft resolution A/C.3/64/L.35,adopted,97,19,65,97,19,65,1
+64-SR44-3,64,A/C.3/64/SR.44,44,19 November 2009,draft,A/C.3/64/L.36,subject,0,draft resolution A/C.3/64/L.36*,adopted,92,26,65,92,26,65,1
+64-SR45-1,64,A/C.3/64/SR.45,45,20 November 2009,draft,A/C.3/64/L.37,subject,0,the draft resolution as a whole,adopted,74,48,59,74,48,59,1
+64-SR46-1,64,A/C.3/64/SR.46,46,23 November 2009,draft,A/C.3/64/L.55,subject,1,"draft decision A/C.3/64/L.55, as orally revised",adopted,163,5,9,163,5,9,1
+64-SR46-2,64,A/C.3/64/SR.46,46,23 November 2009,paragraph,A/C.3/64/L.26/Rev.1,subject,0,the second part of paragraph 8 of the draft resolution,adopted,121,19,28,121,19,28,1
+64-SR47-1,64,A/C.3/64/SR.47,47,24 November 2009,draft,A/C.3/64/L.54/Rev.1,subject,0,draft resolution A/C.3/64/L.54/Rev.1,adopted,122,13,45,122,13,45,1
+64-SR47-2,64,A/C.3/64/SR.47,47,24 November 2009,amendment,A/C.3/64/L.43/Rev.1,subject,0,the first amendment proposed by Zambia,adopted,77,73,23,77,73,23,1
+64-SR47-3,64,A/C.3/64/SR.47,47,24 November 2009,amendment,A/C.3/64/L.43/Rev.1,subject,0,the second amendment proposed by Zambia,adopted,81,73,20,81,73,20,1
+64-SR47-4,64,A/C.3/64/SR.47,47,24 November 2009,draft,A/C.3/64/L.43/Rev.1,subject,1,"draft resolution A/C.3/64/L.43/Rev.1, as orally amended and revised",adopted,181,0,1,181,0,1,1
+64-SR47-5,64,A/C.3/64/SR.47,47,24 November 2009,draft,A/C.3/64/L.49,subject,0,draft resolution A/C.3/64/L.49,adopted,125,50,4,125,50,4,1
+65-SR45-1,65,A/C.3/65/SR.45,45,11 November 2010,amendment,A/C.3/65/L.23/Rev.1,subject,0,the amendment to draft resolution A/C.3/65/L.23/Rev.1 contained in document A/C.3/65/L.61,rejected,62,79,31,62,79,31,1
+65-SR45-2,65,A/C.3/65/SR.45,45,11 November 2010,amendment,A/C.3/65/L.62,subject,0,draft amendment A/C.3/65/L.62,rejected,51,81,33,51,81,33,1
+65-SR45-3,65,A/C.3/65/SR.45,45,11 November 2010,amendment,A/C.3/65/L.23/Rev.1,subject,0,the amendment to draft resolution A/C.3/65/L.23/Rev.1 contained in document A/C.3/65/L.63,rejected,58,79,30,58,79,30,1
+65-SR45-4,65,A/C.3/65/SR.45,45,11 November 2010,draft,A/C.3/65/L.23/Rev.1,subject,0,draft resolution A/C.3/65/L.23/Rev.1,adopted,107,39,36,107,38,36,0
+65-SR46-1,65,A/C.3/65/SR.46,46,16 November 2010,draft,A/C.3/65/L.50,subject,0,draft resolution A/C.3/65/L.50,adopted,118,1,55,118,1,55,1
+65-SR46-2,65,A/C.3/65/SR.46,46,16 November 2010,amendment,A/C.3/65/L.29/Rev.1,subject,0,"the proposed amendment to draft resolution A/C.3/65/L.29/Rev.1, contained in document A/C.3/65/L.65",adopted,79,70,17,79,70,17,1
+65-SR46-3,65,A/C.3/65/SR.46,46,16 November 2010,draft,A/C.3/65/L.29/Rev.1,subject,1,draft resolution A/C.3/65/L.29/Rev.1 as amended,adopted,165,0,10,165,0,10,1
+65-SR46-4,65,A/C.3/65/SR.46,46,16 November 2010,draft,A/C.3/65/L.38,subject,0,draft resolution A/C.3/65/L.38,adopted,122,53,0,122,53,0,1
+65-SR47-1,65,A/C.3/65/SR.47,47,18 November 2010,draft,A/C.3/65/L.47,subject,0,draft resolution A/C.3/65/L.47,adopted,100,18,60,100,18,60,1
+65-SR47-2,65,A/C.3/65/SR.47,47,18 November 2010,draft,A/C.3/65/L.48/Rev.1,subject,0,draft resolution A/C.3/65/L.48/Rev.1,adopted,96,28,60,96,28,60,1
+65-SR48-1,65,A/C.3/65/SR.48,48,18 November 2010,motion,A/C.3/65/L.49,subject,0,the motion to adjourn the debate on draft resolution A/C.3/65/L.49,rejected,51,91,32,51,91,32,1
+65-SR48-2,65,A/C.3/65/SR.48,48,18 November 2010,draft,A/C.3/65/L.49,subject,0,draft resolution A/C.3/65/L.49,adopted,80,44,57,80,44,57,1
+65-SR48-3,65,A/C.3/65/SR.48,48,18 November 2010,draft,A/C.3/65/L.57,subject,0,draft resolution A/C.3/65/L.57,adopted,119,2,55,119,2,55,1
+65-SR49-1,65,A/C.3/65/SR.49,49,19 November 2010,draft,A/C.3/65/L.39,subject,0,draft resolution A/C.3/65/L.39,adopted,124,53,0,124,53,0,1
+65-SR49-2,65,A/C.3/65/SR.49,49,19 November 2010,draft,A/C.3/65/L.44,subject,0,draft resolution A/C.3/65/L.44,adopted,118,53,6,118,53,6,1
+65-SR49-3,65,A/C.3/65/SR.49,49,19 November 2010,draft,A/C.3/65/L.45,subject,0,draft resolution A/C.3/65/L.45,adopted,118,53,5,118,53,5,1
+65-SR50-1,65,A/C.3/65/SR.50,50,22 November 2010,draft,A/C.3/65/L.52,subject,0,draft resolution A/C.3/65/L.52,adopted,174,5,3,174,5,3,1
+65-SR50-2,65,A/C.3/65/SR.50,50,22 November 2010,draft,A/C.3/65/L.41/Rev.1,subject,0,draft resolution A/C.3/65/L.41/Rev.1,adopted,130,22,28,130,22,28,1
+65-SR51-1,65,A/C.3/65/SR.51,51,23 November 2010,draft,A/C.3/65/L.54/Rev.1,subject,0,draft resolution A/C.3/65/L.54/Rev.1,adopted,123,52,6,123,52,6,1
+65-SR52-1,65,A/C.3/65/SR.52,52,23 November 2010,draft,A/C.3/65/L.46/Rev.1,subject,0,draft resolution A/C.3/65/L.46/Rev.1,adopted,76,64,42,76,64,42,1
+65-SR52-2,65,A/C.3/65/SR.52,52,23 November 2010,draft,A/C.3/65/L.60,subject,0,draft resolution A/C.3/65/L.60,adopted,121,19,35,121,19,35,1
+66-SR44-1,66,A/C.3/66/SR.44,44,15 November 2011,draft,A/C.3/66/L.64/Rev.1,subject,0,draft resolution A/C.3/66/L.64/Rev.1,adopted,95,4,60,95,4,60,1
+66-SR44-2,66,A/C.3/66/SR.44,44,15 November 2011,draft,A/C.3/66/L.33,subject,0,draft resolution A/C.3/66/L.33,adopted,119,52,2,119,52,2,1
+66-SR44-3,66,A/C.3/66/SR.44,44,15 November 2011,draft,A/C.3/66/L.36,subject,0,draft resolution A/C.3/66/L.36,adopted,121,52,1,121,52,1,1
+66-SR44-4,66,A/C.3/66/SR.44,44,15 November 2011,draft,A/C.3/66/L.41,subject,0,draft resolution A/C.3/66/L.41,adopted,125,52,0,125,52,0,1
+66-SR45-1,66,A/C.3/66/SR.45,45,17 November 2011,draft,A/C.3/66/L.60,subject,0,draft resolution A/C.3/66/L.60,adopted,120,22,31,120,22,31,1
+66-SR45-2,66,A/C.3/66/SR.45,45,17 November 2011,draft,A/C.3/66/L.62,subject,0,draft resolution A/C.3/66/L.62,adopted,118,52,5,118,52,5,1
+66-SR45-3,66,A/C.3/66/SR.45,45,17 November 2011,draft,A/C.3/66/L.39,subject,0,draft resolution A/C.3/66/L.39,adopted,117,52,6,117,52,6,1
+66-SR46-1,66,A/C.3/66/SR.46,46,18 November 2011,amendment,A/C.3/66/L.71,subject,0,the amendment proposed by the Russian Federation contained in paragraph 1 of A/C.3/66/L.71,rejected,55,75,26,55,75,26,1
+66-SR46-2,66,A/C.3/66/SR.46,46,18 November 2011,amendment,A/C.3/66/L.71,subject,0,the amendment proposed by the Russian Federation contained in paragraph 2 of A/C.3/66/L.71,rejected,29,88,32,29,88,32,1
+66-SR47-1,66,A/C.3/66/SR.47,47,21 November 2011,draft,A/C.3/66/L.54,subject,0,draft resolution A/C.3/66/L.54,adopted,112,16,55,112,16,55,1
+66-SR47-2,66,A/C.3/66/SR.47,47,21 November 2011,draft,A/C.3/66/L.55/Rev.1,subject,0,draft resolution A/C.3/66/L.55/Rev.1,adopted,98,25,63,98,25,63,1
+66-SR47-3,66,A/C.3/66/SR.47,47,21 November 2011,draft,A/C.3/66/L.56,subject,0,draft resolution A/C.3/66/L.56,adopted,86,32,59,86,32,59,1
+66-SR49-1,66,A/C.3/66/SR.49,49,22 November 2011,motion,A/C.3/66/L.57/Rev.1,subject,0,the motion for the adjournment of debate concerning draft resolution A/C.3/66/L.57/Rev.1,rejected,20,118,29,20,118,29,1
+66-SR49-2,66,A/C.3/66/SR.49,49,22 November 2011,draft,A/C.3/66/L.57/Rev.1,subject,0,draft resolution A/C.3/66/L.57/Rev.1,adopted,122,13,41,122,13,41,1
+66-SR50-1,66,A/C.3/66/SR.50,50,22 November 2011,amendment,A/C.3/66/L.25/Rev.1,subject,0,the amendment to draft resolution A/C.3/66/L.25/Rev.1 proposed by Pakistan,rejected,48,78,21,48,78,21,1
+66-SR50-2,66,A/C.3/66/SR.50,50,22 November 2011,amendment,A/C.3/66/L.25/Rev.1,subject,0,the amendment to draft resolution A/C.3/66/L.25/Rev.1 proposed by the Syrian Arab Republic,rejected,26,78,27,26,78,27,1
+66-SR50-3,66,A/C.3/66/SR.50,50,22 November 2011,draft,A/C.3/66/L.68/Rev.1,subject,0,draft resolution A/C.3/66/L.68/Rev.1,adopted,126,5,43,126,5,43,1
+66-SR50-4,66,A/C.3/66/SR.50,50,22 November 2011,draft,A/C.3/66/L.61,subject,0,draft resolution A/C.3/66/L.61,adopted,166,5,4,166,5,4,1
+66-SR50-5,66,A/C.3/66/SR.50,50,22 November 2011,draft,A/C.3/66/L.34/Rev.1,subject,0,draft resolution A/C.3/66/L.34/Rev.1,adopted,118,52,2,118,52,2,1
+66-SR50-6,66,A/C.3/66/SR.50,50,22 November 2011,draft,A/C.3/66/L.35/Rev.1,subject,0,draft resolution A/C.3/66/L.35/Rev.1,adopted,140,5,28,140,5,28,1
+67-SR1-1,67,A/C.3/67/SR.40,1,19 November 2012,amendment,A/C.3/67/L.62,subject,0,the draft amendment contained in A/C.3/67/L.62,rejected,63,84,29,63,84,29,1
+67-SR1-2,67,A/C.3/67/SR.40,1,19 November 2012,amendment,A/C.3/67/L.63,subject,0,the draft amendment contained in A/C.3/67/L.63,rejected,61,83,31,61,83,31,1
+67-SR1-3,67,A/C.3/67/SR.40,1,19 November 2012,amendment,A/C.3/67/L.64,subject,1,"draft amendment A/C.3/67/L.64, as orally amended",rejected,54,80,37,54,80,37,1
+67-SR1-4,67,A/C.3/67/SR.40,1,19 November 2012,amendment,A/C.3/67/L.65,subject,0,draft amendment A/C.3/67/L.65,rejected,53,86,35,53,86,35,1
+67-SR1-5,67,A/C.3/67/SR.40,1,19 November 2012,amendment,A/C.3/67/L.66,subject,0,draft amendment A/C.3/67/L.66,rejected,55,85,35,55,85,35,1
+67-SR1-6,67,A/C.3/67/SR.40,1,19 November 2012,draft,A/C.3/67/L.44/Rev.1,subject,0,draft resolution A/C.3/67/L.44/Rev.1,adopted,110,39,36,110,39,36,1
+67-SR42-1,67,A/C.3/67/SR.42,42,20 November 2012,amendment,A/C.3/67/L.36,corrected,0,"the proposed amendment to draft resolution A/C.3/66/L.36, contained in document A/C.3/67/L.67",rejected,50,78,38,50,78,38,1
+67-SR42-2,67,A/C.3/67/SR.42,42,20 November 2012,amendment,A/C.3/67/L.68,subject,0,the amendment proposed by the United Arab Emirates on behalf of the States Members of the United Nations that were members of the Organization of Islamic Cooperation contained in A/C.3/67/L.68,rejected,44,86,31,44,86,31,1
+67-SR42-3,67,A/C.3/67/SR.42,42,20 November 2012,draft,A/C.3/67/L.36,subject,0,draft resolution A/C.3/67/L.36,adopted,108,1,65,108,1,65,1
+67-SR43-1,67,A/C.3/67/SR.43,43,26 November 2012,draft,A/C.3/67/L.55/Rev.1,subject,0,draft resolution A/C.3/67/L.55/Rev.1,adopted,120,3,57,120,3,57,1
+67-SR44-1,67,A/C.3/67/SR.44,44,26 November 2012,draft,A/C.3/67/L.38,subject,0,draft resolution A/C.3/67/L.38,adopted,115,52,2,115,52,2,1
+67-SR45-1,67,A/C.3/67/SR.45,45,27 November 2012,draft,A/C.3/67/L.51,subject,0,draft resolution A/C.3/67/L.51,adopted,83,31,68,83,31,68,1
+67-SR46-1,67,A/C.3/67/SR.46,46,27 November 2012,draft,A/C.3/67/L.52,subject,0,draft resolution A/C.3/67/L.52*,adopted,132,12,35,132,12,35,1
+67-SR46-2,67,A/C.3/67/SR.46,46,27 November 2012,draft,A/C.3/67/L.9/Rev.1,subject,1,"draft resolution A/C.3/67/L.9/Rev.1, as orally revised",adopted,53,3,109,53,3,109,1
+67-SR46-3,67,A/C.3/67/SR.46,46,27 November 2012,draft,A/C.3/67/L.54,subject,0,draft resolution A/C.3/67/L.54,adopted,173,6,3,173,6,3,1
+67-SR47-1,67,A/C.3/67/SR.47,47,28 November 2012,draft,A/C.3/67/L.58,subject,0,draft resolution A/C.3/67/L.58,adopted,122,52,5,122,52,5,1
+67-SR47-2,67,A/C.3/67/SR.47,47,28 November 2012,draft,A/C.3/67/L.27/Rev.1,subject,0,draft resolution A/C.3/67/L.27/Rev.1,adopted,149,1,17,149,1,17,1
+67-SR47-3,67,A/C.3/67/SR.47,47,28 November 2012,draft,A/C.3/67/L.33,subject,0,draft resolution A/C.3/67/L.33,adopted,128,53,0,128,53,0,1
+67-SR47-4,67,A/C.3/67/SR.47,47,28 November 2012,draft,A/C.3/67/L.39,subject,0,draft resolution A/C.3/67/L.39,adopted,147,4,28,147,4,29,0
+67-SR48-1,67,A/C.3/67/SR.48,48,28 November 2012,draft,,,0,draft resolution A/C.3/L.56/Rev.1,adopted,126,6,47,126,6,47,1
+67-SR48-2,67,A/C.3/67/SR.48,48,28 November 2012,draft,A/C.3/67/L.41,subject,0,draft resolution A/C.3/67/L.41,adopted,121,53,5,121,53,5,1
+67-SR48-3,67,A/C.3/67/SR.48,48,28 November 2012,draft,A/C.3/67/L.43,subject,0,draft resolution A/C.3/67/L.43,adopted,121,52,7,121,52,7,1
+67-SR48-4,67,A/C.3/67/SR.48,48,28 November 2012,draft,A/C.3/67/L.73,subject,0,Draft decision A/C.3/67/L.73,adopted,161,3,7,161,3,7,1
+68-SR46-1,68,A/C.3/68/SR.46,46,14 November 2013,amendment,A/C.3/68/L.72,subject,0,"the proposed amendment to draft resolution HYPERLINK ""http://undocs.org/A/C.3/68/L.72"" A/C.3/68/L.72, contained in document HYPERLINK ""http://undocs.org/A/C.3/68/L.41"" A/C.3/68/L.41",rejected,29,94,33,29,94,33,1
+68-SR48-1,68,A/C.3/68/SR.48,48,19 November 2013,draft,A/C.3/68/L.42/Rev.1,subject,0,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/68/L.42/Rev.1"" A/C.3/68/L.42/Rev.1",adopted,123,13,46,123,13,46,1
+68-SR48-2,68,A/C.3/68/SR.48,48,19 November 2013,draft,A/C.3/68/L.57,subject,0,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/68/L.57"" A/C.3/68/L.57",adopted,83,36,62,83,36,62,1
+68-SR49-1,68,A/C.3/68/SR.49,49,21 November 2013,draft,A/C.3/68/L.68,subject,0,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/68/L.68"" A/C.3/68/L.68",adopted,165,6,3,166,6,3,0
+68-SR49-2,68,A/C.3/68/SR.49,49,21 November 2013,draft,A/C.3/68/L.36,subject,0,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/68/L.36"" A/C.3/68/L.36",adopted,127,53,0,127,53,0,1
+68-SR49-3,68,A/C.3/68/SR.49,49,21 November 2013,draft,A/C.3/68/L.38,subject,0,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/68/L.38"" A/C.3/68/L.38",adopted,126,54,1,126,54,1,1
+68-SR49-4,68,A/C.3/68/SR.49,49,21 November 2013,draft,A/C.3/68/L.39,subject,0,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/68/L.39"" A/C.3/68/L.39",adopted,126,54,0,126,54,0,1
+68-SR49-5,68,A/C.3/68/SR.49,49,21 November 2013,draft,A/C.3/68/L.65/Rev.1,subject,0,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/68/L.65/Rev.1"" A/C.3/68/L.65/Rev.1",adopted,126,3,50,126,3,50,1
+68-SR51-1,68,A/C.3/68/SR.51,51,26 November 2013,draft,A/C.3/68/L.66,subject,0,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/68/L.66"" A/C.3/68/L.66",adopted,119,53,9,119,53,9,1
+68-SR51-2,68,A/C.3/68/SR.51,51,26 November 2013,draft,A/C.3/68/L.35,subject,1,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/68/L.35"" A/C.3/68/L.35, as orally revised",adopted,148,4,27,148,4,27,1
+68-SR52-1,68,A/C.3/68/SR.52,52,26 November 2013,draft,A/C.3/68/L.47,subject,0,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/68/L.47"" A/C.3/68/L.47",adopted,112,52,0,110,52,0,0
+68-SR52-2,68,A/C.3/68/SR.52,52,26 November 2013,draft,A/C.3/68/L.52/Rev.1,subject,0,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/68/L.52/Rev.1"" A/C.3/68/L.52/Rev.1",adopted,170,1,5,164,1,5,0
+68-SR52-3,68,A/C.3/68/SR.52,52,26 November 2013,draft,A/C.3/68/L.58,subject,0,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/68/L.58"" A/C.3/68/L.58",adopted,120,54,5,119,54,5,0
+68-SR54-1,68,A/C.3/68/SR.54,54,27 November 2013,draft,A/C.3/68/L.69/Rev.1,subject,0,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/68/L.69/Rev.1"" A/C.3/68/L.69/Rev.1",adopted,126,9,46,126,9,46,1
+68-SR54-2,68,A/C.3/68/SR.54,54,27 November 2013,amendment,A/C.3/68/L.77,subject,0,"the amendment contained in document HYPERLINK ""http://undocs.org/A/C.3/68/L.77"" A/C.3/68/L.77",rejected,74,76,18,74,76,18,1
+68-SR54-3,68,A/C.3/68/SR.54,54,27 November 2013,draft,A/C.3/68/L.75,subject,0,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/68/L.75"" A/C.3/68/L.75",adopted,87,66,22,87,66,22,1
+69-SR44-1,69,A/C.3/69/SR.44,44,13 November 2014,draft,A/C.3/69/L.36/Rev.1,subject,0,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/69/L.36/Rev.1"" A/C.3/69/L.36/Rev.1",adopted,161,1,3,161,1,3,1
+69-SR46-1,69,A/C.3/69/SR.46,46,18 November 2014,amendment,A/C.3/69/L.35/Rev.1,context,0,the oral amendment proposed by the United Republic of Tanzania,rejected,17,66,75,17,66,75,1
+69-SR46-2,69,A/C.3/69/SR.46,46,18 November 2014,draft,A/C.3/69/L.35/Rev.1,subject,0,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/69/L.35/Rev.1"" A/C.3/69/L.35/Rev.1",adopted,160,0,16,160,0,16,1
+69-SR46-3,69,A/C.3/69/SR.46,46,18 November 2014,amendment,A/C.3/69/L.63,subject,0,the amendment proposed by Cuba,rejected,40,77,50,40,77,50,1
+69-SR47-1,69,A/C.3/69/SR.47,47,18 November 2014,draft,A/C.3/69/L.28/Rev.1,subject,0,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/69/L.28/Rev.1"" A/C.3/69/L.28/Rev.1",adopted,111,19,55,111,19,55,1
+69-SR47-2,69,A/C.3/69/SR.47,47,18 November 2014,draft,A/C.3/69/L.31,subject,0,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/69/L.31"" A/C.3/69/L.31",adopted,125,13,47,125,13,47,1
+69-SR47-3,69,A/C.3/69/SR.47,47,18 November 2014,draft,A/C.3/69/L.33,subject,0,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/69/L.33"" A/C.3/69/L.33",adopted,78,35,69,78,35,69,1
+69-SR48-1,69,A/C.3/69/SR.48,48,19 November 2014,amendment,A/C.3/69/L.64,subject,0,the amendment proposed by Egypt,rejected,53,82,24,53,82,24,1
+69-SR48-2,69,A/C.3/69/SR.48,48,19 November 2014,draft,A/C.3/69/L.47/Rev.1,subject,0,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/69/L.47/Rev.1"" A/C.3/69/L.47/Rev.1",adopted,111,1,64,111,1,64,1
+69-SR48-3,69,A/C.3/69/SR.48,48,19 November 2014,amendment,A/C.3/69/L.24/Rev.1,subject,1,"the proposed amendment to draft resolution HYPERLINK ""http://undocs.org/A/C.3/69/L.24/Rev.1"" A/C.3/69/L.24/Rev.1, as orally revised",rejected,66,81,17,66,81,17,1
+69-SR50-1,69,A/C.3/69/SR.50,50,21 November 2014,draft,A/C.3/69/L.56/Rev.1,subject,1,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/69/L.56/Rev.1"" A/C.3/69/L.56/Rev.1 as orally amended",adopted,115,3,55,115,3,55,1
+69-SR50-2,69,A/C.3/69/SR.50,50,21 November 2014,draft,A/C.3/69/L.58,subject,0,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/69/L.58*"" A/C.3/69/L.58*",adopted,170,7,6,170,7,6,1
+69-SR50-3,69,A/C.3/69/SR.50,50,21 November 2014,amendment,A/C.3/69/L.66,subject,0,"the amendment contained in document HYPERLINK ""http://undocs.org/A/C.3/69/L.66"" A/C.3/69/L.66",rejected,55,85,22,55,85,22,1
+69-SR50-4,69,A/C.3/69/SR.50,50,21 November 2014,draft,A/C.3/69/L.51/Rev.1,subject,0,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/69/L.51/Rev.1"" A/C.3/69/L.51/Rev.1",adopted,114,36,34,114,36,34,1
+69-SR51-1,69,A/C.3/69/SR.51,51,24 November 2014,draft,A/C.3/69/L.38,subject,0,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/69/L.38"" A/C.3/69/L.38",adopted,128,53,1,128,53,1,1
+69-SR51-2,69,A/C.3/69/SR.51,51,24 November 2014,draft,A/C.3/69/L.46,subject,1,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/69/L.46"" A/C.3/69/L.46, as orally revised",adopted,148,4,27,148,4,27,1
+69-SR52-1,69,A/C.3/69/SR.52,52,24 November 2014,draft,A/C.3/69/L.45,subject,1,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/69/L.45"" A/C.3/69/L.45, as orally revised",adopted,124,52,2,124,52,2,1
+69-SR53-1,69,A/C.3/69/SR.53,53,25 November 2014,draft,A/C.3/69/L.65,subject,0,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/69/L.65"" A/C.3/69/L.65",adopted,115,3,56,115,3,56,1
+69-SR53-2,69,A/C.3/69/SR.53,53,25 November 2014,draft,A/C.3/69/L.53,subject,0,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/69/L.53"" A/C.3/69/L.53",adopted,123,51,5,123,51,5,1
+69-SR54-1,69,A/C.3/69/SR.54,54,25 November 2014,draft,A/C.3/69/L.41,subject,1,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/69/L.41"" A/C.3/69/L.41, as orally revised",adopted,122,53,1,122,53,1,1
+69-SR54-2,69,A/C.3/69/SR.54,54,25 November 2014,draft,A/C.3/69/L.43,subject,1,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/69/L.43"" A/C.3/69/L.43, as orally revised",adopted,120,52,6,120,52,6,1
+69-SR55-1,69,A/C.3/69/SR.55,55,26 November 2014,draft,A/C.3/69/L.59,subject,1,"draft resolution HYPERLINK ""http://undocs.org/A/C.3/69/L.59"" A/C.3/69/L.59, as orally revised",adopted,121,9,42,121,9,42,1
+70-SR48-1,70,A/C.3/70/SR.48,48,17 November 2015,amendment,A/C.3/70/L.64,subject,0,the amendment contained in document A/C.3/70/L.64,rejected,24,101,34,24,101,34,1
+70-SR48-2,70,A/C.3/70/SR.48,48,17 November 2015,draft,A/C.3/70/L.54,subject,0,draft resolution A/C.3/70/L.54,adopted,155,0,15,155,0,15,1
+70-SR48-3,70,A/C.3/70/SR.48,48,17 November 2015,draft,A/C.3/70/L.57,subject,0,draft resolution A/C.3/70/L.57,adopted,169,1,2,169,1,2,1
+70-SR50-1,70,A/C.3/70/SR.50,50,19 November 2015,draft,A/C.3/70/L.59/Rev.1,context,0,draft resolution A/C.3/70/SR.59/Rev.1,adopted,126,4,53,126,4,53,1
+70-SR50-2,70,A/C.3/70/SR.50,50,19 November 2015,draft,A/C.3/70/L.61,subject,1,"draft resolution A/C.3/70/SR.61, as orally revised",adopted,128,11,44,128,11,44,1
+70-SR50-3,70,A/C.3/70/SR.50,50,19 November 2015,draft,A/C.3/70/L.35,subject,1,"draft resolution A/C.3/70/L.35, as orally revised",adopted,112,19,50,112,19,50,1
+70-SR51-1,70,A/C.3/70/SR.51,51,19 November 2015,draft,A/C.3/70/L.45,subject,0,draft resolution A/C.3/70/L.45,adopted,76,35,68,76,35,68,1
+70-SR51-2,70,A/C.3/70/SR.51,51,19 November 2015,draft,A/C.3/70/L.47,subject,0,draft resolution A/C.3/70/L.47,adopted,115,15,51,115,15,51,1
+70-SR52-1,70,A/C.3/70/SR.52,52,20 November 2015,draft,A/C.3/70/L.32,subject,0,draft resolution A/C.3/70/L.32,adopted,126,53,1,126,53,1,1
+70-SR52-2,70,A/C.3/70/SR.52,52,20 November 2015,draft,A/C.3/70/L.33,subject,0,draft resolution A/C.3/70/L.33,adopted,124,54,1,124,54,1,1
+70-SR52-3,70,A/C.3/70/SR.52,52,20 November 2015,draft,A/C.3/70/L.38,subject,0,draft resolution A/C.3/70/L.38,adopted,130,54,0,130,54,0,1
+70-SR53-1,70,A/C.3/70/SR.53,53,23 November 2015,draft,A/C.3/70/L.42,subject,0,draft resolution A/C.3/70/L.42,adopted,170,6,4,170,6,4,1
+70-SR53-2,70,A/C.3/70/SR.53,53,23 November 2015,draft,A/C.3/70/L.58,subject,0,draft resolution A/C.3/70/L.58,adopted,121,53,6,121,53,6,1
+70-SR53-3,70,A/C.3/70/SR.53,53,23 November 2015,draft,A/C.3/70/L.30,subject,0,draft resolution A/C.3/70/L.30,adopted,121,53,5,121,53,5,1
+70-SR53-4,70,A/C.3/70/SR.53,53,23 November 2015,draft,A/C.3/70/L.43,subject,1,"draft resolution A/C.3/70/L.43, as orally revised",adopted,128,53,2,128,53,2,1
+70-SR54-1,70,A/C.3/70/SR.54,54,24 November 2015,draft,A/C.3/70/L.66,subject,0,draft resolution A/C.3/70/L.66,adopted,111,2,59,111,2,59,1
+70-SR54-2,70,A/C.3/70/SR.54,54,24 November 2015,amendment,A/C.3/70/L.28/Rev.1,subject,0,the oral amendment to paragraph 49 (u) of draft resolution A/C.3/70/L.28/Rev.1,rejected,67,85,15,67,85,15,1
+70-SR54-3,70,A/C.3/70/SR.54,54,24 November 2015,paragraph,A/C.3/70/L.28/Rev.1,subject,0,the proposal to delete paragraph 49 (u) of draft resolution A/C.3/70/L.28/Rev.1,rejected,63,90,11,63,90,11,1
+70-SR55-1,70,A/C.3/70/SR.55,55,24 November 2015,draft,A/C.3/70/L.28/Rev.1,subject,0,draft resolution A/C.3/70/L.28/Rev.1,adopted,128,0,44,128,0,44,1
+70-SR55-2,70,A/C.3/70/SR.55,55,24 November 2015,draft,A/C.3/70/L.37/Rev.1,subject,0,draft resolution A/C.3/70/L.37/Rev.1,adopted,136,4,34,136,4,34,1
+70-SR56-1,70,A/C.3/70/SR.56,56,25 November 2015,draft,A/C.3/70/L.46/Rev.1,subject,1,"draft resolution A/C.3/70/L.46/Rev.1, as orally revised",adopted,117,14,40,117,14,40,1
+71-SR48-1,71,A/C.3/71/SR.48,48,15 November 2016,motion,A/C.3/71/L.24,context,0,the motion for the adjournment of the debate on agenda item 68 (c),rejected,32,101,37,32,101,37,1
+71-SR48-2,71,A/C.3/71/SR.48,48,15 November 2016,draft,A/C.3/71/L.24,subject,0,draft resolution A/C.3/71/L.24,adopted,116,15,49,116,15,49,1
+71-SR49-1,71,A/C.3/71/SR.49,49,15 November 2016,draft,A/C.3/71/L.25,subject,1,"draft resolution A/C.3/71/L.25, as orally revised",adopted,85,35,63,85,35,63,1
+71-SR49-2,71,A/C.3/71/SR.49,49,15 November 2016,draft,A/C.3/71/L.26,subject,0,draft resolution A/C.3/71/L.26,adopted,73,23,76,73,23,76,1
+71-SR50-1,71,A/C.3/71/SR.50,50,17 November 2016,draft,A/C.3/71/L.45/Rev.1,subject,0,draft resolution A/C.3/71/L.45/Rev.1,adopted,131,3,48,131,3,48,1
+71-SR50-2,71,A/C.3/71/SR.50,50,17 November 2016,amendment,A/C.3/71/L.27,subject,0,the proposed amendment to draft resolution A/C.3/71/L.27 contained in document A/C.3/71/L.54,adopted,76,72,26,76,72,26,1
+71-SR50-3,71,A/C.3/71/SR.50,50,17 November 2016,motion,A/C.3/71/L.54,context,0,the motion under rule 118 of the rules of procedure of the General Assembly,adopted,80,53,26,80,53,26,1
+71-SR50-4,71,A/C.3/71/SR.50,50,17 November 2016,draft,A/C.3/71/L.27,subject,1,"draft resolution A/C.3/71/L.27, as orally revised and amended",adopted,115,38,31,115,38,31,1
+71-SR52-1,71,A/C.3/71/SR.52,52,18 November 2016,draft,A/C.3/71/L.42,subject,0,draft resolution A/C.3/71/L.42,adopted,117,50,6,117,50,6,1
+71-SR52-2,71,A/C.3/71/SR.52,52,18 November 2016,draft,A/C.3/71/L.29,subject,0,draft resolution A/C.3/71/L.29,adopted,116,34,19,116,34,19,1
+71-SR52-3,71,A/C.3/71/SR.52,52,18 November 2016,amendment,A/C.3/71/L.53,subject,0,the amendment contained in document A/C.3/71/L.53,rejected,60,84,27,60,84,27,1
+71-SR52-4,71,A/C.3/71/SR.52,52,18 November 2016,draft,A/C.3/71/L.38/Rev.1,subject,0,draft resolution A/C.3/71/L.38/Rev.1,adopted,106,0,69,106,0,69,1
+71-SR53-1,71,A/C.3/71/SR.53,53,21 November 2016,amendment,A/C.3/71/L.46,subject,0,the proposed amendment to draft resolution A/C.3/71/L.46 contained in document A/C.3/71/L.52,adopted,84,77,17,84,77,17,1
+71-SR53-2,71,A/C.3/71/SR.53,53,21 November 2016,draft,A/C.3/71/L.46,subject,0,draft resolution A/C.3/71/L.46,adopted,94,3,80,94,3,80,1
+71-SR54-1,71,A/C.3/71/SR.54,54,21 November 2016,draft,A/C.3/71/L.50,subject,0,draft resolution A/C.3/71/L.50,adopted,170,7,5,170,7,5,1
+71-SR54-2,71,A/C.3/71/SR.54,54,21 November 2016,draft,A/C.3/71/L.30/Rev.1,corrected,0,draft resolution A/C.3/70/L.30/Rev.1,adopted,123,53,6,123,53,6,1
+71-SR54-3,71,A/C.3/71/SR.54,54,21 November 2016,draft,A/C.3/71/L.32/Rev.1,subject,0,draft resolution A/C.3/71/L.32/Rev.1,adopted,138,3,39,138,3,39,1
+71-SR54-4,71,A/C.3/71/SR.54,54,21 November 2016,draft,A/C.3/71/L.33/Rev.1,subject,0,draft resolution A/C.3/71/L.33/Rev.1,adopted,128,54,0,128,54,0,1
+71-SR54-5,71,A/C.3/71/SR.54,54,21 November 2016,draft,A/C.3/71/L.37,subject,0,draft resolution A/C.3/71/L.37,adopted,128,53,2,128,53,2,1
+71-SR55-1,71,A/C.3/71/SR.55,55,22 November 2016,amendment,A/C.3/71/L.20/Rev.1,context,0,the oral amendment proposed by the representative of Sudan,rejected,23,100,33,23,100,33,1
+71-SR56-1,71,A/C.3/71/SR.56,56,22 November 2016,draft,A/C.3/71/L.48/Rev.1,subject,0,draft resolution A/C.3/71/L.48/Rev.1,adopted,123,10,44,123,10,44,1
+71-SR56-2,71,A/C.3/71/SR.56,56,22 November 2016,draft,A/C.3/71/L.19/Rev.1,subject,0,draft resolution A/C.3/71/L.19/Rev.1,adopted,164,0,2,164,0,2,1
+71-SR57-1,71,A/C.3/71/SR.57,57,23 November 2016,amendment,A/C.3/71/L.14/Rev.1,subject,0,the proposed amendment to draft resolution A/C.3/71/L.14/Rev.1 contained in document A/C.3/71/L.55 as orally corrected,rejected,19,106,32,19,106,32,1
+72-SR44-1,72,A/C.3/72/SR.44,44,9 November 2017,amendment,A/C.3/72/L.20/Rev.1,subject,0,the oral amendment proposed by the Sudan to delete the seventh preambular paragraph,rejected,21,101,32,21,101,32,1
+72-SR44-2,72,A/C.3/72/SR.44,44,9 November 2017,amendment,A/C.3/72/L.20/Rev.1,subject,0,the oral amendment proposed by the Sudan to delete paragraph 4,rejected,21,102,32,21,102,32,1
+72-SR44-3,72,A/C.3/72/SR.44,44,9 November 2017,amendment,A/C.3/72/L.64,subject,0,the amendment contained in document A/C.3/72/L.64,rejected,39,79,32,39,79,32,1
+72-SR44-4,72,A/C.3/72/SR.44,44,9 November 2017,amendment,A/C.3/72/L.65,subject,0,the amendment contained in document A/C.3/72/L.65,rejected,40,77,29,40,77,29,1
+72-SR44-5,72,A/C.3/72/SR.44,44,9 November 2017,amendment,A/C.3/72/L.66,subject,0,the amendment contained in document A/C.3/72/L.66,rejected,25,88,34,25,88,34,1
+72-SR44-6,72,A/C.3/72/SR.44,44,9 November 2017,draft,A/C.3/72/L.23,subject,0,draft resolution A/C.3/72/L.23,adopted,148,0,14,148,0,14,1
+72-SR45-1,72,A/C.3/72/SR.45,45,14 November 2017,draft,A/C.3/72/L.25,subject,0,draft resolution A/C.3/72/L.25,adopted,178,0,2,178,0,2,1
+72-SR45-2,72,A/C.3/72/SR.45,45,14 November 2017,draft,A/C.3/72/L.41,subject,0,draft resolution A/C.3/72/L.41,adopted,83,30,68,83,30,68,1
+72-SR45-3,72,A/C.3/72/SR.45,45,14 November 2017,draft,A/C.3/72/L.42,subject,0,draft resolution A/C.3/72/L.42,adopted,71,25,77,71,25,77,1
+72-SR46-1,72,A/C.3/72/SR.46,46,14 November 2017,draft,A/C.3/72/L.54,subject,0,draft resolution A/C.3/72/L.54,adopted,108,17,57,108,17,58,0
+72-SR47-1,72,A/C.3/72/SR.47,47,16 November 2017,draft,A/C.3/72/L.48,subject,0,draft resolution A/C.3/72/L.48,adopted,135,10,26,135,10,26,1
+72-SR47-2,72,A/C.3/72/SR.47,47,16 November 2017,amendment,A/C.3/72/L.56/Rev.1,subject,0,the oral amendments proposed by the representative of the United States of America,rejected,3,81,73,3,81,73,1
+72-SR47-3,72,A/C.3/72/SR.47,47,16 November 2017,draft,A/C.3/72/L.56/Rev.1,subject,0,draft resolution A/C.3/72/L.56/Rev.1,adopted,125,2,51,125,2,51,1
+72-SR48-1,72,A/C.3/72/SR.48,48,16 November 2017,draft,A/C.3/72/L.62,subject,0,draft resolution A/C.3/72/L.62,adopted,117,2,60,117,2,60,1
+72-SR48-2,72,A/C.3/72/SR.48,48,16 November 2017,draft,A/C.3/72/L.34,subject,1,"draft resolution A/C.3/72/L.34, as orally revised",adopted,127,52,4,127,52,4,1
+72-SR48-3,72,A/C.3/72/SR.48,48,16 November 2017,draft,A/C.3/72/L.26/Rev.1,subject,0,draft resolution A/C.3/72/L.26/Rev.1,adopted,133,10,38,133,10,38,1
+72-SR48-4,72,A/C.3/72/SR.48,48,16 November 2017,draft,A/C.3/72/L.27,subject,0,draft resolution A/C.3/72/L.27,adopted,128,53,0,128,53,0,1
+72-SR48-5,72,A/C.3/72/SR.48,48,16 November 2017,draft,A/C.3/72/L.29/Rev.1,subject,0,draft resolution A/C.3/72/L.29/Rev.1,adopted,128,52,0,128,52,0,1
+72-SR48-6,72,A/C.3/72/SR.48,48,16 November 2017,draft,A/C.3/72/L.31,subject,0,draft resolution A/C.3/72/L.31,adopted,123,53,5,123,53,5,1
+72-SR48-7,72,A/C.3/72/SR.48,48,16 November 2017,draft,A/C.3/72/L.32/Rev.1,subject,1,draft resolution A/C.3/72/L.32/Rev.1 as orally revised,adopted,177,2,1,177,2,1,1
+72-SR48-8,72,A/C.3/72/SR.48,48,16 November 2017,draft,A/C.3/72/L.33,subject,0,draft resolution A/C.3/72/L.33,adopted,127,51,0,127,51,0,1
+72-SR49-1,72,A/C.3/72/SR.49,49,17 November 2017,amendment,A/C.3/72/L.39/Rev.1,subject,0,the oral amendment proposed by the representative of Kyrgyzstan to the twenty-sixth preambular paragraph of draft resolution A/C.3/72/L.39/Rev.1,rejected,17,106,33,17,106,33,1
+72-SR49-2,72,A/C.3/72/SR.49,49,17 November 2017,amendment,A/C.3/72/L.39/Rev.1,subject,0,the second oral amendment proposed by the representative of Kyrgyzstan to paragraph 9 of draft resolution A/C.3/72/L.39/Rev.1,rejected,19,105,31,19,105,31,1
+72-SR49-3,72,A/C.3/72/SR.49,49,17 November 2017,draft,A/C.3/72/L.39/Rev.1,subject,0,draft resolution A/C.3/72/SR.39/Rev.1,adopted,173,1,3,173,1,3,1
+72-SR49-4,72,A/C.3/72/SR.49,49,17 November 2017,amendment,A/C.3/72/L.15/Rev.1,context,0,the oral amendment proposed by the representative of Saint Lucia,rejected,45,99,20,45,99,20,1
+72-SR50-1,72,A/C.3/72/SR.50,50,20 November 2017,motion,A/C.3/72/L.19/Rev.1,context,0,the motion to suspend the meeting,approved,103,25,21,103,25,21,1
+72-SR50-2,72,A/C.3/72/SR.50,50,20 November 2017,draft,A/C.3/72/L.19/Rev.1,subject,0,the Argentine oral revision to draft resolution A/C.3/72/L.19/Rev.1,rejected,84,73,11,73,84,11,0
+72-SR50-3,72,A/C.3/72/SR.50,50,20 November 2017,amendment,,,0,the oral amendment proposed by the representative of Sudan,rejected,24,105,34,24,105,34,1
+72-SR51-1,72,A/C.3/72/SR.51,51,20 November 2017,draft,A/C.3/72/L.52,subject,0,draft resolution A/C.3/72/L.52,adopted,123,52,3,123,52,3,1
+72-SR51-2,72,A/C.3/72/SR.51,51,20 November 2017,draft,A/C.3/72/L.63/Rev.1,subject,0,draft resolution A/C.3/72/L.63/Rev.1,adopted,125,10,45,125,10,45,1
+72-SR51-3,72,A/C.3/72/SR.51,51,20 November 2017,draft,A/C.3/72/L.59,subject,0,draft resolution A/C.3/72/L.59,adopted,169,6,6,169,6,6,1
+72-SR52-1,72,A/C.3/72/SR.52,52,21 November 2017,draft,A/C.3/72/L.12/Rev.1,subject,0,draft resolution A/C.3/72/L.12/Rev.1,adopted,170,2,1,170,2,1,1
+72-SR52-2,72,A/C.3/72/SR.52,52,21 November 2017,amendment,A/C.3/72/L.21/Rev.1,subject,1,"the oral amendment to paragraph 16 of draft resolution A/C.3/72/L.21/Rev.1, as orally revised",rejected,19,102,39,19,102,39,1
+72-SR52-3,72,A/C.3/72/SR.52,52,21 November 2017,amendment,A/C.3/72/L.21/Rev.1,subject,1,"the oral amendment to paragraph 36 (k) of draft resolution A/C.3/72/L.21/Rev.1, as orally revised",adopted,90,76,8,90,76,8,1
+72-SR52-4,72,A/C.3/72/SR.52,52,21 November 2017,draft,A/C.3/72/L.21/Rev.1,subject,0,draft resolution A/C.3/72/L.21/Rev.1,,,,,180,0,0,0
+72-SR53-1,72,A/C.3/72/SR.53,53,21 November 2017,amendment,A/C.3/72/L.18/Rev.1,subject,0,the proposed oral amendment to paragraph 18 of draft resolution A/C.3/72/L.18/Rev.1,adopted,82,78,9,82,78,9,1
+72-SR53-2,72,A/C.3/72/SR.53,53,21 November 2017,draft,A/C.3/72/L.18/Rev.1,subject,1,"A/C.3/72/L.18/Rev.1, as orally revised and amended",,,,,176,0,0,0
+72-SR53-3,72,A/C.3/72/SR.53,53,21 November 2017,amendment,A/C.3/72/L.49/Rev.1,subject,0,"the amendment to draft resolution A/C.3/72/L.49/Rev.1, contained in document A/C.3/72/L.68",rejected,21,77,42,21,77,42,1
+72-SR53-4,72,A/C.3/72/SR.53,53,21 November 2017,draft,A/C.3/72/L.49/Rev.1,subject,0,draft resolution A/C.3/72/L.49/Rev.1,adopted,104,1,63,104,1,63,1
+73-SR10-1,73,A/C.3/73/SR.10,10,8 October 2018,motion,,,0,"the motion proposed by the representative of Burundi to adjourn, for 48 hours, the debate of the Committee on the proposal by Burundi to seek a legal opinion",adopted,67,56,11,67,56,11,1
+73-SR14-1,73,A/C.3/73/SR.14,14,10 October 2018,motion,,,0,the proposal by Burundi to seek a legal opinion from the United Nations Legal Counsel,adopted,91,1,66,91,1,66,1
+73-SR19-1,73,A/C.3/73/SR.19,19,16 October 2018,motion,,,0,the proposal to invite the Chair of the Commission of Inquiry on Burundi to present his report and interact with the Committee,adopted,73,33,32,73,33,32,1
+73-SR46-1,73,A/C.3/73/SR.46,46,13 November 2018,draft,A/C.3/73/L.56,subject,0,draft resolution A/C.3/73/L.56,adopted,111,3,65,111,3,65,1
+73-SR46-2,73,A/C.3/73/SR.46,46,13 November 2018,draft,A/C.3/73/L.37,subject,0,draft resolution A/C.3/73/L.37,adopted,131,52,7,131,52,7,1
+73-SR46-3,73,A/C.3/73/SR.46,46,13 November 2018,draft,A/C.3/73/L.32,subject,0,draft resolution A/C.3/73/L.32,adopted,133,53,3,133,53,3,1
+73-SR46-4,73,A/C.3/73/SR.46,46,13 November 2018,draft,A/C.3/73/L.34,subject,0,draft resolution A/C.3/73/L.34,adopted,129,53,8,129,53,8,1
+73-SR46-5,73,A/C.3/73/SR.46,46,13 November 2018,draft,A/C.3/73/L.35,subject,1,"draft resolution A/C.3/73/L.35, as orally revised",adopted,134,53,2,134,53,2,1
+73-SR46-6,73,A/C.3/73/SR.46,46,13 November 2018,draft,A/C.3/73/L.59,subject,0,draft resolution A/C.3/73/L.59,adopted,176,1,3,176,1,3,1
+73-SR46-7,73,A/C.3/73/SR.46,46,13 November 2018,amendment,A/C.3/73/L.44,subject,0,the proposed amendment to draft resolution A/C.3/73/L.44 contained in document A/C.3/73/L.57,adopted,96,73,14,96,73,14,1
+73-SR47-1,73,A/C.3/73/SR.47,47,13 November 2018,draft,A/C.3/73/L.44,subject,1,draft resolution A/C.3/73/L.44 as amended,adopted,123,36,30,123,36,30,1
+73-SR47-2,73,A/C.3/73/SR.47,47,13 November 2018,draft,A/C.3/73/L.9/Rev.1,subject,0,draft resolution A/C.3/73/L.9/Rev.1*,adopted,88,55,29,88,55,29,1
+73-SR48-1,73,A/C.3/73/SR.48,48,15 November 2018,motion,,,0,the motion to suspend the meeting,rejected,33,73,33,33,73,33,1
+73-SR48-2,73,A/C.3/73/SR.48,48,15 November 2018,amendment,A/C.3/73/L.22/Rev.1,subject,0,"the oral amendments proposed by the delegation of the United States of America to draft resolution HYPERLINK ""https://undocs.org/en/A/C.3/73/L.22/Rev.1"" A/C.3/73/L.22/Rev.1",rejected,33,96,35,33,96,35,1
+73-SR48-3,73,A/C.3/73/SR.48,48,15 November 2018,amendment,A/C.3/73/L.53/Rev.1,subject,0,"the oral amendments proposed by the representative of the United States of America to draft resolution HYPERLINK ""https://undocs.org/en/A/C.3/73/L.53/Rev.1"" A/C.3/73/L.53/Rev.1",rejected,2,75,88,2,75,88,1
+73-SR48-4,73,A/C.3/73/SR.48,48,15 November 2018,draft,A/C.3/73/L.53/Rev.1,context,0,"draft resolution HYPERLINK ""https://undocs.org/en/A/C.3/L.53/Rev.1"" A/C.3/L.53/Rev.1",adopted,130,2,51,130,2,51,1
+73-SR48-5,73,A/C.3/73/SR.48,48,15 November 2018,draft,A/C.3/73/L.29,subject,0,"draft resolution HYPERLINK ""https://undocs.org/en/A/C.3/73/L.29"" A/C.3/73/L.29",adopted,169,6,12,169,6,12,1
+73-SR49-1,73,A/C.3/73/SR.49,49,15 November 2018,amendment,A/C.3/73/L.64,subject,0,the amendment contained in document A/C.3/73/L.64,rejected,22,91,44,22,91,44,1
+73-SR49-2,73,A/C.3/73/SR.49,49,15 November 2018,draft,A/C.3/73/L.42,subject,1,draft resolution A/C.3/73/L.42 as orally revised,adopted,85,30,68,85,30,68,1
+73-SR49-3,73,A/C.3/73/SR.49,49,15 November 2018,draft,A/C.3/73/L.48,subject,0,draft resolution A/C.3/73/L.48,adopted,67,26,82,67,26,82,1
+73-SR49-4,73,A/C.3/73/SR.49,49,15 November 2018,paragraph,A/C.3/73/L.50,subject,0,the motion proposed by the representative of the Islamic Republic of Iran for a decision on the competence of the Third Committee to take action on paragraph 31 of draft resolution A/C.3/73/L.50,adopted,88,13,48,88,13,48,1
+73-SR50-1,73,A/C.3/73/SR.50,50,16 November 2018,draft,A/C.3/73/L.50,subject,0,draft resolution A/C.3/73/L.50,adopted,106,16,58,106,16,58,1
+73-SR50-2,73,A/C.3/73/SR.50,50,16 November 2018,draft,A/C.3/73/L.51,subject,0,draft resolution A/C.3/73/L.51*,adopted,142,10,26,142,10,26,1
+73-SR50-3,73,A/C.3/73/SR.50,50,16 November 2018,draft,A/C.3/73/L.17/Rev.1,subject,0,draft resolution A/C.3/73/L.17/Rev.1,adopted,181,2,0,181,2,0,1
+73-SR51-1,73,A/C.3/73/SR.51,51,16 November 2018,amendment,A/C.3/73/L.7/Rev.1,subject,0,the proposed amendment to draft resolution A/C.3/73/L.7/Rev.1 contained in document A/C.3/73/L.60,rejected,19,101,34,19,101,34,1
+73-SR51-2,73,A/C.3/73/SR.51,51,16 November 2018,draft,A/C.3/73/L.52/Rev.1,subject,0,draft resolution A/C.3/73/L.52/Rev.1,adopted,128,10,42,128,10,42,1
+73-SR51-3,73,A/C.3/73/SR.51,51,16 November 2018,draft,A/C.3/73/L.31/Rev.1,subject,0,draft resolution A/C.3/73/L.31/Rev.1,adopted,141,10,33,141,10,33,1
+73-SR51-4,73,A/C.3/73/SR.51,51,16 November 2018,draft,A/C.3/73/L.36/Rev.1,subject,0,draft resolution A/C.3/73/L.36/Rev.1,adopted,179,2,0,179,2,0,1
+73-SR52-1,73,A/C.3/73/SR.52,52,19 November 2018,amendment,A/C.3/73/L.21/Rev.1,subject,0,the oral amendment proposed by the United States to paragraph 8 (d) of draft resolution A/C.3/73/L.21/Rev.1,rejected,44,88,25,44,88,25,1
+73-SR52-2,73,A/C.3/73/SR.52,52,19 November 2018,amendment,A/C.3/73/L.21/Rev.1,subject,0,the oral amendment proposed by the United States to delete paragraph 11 of draft resolution A/C.3/73/L.21/Rev.1,rejected,30,98,30,30,98,30,1
+73-SR53-1,73,A/C.3/73/SR.53,53,19 November 2018,draft,A/C.3/73/L.30,subject,0,draft resolution A/C.3/73/L.30,adopted,119,7,49,119,7,49,1
+73-SR53-2,73,A/C.3/73/SR.53,53,19 November 2018,amendment,A/C.3/73/L.39/Rev.1,corrected,0,the proposed amendment to draft resolution A/C.3/71/L.39/Rev.1 contained in document A/C.3/73/L.62,rejected,21,103,34,21,103,34,1
+73-SR53-3,73,A/C.3/73/SR.53,53,19 November 2018,amendment,A/C.3/73/L.39/Rev.1,corrected,0,the proposed amendment to draft resolution A/C.3/71/L.39/Rev.1 contained in document A/C.3/73/L.63,rejected,20,99,38,20,99,38,1
+73-SR53-4,73,A/C.3/73/SR.53,53,19 November 2018,amendment,A/C.3/73/L.65,subject,0,the amendment contained in document A/C.3/73/L.65,rejected,50,86,25,50,86,25,1
+73-SR54-1,73,A/C.3/73/SR.54,54,20 November 2018,draft,A/C.3/73/L.39/Rev.1,subject,0,"draft resolution HYPERLINK ""https://undocs.org/A/C.3/73/L.39/Rev.1"" A/C.3/73/L.39/Rev.1",adopted,110,0,67,110,0,67,1
+73-SR54-2,73,A/C.3/73/SR.54,54,20 November 2018,draft,A/C.3/73/L.41/Rev.1,subject,0,A/C.3/73/L.41/Rev.1,adopted,143,0,38,143,0,38,1
+73-SR54-3,73,A/C.3/73/SR.54,54,20 November 2018,amendment,A/C.3/73/L.43/Rev.1,context,0,the oral amendment proposed by the representative of the United States to delete paragraph 14,rejected,3,116,28,3,116,28,1
+73-SR54-4,73,A/C.3/73/SR.54,54,20 November 2018,amendment,A/C.3/73/L.43/Rev.1,context,0,the oral amendment proposed by the representative of the Russian Federation,rejected,23,80,35,23,80,35,1
+73-SR55-1,73,A/C.3/73/SR.55,55,20 November 2018,amendment,A/C.3/73/L.61,subject,0,the proposed amendment contained in A/C.3/73/L.61,rejected,20,105,37,20,105,37,1
+73-SR55-2,73,A/C.3/73/SR.55,55,20 November 2018,amendment,A/C.3/73/L.26/Rev.1,subject,1,"the oral amendment to paragraph 21 of draft resolution A/C.3/73/L.26/Rev.1, as orally revised",rejected,11,74,81,11,74,81,1
+74-SR43-1,74,A/C.3/74/SR.43,43,5 November 2019,motion,,,0,the motion to suspend the meeting under rule 118,rejected,18,88,37,18,88,37,1
+74-SR43-2,74,A/C.3/74/SR.43,43,5 November 2019,motion,A/C.3/74/L.1,context,0,the appeal against the ruling of the Chair,rejected,13,89,36,13,89,36,1
+74-SR43-3,74,A/C.3/74/SR.43,43,5 November 2019,motion,A/C.3/74/L.1,context,0,the motion to consider the draft resolution on the situation of human rights in the Syrian Arab Republic,adopted,91,19,40,91,19,40,1
+74-SR44-1,74,A/C.3/74/SR.44,44,7 November 2019,draft,A/C.3/74/L.56,subject,0,draft resolution A/C.3/74/L.56,adopted,115,4,60,115,4,60,1
+74-SR44-2,74,A/C.3/74/SR.44,44,7 November 2019,draft,A/C.3/74/L.62,subject,0,draft resolution A/C.3/74/L.62,adopted,121,2,55,121,2,55,1
+74-SR45-1,74,A/C.3/74/SR.45,45,14 November 2019,draft,A/C.3/74/L.27,subject,0,draft resolution A/C.3/74/L.27,adopted,84,30,66,84,30,66,1
+74-SR45-2,74,A/C.3/74/SR.45,45,14 November 2019,draft,A/C.3/74/L.28,subject,0,draft resolution A/C.3/74/L.28,adopted,67,23,82,67,23,82,1
+74-SR45-3,74,A/C.3/74/SR.45,45,14 November 2019,draft,A/C.3/74/L.29,subject,0,draft resolution A/C.3/74/L.29,adopted,140,9,32,140,9,32,1
+74-SR46-1,74,A/C.3/74/SR.46,46,14 November 2019,draft,A/C.3/74/L.30/Rev.1,subject,0,draft resolution A/C.3/74/L.30/Rev.1,adopted,106,15,58,106,15,58,1
+74-SR47-1,74,A/C.3/74/SR.47,47,15 November 2019,draft,A/C.3/74/L.59,subject,0,draft resolution A/C.3/74/L.59,adopted,169,2,5,169,2,5,1
+74-SR47-2,74,A/C.3/74/SR.47,47,15 November 2019,draft,A/C.3/74/L.53/Rev.1,subject,0,draft resolution A/C.3/74/L.53/Rev.1,adopted,176,1,2,176,1,2,1
+74-SR49-1,74,A/C.3/74/SR.49,49,18 November 2019,amendment,A/C.3/74/L.64,subject,0,the proposed amendment contained in A/C.3/74/L.64,rejected,31,100,29,31,100,29,1
+74-SR49-2,74,A/C.3/74/SR.49,49,18 November 2019,paragraph,A/C.3/74/L.21/Rev.1,subject,1,"paragraph 13 of draft resolution A/C.3/74/L.21/Rev.1, as orally revised",adopted,131,10,16,131,10,16,1
+74-SR49-3,74,A/C.3/74/SR.49,49,18 November 2019,draft,A/C.3/74/L.36,subject,0,draft resolution A/C.3/74/L.36,adopted,127,51,7,127,51,7,1
+74-SR49-4,74,A/C.3/74/SR.49,49,18 November 2019,draft,A/C.3/74/L.37/Rev.1,subject,0,draft resolution A/C.3/74/L.37/Rev.1,adopted,185,2,0,185,2,0,1
+74-SR49-5,74,A/C.3/74/SR.49,49,18 November 2019,draft,A/C.3/74/L.38,subject,0,draft resolution A/C.3/74/L.38,adopted,125,53,9,125,53,9,1
+74-SR49-6,74,A/C.3/74/SR.49,49,18 November 2019,draft,A/C.3/74/L.40/Rev.1,subject,0,draft resolution A/C.3/74/L.40/Rev.1,adopted,137,24,26,137,24,26,1
+74-SR50-1,74,A/C.3/74/SR.50,50,18 November 2019,draft,A/C.3/74/L.42,subject,0,draft resolution A/C.3/74/L.42,adopted,126,55,0,126,55,0,1
+74-SR50-2,74,A/C.3/74/SR.50,50,18 November 2019,draft,A/C.3/74/L.43,subject,0,draft resolution A/C.3/74/L.43,adopted,130,52,1,130,52,1,1
+74-SR50-3,74,A/C.3/74/SR.50,50,18 November 2019,draft,A/C.3/74/L.47/Rev.1,subject,0,draft resolution A/C.3/74/L.47/Rev.1,adopted,131,55,0,131,55,0,1
+74-SR50-4,74,A/C.3/74/SR.50,50,18 November 2019,draft,A/C.3/74/L.11/Rev.1,subject,0,draft resolution A/C.3/74/L.11/Rev.1,adopted,88,58,34,88,58,34,1
+74-SR51-1,74,A/C.3/74/SR.51,51,19 November 2019,amendment,A/C.3/74/L.66,subject,0,the proposed amendment contained in document A/C.3/74/L.66,rejected,26,103,25,26,103,25,1
+74-SR51-2,74,A/C.3/74/SR.51,51,19 November 2019,amendment,A/C.3/74/L.67,subject,1,"the proposed amendments contained in document A/C.3/74/L.67, as orally revised",rejected,24,108,26,24,108,26,1
+74-SR51-3,74,A/C.3/74/SR.51,51,19 November 2019,paragraph,A/C.3/74/L.8/Rev.1,subject,0,"the proposal to retain paragraphs 10, 12 and 13 of draft resolution A/C.3/74/L.8/Rev.1",adopted,134,17,10,134,17,10,1
+74-SR51-4,74,A/C.3/74/SR.51,51,19 November 2019,draft,A/C.3/74/L.12/Rev.1,subject,0,draft resolution A/C.3/74/L.12/Rev.1,adopted,183,2,0,183,2,0,1
+74-SR51-5,74,A/C.3/74/SR.51,51,19 November 2019,draft,A/C.3/74/L.60/Rev.1,subject,0,draft resolution A/C.3/74/L.60/Rev.1,adopted,131,10,44,131,10,44,1
+74-SR51-6,74,A/C.3/74/SR.51,51,19 November 2019,draft,A/C.3/74/L.58,subject,0,draft resolution A/C.3/74/L.58,adopted,164,5,9,164,5,9,1
+74-SR52-1,74,A/C.3/74/SR.52,52,19 November 2019,amendment,A/C.3/74/L.63,subject,0,the amendment contained in document A/C.3/74/L.63,rejected,26,95,32,26,95,32,1
+75-SR7-1,75,A/C.3/75/SR.7,7,13 November 2020,paragraph,A/C.3/75/L.72,subject,1,"the proposal contained in document A/C.3/75/L.72 to amend paragraph 6 of draft resolution A/C.3/75/L.6/Rev.1, as orally revised",rejected,10,134,17,10,134,17,1
+75-SR7-2,75,A/C.3/75/SR.7,7,13 November 2020,paragraph,A/C.3/75/L.76,subject,0,the proposal contained in document A/C.3/75/L.76 to amend preambular paragraph 22 of draft resolution A/C.3/75/L.6/Rev.1,rejected,2,161,5,2,161,5,1
+75-SR7-3,75,A/C.3/75/SR.7,7,13 November 2020,paragraph,A/C.3/75/L.55,subject,0,the proposal contained in document A/C.3/75/L.55 to amend preambular paragraph 2 of draft resolution A/C.3/75/L.13/Rev.1,rejected,33,85,37,33,85,37,1
+75-SR7-4,75,A/C.3/75/SR.7,7,13 November 2020,paragraph,A/C.3/75/L.56,subject,0,the proposal contained in document A/C.3/75/L.56 to amend paragraph 13 of draft resolution A/C.3/75/L.13/Rev.1,rejected,28,93,37,28,93,37,1
+75-SR7-5,75,A/C.3/75/SR.7,7,13 November 2020,paragraph,A/C.3/75/L.57,subject,0,the proposal contained in document A/C.3/75/L.57 to amend paragraph 1 of draft resolution A/C.3/75/L.13/Rev.1,rejected,29,96,32,29,96,32,1
+75-SR7-6,75,A/C.3/75/SR.7,7,13 November 2020,paragraph,A/C.3/75/L.58,subject,0,the proposal contained in document A/C.3/75/L.58 to amend paragraph 3 of draft resolution A/C.3/75/L.13/Rev.1,rejected,24,96,33,24,96,33,1
+75-SR7-7,75,A/C.3/75/SR.7,7,13 November 2020,paragraph,A/C.3/75/L.66,subject,0,the proposal contained in document A/C.3/75/L.66 to amend paragraph 7 of draft resolution A/C.3/75/L.13/Rev.1,rejected,13,111,29,13,111,29,1
+75-SR7-8,75,A/C.3/75/SR.7,7,13 November 2020,paragraph,A/C.3/75/L.67,subject,0,the proposal contained in document A/C.3/75/L.67 to amend paragraph 8 of draft resolution A/C.3/75/L.13/Rev.1,rejected,24,103,29,24,103,29,1
+75-SR8-1,75,A/C.3/75/SR.8,8,16 November 2020,paragraph,A/C.3/75/L.68,subject,0,the proposal contained in document A/C.3/75/L.68 to amend paragraph 31 of draft resolution A/C.3/75/L.14,rejected,9,120,28,9,120,28,1
+75-SR8-2,75,A/C.3/75/SR.8,8,16 November 2020,paragraph,A/C.3/75/L.77,subject,0,the proposal contained in document A/C.3/75/L.77 to amend the twenty-sixth preambular paragraph of draft resolution A/C.3/75/L.18/Rev.1,rejected,20,109,31,20,109,31,1
+75-SR8-3,75,A/C.3/75/SR.8,8,16 November 2020,paragraph,A/C.3/75/L.78,subject,0,the proposal contained in document A/C.3/75/L.78 to amend the twenty-seventh preambular paragraph of draft resolution A/C.3/75/L.18/Rev.1,rejected,21,111,29,21,111,29,1
+75-SR8-4,75,A/C.3/75/SR.8,8,16 November 2020,paragraph,A/C.3/75/L.79,subject,0,the proposal contained in document A/C.3/75/L.79 to amend paragraph 22 of draft resolution A/C.3/75/L.18/Rev.1,rejected,26,105,30,26,105,30,1
+75-SR8-5,75,A/C.3/75/SR.8,8,16 November 2020,paragraph,A/C.3/75/L.80,subject,0,the proposal contained in document A/C.3/75/L.80 to amend paragraph 23 of draft resolution A/C.3/75/L.18/Rev.1,rejected,29,101,34,29,101,34,1
+75-SR8-6,75,A/C.3/75/SR.8,8,16 November 2020,paragraph,A/C.3/75/L.81,subject,0,the proposal contained in document A/C.3/75/L.81 to amend paragraph 23 (a) of draft resolution A/C.3/75/L.18/Rev.1,rejected,19,110,31,19,110,31,1
+75-SR8-7,75,A/C.3/75/SR.8,8,16 November 2020,paragraph,A/C.3/75/L.82,subject,0,the proposal contained in document A/C.3/75/L.82 to amend paragraph 23 (c) of draft resolution A/C.3/75/L.18/Rev.1,rejected,23,108,31,23,108,31,1
+75-SR8-8,75,A/C.3/75/SR.8,8,16 November 2020,paragraph,A/C.3/75/L.83,subject,0,"the proposal contained in document A/C.3/75/L.83 to amend paragraphs 21, 23 (f) and 26 of draft resolution A/C.3/75/L.18/Rev.1",rejected,24,103,37,24,103,37,1
+75-SR8-9,75,A/C.3/75/SR.8,8,16 November 2020,paragraph,A/C.3/75/L.84,subject,0,"the proposal contained in document A/C.3/75/L.84 to amend the twenty-third preambular paragraph and paragraphs 14, 17, 18 and 23 (f) of draft resolution A/C.3/75/L.18/Rev.1",rejected,11,121,32,11,121,32,1
+75-SR8-10,75,A/C.3/75/SR.8,8,16 November 2020,paragraph,A/C.3/75/L.73,subject,0,the proposal contained in document A/C.3/75/L.73 to amend the ninth preambular paragraph and paragraphs 2 and 3 of draft resolution A/C.3/75/L.17,rejected,6,141,18,6,141,18,1
+75-SR8-11,75,A/C.3/75/SR.8,8,16 November 2020,paragraph,A/C.3/75/L.86,subject,0,the proposal contained in document A/C.3/75/L.86 to amend paragraph 10 of draft resolution A/C.3/75/L.17,rejected,1,153,11,1,153,11,1
+75-SR9-1,75,A/C.3/75/SR.9,9,16 November 2020,paragraph,A/C.3/75/L.59,subject,0,the proposal contained in document A/C.3/75/L.59 to amend the sixteenth preambular paragraph of draft resolution A/C.3/75/L.19/Rev.1,rejected,22,108,33,22,108,33,1
+75-SR9-2,75,A/C.3/75/SR.9,9,16 November 2020,paragraph,A/C.3/75/L.60,subject,0,the proposal contained in document A/C.3/75/L.60 to amend the final preambular paragraph of draft resolution A/C.3/75/L.19/Rev.1,rejected,19,105,36,19,105,36,1
+75-SR9-3,75,A/C.3/75/SR.9,9,16 November 2020,paragraph,A/C.3/75/L.61,subject,0,the proposal contained in document A/C.3/75/L.61 to amend paragraph 6 (b) of draft resolution A/C.3/75/L.19/Rev.1,rejected,33,104,24,33,104,24,1
+75-SR9-4,75,A/C.3/75/SR.9,9,16 November 2020,paragraph,A/C.3/75/L.62,subject,0,the proposal contained in document A/C.3/75/L.62 to amend paragraph 6 (d) of draft resolution A/C.3/75/L.19/Rev.1,rejected,24,105,31,24,105,31,1
+75-SR9-5,75,A/C.3/75/SR.9,9,16 November 2020,paragraph,A/C.3/75/L.63,subject,0,the proposal contained in document A/C.3/75/L.63 to amend paragraph 11 of draft resolution A/C.3/75/L.19/Rev.1,rejected,10,106,42,10,106,42,1
+75-SR9-6,75,A/C.3/75/SR.9,9,16 November 2020,paragraph,A/C.3/75/L.64,subject,0,the proposal contained in document A/C.3/75/L.64 to amend paragraph 13 of draft resolution A/C.3/75/L.19/Rev.1,rejected,13,107,37,13,107,37,1
+75-SR9-7,75,A/C.3/75/SR.9,9,16 November 2020,paragraph,A/C.3/75/L.65,subject,0,the proposal contained in document A/C.3/75/L.65 to amend paragraph 17 of draft resolution A/C.3/75/L.19/Rev.1,rejected,20,103,36,20,103,36,1
+75-SR9-8,75,A/C.3/75/SR.9,9,16 November 2020,paragraph,A/C.3/75/L.69,subject,0,the proposal contained in document A/C.3/75/L.69 to amend the final preambular paragraph of draft resolution A/C.3/75/L.19/Rev.1,rejected,12,117,28,12,117,28,1
+75-SR9-9,75,A/C.3/75/SR.9,9,16 November 2020,paragraph,A/C.3/75/L.70,subject,0,the proposal contained in document A/C.3/75/L.70 to amend paragraph 15 of draft resolution A/C.3/75/L.19/Rev.1,rejected,17,113,33,17,113,33,1
+75-SR9-10,75,A/C.3/75/SR.9,9,16 November 2020,paragraph,A/C.3/75/L.71,subject,0,the proposal contained in document A/C.3/75/L.71 to amend paragraph 6 (i) of draft resolution A/C.3/75/L.19/Rev.1,rejected,20,102,38,20,102,38,1
+75-SR9-11,75,A/C.3/75/SR.9,9,16 November 2020,draft,A/C.3/75/L.19/Rev.1,subject,0,draft resolution A/C.3/75/L.19/Rev.1,adopted,170,0,11,170,0,11,1
+75-SR9-12,75,A/C.3/75/SR.9,9,16 November 2020,paragraph,A/C.3/75/L.74,subject,0,the proposal contained in document A/C.3/75/L.74 to amend the ninth preambular paragraph and paragraphs 1 and 5 of draft resolution A/C.3/75/L.15,rejected,5,136,20,5,136,20,1
+75-SR9-13,75,A/C.3/75/SR.9,9,16 November 2020,draft,A/C.3/75/L.48,subject,0,draft resolution A/C.3/75/L.48,adopted,174,0,7,174,0,7,1
+75-SR10-1,75,A/C.3/75/SR.10,10,17 November 2020,draft,A/C.3/75/L.24,subject,0,draft resolution A/C.3/75/L.24,adopted,125,52,7,125,52,7,1
+75-SR10-2,75,A/C.3/75/SR.10,10,17 November 2020,draft,A/C.3/75/L.23,subject,0,draft resolution A/C.3/75/L.23,adopted,128,53,2,128,53,2,1
+75-SR10-3,75,A/C.3/75/SR.10,10,17 November 2020,draft,A/C.3/75/L.25,subject,0,draft resolution A/C.3/75/L.25,adopted,121,54,8,121,54,8,1
+75-SR10-4,75,A/C.3/75/SR.10,10,17 November 2020,draft,A/C.3/75/L.26,subject,0,draft resolution A/C.3/75/L.26,adopted,186,2,0,186,2,0,1
+75-SR10-5,75,A/C.3/75/SR.10,10,17 November 2020,draft,A/C.3/75/L.28,subject,0,"draft resolution A/C.3/75/L.28, as orally corrected",adopted,131,54,1,131,54,1,1
+75-SR10-6,75,A/C.3/75/SR.10,10,17 November 2020,draft,A/C.3/75/L.29,subject,0,draft resolution A/C.3/75/L.29,adopted,133,24,29,133,24,29,1
+75-SR11-1,75,A/C.3/75/SR.11,11,17 November 2020,motion,A/C.3/75/L.54,subject,0,the proposal contained in document A/C.3/75/L.54 to amend draft resolution A/C.3/75/L.41,adopted,95,69,17,95,69,17,1
+75-SR11-2,75,A/C.3/75/SR.11,11,17 November 2020,draft,A/C.3/75/L.41,subject,1,"draft resolution A/C.3/75/L.41, as amended",adopted,120,39,24,120,39,24,1
+75-SR12-1,75,A/C.3/75/SR.12,12,18 November 2020,draft,A/C.3/75/L.49,subject,0,draft resolution A/C.3/75/L.49,adopted,122,2,53,122,2,53,1
+75-SR12-2,75,A/C.3/75/SR.12,12,18 November 2020,draft,A/C.3/75/L.31/Rev.1,subject,0,draft resolution A/C.3/75/L.31/Rev.1,adopted,79,32,64,79,32,64,1
+75-SR12-3,75,A/C.3/75/SR.12,12,18 November 2020,draft,A/C.3/75/L.32,subject,0,draft resolution A/C.3/75/L.32,adopted,63,22,85,63,22,85,1
+75-SR13-1,75,A/C.3/75/SR.13,13,18 November 2020,draft,A/C.3/75/L.34,subject,0,draft resolution A/C.3/75/L.34,adopted,131,9,31,131,9,31,1
+75-SR13-2,75,A/C.3/75/SR.13,13,18 November 2020,draft,A/C.3/75/L.33,subject,0,draft resolution A/C.3/75/L.33,adopted,99,13,61,99,13,61,1
+75-SR14-1,75,A/C.3/75/SR.14,14,19 November 2020,draft,A/C.3/75/L.7/Rev.1,subject,0,draft resolution A/C.3/75/L.7/Rev.1,adopted,174,2,0,174,2,0,1
+75-SR14-2,75,A/C.3/75/SR.14,14,19 November 2020,draft,A/C.3/75/L.44,subject,0,draft resolution A/C.3/75/L.44,adopted,115,3,60,115,3,60,1
+75-SR14-3,75,A/C.3/75/SR.14,14,19 November 2020,draft,A/C.3/75/L.45,subject,0,draft resolution A/C.3/75/L.45,adopted,163,5,10,163,5,10,1
+75-SR14-4,75,A/C.3/75/SR.14,14,19 November 2020,motion,A/C.3/75/L.52,subject,0,the proposal contained in document A/C.3/75/L.52 to amend draft resolution A/C.3/75/L.22,rejected,14,18,115,14,18,115,1
+75-SR14-5,75,A/C.3/75/SR.14,14,19 November 2020,motion,A/C.3/75/L.53,subject,0,the proposal contained in document A/C.3/75/L.53 to amend draft resolution A/C.3/75/L.22,rejected,8,22,114,8,22,114,1
+75-SR15-1,75,A/C.3/75/SR.15,15,19 November 2020,draft,A/C.3/75/L.50/Rev.1,subject,1,"draft resolution A/C.3/75/L.50/Rev.1, as orally revised",adopted,124,12,44,124,12,44,1
+75-SR15-2,75,A/C.3/75/SR.15,15,19 November 2020,amendment,A/C.3/75/L.37,subject,0,an oral amendment to paragraph 7 (b) of draft resolution A/C.3/75/L.37,rejected,40,94,21,40,94,21,1
+75-SR15-3,75,A/C.3/75/SR.15,15,19 November 2020,draft,A/C.3/75/L.37,subject,0,draft resolution A/C.3/75/L.37 as a whole,adopted,122,0,56,122,0,56,1
+76-SR7-1,76,A/C.3/76/SR.7,7,5 November 2021,draft,A/C.3/76/L.62,subject,0,draft resolution A/C.3/76/L.62,adopted,107,2,59,107,2,59,1
+76-SR7-2,76,A/C.3/76/SR.7,7,5 November 2021,draft,A/C.3/76/L.46,subject,0,draft resolution A/C.3/76/L.46,adopted,158,6,10,158,6,10,1
+76-SR7-3,76,A/C.3/76/SR.7,7,5 November 2021,draft,A/C.3/76/L.35,subject,0,draft resolution A/C.3/76/L.35,adopted,176,1,1,176,1,1,1
+76-SR8-1,76,A/C.3/76/SR.8,8,9 November 2021,draft,A/C.3/76/L.42,subject,0,draft resolution A/C.3/76/L.42,adopted,122,51,6,122,51,6,1
+76-SR8-2,76,A/C.3/76/SR.8,8,9 November 2021,draft,A/C.3/76/L.38,subject,0,draft resolution A/C.3/76/L.38,adopted,126,52,0,126,52,0,1
+76-SR8-3,76,A/C.3/76/SR.8,8,9 November 2021,draft,A/C.3/76/L.39,subject,0,draft resolution A/C.3/76/L.39,adopted,124,54,0,124,54,0,1
+76-SR8-4,76,A/C.3/76/SR.8,8,9 November 2021,draft,A/C.3/76/L.40,subject,0,draft resolution A/C.3/76/L.40,adopted,126,55,0,126,55,0,1
+76-SR8-5,76,A/C.3/76/SR.8,8,9 November 2021,draft,A/C.3/76/L.41,subject,0,draft resolution A/C.3/76/L.41,adopted,127,25,28,127,25,28,1
+76-SR8-6,76,A/C.3/76/SR.8,8,9 November 2021,draft,A/C.3/76/L.44,subject,0,draft resolution A/C.3/76/L.44,adopted,117,54,9,117,54,9,1
+76-SR8-7,76,A/C.3/76/SR.8,8,9 November 2021,draft,A/C.3/76/L.47,subject,0,draft resolution A/C.3/76/L.47,adopted,180,2,0,180,2,0,1
+76-SR9-1,76,A/C.3/76/SR.9,9,12 November 2021,draft,A/C.3/76/L.59,subject,0,draft resolution A/C.3/76/L.59,adopted,173,0,5,173,0,5,1
+76-SR9-2,76,A/C.3/76/SR.9,9,12 November 2021,draft,A/C.3/76/L.57/Rev.1,subject,0,draft resolution A/C.3/76/L.57/Rev.1,adopted,121,2,53,121,2,53,1
+76-SR11-1,76,A/C.3/76/SR.11,11,15 November 2021,draft,A/C.3/76/L.19/Rev.1,subject,0,draft resolution A/C.3/76/L.19/Rev.1,adopted,182,2,0,182,2,0,1
+76-SR11-2,76,A/C.3/76/SR.11,11,15 November 2021,draft,A/C.3/76/L.61/Rev.1,subject,0,draft resolution A/C.3/76/L.61/Rev.1,adopted,125,17,35,125,17,35,1
+76-SR13-1,76,A/C.3/76/SR.13,13,17 November 2021,draft,A/C.3/76/L.28,subject,0,draft resolution A/C.3/76/L.28,adopted,79,30,71,79,30,71,1
+76-SR13-2,76,A/C.3/76/SR.13,13,17 November 2021,draft,A/C.3/76/L.29,subject,0,draft resolution A/C.3/76/L.29,adopted,64,20,93,64,20,93,1
+76-SR14-1,76,A/C.3/76/SR.14,14,17 November 2021,draft,A/C.3/76/L.31/Rev.1,subject,1,"draft resolution A/C.3/76/L.31/Rev.1, as orally revised",adopted,95,13,66,95,13,66,1
+76-SR16-1,76,A/C.3/76/SR.16,16,18 November 2021,draft,A/C.3/76/L.55/Rev.1,subject,1,"draft resolution A/C.3/76/L.55/Rev.1, as orally revised",adopted,171,0,7,171,0,7,1
+76-SR16-2,76,A/C.3/76/SR.16,16,18 November 2021,paragraph,A/C.3/76/L.45/Rev.1,subject,0,the proposal to amend the ninth preambular paragraph of draft resolution A/C.3/76/L.45/Rev.1,rejected,56,89,12,56,89,12,1
+76-SR16-3,76,A/C.3/76/SR.16,16,18 November 2021,paragraph,A/C.3/76/L.45/Rev.1,subject,0,the proposal to amend paragraph 7 of draft resolution A/C.3/76/L.45/Rev.1,rejected,58,90,13,58,90,13,1
+77-SR45-1,77,A/C.3/77/SR.45,45,4 November 2022,amendment,A/C.3/77/L.52,subject,0,the proposed amendment contained in document A/C.3/77/L.52,adopted,63,23,65,63,23,65,1
+77-SR45-2,77,A/C.3/77/SR.45,45,4 November 2022,draft,A/C.3/77/L.5,subject,1,"draft resolution A/C.3/77/L.5, as orally revised and amended",adopted,105,52,15,105,52,15,1
+77-SR46-1,77,A/C.3/77/SR.46,46,10 November 2022,amendment,A/C.3/77/L.56,subject,0,the amendment proposed by Guatemala in document A/C.3/77/L.56,rejected,36,95,31,36,95,31,1
+77-SR46-2,77,A/C.3/77/SR.46,46,10 November 2022,amendment,A/C.3/77/L.57,subject,0,the amendment proposed by the Russian Federation in document A/C.3/77/L.57,rejected,30,96,35,30,96,35,1
+77-SR46-3,77,A/C.3/77/SR.46,46,10 November 2022,amendment,A/C.3/77/L.58,subject,0,the amendment proposed by the Russian Federation in document A/C.3/77/L.58,rejected,37,99,27,37,99,27,1
+77-SR46-4,77,A/C.3/77/SR.46,46,10 November 2022,amendment,A/C.3/77/L.59,subject,0,the amendment proposed by the Russian Federation in document A/C.3/77/L.59,rejected,41,104,18,41,104,18,1
+77-SR46-5,77,A/C.3/77/SR.46,46,10 November 2022,amendment,A/C.3/77/L.60,subject,0,the amendment proposed by the Russian Federation in document A/C.3/77/L.60,rejected,49,95,18,49,95,18,1
+77-SR46-6,77,A/C.3/77/SR.46,46,10 November 2022,amendment,A/C.3/77/L.61,subject,0,the amendment proposed by Egypt in document A/C.3/77/L.61,rejected,38,95,26,38,95,26,1
+77-SR46-7,77,A/C.3/77/SR.46,46,10 November 2022,amendment,A/C.3/77/L.62,subject,0,the amendment proposed by Egypt in document A/C.3/77/L.62,rejected,49,95,17,49,95,17,1
+77-SR46-8,77,A/C.3/77/SR.46,46,10 November 2022,amendment,A/C.3/77/L.64,subject,0,the amendment proposed by Egypt in document A/C.3/77/L.64,rejected,57,88,14,57,88,14,1
+77-SR46-9,77,A/C.3/77/SR.46,46,10 November 2022,amendment,A/C.3/77/L.65,subject,0,the amendment proposed by Egypt in document A/C.3/77/L.65,rejected,61,86,14,61,86,14,1
+77-SR46-10,77,A/C.3/77/SR.46,46,10 November 2022,draft,A/C.3/77/L.21/Rev.1,subject,1,"draft resolution A/C.3/77/L.21/Rev.1, as a whole, as orally revised",adopted,166,0,14,166,0,14,1
+77-SR46-11,77,A/C.3/77/SR.46,46,10 November 2022,draft,A/C.3/77/L.30,subject,0,draft resolution A/C.3/77/L.30,adopted,122,50,5,122,50,5,1
+77-SR46-12,77,A/C.3/77/SR.46,46,10 November 2022,draft,A/C.3/77/L.24,subject,0,draft resolution A/C.3/77/L.24,adopted,128,24,28,128,24,28,1
+77-SR47-1,77,A/C.3/77/SR.47,47,10 November 2022,draft,A/C.3/77/L.26,subject,0,draft resolution A/C.3/77/L.26,adopted,123,53,1,123,53,1,1
+77-SR47-2,77,A/C.3/77/SR.47,47,10 November 2022,draft,A/C.3/77/L.27,subject,0,draft resolution A/C.3/77/L.27,adopted,117,54,10,117,54,10,1
+77-SR47-3,77,A/C.3/77/SR.47,47,10 November 2022,draft,A/C.3/77/L.28,subject,0,draft resolution A/C.3/77/L.28,adopted,126,53,1,126,53,1,1
+77-SR48-1,77,A/C.3/77/SR.48,48,11 November 2022,motion,A/C.3/77/L.66,subject,0,the proposal contained in document A/C.3/77/L.66 to amend draft resolution A/C.3/75/L.42,rejected,51,88,26,51,88,26,1
+77-SR48-2,77,A/C.3/77/SR.48,48,11 November 2022,draft,A/C.3/77/L.42,subject,0,draft resolution A/C.3/77/L.42,adopted,131,1,45,131,1,45,1
+77-SR49-1,77,A/C.3/77/SR.49,49,11 November 2022,motion,A/C.3/77/L.54,subject,0,the proposal contained in document A/C.3/77/L.54 to amend draft resolution A/C.3/77/L.44/Rev.1,adopted,103,68,13,103,68,13,1
+77-SR49-2,77,A/C.3/77/SR.49,49,11 November 2022,draft,A/C.3/77/L.44/Rev.1,subject,1,"draft resolution A/C.3/77/L.44/Rev.1, as amended",adopted,126,37,24,126,37,24,1
+77-SR52-1,77,A/C.3/77/SR.52,52,16 November 2022,draft,A/C.3/77/L.34,subject,0,draft resolution A/C.3/77/L.34,adopted,79,28,68,79,28,68,1
+77-SR52-2,77,A/C.3/77/SR.52,52,16 November 2022,draft,A/C.3/77/L.35,subject,0,draft resolution A/C.3/77/L.35,adopted,78,14,79,78,14,79,1
+77-SR53-1,77,A/C.3/77/SR.53,53,16 November 2022,draft,A/C.3/77/L.36/Rev.1,subject,0,"draft resolution HYPERLINK ""https://undocs.org/en/A/C.3/77/L.36/Rev.1"" A/C.3/77/L.36/Rev.1",adopted,90,14,68,90,14,68,1
+77-SR54-1,77,A/C.3/77/SR.54,54,17 November 2022,draft,A/C.3/77/L.53,subject,0,draft resolution A/C.3/77/L.53,adopted,113,4,59,113,4,59,1
+77-SR54-2,77,A/C.3/77/SR.54,54,17 November 2022,draft,A/C.3/77/L.23/Rev.1,subject,0,draft resolution A/C.3/77/L.23/Rev.1,adopted,126,17,36,126,17,36,1
+77-SR54-3,77,A/C.3/77/SR.54,54,17 November 2022,draft,A/C.3/77/L.50,subject,0,draft resolution A/C.3/77/L.50,adopted,167,5,7,167,5,7,1
+77-SR55-1,77,A/C.3/77/SR.55,55,17 November 2022,draft,A/C.3/77/L.13/Rev.1,subject,0,draft resolution A/C.3/77/L.13/Rev.1,adopted,116,9,45,116,9,45,1
+78-SR47-1,78,A/C.3/78/SR.47,47,3 November 2023,amendment,A/C.3/78/L.58,subject,0,the amendment in document A/C.3/78/L.58,adopted,66,26,67,66,26,67,1
+78-SR47-2,78,A/C.3/78/SR.47,47,3 November 2023,draft,A/C.3/78/L.7,subject,1,"draft resolution A/C.3/78/L.7, as amended",adopted,112,50,14,112,50,14,1
+78-SR48-1,78,A/C.3/78/SR.48,48,7 November 2023,draft,A/C.3/78/L.26,subject,0,draft resolution A/C.3/78/L.26,adopted,121,3,41,121,3,41,1
+78-SR48-2,78,A/C.3/78/SR.48,48,7 November 2023,draft,A/C.3/78/L.28,subject,0,draft resolution A/C.3/78/L.28,adopted,121,4,42,121,4,42,1
+78-SR48-3,78,A/C.3/78/SR.48,48,7 November 2023,draft,A/C.3/78/L.29,subject,0,draft resolution A/C.3/78/L.29,adopted,126,52,6,126,52,6,1
+78-SR48-4,78,A/C.3/78/SR.48,48,7 November 2023,draft,A/C.3/78/L.32,subject,0,draft resolution A/C.3/78/L.32,adopted,123,54,7,123,54,7,1
+78-SR48-5,78,A/C.3/78/SR.48,48,7 November 2023,draft,A/C.3/78/L.38,subject,0,draft resolution A/C.3/78/L.38,adopted,128,52,0,128,52,0,1
+78-SR48-6,78,A/C.3/78/SR.48,48,7 November 2023,draft,A/C.3/78/L.44,subject,0,draft resolution A/C.3/78/L.44,adopted,130,54,0,130,54,0,1
+78-SR48-7,78,A/C.3/78/SR.48,48,7 November 2023,draft,A/C.3/78/L.45,subject,0,draft resolution A/C.3/78/L.45,adopted,128,54,0,128,54,0,1
+78-SR48-8,78,A/C.3/78/SR.48,48,7 November 2023,draft,A/C.3/78/L.46,subject,0,draft resolution A/C.3/78/L.46,adopted,131,26,25,131,26,25,1
+78-SR49-1,78,A/C.3/78/SR.49,49,10 November 2023,draft,A/C.3/78/L.24,subject,0,draft resolution A/C.3/78/L.24,adopted,168,5,9,168,5,9,1
+78-SR49-2,78,A/C.3/78/SR.49,49,10 November 2023,amendment,A/C.3/78/L.63,subject,0,the Russian amendment in document A/C.3/78/L.63,rejected,13,91,45,13,91,45,1
+78-SR50-1,78,A/C.3/78/SR.50,50,10 November 2023,amendment,A/C.3/78/L.66,subject,0,the amendment introduced by the Russian Federation and contained in document A/C.3/78/L.66,rejected,46,71,31,46,71,31,1
+78-SR50-2,78,A/C.3/78/SR.50,50,10 November 2023,amendment,A/C.3/78/L.67,subject,0,the amendment introduced by Egypt and contained in document A/C.3/78/L.67,rejected,61,84,7,61,84,7,1
+78-SR50-3,78,A/C.3/78/SR.50,50,10 November 2023,amendment,A/C.3/78/L.68,subject,0,the amendment introduced by Egypt and contained in document A/C.3/78/L.68,rejected,55,85,12,55,85,12,1
+78-SR50-4,78,A/C.3/78/SR.50,50,10 November 2023,amendment,A/C.3/78/L.69,subject,0,the amendment introduced by Egypt and contained in document A/C.3/78/L.69,rejected,63,82,11,63,82,11,1
+78-SR50-5,78,A/C.3/78/SR.50,50,10 November 2023,draft,A/C.3/78/L.51,subject,0,draft resolution A/C.3/78/L.51 as a whole,adopted,146,1,25,146,1,25,1
+78-SR50-6,78,A/C.3/78/SR.50,50,10 November 2023,draft,A/C.3/78/L.57,subject,0,draft resolution A/C.3/78/L.57,adopted,174,0,2,174,0,2,1
+78-SR51-1,78,A/C.3/78/SR.51,51,14 November 2023,draft,A/C.3/78/L.64,subject,0,draft resolution A/C.3/78/L.64,adopted,109,4,63,109,4,63,1
+78-SR53-1,78,A/C.3/78/SR.53,53,15 November 2023,draft,A/C.3/78/L.41,subject,0,draft resolution A/C.3/78/L.41,adopted,80,29,65,80,29,65,1
+78-SR53-2,78,A/C.3/78/SR.53,53,15 November 2023,draft,A/C.3/78/L.42,subject,0,draft resolution A/C.3/78/L.42,adopted,77,14,79,77,14,79,1
+78-SR54-1,78,A/C.3/78/SR.54,54,15 November 2023,draft,A/C.3/78/L.43,subject,1,"draft resolution A/C.3/78/L.43, as orally revised",adopted,86,15,73,86,15,73,1
+78-SR56-1,78,A/C.3/78/SR.56,56,16 November 2023,draft,A/C.3/78/L.60/Rev.1,subject,0,draft resolution A/C.3/78/L.60/Rev.1,adopted,124,17,39,124,17,39,1
+79-SR47-1,79,A/C.3/79/SR.47,47,11 November 2024,draft,A/C.3/79/L.21/Rev.1,subject,0,draft resolution A/C.3/79/L.21/Rev.1,adopted,168,1,7,168,1,7,1
+79-SR47-2,79,A/C.3/79/SR.47,47,11 November 2024,amendment,A/C.3/79/L.51,subject,0,the amendment contained in document A/C.3/79/L.51,adopted,66,43,51,66,43,51,1
+79-SR47-3,79,A/C.3/79/SR.47,47,11 November 2024,draft,A/C.3/79/L.2,subject,1,"draft resolution A/C.3/79/L.2 as a whole, as amended",adopted,116,54,11,116,54,11,1
+79-SR49-1,79,A/C.3/79/SR.49,49,13 November 2024,draft,A/C.3/79/L.24,subject,0,draft resolution A/C.3/79/L.24,adopted,124,51,6,124,51,6,1
+79-SR49-2,79,A/C.3/79/SR.49,49,13 November 2024,draft,A/C.3/79/L.25,subject,0,draft resolution A/C.3/79/L.25,adopted,127,55,0,127,55,0,1
+79-SR49-3,79,A/C.3/79/SR.49,49,13 November 2024,draft,A/C.3/79/L.26,subject,0,draft resolution A/C.3/79/L.26,adopted,120,55,8,120,55,8,1
+79-SR49-4,79,A/C.3/79/SR.49,49,13 November 2024,draft,A/C.3/79/L.27,subject,0,draft resolution A/C.3/79/L.27,adopted,130,54,0,130,54,0,1
+79-SR49-5,79,A/C.3/79/SR.49,49,13 November 2024,draft,A/C.3/79/L.28,subject,0,draft resolution A/C.3/79/L.28,adopted,129,25,30,129,25,30,1
+79-SR50-1,79,A/C.3/79/SR.50,50,14 November 2024,amendment,A/C.3/79/L.55,subject,0,the amendment contained in document A/C.3/79/L.55,rejected,34,93,26,34,93,26,1
+79-SR50-2,79,A/C.3/79/SR.50,50,14 November 2024,amendment,A/C.3/79/L.56,subject,0,the amendment contained in document A/C.3/79/L.56,rejected,28,91,33,28,91,33,1
+79-SR50-3,79,A/C.3/79/SR.50,50,14 November 2024,amendment,A/C.3/79/L.57,subject,0,the amendment contained in document A/C.3/79/L.57,rejected,29,92,31,29,92,31,1
+79-SR50-4,79,A/C.3/79/SR.50,50,14 November 2024,amendment,A/C.3/79/L.58,subject,0,the amendment contained in document A/C.3/79/L.58,rejected,36,89,29,36,89,29,1
+79-SR50-5,79,A/C.3/79/SR.50,50,14 November 2024,amendment,A/C.3/79/L.59,subject,0,the amendment contained in document A/C.3/79/L.59,rejected,40,87,24,40,87,24,1
+79-SR50-6,79,A/C.3/79/SR.50,50,14 November 2024,amendment,A/C.3/79/L.60,subject,0,the amendment contained in document A/C.3/79/L.60,rejected,45,90,21,45,90,21,1
+79-SR50-7,79,A/C.3/79/SR.50,50,14 November 2024,amendment,A/C.3/79/L.61,subject,0,the amendment contained in document A/C.3/79/L.61,rejected,57,81,19,57,81,19,1
+79-SR50-8,79,A/C.3/79/SR.50,50,14 November 2024,amendment,A/C.3/79/L.63,subject,0,the amendment contained in document A/C.3/79/L.63,rejected,46,88,19,46,88,19,1
+79-SR50-9,79,A/C.3/79/SR.50,50,14 November 2024,amendment,A/C.3/79/L.64,subject,0,the amendment contained in document A/C.3/79/L.64,rejected,36,89,25,36,89,25,1
+79-SR50-10,79,A/C.3/79/SR.50,50,14 November 2024,amendment,A/C.3/79/L.65,subject,0,the amendment contained in document A/C.3/79/L.65,rejected,50,85,21,50,85,21,1
+79-SR50-11,79,A/C.3/79/SR.50,50,14 November 2024,draft,A/C.3/79/L.17/Rev.1,subject,0,draft resolution A/C.3/79/L.17/Rev.1 as a whole,adopted,170,1,13,170,1,13,1
+79-SR51-1,79,A/C.3/79/SR.51,51,14 November 2024,draft,A/C.3/79/L.33,subject,0,draft resolution A/C.3/79/L.33,adopted,111,5,62,111,5,62,1
+79-SR51-2,79,A/C.3/79/SR.51,51,14 November 2024,draft,A/C.3/79/L.49,subject,0,draft resolution A/C.3/79/L.49,adopted,170,6,9,170,6,9,1
+79-SR51-3,79,A/C.3/79/SR.51,51,14 November 2024,amendment,A/C.3/79/L.62,subject,0,the amendment in document A/C.3/79/L.62,rejected,47,78,26,47,78,26,1
+79-SR51-4,79,A/C.3/79/SR.51,51,14 November 2024,draft,A/C.3/79/L.47,subject,0,draft resolution A/C.3/79/L.47,adopted,130,0,53,130,0,53,1
+79-SR52-1,79,A/C.3/79/SR.52,52,18 November 2024,amendment,A/C.3/79/L.68,subject,0,the amendment contained in document A/C.3/79/L.68,rejected,42,98,31,42,98,31,1
+79-SR52-2,79,A/C.3/79/SR.52,52,18 November 2024,paragraph,A/C.3/79/L.10/Rev.1,subject,0,paragraph 26 of draft resolution A/C.3/79/L.10/Rev.1,retained,120,40,19,120,40,19,1
+79-SR52-3,79,A/C.3/79/SR.52,52,18 November 2024,paragraph,A/C.3/79/L.16/Rev.1,subject,0,the seventeenth preambular paragraph of draft resolution A/C.3/79/L.16/Rev.1,retained,101,10,47,101,10,47,1
+79-SR53-1,79,A/C.3/79/SR.53,53,18 November 2024,amendment,A/C.3/79/L.54,subject,0,the amendment contained in document A/C.3/79/L.54,adopted,105,65,13,105,65,13,1
+79-SR53-2,79,A/C.3/79/SR.53,53,18 November 2024,draft,A/C.3/79/L.37/Rev.1,subject,1,"draft resolution A/C.3/79/L.37/Rev.1, as amended",adopted,131,36,21,131,36,21,1
+79-SR54-1,79,A/C.3/79/SR.54,54,20 November 2024,draft,A/C.3/79/L.41,subject,0,draft resolution A/C.3/79/L.41,adopted,77,28,66,77,28,66,1
+79-SR54-2,79,A/C.3/79/SR.54,54,20 November 2024,draft,A/C.3/79/L.44,subject,0,draft resolution A/C.3/79/L.44,adopted,78,16,78,78,16,78,1
+79-SR55-1,79,A/C.3/79/SR.55,55,20 November 2024,draft,A/C.3/79/L.45,subject,0,draft resolution A/C.3/79/L.45,adopted,85,17,71,85,17,71,1
+79-SR56-1,79,A/C.3/79/SR.56,56,21 November 2024,draft,A/C.3/79/L.48/Rev.1,subject,0,draft resolution A/C.3/79/L.48/Rev.1,adopted,128,19,37,128,19,37,1
+79-SR57-1,79,A/C.3/79/SR.57,57,21 November 2024,amendment,A/C.3/79/L.67,subject,1,"the amendment to paragraph 13 of draft resolution A/C.3/79/L.67, as orally revised",rejected,80,87,12,80,87,12,1
+79-SR57-2,79,A/C.3/79/SR.57,57,21 November 2024,amendment,A/C.3/79/L.67,subject,1,"the amendment to paragraph 4 of draft resolution A/C.3/79/L.67, as orally revised",retained,103,69,7,103,69,7,1

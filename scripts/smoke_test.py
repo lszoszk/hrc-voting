@@ -51,6 +51,22 @@ with sync_playwright() as p:
     pg.evaluate("document.getElementById('rc-close').click()")
     checks["rollcall closes"] = pg.evaluate("!document.getElementById('rc-wrap').classList.contains('open')")
 
+    # General Assembly (Third Committee) scope: the Bodies selector brings the
+    # UNDL plenary record in; a session-78 text carries its committee-stage vote.
+    pg.select_option("#g-body", "ga"); pg.wait_for_timeout(600)
+    checks["ga tile (resolutions)"] = pg.evaluate("document.querySelector('#ov-tiles .tv').textContent")
+    checks["ga divided rows"] = pg.evaluate("document.querySelectorAll('#ov-close .gtr').length")
+    checks["ga csv has GA column"] = pg.evaluate("CSVDATA.ovtl.headers.includes('GA')")
+    pg.evaluate("openResolution(RES.findIndex(r=>r.c))"); pg.wait_for_timeout(300)
+    checks["ga committee block"] = pg.evaluate("document.getElementById('rc-head').textContent.includes('Third Committee stage')")
+    checks["ga related block"] = pg.evaluate("RES.some(r=>r.body==='GA'&&r.rel&&r.rel.length)")
+    pg.evaluate("document.getElementById('rc-close').click()")
+    pg.click('.tab[data-view="method"]'); pg.wait_for_timeout(400)
+    checks["method 14 filled"] = pg.evaluate("document.getElementById('m-ga-res').textContent!=='—'&&document.getElementById('m-ga-res').textContent!==''")
+    pg.click('.tab[data-view="overview"]')
+    pg.select_option("#g-body", "hrc"); pg.wait_for_timeout(400)
+    checks["scope back to CHR+HRC"] = pg.evaluate("document.querySelector('#ov-tiles .tv').textContent")
+
     pg.click('.tab[data-view="country"]')
     # Pin the starting country: the profile now opens on a guess from the browser's
     # time zone, so a run from Warsaw would otherwise "switch" from POL to POL and

@@ -27,8 +27,8 @@ keywords:
   - roll-call votes
   - open data
 license: PolyForm-Noncommercial-1.0.0
-version: "1.0.0"
-date-released: "2026-07-09"
+version: "1.1.0"
+date-released: "2026-09-11"
 identifiers:
   - type: doi
     value: "10.5281/zenodo.21281232"

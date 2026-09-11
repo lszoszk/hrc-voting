@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Interactive explorer of UN human-rights voting records: 1,705 recorded roll-call votes of the Commission on Human Rights and Human Rights Council (1947–2026), from the OHCHR Search Library.">
-<title>Voting Records — CHR·HRC (OHCHR Search Library)</title>
+<title>Voting Records — CHR · HRC · GA Third Committee</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗳️</text></svg>">
 <!-- Google Analytics 4 (G-F3XBX45HQC) — consent-gated (Consent Mode v2, default
      DENIED), DNT-respecting, IP-anonymised, no ad signals, send_page_view:false.
@@ -37,9 +37,9 @@
 /* ============ CHR·HRC Voting Records — design system (UHRI+ family) ============
    Three palettes: paper (default), terminal, ink — switched via data-palette on .vr.
    All chart fills reference these variables, so palette switches restyle live. */
-.vr{--paper:#F2EFE8;--paper-2:#EAE6DD;--paper-3:#E1DCD0;--ink:#0F0F10;--ink-2:#2A2824;--dim:#525049;--dimmer:#67645E;--line:rgba(15,15,16,.14);--line-2:rgba(15,15,16,.07);--accent:oklch(0.50 0.17 27);--accent-soft:oklch(0.50 0.17 27 / .14);--yes:#20713c;--yes2:#6f9a4f;--no:#a83a30;--abstain:#a07312;--absent:#b9b4a6;--chr:#8b7a3e;--hrc:var(--accent);--g-AFRICAN:#2a6fb0;--g-ASIA_PACIFIC:#177e63;--g-EEG:#a37a17;--g-GRULAC:#bf5b2d;--g-WEOG:#5b4ba0;--g-:#67645E;--div-hi:#2a6fb0;--div-mid:#e6e1d5;--div-lo:#a83a30;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace;--ui:"Inter",sans-serif;--serif:"Instrument Serif","Times New Roman",serif;font-family:var(--mono);font-size:12px;line-height:1.45;background:var(--paper);color:var(--ink);height:100vh;height:100dvh;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr) auto;grid-template-areas:"top" "tabs" "main" "foot";overflow:hidden;-webkit-font-smoothing:antialiased}
-.vr[data-palette="terminal"]{--paper:#0b0d0b;--paper-2:#121612;--paper-3:#1a1f1a;--ink:#d6e6cf;--ink-2:#b4c8ac;--dim:#8a9a80;--dimmer:#57644f;--line:rgba(214,230,207,.16);--line-2:rgba(214,230,207,.08);--accent:#9cf06b;--accent-soft:rgba(156,240,107,.16);--yes:#7ade5f;--yes2:#4f9a42;--no:#f07a6b;--abstain:#e6c25a;--absent:#3e4a39;--chr:#b0a05a;--g-AFRICAN:#6db2f0;--g-ASIA_PACIFIC:#4fd0a5;--g-EEG:#e0b34f;--g-GRULAC:#f0885a;--g-WEOG:#a99df0;--div-hi:#6db2f0;--div-mid:#1a1f1a;--div-lo:#f07a6b}
-.vr[data-palette="ink"]{--paper:#ffffff;--paper-2:#f4f4f5;--paper-3:#e9e9eb;--ink:#000000;--ink-2:#1a1a1a;--dim:#5b5b5b;--dimmer:#9a9a9a;--line:rgba(0,0,0,.13);--line-2:rgba(0,0,0,.06);--accent:#1d4ed8;--accent-soft:rgba(29,78,216,.12);--yes:#15803d;--yes2:#65a30d;--no:#b91c1c;--abstain:#a16207;--absent:#c9c9cc;--chr:#7a6a2e;--div-hi:#1d4ed8;--div-mid:#eeeef0;--div-lo:#b91c1c}
+.vr{--paper:#F2EFE8;--paper-2:#EAE6DD;--paper-3:#E1DCD0;--ink:#0F0F10;--ink-2:#2A2824;--dim:#525049;--dimmer:#67645E;--line:rgba(15,15,16,.14);--line-2:rgba(15,15,16,.07);--accent:oklch(0.50 0.17 27);--accent-soft:oklch(0.50 0.17 27 / .14);--yes:#20713c;--yes2:#6f9a4f;--no:#a83a30;--abstain:#a07312;--absent:#b9b4a6;--chr:#8b7a3e;--ga:#3a6b9c;--hrc:var(--accent);--g-AFRICAN:#2a6fb0;--g-ASIA_PACIFIC:#177e63;--g-EEG:#a37a17;--g-GRULAC:#bf5b2d;--g-WEOG:#5b4ba0;--g-:#67645E;--div-hi:#2a6fb0;--div-mid:#e6e1d5;--div-lo:#a83a30;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace;--ui:"Inter",sans-serif;--serif:"Instrument Serif","Times New Roman",serif;font-family:var(--mono);font-size:12px;line-height:1.45;background:var(--paper);color:var(--ink);height:100vh;height:100dvh;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr) auto;grid-template-areas:"top" "tabs" "main" "foot";overflow:hidden;-webkit-font-smoothing:antialiased}
+.vr[data-palette="terminal"]{--paper:#0b0d0b;--paper-2:#121612;--paper-3:#1a1f1a;--ink:#d6e6cf;--ink-2:#b4c8ac;--dim:#8a9a80;--dimmer:#57644f;--line:rgba(214,230,207,.16);--line-2:rgba(214,230,207,.08);--accent:#9cf06b;--accent-soft:rgba(156,240,107,.16);--yes:#7ade5f;--yes2:#4f9a42;--no:#f07a6b;--abstain:#e6c25a;--absent:#3e4a39;--chr:#b0a05a;--ga:#6cc3f0;--g-AFRICAN:#6db2f0;--g-ASIA_PACIFIC:#4fd0a5;--g-EEG:#e0b34f;--g-GRULAC:#f0885a;--g-WEOG:#a99df0;--div-hi:#6db2f0;--div-mid:#1a1f1a;--div-lo:#f07a6b}
+.vr[data-palette="ink"]{--paper:#ffffff;--paper-2:#f4f4f5;--paper-3:#e9e9eb;--ink:#000000;--ink-2:#1a1a1a;--dim:#5b5b5b;--dimmer:#9a9a9a;--line:rgba(0,0,0,.13);--line-2:rgba(0,0,0,.06);--accent:#1d4ed8;--accent-soft:rgba(29,78,216,.12);--yes:#15803d;--yes2:#65a30d;--no:#b91c1c;--abstain:#a16207;--absent:#c9c9cc;--chr:#7a6a2e;--ga:#6d28d9;--div-hi:#1d4ed8;--div-mid:#eeeef0;--div-lo:#b91c1c}
 .vr ::selection{background:var(--accent);color:var(--paper)}
 .vr a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--line)}
 .vr a:hover{color:var(--accent);border-color:var(--accent)}
@@ -372,7 +372,7 @@ body.touring .ga-consent{display:none}
   <button class="tab" data-view="texts"><span class="tidx">06</span><span class="tlbl">Texts</span></button>
   <button class="tab" data-view="language"><span class="tidx">07</span><span class="tlbl">Language</span></button>
   <button class="tab" data-view="method"><span class="tidx">08</span><span class="tlbl">Methodology</span></button>
-  <span style="margin-left:auto;display:inline-flex;align-items:center;gap:7px;padding:0 12px;flex-shrink:0"><span class="flbl" style="margin:0" title="Amendments answer a different question than resolutions — a Yes on a hostile amendment often opposes the parent text. See Methodology.">Scope</span><select class="sel" id="g-kind" style="min-width:0;padding:4px 6px"><option value="res">Resolutions only</option><option value="all">Resolutions + amendments</option><option value="amd">Amendments only</option></select></span>
+  <span style="margin-left:auto;display:inline-flex;align-items:center;gap:7px;padding:0 12px;flex-shrink:0"><span class="flbl" style="margin:0" title="Amendments answer a different question than resolutions — a Yes on a hostile amendment often opposes the parent text. See Methodology.">Scope</span><select class="sel" id="g-kind" style="min-width:0;padding:4px 6px"><option value="res">Resolutions only</option><option value="all">Resolutions + amendments</option><option value="amd">Amendments only</option></select></span><span style="display:inline-flex;align-items:center;gap:7px;padding:0 12px 0 0;flex-shrink:0"><span class="flbl" style="margin:0" title="Which organs' records are in play. CHR and HRC are the OHCHR collection; the General Assembly adds the Third Committee's human rights resolutions — plenary roll-calls from the UN Digital Library, committee-stage votes from the summary records. See Methodology 14.">Bodies</span><select class="sel" id="g-body" style="min-width:0;padding:4px 6px"><option value="hrc">CHR + HRC</option><option value="ga">General Assembly (Third Committee)</option><option value="all">All three</option></select></span>
 </nav>
 
 <main class="main"><div class="inner">
@@ -408,7 +408,7 @@ body.touring .ga-consent{display:none}
     <div class="fitem"><label class="flbl" for="c-country">Country</label><select class="sel" id="c-country"></select></div>
     <div class="fitem"><label class="flbl" for="c-ymin">From year</label><select class="sel" id="c-ymin"></select></div>
     <div class="fitem"><label class="flbl" for="c-ymax">To year</label><select class="sel" id="c-ymax"></select></div>
-    <div class="fitem"><label class="flbl" for="c-body">Body</label><select class="sel" id="c-body"><option value="">CHR + HRC</option><option value="CHR">CHR only</option><option value="HRC">HRC only</option></select></div>
+    <div class="fitem"><label class="flbl" for="c-body">Body</label><select class="sel" id="c-body"><option value="">CHR + HRC</option><option value="CHR">CHR only</option><option value="HRC">HRC only</option><option value="GA">General Assembly only</option></select></div>
   </div>
   <div class="guessnote" id="c-guess" style="display:none"></div>
   <div class="tiles" id="c-tiles"></div>
@@ -631,7 +631,7 @@ body.touring .ga-consent{display:none}
       <div class="p-desc">Full-text search over the adopted texts — results are shown <b>clause by clause</b> (preambular / operative), so you see exactly where a term appears. Words combine with AND and <b>fold plurals automatically</b>; <b>OR</b> makes alternatives, quotes make exact phrases (<i>"religion or belief"</i> stays one phrase), a trailing <b>*</b> searches prefixes (<i>indigen*</i>), and <b>-word</b> excludes. Respects the global Scope filter.</div>
       <div class="fbar" style="margin:10px 0 4px">
         <div class="fitem fgrow"><label class="flbl" for="tx-q">Keywords or "exact phrase"</label><input class="tin w100" type="text" id="tx-q" autocomplete="off" placeholder="e.g. arbitrary detention · digital OR online · &quot;religion or belief&quot; · indigen* · -committee"></div>
-        <div class="fitem"><label class="flbl" for="tx-body">Body</label><select class="sel" id="tx-body"><option value="">Both bodies</option><option value="CHR">Commission</option><option value="HRC">Council</option></select></div>
+        <div class="fitem"><label class="flbl" for="tx-body">Body</label><select class="sel" id="tx-body"><option value="">All bodies</option><option value="CHR">Commission</option><option value="HRC">Council</option><option value="GA">General Assembly</option></select></div>
         <div class="fitem"><label class="flbl" for="tx-ymin">From</label><select class="sel" id="tx-ymin"></select></div>
         <div class="fitem"><label class="flbl" for="tx-ymax">To</label><select class="sel" id="tx-ymax"></select></div>
         <div class="fitem"><label class="flbl" for="tx-sort">Sort</label><select class="sel" id="tx-sort"><option value="rel">Relevance</option><option value="new">Newest</option><option value="old">Oldest</option></select></div>
@@ -823,6 +823,18 @@ body.touring .ga-consent{display:none}
       <span class="mut">The package ships the derived columns this Methodology argues for, so the same reasoning survives leaving the dashboard: <code>prevailing_side</code> and <code>adopted</code> (Yes vs No, never <code>max(Y,N,A)</code> — see §08), <code>rollcall_reconciles</code> (the ~9% in §06), <code>is_amendment</code> (§09), <code>clause_type</code> separating annexed instruments from operative text (§11), and <code>subject_is_country_situation</code> (§05). The <code>clauses</code> config also carries the experimental verb coding, with the same caveat: it measures rhetorical hardness, not legal bindingness.</span>
       <br>• <b>Licence</b> — everything above is <a href="https://polyformproject.org/licenses/noncommercial/1.0.0/" target="_blank" rel="noopener">PolyForm Noncommercial 1.0.0</a>: research, education, non-profit and personal use are free; commercial use needs a separate licence. The underlying voting records are public UN documents.</div>
   </div>
+  <div class="panel">
+    <div class="p-head"><span class="p-idx">14</span><span class="p-title">General Assembly — Third Committee</span><span class="p-note">a second organ, two-stage votes, added 2026</span></div>
+    <div class="p-body ptext">The <b>Bodies</b> selector (top right) can bring the General Assembly's human rights resolutions into every view. They are a different record from the OHCHR collection and are kept out by default.
+      <br>• <b>What is in</b> — <span id="m-ga-res">—</span> resolutions adopted by the Assembly by recorded vote on texts that came out of the <b>Third Committee</b> (Social, Humanitarian and Cultural), sessions <span id="m-ga-sess">—</span>, with <span id="m-ga-votes">—</span> per-State plenary votes. Only resolutions decided by recorded vote are present: the source dataset carries no consensus texts, so the Consensus tab stays CHR/HRC-only and GA counts in the Overview are counts of recorded votes.
+      <br>• <b>Plenary votes</b> — the UN Dag Hammarskjöld Library's <a href="https://digitallibrary.un.org/record/4060887" target="_blank" rel="noopener">General Assembly voting data</a> (version 5, February 2026; resolutions 1 to 80/246), one row per Member State and resolution, derived from the UN Digital Library voting records. Official totals and the per-State lists reconcile for every GA record used here.
+      <br>• <b>Which resolutions are the Third Committee's</b> — from session 55 (2000) the dataset names the draft (<code>A/C.3/…/L.n</code>): <span id="m-ga-draft">—</span> resolutions are attributed that way. Earlier records have no draft symbol, so <span id="m-ga-agenda">—</span> resolutions are attributed by their <b>agenda item</b> (the items the Committee is known to handle — human rights questions and situations, self-determination, racism, the Covenants, social development, women, children, crime and drugs); items that sound like human rights but sat elsewhere (apartheid policies, UNRWA, the Israeli-practices committee, foreign economic interests) are excluded. On sessions 55–80, where both signals exist, the rule recovers 484 of 485 draft-attributed resolutions and adds 6 plenary-only texts. Inferred records say so in their roll-call panel.
+      <br>• <b>Committee stage</b> — the Third Committee votes first; its per-State roll-calls are read from the Committee's <b>summary records</b> (<code>A/C.3/&lt;session&gt;/SR.n</code>, "In favour / Against / Abstaining") on UN Documents and matched to the resolution through the draft symbol: <span id="m-ga-comm">—</span> resolutions carry a committee result — the per-State roll-call for <span id="m-ga-cov">—</span> of the draft-attributed resolutions of sessions <span id="m-ga-commsess">—</span> (the rest were adopted without a vote in committee or their record is missing), totals only for the newest. Parsed lists are checked against the totals the record states (they agree on 716 of the 733 votes with a stated result; the others differ by a State or two, usually a vote corrected after the roll-call). As an independent check, the same lists were compared with the Committee's e-voting board printouts (<a href="https://www.un.org/en/ga/third/77/votingsheets.shtml" target="_blank" rel="noopener">voting sheets</a>, sessions 75–77): 10,480 of 10,482 State-votes agree. The roll-call panel then shows the committee result next to the plenary one and names every State that changed between the two. Summary records of the most recent session appear months after the vote, so the newest resolutions show the plenary stage only, with the Committee's totals taken from the Assembly's <a href="https://igov.un.org" target="_blank" rel="noopener">iGov</a> proposals register where it has them.
+      <br>• <b>Texts</b> — the adopted A/RES texts from 1993 on are clause-segmented into the Texts tab like the Council's (choose <i>General Assembly</i> under Body); page furniture and footnote blocks of the three A/RES layouts (1994–95 "n/" notes, 1996–2000 bare-number notes, 2001– ruled notes) are stripped. Earlier A/RES documents on UN Documents are scanned pages of the Official Records without a usable text layer, so pre-1993 Assembly resolutions have votes but no searchable text.
+      <br>• <b>Reading across organs</b> — the Council has 47 members and the Assembly 193, so a state's agreement scores and the bloc maps are computed over shared votes only, as everywhere else; the 2006 marker on time axes concerns the Commission→Council break and says nothing about the Assembly series. The GA subject tags are the Digital Library's (e.g. <i>Human rights advancement</i>), not the OHCHR catalogue's, so a topic chip may exist on one side only.
+      <br>• <b>Terms</b> — the General Assembly voting data is "Copyright, United Nations; non-commercial use, with attribution" (the same posture as the rest of this site); cite it as: <i>United Nations Dag Hammarskjöld Library, General Assembly Voting Data, version 5 (February 2026), downloaded from https://digitallibrary.un.org/record/4060887</i>.
+    </div>
+  </div>
 </section>
 
 </div></main>
@@ -914,13 +926,13 @@ VRC.ovTimeline=function(host,o){host.innerHTML='';
   for(let t=0;t<=maxY;t+=step){const yy=PT+ih-(t/maxY)*ih;
     el('line',{x1:PL,x2:W-PR,y1:yy,y2:yy,stroke:'var(--line-2)'},s);
     txt({x:PL-6,y:yy+3,'text-anchor':'end'},s,t);}
-  years.forEach(y=>{const d=perYear[y];const tot=d.CHR+d.HRC;if(!tot)return;let yb=PT+ih;
+  years.forEach(y=>{const d=perYear[y];const tot=d.CHR+d.HRC+(d.GA||0);if(!tot)return;let yb=PT+ih;
     /* the current year is still running — a short final bar is not a decline */
     const part=isPartialYear(y);
-    [['CHR','var(--chr)'],['HRC','var(--hrc)']].forEach(kc=>{const hh=(d[kc[0]]/maxY)*ih;if(hh<=0)return;yb-=hh;
+    [['CHR','var(--chr)'],['HRC','var(--hrc)'],['GA','var(--ga)']].forEach(kc=>{const hh=((d[kc[0]]||0)/maxY)*ih;if(hh<=0)return;yb-=hh;
       const r=el('rect',{x:x(y)-bw/2,y:yb,width:bw,height:Math.max(hh-1,0.5),fill:kc[1]},s);
       if(part)r.setAttribute('fill-opacity','.45');
-      hov(r,'<b>'+y+'</b>'+(part?' · year in progress':'')+'<br>CHR '+d.CHR+' · HRC '+d.HRC);});
+      hov(r,'<b>'+y+'</b>'+(part?' · year in progress':'')+'<br>CHR '+d.CHR+' · HRC '+d.HRC+(d.GA?' · GA '+d.GA:''));});
     if(part)txt({x:x(y)+bw,y:yb-4,'text-anchor':'start','font-size':'8.5',fill:'var(--dimmer)'},s,'in progress');});
   for(let y=Math.ceil(ymin/10)*10;y<=ymax;y+=10)txt({x:x(y),y:H-6,'text-anchor':'middle'},s,y);
   if(ymin<HRC_YEAR&&ymax>=HRC_YEAR)hrcMark(s,x(HRC_YEAR-0.5),PT,PT+ih);
@@ -1313,8 +1325,16 @@ RES.forEach((r,i)=>{r.i=i;});   // stamp each resolution with its index (for rol
    hostile amendment often opposes the parent text) — default excludes them */
 let gKind='res';try{gKind=localStorage.getItem('hrc-scope')||'res'}catch(e){}
 if(!['res','all','amd'].includes(gKind))gKind='res';
-const kindOK=r=>gKind==='all'?true:(gKind==='amd'?!!r.am:!r.am);
-const scopeLabel=()=>({res:'resolutions only',all:'resolutions + amendments',amd:'amendments only'})[gKind];
+/* body scope: the OHCHR collection (CHR + HRC) by default; the General Assembly's Third
+   Committee resolutions are a different organ (universal membership, two-stage votes) and
+   are brought in only on request so every existing view keeps its numbers */
+let gBody='hrc';try{gBody=localStorage.getItem('hrc-body')||'hrc'}catch(e){}
+if(!['hrc','ga','all'].includes(gBody))gBody='hrc';
+const bodyOK=r=>gBody==='all'?true:(gBody==='ga'?r.body==='GA':r.body!=='GA');
+const amOK=r=>gKind==='all'?true:(gKind==='amd'?!!r.am:!r.am);
+const kindOK=r=>bodyOK(r)&&amOK(r);
+function countriesInScope(){let n=0;for(const c of C){for(const ri of vmap(c.iso3).keys())if(kindOK(RES[ri])){n++;break;}}return n;}
+const scopeLabel=()=>({res:'resolutions only',all:'resolutions + amendments',amd:'amendments only'})[gKind]+({hrc:'',ga:' · General Assembly (Third Committee)',all:' · CHR + HRC + General Assembly'})[gBody];
 let _rcCache={};
 function rollcallCount(){if(_rcCache[gKind]!=null)return _rcCache[gKind];
   let n=0;for(const c of C){for(const ri of vmap(c.iso3).keys())if(kindOK(RES[ri]))n++;}
@@ -1340,12 +1360,12 @@ const TC_ACRONYMS=['OHCHR','HIV','AIDS','COVID','UN'];
 const _tcAcr=new RegExp('\\b('+TC_ACRONYMS.join('|')+')\\b','gi');
 const tc=s=>(s||'').toLowerCase().replace(/(^|\P{L})(\p{Ll})/gu,(m,pre,c)=>pre+c.toUpperCase()).replace(/\b(Of|And|The|In|To|For|On)\b/g,m=>m.toLowerCase()).replace(/(['\u2019])S\b/g,'$1s').replace(_tcAcr,m=>m.toUpperCase());
 const $=id=>document.getElementById(id);
-const recUrl=id=>'https://searchlibrary.ohchr.org/record/'+id;
+const recUrl=id=>String(id).startsWith('ga')?'https://digitallibrary.un.org/record/'+String(id).slice(2):'https://searchlibrary.ohchr.org/record/'+id;
 
 /* ---------- export: CSV (data behind each plot) + PNG (the plot itself) ---------- */
 /* Each CSVDATA[key] carries {name (file slug), title (human title), headers, rows}. */
 const CSVDATA={};
-const CITE_BASE='Source: OHCHR Search Library — Voting collection (searchlibrary.ohchr.org) · CHR·HRC Voting Records · https://lszoszk.github.io/hrc-voting';
+const CITE_BASE='Source: OHCHR Search Library — Voting collection (searchlibrary.ohchr.org); General Assembly: UN Dag Hammarskjöld Library, General Assembly voting data v5 (digitallibrary.un.org/record/4060887) · CHR·HRC Voting Records · https://lszoszk.github.io/hrc-voting';
 function citeLine(){const d=new Date(),p=n=>String(n).padStart(2,'0');
   return CITE_BASE+' · accessed '+d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());}
 /* Academic citation for the SOFTWARE (this dashboard + pipeline), distinct from
@@ -1501,16 +1521,16 @@ function renderCurrent(){
 function renderOverview(){
   const RS=RES.filter(kindOK);
   $('ov-tiles').innerHTML=[
-    [gKind==='amd'?'Recorded amendments':'Recorded resolutions',fmt(RS.length),gKind==='res'?'amendments excluded':''],['Countries',fmt(C.length),''],
+    [gKind==='amd'?'Recorded amendments':'Recorded resolutions',fmt(RS.length),gKind==='res'?'amendments excluded':''],['Countries',fmt(countriesInScope()),''],
     ['Roll-call votes cast',fmt(rollcallCount()),''],['Years covered',M.yearMin+'–'+M.yearMax,'']
   ].map(t=>`<div class="tile"><div class="tk">${t[0]}</div><div class="tv">${t[1]}<small class="tvs">${t[2]}</small></div></div>`).join('');
   const years=[];for(let y=M.yearMin;y<=M.yearMax;y++)years.push(y);
-  const perYear={};years.forEach(y=>perYear[y]={CHR:0,HRC:0});
+  const perYear={};years.forEach(y=>perYear[y]={CHR:0,HRC:0,GA:0});
   RS.forEach(r=>{if(r.year!=null&&perYear[r.year])perYear[r.year][r.body]++;});
-  const maxY=Math.max(...years.map(y=>perYear[y].CHR+perYear[y].HRC));
+  const maxY=Math.max(...years.map(y=>perYear[y].CHR+perYear[y].HRC+perYear[y].GA));
   VRC.ovTimeline($('ov-timeline'),{years,perYear,maxY,ymin:M.yearMin,ymax:M.yearMax});
-  CSVDATA.ovtl={name:'recorded-votes-per-year',title:'Recorded votes per year, by deciding body',headers:['year','CHR','HRC','total'],
-    rows:years.filter(y=>perYear[y].CHR+perYear[y].HRC>0).map(y=>[y,perYear[y].CHR,perYear[y].HRC,perYear[y].CHR+perYear[y].HRC])};
+  CSVDATA.ovtl={name:'recorded-votes-per-year',title:'Recorded votes per year, by deciding body',headers:['year','CHR','HRC','GA','total'],
+    rows:years.filter(y=>perYear[y].CHR+perYear[y].HRC+perYear[y].GA>0).map(y=>[y,perYear[y].CHR,perYear[y].HRC,perYear[y].GA,perYear[y].CHR+perYear[y].HRC+perYear[y].GA])};
   const buckets=[['Near-unanimous (0–5)',0,5],['Clear (6–15)',6,15],['Divided (16–30)',16,30],['Highly divided (31+)',31,9999]];
   const counts=buckets.map(()=>0);
   RS.forEach(r=>{if(r.y==null||r.n==null)return;const m=Math.abs(r.y-r.n);
@@ -2194,7 +2214,7 @@ async function txSearch(){
   const y0=+($('tx-ymin').value||TX.ymin),y1=+($('tx-ymax').value||TX.ymax),bod=$('tx-body').value;
   /* BM25-lite: idf(term)*log(1+tf) + title/subject token boosts */
   let hits=[...docGroups.keys()].map(i=>({i,d:TX.cat.docs[i],g:docGroups.get(i)}))
-    .filter(h=>kindOK({am:h.d[5]})&&h.d[2]>=y0&&h.d[2]<=y1&&(!bod||h.d[3]===bod));
+    .filter(h=>amOK({am:h.d[5]})&&h.d[2]>=y0&&h.d[2]<=y1&&(!bod||h.d[3]===bod));   /* the Texts tab has its own Body filter: the global body scope does not apply here */
   const terms=[...rmap.values()].filter(r=>r.df>0);
   hits.forEach(h=>{
     let s=0;const tl=(h.d[7]||'').toLowerCase(),sj=(h.d[6]||'').toLowerCase();
@@ -2396,6 +2416,12 @@ function renderLanguage(){langInit().then(()=>{
 /* ---------- 08 METHODOLOGY ---------- */
 function renderMethod(){
   const cov=M.coverage;
+  {const ga=cov.ga||{},g=(id,v)=>{const e=$(id);if(e)e.textContent=v;};
+   g('m-ga-res',fmt(ga.resolutions||0));g('m-ga-votes',fmt(ga.votes||0));
+   g('m-ga-sess',ga.sessionMin?ga.sessionMin+'–'+ga.sessionMax:'—');
+   g('m-ga-draft',fmt(ga.byDraft||0));g('m-ga-agenda',fmt(ga.byAgenda||0));g('m-ga-comm',fmt(ga.committee||0));
+   const cs=ga.committeeSessions||[];g('m-ga-commsess',cs.length?Math.min(...cs)+'–'+Math.max(...cs):'—');
+   const cc=ga.committeeCoverage;g('m-ga-cov',cc?fmt(cc.matched)+' of '+fmt(cc.eligible):'—');}
   langInit().then(fillVocab);fillVocab();
   $('m-total-inline').textContent=fmt(cov.totalResolutions);
   $('m-total-head').textContent=fmt(cov.totalResolutions);
@@ -2532,15 +2558,43 @@ const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','De
 function fmtDate(d){if(!d)return '';const m=/^(\d{4})-?(\d{2})?-?(\d{2})?/.exec(d);if(!m)return d;
   if(m[2]&&m[3])return (+m[3])+' '+MON[+m[2]-1]+' '+m[1];
   if(m[2])return MON[+m[2]-1]+' '+m[1];return m[1];}
+/* Third Committee stage of a General Assembly resolution: the committee roll-call
+   (from the summary record) next to the plenary one, and who changed between the two. */
+const _cvm={};
+function cvmap(iso){if(_cvm[iso])return _cvm[iso];const v=(D.cvotes||{})[iso],m=new Map();if(v)for(let i=0;i<v.r.length;i++)m.set(v.r[i],v.v[i]);return _cvm[iso]=m;}
+function committeeBlock(r,ri){
+  if(r.body!=='GA')return '';
+  const inferred=r.src==='agenda'?'<div class="rc-meta" style="margin-top:4px;color:var(--dimmer)">Attribution to the Third Committee inferred from the agenda item (record without a draft symbol; see Methodology 14).</div>':'';
+  if(!r.c)return '<div class="rc-meta" style="margin-top:6px;color:var(--dimmer)">Third Committee stage: no per-country roll-call available for this text — the vote was not recorded at committee stage, or its summary record is not yet published.</div>'+inferred;
+  const changed=[];let same=0;
+  C.forEach(c=>{const p=vmap(c.iso3).get(ri),k=cvmap(c.iso3).get(ri);if(k===undefined||p===undefined||p==='.'||p==='-')return;if(k===p)same++;else changed.push(c.name+' '+k+'→'+p);});
+  changed.sort();
+  const where=r.c.sr?' ('+esc(r.c.sr)+(r.c.date?', '+esc(r.c.date):'')+')':(r.c.igov?' ('+esc(r.c.igov)+'th meeting'+(r.c.date?', '+esc(r.c.date):'')+', totals from igov.un.org)':'');
+  const head='<div class="rc-tot"><span class="mut">Third Committee stage'+where+':</span> <span class="pill pY">Yes '+r.c.y+'</span><span class="pill pN">No '+r.c.n+'</span><span class="pill pA">Abstain '+r.c.a+'</span>'+(r.c.am?'<span class="mut">· voted as amended</span>':'')+'</div>';
+  if(r.c.igov)return head+'<div class="rc-meta" style="margin-top:4px;color:var(--dimmer)">Per-State committee roll-call pending: the Committee\'s summary record for this meeting is not published yet.</div>'+inferred;
+  return head+
+    '<div class="rc-meta" style="margin-top:4px">'+(changed.length?'<b>'+changed.length+'</b> state'+(changed.length===1?'':'s')+' voted differently in plenary than in committee (committee→plenary): '+esc(changed.slice(0,40).join(', '))+(changed.length>40?' … +'+(changed.length-40)+' more':''):'Every state that voted at both stages voted the same way ('+same+' states).')+'</div>'+inferred;
+}
+/* the same text in the other organ (title match computed at build time): the
+   Assembly's plenary vote next to the Council's, or the reverse */
+function relatedBlock(r){
+  if(!r.rel||!r.rel.length)return '';
+  const rows=r.rel.map(j=>RES[j]).filter(Boolean);
+  if(!rows.length)return '';
+  const other=r.body==='GA'?'Commission / Council':'General Assembly';
+  return '<div class="rc-meta" style="margin-top:6px"><span class="mut">Same text in the '+other+':</span> '+
+    rows.map(x=>'<a class="reslink" role="button" tabindex="0" data-ri="'+x.i+'" title="'+esc(x.title||'')+'">'+esc(x.sym)+'</a> '+(x.year||'')+
+      (x.y!=null?' <span class="mut">('+x.y+'–'+x.n+'–'+x.a+')</span>':'')).join(' · ')+'</div>';
+}
 function openResolution(ri){
   const r=RES[ri];if(!r)return;
   const bk={Y:[],A:[],N:[],o:[]},byVote={};
   C.forEach(c=>{const code=vmap(c.iso3).get(ri);if(code===undefined)return;byVote[c.iso3]=code;
     (bk[code==='Y'?'Y':code==='A'?'A':code==='N'?'N':'o']).push(c);});
-  const links=['<a href="'+recUrl(r.id)+'" target="_blank" rel="noopener">OHCHR record ↗</a>'];
+  const links=['<a href="'+recUrl(r.id)+'" target="_blank" rel="noopener">'+(r.body==='GA'?'UN Digital Library record':'OHCHR record')+' ↗</a>'];
   if(r.urlR)links.push('<a href="'+esc(r.urlR)+'" target="_blank" rel="noopener">Resolution ↗</a>');
   if(r.urlD)links.push('<a href="'+esc(r.urlD)+'" target="_blank" rel="noopener">Draft ↗</a>');
-  const bodyName=r.body==='HRC'?'Human Rights Council':'Commission on Human Rights';
+  const bodyName=r.body==='HRC'?'Human Rights Council':r.body==='GA'?'General Assembly · Third Committee':'Commission on Human Rights';
   $('rc-head').innerHTML=
     '<div class="rc-sym">'+esc(r.sym||'')+(r.am?' <span class="pill pX" style="font-size:8px;padding:0 5px;vertical-align:middle" title="Amendment to a draft text">AMENDMENT</span>':'')+'</div>'+
     '<div class="rc-title">'+esc(r.title||'')+'</div>'+
@@ -2550,6 +2604,7 @@ function openResolution(ri){
       '<span class="pill pN">No '+(r.n==null?bk.N.length:r.n)+'</span>'+
       '<span class="pill pA">Abstain '+(r.a==null?bk.A.length:r.a)+'</span>'+
       '<span class="mut">· '+links.join(' · ')+'</span></div>'+
+    committeeBlock(r,ri)+relatedBlock(r)+
     (((r.y!=null&&r.y!==bk.Y.length)||(r.n!=null&&r.n!==bk.N.length)||(r.a!=null&&r.a!==bk.A.length))
       ?'<div class="rc-meta" style="margin-top:6px;color:var(--dimmer)">⚠ The per-country roll-call below and the official totals differ for this record — a known cataloguing quirk in older/edge records (see Methodology).</div>':'');
   VRC.rollcallMap($('rc-map'),{voteByIso:byVote,names:Object.fromEntries(C.map(c=>[c.iso3,c.name]))});
@@ -2638,7 +2693,8 @@ function tourSpark(){
 function buildTour(){
   if(tourBuilt)return;tourBuilt=true;
   const host=$('tour-slides');
-  const nRec=fmt(RES.length),nAll=fmt((D.resAll||[]).length||M.coverage&&M.coverage.totalResolutions||6346),nCells=fmt(nVotesTotal);
+  const gaC=(M.coverage&&M.coverage.ga)||{};/* the tour describes the OHCHR collection: keep the GA extension out of its counts */
+  const nRec=fmt(RES.length-(gaC.resolutions||0)),nAll=fmt((D.resAll||[]).length||M.coverage&&M.coverage.totalResolutions||6346),nCells=fmt(nVotesTotal-(gaC.votes||0));
   const slides=[
   `<div class="tour-kicker">First time here · a 90-second tour</div>
    <h2 class="tour-h">Eighty years of human-rights votes, on one page.</h2>
@@ -2798,6 +2854,12 @@ function fillYears(sel,def){const s=$(sel);let h='';for(let y=M.yearMin;y<=M.yea
   $('g-kind').value=gKind;
   $('g-kind').addEventListener('change',()=>{
     gKind=$('g-kind').value;try{localStorage.setItem('hrc-scope',gKind)}catch(e){}
+    _heatCache.key=null;_consCache.key=null;_cohCache.key=null;_isoCache.key=null;
+    _flips=null;_cnStatic=null;_rcCache={};_chYears={};
+    rescopeSubjects();renderTopicChips();refreshStats();renderCurrent();});
+  $('g-body').value=gBody;
+  $('g-body').addEventListener('change',()=>{
+    gBody=$('g-body').value;try{localStorage.setItem('hrc-body',gBody)}catch(e){}
     _heatCache.key=null;_consCache.key=null;_cohCache.key=null;_isoCache.key=null;
     _flips=null;_cnStatic=null;_rcCache={};_chYears={};
     rescopeSubjects();renderTopicChips();refreshStats();renderCurrent();});

@@ -14,6 +14,21 @@ zero-build static dashboard.
 Record count matches the collection total exactly (verified by three independent
 harvest methods).
 
+**General Assembly extension (September 2026).** The dashboard's *Bodies* selector
+adds the Assembly's human rights resolutions — the texts that come out of the
+**Third Committee** — as a third organ next to the Commission and the Council:
+708 resolutions adopted by recorded vote (sessions 25–80, 1970–2025; 130,591
+per-State plenary votes) from the UN Dag Hammarskjöld Library's *General
+Assembly voting data* (version 5, February 2026), and the Committee-stage
+roll-calls read from the Committee's summary records (`A/C.3/<session>/SR.n`) on
+UN Documents — 747 recorded committee votes (drafts, amendments, paragraphs,
+motions; 126,080 State votes; sessions 55–79), covering 438 of the 446
+draft-attributed resolutions of those sessions and cross-checked against the
+Committee's e-voting sheets (10,480 of 10,482 State-votes agree) — so a
+resolution's page shows the committee vote next to the plenary one and names
+every State that changed between them. Methodology 14 documents the sources, the
+attribution rule for pre-2000 records and the terms of use.
+
 ## Layout
 
 ```
@@ -26,6 +41,15 @@ data/raw/                      # harvested MARCXML, one file per year (git-ignor
 data/csv/resolutions.csv       # one row per resolution (metadata + vote totals)
 data/csv/votes_long.csv        # one row per (resolution, country) roll-call vote
 
+# General Assembly — Third Committee (sept 2026)
+scripts/ga/parse_undl.py       # UNDL GA voting CSV -> data/csv/ga_resolutions.csv + ga_votes_long.csv
+scripts/ga/harvest_sr.py       # Third Committee summary records A/C.3/<s>/SR.n -> data/raw/ga/sr/ (git-ignored)
+scripts/ga/parse_sr_votes.py   # summary records -> data/csv/ga_committee_events.csv + ga_committee_votes.csv
+scripts/ga/harvest_sheets.py   # Third Committee e-voting sheet PDFs (un.org, sessions 65-78) -> data/raw/ga/sheets/
+scripts/ga/parse_sheets.py     # sheets -> data/csv/ga_sheet_events.csv + ga_sheet_votes.csv (cross-check of the SR parser)
+scripts/ga/harvest_ga_texts.py # A/RES PDFs -> data/ods_texts/ (same log as the HRC texts; indexed from 1993, earlier PDFs are scans)
+data/raw/ga/                   # the UNDL CSV (364 MB), its metadata, igov proposal JSON (git-ignored)
+
 # resolution texts (1993-2026) — powers the Texts and Language tabs
 scripts/mirror_ap_ohchr.py     # mirror CHR 1993-2005 .doc + HRC s1-11 .pdf
 scripts/harvest_ods_texts.py   # HRC s12+ .pdf from documents.un.org
@@ -36,7 +60,7 @@ dashboard/texts/               # catalog.json, docs-<year>.json, idx/, lang.json
 
 # Hugging Face package (rebuilt from the committed outputs above)
 scripts/prepare_hf_dataset.py  # -> huggingface/hrc-voting/{README.md, data/*.parquet}
-huggingface/hrc-voting/        # dataset card + 3 parquet configs, ready to upload
+huggingface/hrc-voting/        # dataset card + 9 parquet configs (5 CHR/HRC + 4 GA), ready to upload
 
 # app + checks
 dashboard/index.html           # self-contained static dashboard (open directly)

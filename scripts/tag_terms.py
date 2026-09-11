@@ -261,8 +261,9 @@ def build_lang(cat, bundles):
     per_doc = []
     for d in cat:
         sym, rid, year, body, vt, am, subject, title = d
-        if am or not year:
-            continue                       # amendments are edit-instructions, not operative
+        if am or not year or body == "GA":
+            continue                       # amendments are edit-instructions, not operative;
+                                           # GA texts stay out: the per-year series is one organ
         cls = bundles.get(year, {}).get(sym, [])
         dv, vv, ndeleg, nop = [], [], 0, 0
         y = yr[year]; y["body"] = body; y["nres"] += 1
@@ -359,6 +360,8 @@ def main():
 
     for did, d in enumerate(cat):
         sym, rid, year, body, vt, am, subj, title = d
+        if body == "GA":
+            continue                       # Language tab is CHR/HRC only
         cls = bundles.get(year, {}).get(sym, [])
         verbs, preambles = [], []
         for label, text in cls:
