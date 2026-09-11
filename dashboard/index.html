@@ -1373,7 +1373,7 @@ function citeLine(){const d=new Date(),p=n=>String(n).padStart(2,'0');
    CITE_BASE above (data-provenance stamp on individual chart exports). Single source
    of truth for both the footer "Cite" button and Methodology §12 — keep in sync with
    CITATION.cff and .zenodo.json (version, date-released, DOI) when either changes. */
-const CITE_ACADEMIC='Szoszkiewicz, Ł. (2026). OHCHR Voting Records — CHR · HRC (v1.0.0) [Software]. Zenodo. https://doi.org/10.5281/zenodo.21281232';
+const CITE_ACADEMIC='Szoszkiewicz, Ł. (2026). UN Human Rights Voting Records — CHR · HRC · GA Third Committee (v1.1.0) [Software]. Zenodo. https://doi.org/10.5281/zenodo.21281232';
 function copyCite(btn){
   const done=ok=>{const orig=btn.textContent;btn.textContent=ok?'✓ copied':'copy failed';
     btn.disabled=true;setTimeout(()=>{btn.textContent=orig;btn.disabled=false;},1600);};

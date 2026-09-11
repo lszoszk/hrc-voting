@@ -405,7 +405,7 @@ from the OHCHR Search Library.
 
 ## Citation
 
-> Szoszkiewicz, Ł. (2026). *OHCHR Voting Records — CHR · HRC* (v1.0.0) [Software].
+> Szoszkiewicz, Ł. (2026). *UN Human Rights Voting Records — CHR · HRC · GA Third Committee* (v1.1.0) [Software].
 > Zenodo. https://doi.org/10.5281/zenodo.21281232
 
 ```bibtex
