@@ -118,3 +118,10 @@ roll-call panel); committee-stage roll-calls and resolution texts from session 5
   note, 2001– rule + numbered notes) plus the job code / barcode / "Please recycle" /
   running-header lines. Missing texts: the lettered sub-resolutions A/RES/35/130A-B,
   36/56A, 37/189A-B (UN Documents has no separate PDF) and 61/232.
+- Committee-stage records (2026-09-11, second pass): the 306 committee votes that are
+  not the vote on an adopted resolution's draft (156 amendments, 86 paragraph votes,
+  42 motions, 22 drafts with no plenary recorded vote) are dashboard records with ids
+  `gc<event_id>`, `am=1`, `ck=<kind>`, `par=<parent resolution index>`, the summary
+  record as their source link; they live under the amendments scope so the default
+  resolution counts stay 708. Events with fewer than 20 State votes or kind
+  `unknown` are left out.

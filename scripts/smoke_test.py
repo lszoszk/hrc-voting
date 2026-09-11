@@ -64,6 +64,10 @@ with sync_playwright() as p:
     pg.click('.tab[data-view="method"]'); pg.wait_for_timeout(400)
     checks["method 14 filled"] = pg.evaluate("document.getElementById('m-ga-res').textContent!=='—'&&document.getElementById('m-ga-res').textContent!==''")
     pg.click('.tab[data-view="overview"]')
+    pg.select_option("#g-kind", "amd"); pg.wait_for_timeout(500)
+    checks["ga committee-stage records (amendments scope)"] = pg.evaluate("RES.filter(r=>r.body==='GA'&&r.ck).length")
+    checks["ga committee-stage tile"] = pg.evaluate("document.querySelector('#ov-tiles .tv').textContent")
+    pg.select_option("#g-kind", "res"); pg.wait_for_timeout(300)
     pg.select_option("#g-body", "hrc"); pg.wait_for_timeout(400)
     checks["scope back to CHR+HRC"] = pg.evaluate("document.querySelector('#ov-tiles .tv').textContent")
 

@@ -26,7 +26,9 @@ motions; 126,080 State votes; sessions 55–79), covering 438 of the 446
 draft-attributed resolutions of those sessions and cross-checked against the
 Committee's e-voting sheets (10,480 of 10,482 State-votes agree) — so a
 resolution's page shows the committee vote next to the plenary one and names
-every State that changed between them. Methodology 14 documents the sources, the
+every State that changed between them. The Committee's 306 other recorded votes
+(amendments, separate paragraphs, procedural motions, drafts that never reached
+a plenary vote) are records of their own under the *amendments* scope. Methodology 14 documents the sources, the
 attribution rule for pre-2000 records and the terms of use.
 
 ## Layout
