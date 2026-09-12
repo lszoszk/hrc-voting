@@ -16,6 +16,7 @@ the row count or throw away the resolution-level metadata:
   ga_votes            one row per (GA resolution, State) plenary vote      (data/csv/ga_votes_long.csv)
   ga_committee_events one row per recorded vote in the Third Committee    (data/csv/ga_committee_events.csv)
   ga_committee_votes  one row per (committee vote, State)                 (data/csv/ga_committee_votes.csv)
+  ga_clauses          one row per clause of an Assembly text, 1993–       (dashboard/texts/)
 
 The two dimension tables exist so that caveats which are otherwise only prose become
 machine-readable: which states no longer exist, which ISO code spans a change of
@@ -220,13 +221,18 @@ def build_subjects(res_df, is_country_subject):
     return pd.DataFrame(rows).sort_values("n_resolutions_all", ascending=False)
 
 
-def build_clauses(res_df):
+def build_clauses(res_df, bodies=("CHR", "HRC")):
+    """Clause rows for the catalogued texts of the given organs. The `clauses` config stays
+    a Commission/Council table; the Assembly's texts go to `ga_clauses` (same shape)."""
     cat = json.loads((TX / "catalog.json").read_text())["docs"]
     bundles = {int(f.stem.split("-")[1]): json.loads(f.read_text())
                for f in TX.glob("docs-*.json")}
-    meta = res_df.set_index("record_id")[["adoption_mode", "prevailing_side", "adopted"]].to_dict("index")
+    cols = [c for c in ("adoption_mode", "prevailing_side", "adopted") if c in res_df.columns]
+    meta = res_df.set_index("record_id")[cols].to_dict("index")
     rows = []
     for sym, rid, year, body, vt, am, subj, title in cat:
+        if body not in bodies:
+            continue
         for i, (label, text) in enumerate(bundles.get(year, {}).get(sym, [])):
             ct = clause_type(label)
             verb = dr = val = dg = None
@@ -241,7 +247,7 @@ def build_clauses(res_df):
                 "subject": subj or None,
                 "title": title,
                 "is_amendment": bool(am),
-                "adoption_mode": m.get("adoption_mode"),
+                "adoption_mode": m.get("adoption_mode", "recorded" if body == "GA" else None),
                 "adopted": m.get("adopted"),
                 "clause_index": i,
                 "clause_label": label,
@@ -400,6 +406,10 @@ def main():
               ("countries", countries_df), ("subjects", subjects_df)]
     ga = build_ga(groups, payload)
     if ga:
+        ga_clauses = build_clauses(ga["ga_resolutions"], bodies=("GA",))
+        cs_ga = {s: is_country_subject(s) for s in ga_clauses["subject"].dropna().unique()}
+        ga_clauses["subject_is_country_situation"] = ga_clauses["subject"].map(cs_ga)
+        ga["ga_clauses"] = ga_clauses
         tables += list(ga.items())
     for name, df in tables:
         path = DATA / f"{name}-train.parquet"
@@ -445,6 +455,8 @@ def main():
             "committee_events": len(ga["ga_committee_events"]),
             "committee_votes": len(ga["ga_committee_votes"]),
             "committee_events_by_kind": {k: int(v) for k, v in ga["ga_committee_events"]["kind"].value_counts().items()},
+            "clauses": len(ga["ga_clauses"]), "clause_docs": int(ga["ga_clauses"]["symbol"].nunique()),
+            "clause_years": [int(ga["ga_clauses"]["year"].min()), int(ga["ga_clauses"]["year"].max())],
         }
     (OUT / "dataset_stats.json").write_text(json.dumps(stats, indent=2) + "\n")
     print("\nstats:", json.dumps(stats))

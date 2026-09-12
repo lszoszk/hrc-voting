@@ -2217,7 +2217,7 @@ async function txSearch(){
   /* anyone reading the corpus here is one step from wanting it in bulk */
   $('tx-cov').innerHTML=fmt(TX.cat.n)+' texts · '+TX.ymin+'–'+TX.ymax+' · more being added · '
     +'<a href="https://huggingface.co/datasets/lszoszk/hrc-voting" target="_blank" rel="noopener">'
-    +'download all '+fmt(96451)+' clauses</a>';
+    +'download every clause on Hugging Face</a>';
   if($('tx-ymin').options.length===0){
     for(let y=TX.ymin;y<=TX.ymax;y++){$('tx-ymin').add(new Option(y,y));$('tx-ymax').add(new Option(y,y));}
     $('tx-ymax').value=TX.ymax;}

@@ -37,6 +37,12 @@
       "paragraph": 86,
       "motion": 42,
       "unknown": 4
-    }
+    },
+    "clauses": 23578,
+    "clause_docs": 570,
+    "clause_years": [
+      1993,
+      2025
+    ]
   }
 }

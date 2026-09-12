@@ -74,6 +74,10 @@ configs:
   data_files:
   - split: train
     path: data/ga_committee_votes-train.parquet
+- config_name: ga_clauses
+  data_files:
+  - split: train
+    path: data/ga_clauses-train.parquet
 ---
 
 # UN Human Rights Voting Records — CHR · HRC
@@ -316,6 +320,7 @@ three organs.
 | `ga_votes` | 130,591 | one State's plenary vote on one GA resolution | 1970–2025 |
 | `ga_committee_events` | 747 | one recorded vote in the Third Committee (draft, amendment, paragraph or motion) | sessions 55–79 (2000–2024) |
 | `ga_committee_votes` | 126,080 | one State's vote in one committee-stage roll-call | 2000–2024 |
+| `ga_clauses` | 23,578 | one preambular / operative / annex clause of an Assembly text (same columns as `clauses`) | 1993–2025 |
 
 **Sources.** Plenary votes: UN Dag Hammarskjöld Library, *General Assembly voting data*,
 version 5 (February 2026), <https://digitallibrary.un.org/record/4060887> — one row per
@@ -347,8 +352,9 @@ were compared with the Committee's e-voting board printouts for sessions 75–77
 10,480 of 10,482 State-votes agree.
 
 **Texts.** The Assembly's adopted texts (1993 onward; earlier A/RES documents are scans
-without a text layer) are searchable in the dashboard's Texts tab but are not part of the
-`clauses` config, which stays a Commission/Council table.
+without a text layer) are clause-segmented in `ga_clauses` — the same columns and coding
+as `clauses`, which stays a Commission/Council table; `adoption_mode` is always
+`recorded` there, since the source holds recorded votes only.
 
 **Cross-organ link.** `related_chr_hrc_symbols` lists the Commission/Council
 resolutions whose catalogued title matches the GA text (token Jaccard ≥ 0.6; 430 of
