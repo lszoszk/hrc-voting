@@ -1582,7 +1582,16 @@ function alignData(iso,allowed){
   all.sort((a,b)=>b.agree-a.agree);
   return {all,by};
 }
+/* The tab's own Body filter narrows within the global Bodies scope: its default option
+   is named after that scope, and organs outside it are disabled rather than offering a
+   filter that can only return an empty profile. */
+function syncCountryBody(){const sel=$('c-body');if(!sel)return;
+  const inScope={CHR:gBody!=='ga',HRC:gBody!=='ga',GA:gBody!=='hrc'};
+  [...sel.options].forEach(o=>{if(!o.value){o.textContent={hrc:'CHR + HRC',ga:'General Assembly',all:'All three'}[gBody];return;}
+    o.disabled=!inScope[o.value];});
+  if(sel.value&&!inScope[sel.value])sel.value='';}
 function renderCountry(){
+  syncCountryBody();
   const {rows,allowed,iso}=countryRows();const c=byIso[iso];
   /* Say plainly that a guessed country is a guess. The alternative — opening on some
      state and letting the reader assume it was detected — is the kind of quiet
@@ -1601,6 +1610,10 @@ function renderCountry(){
     ['Votes',fmt(rows.length),''],['Yes',fmt(cnt.Y),pct(cnt.Y)],['No',fmt(cnt.N),pct(cnt.N)],['Abstain',fmt(cnt.A),pct(cnt.A)],
     ['Voting span',yrs.length?Math.min(...yrs)+'–'+Math.max(...yrs):'—','first–last roll-call'],['UN group','',GLAB[c.group]||'—']
   ].map(t=>`<div class="tile"><div class="tk">${t[0]}</div><div class="tv">${t[1]}<small class="tvs">${t[2]}</small></div></div>`).join('');
+  if(!rows.length){const hasGA=[...vmap(iso).keys()].some(ri=>RES[ri].body==='GA'),hasOH=[...vmap(iso).keys()].some(ri=>RES[ri].body!=='GA');
+    const scope={hrc:'Commission and Council',ga:'General Assembly',all:'three organs'}[gBody];
+    $('c-tiles').insertAdjacentHTML('beforeend','<div class="note" style="grid-column:1/-1">No recorded votes for <b>'+esc(c.name)+'</b> in the current scope ('+scope+($('c-body').value?', '+esc($('c-body').options[$('c-body').selectedIndex].textContent):'')+', '+$('c-ymin').value+'–'+$('c-ymax').value+'). '
+      +(gBody==='hrc'&&hasGA?'This State votes in the <b>General Assembly</b> records — switch <b>Bodies</b> (top right) to <i>GA Third Committee</i> or <i>All three</i>.':gBody==='ga'&&hasOH?'This State has Commission or Council votes — switch <b>Bodies</b> to <i>CHR + HRC</i> or <i>All three</i>.':'Widen the year window or the Scope selector.')+'</div>');}
   /* chart: yearly composition + volume strip */
   const yrsAgg={};
   rows.forEach(x=>{const y=x.r.year;if(!y)return;(yrsAgg[y]=yrsAgg[y]||{Y:0,N:0,A:0,o:0});if(SUBS.has(x.code))yrsAgg[y][x.code]++;else yrsAgg[y].o++;});
