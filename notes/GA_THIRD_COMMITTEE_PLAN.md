@@ -125,3 +125,11 @@ roll-call panel); committee-stage roll-calls and resolution texts from session 5
   record as their source link; they live under the amendments scope so the default
   resolution counts stay 708. Events with fewer than 20 State votes or kind
   `unknown` are left out.
+- Bodies scope audit (2026-09-12): every view checked under CHR+HRC / GA / All three.
+  Fixed: Consensus crashed under GA (`Reduce of empty array`) → CHR/HRC-only notice
+  and panels hidden, one-line note under All three; Language ignored the scope →
+  tag_terms.py now aggregates per (year, organ) including GA, ships `verbsByBody`
+  and a group tag on `bySubject`, and the tab filters by scope (the shipped `verbs`
+  list stays CHR+HRC; before this the verb ladder had silently absorbed the GA texts
+  since they entered the catalogue); Overview "years covered" tile follows the scope.
+  Topics (UNDL tags) and Blocs (200 States) already worked.

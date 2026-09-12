@@ -261,12 +261,12 @@ def build_lang(cat, bundles):
     per_doc = []
     for d in cat:
         sym, rid, year, body, vt, am, subject, title = d
-        if am or not year or body == "GA":
-            continue                       # amendments are edit-instructions, not operative;
-                                           # GA texts stay out: the per-year series is one organ
+        if am or not year:
+            continue                       # amendments are edit-instructions, not operative
+        group = "GA" if body == "GA" else "CHRHRC"   # subject vocabularies differ by source
         cls = bundles.get(year, {}).get(sym, [])
         dv, vv, ndeleg, nop = [], [], 0, 0
-        y = yr[year]; y["body"] = body; y["nres"] += 1
+        y = yr[(year, body)]; y["body"] = body; y["nres"] += 1   # one series per organ and year
         for label, text in cls:
             if not (label.startswith("OP") and "(" not in label):
                 continue
@@ -279,19 +279,19 @@ def build_lang(cat, bundles):
                 vv.append(val); y["valSum"] += val; y["valN"] += 1
                 if val <= -2: y["cond"] += 1
             if dg: ndeleg += 1; y["deleg"] += 1
-            if verb: subj[subject]["verbs"][verb] += 1
+            if verb: subj[(group, subject)]["verbs"][verb] += 1
         if subject:
-            s = subj[subject]; s["n"] += 1
+            s = subj[(group, subject)]; s["n"] += 1
             if dv: s["dir"].append(statistics.mean(dv))
             if vv: s["val"].append(statistics.mean(vv))
             s["deleg"] += (ndeleg / nop if nop else 0)
         if nop:
             per_doc.append([sym, year, round(statistics.mean(dv), 2) if dv else None,
                             round(statistics.mean(vv), 2) if vv else None,
-                            round(ndeleg / nop, 2)])
+                            round(ndeleg / nop, 2), body])
     byYear = []
-    for y in sorted(yr):
-        o = yr[y]
+    for (y, body) in sorted(yr):
+        o = yr[(y, body)]
         if o["nop"] < 5:
             continue
         byYear.append({"y": y, "body": o["body"], "nres": o["nres"], "nop": o["nop"],
@@ -300,44 +300,56 @@ def build_lang(cat, bundles):
             "encShare": round(o["enc"] / o["nop"], 3), "condShare": round(o["cond"] / o["nop"], 3),
             "delegShare": round(o["deleg"] / o["nop"], 3)})
     bySubj = []
-    for s, o in subj.items():
+    for (group, s), o in subj.items():
         if o["n"] >= 6 and o["dir"]:
             top = o["verbs"].most_common(1)[0][0] if o["verbs"] else ""
             bySubj.append([s, o["n"], round(statistics.mean(o["dir"]), 2),
                            round(statistics.mean(o["val"]), 2) if o["val"] else None,
-                           round(o["deleg"] / o["n"], 2), top])
+                           round(o["deleg"] / o["n"], 2), top, group])
     bySubj.sort(key=lambda r: -r[2])
     # verb table with axis coordinates for the scheme visualisation. Context-scored
     # verbs ("Expresses its grave concern" vs "…its appreciation") carry no fixed
     # valence, so we ship the resolved split and place the verb at its modal value —
     # filing them flat under 0 would misreport the largest expressive verb in the corpus.
-    op_freq = collections.Counter()
-    ctx_split = collections.defaultdict(collections.Counter)
+    # counted per organ so the tab can follow the Bodies scope (CHR + HRC by default,
+    # the General Assembly on request); the shipped "verbs" list is the CHR + HRC one
+    op_freq_b = {b: collections.Counter() for b in ("CHR", "HRC", "GA")}
+    ctx_split_b = {b: collections.defaultdict(collections.Counter) for b in ("CHR", "HRC", "GA")}
     for d in cat:
-        if d[5] or not d[2]:
+        if d[5] or not d[2] or d[3] not in op_freq_b:
             continue
         for label, text in bundles.get(d[2], {}).get(d[0], []):
             if label.startswith("OP") and "(" not in label:
                 verb, dr, val, dg = code_clause(text)
                 if verb:
-                    op_freq[verb] += 1
+                    op_freq_b[d[3]][verb] += 1
                     if verb in CTX_VERBS:
-                        ctx_split[verb][val] += 1
-    verbs = []
-    for v, c in op_freq.most_common():
-        if v in ctx_split:
-            sp = ctx_split[v]
-            verbs.append([v, c, DIR_OF.get(v, 0), sp.most_common(1)[0][0],
-                          {str(k): n for k, n in sorted(sp.items())}])
-        else:
-            verbs.append([v, c, DIR_OF.get(v, 0), VAL_OF.get(v, 0), None])
+                        ctx_split_b[d[3]][verb][val] += 1
+
+    def verb_rows(bodies):
+        freq, split = collections.Counter(), collections.defaultdict(collections.Counter)
+        for b in bodies:
+            freq.update(op_freq_b[b])
+            for v, sp in ctx_split_b[b].items():
+                split[v].update(sp)
+        rows = []
+        for v, c in freq.most_common():
+            if v in split:
+                sp = split[v]
+                rows.append([v, c, DIR_OF.get(v, 0), sp.most_common(1)[0][0],
+                             {str(k): n for k, n in sorted(sp.items())}])
+            else:
+                rows.append([v, c, DIR_OF.get(v, 0), VAL_OF.get(v, 0), None])
+        return rows
+    verbs = verb_rows(("CHR", "HRC"))
+    verbs_by_body = {b: verb_rows((b,)) for b in ("CHR", "HRC", "GA")}
     (TX / "lang.json").write_text(json.dumps({
         # shipped so the Methodology tab quotes the vocabulary actually implemented
         # rather than a hand-written figure that can drift from it
         "vocab": {"operative": len(OPERATIVE), "preamble": len(PREAMBLE),
                   "extended": len(OP_EXT)},
         "scheme": {"dir": DIR, "val": {str(k): v for k, v in VAL.items()}},
-        "byYear": byYear, "bySubject": bySubj, "verbs": verbs, "perDoc": per_doc,
+        "byYear": byYear, "bySubject": bySubj, "verbs": verbs, "verbsByBody": verbs_by_body, "perDoc": per_doc,
         "newVerbs": new_heads.most_common(10),
         "intensified": [[f"{a.title()} {v.lower()}", c] for (v, a), c in intens.most_common(10)],
     }, separators=(",", ":"), ensure_ascii=False), encoding="utf-8")

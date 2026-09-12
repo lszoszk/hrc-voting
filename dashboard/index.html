@@ -569,6 +569,7 @@ body.touring .ga-consent{display:none}
 <!-- ================= 05 CONSENSUS (experimental) ================= -->
 <section id="view-consensus" style="display:none">
   <div class="tiles" id="cn-tiles"></div>
+  <div class="p-desc" id="cn-body-note" style="display:none;margin:-6px 0 12px"></div>
   <div class="panel">
     <div class="p-head"><span class="p-idx">01</span><span class="p-title">Breakdowns &amp; rapprochements<span class="exp-badge">experimental</span></span><span class="p-note" id="cn-flipnote"></span><span class="p-exp"><button class="expb" data-csv="cflips" title="Download data as CSV">CSV</button><button class="expb" data-png="cn-strips" data-pngname="consensus-flips" title="Download chart as PNG">PNG</button></span></div>
     <div class="p-body">
@@ -832,7 +833,7 @@ body.touring .ga-consent{display:none}
   <div class="panel">
     <div class="p-head"><span class="p-idx">14</span><span class="p-title">General Assembly — Third Committee</span><span class="p-note">a second organ, two-stage votes, added 2026</span></div>
     <div class="p-body ptext">The <b>Bodies</b> selector (top right) can bring the General Assembly's human rights resolutions into every view. They are a different record from the OHCHR collection and are kept out by default.
-      <br>• <b>What is in</b> — <span id="m-ga-res">—</span> resolutions adopted by the Assembly by recorded vote on texts that came out of the <b>Third Committee</b> (Social, Humanitarian and Cultural), sessions <span id="m-ga-sess">—</span>, with <span id="m-ga-votes">—</span> per-State plenary votes. Only resolutions decided by recorded vote are present: the source dataset carries no consensus texts, so the Consensus tab stays CHR/HRC-only and GA counts in the Overview are counts of recorded votes.
+      <br>• <b>What is in</b> — <span id="m-ga-res">—</span> resolutions adopted by the Assembly by recorded vote on texts that came out of the <b>Third Committee</b> (Social, Humanitarian and Cultural), sessions <span id="m-ga-sess">—</span>, with <span id="m-ga-votes">—</span> per-State plenary votes. Only resolutions decided by recorded vote are present: the source dataset carries no consensus texts, so the Consensus tab stays CHR/HRC-only (it says so when the Assembly is in scope) and GA counts in the Overview are counts of recorded votes. Every other view follows the <b>Bodies</b> scope, including <b>Language</b>, which scores the Assembly's texts (1993–) as a series of their own, with their own verb ladder and subject ranking.
       <br>• <b>Plenary votes</b> — the UN Dag Hammarskjöld Library's <a href="https://digitallibrary.un.org/record/4060887" target="_blank" rel="noopener">General Assembly voting data</a> (version 5, February 2026; resolutions 1 to 80/246), one row per Member State and resolution, derived from the UN Digital Library voting records. Official totals and the per-State lists reconcile for every GA record used here.
       <br>• <b>Which resolutions are the Third Committee's</b> — from session 55 (2000) the dataset names the draft (<code>A/C.3/…/L.n</code>): <span id="m-ga-draft">—</span> resolutions are attributed that way. Earlier records have no draft symbol, so <span id="m-ga-agenda">—</span> resolutions are attributed by their <b>agenda item</b> (the items the Committee is known to handle — human rights questions and situations, self-determination, racism, the Covenants, social development, women, children, crime and drugs); items that sound like human rights but sat elsewhere (apartheid policies, UNRWA, the Israeli-practices committee, foreign economic interests) are excluded. On sessions 55–80, where both signals exist, the rule recovers 484 of 485 draft-attributed resolutions and adds 6 plenary-only texts. Inferred records say so in their roll-call panel.
       <br>• <b>Committee stage</b> — the Third Committee votes first; its per-State roll-calls are read from the Committee's <b>summary records</b> (<code>A/C.3/&lt;session&gt;/SR.n</code>, "In favour / Against / Abstaining") on UN Documents and matched to the resolution through the draft symbol: <span id="m-ga-comm">—</span> resolutions carry a committee result — the per-State roll-call for <span id="m-ga-cov">—</span> of the draft-attributed resolutions of sessions <span id="m-ga-commsess">—</span> (the rest were adopted without a vote in committee or their record is missing), totals only for the newest. The Committee's other recorded votes — <span id="m-ga-conly">—</span> on amendments, separate paragraphs, procedural motions and drafts that never reached a plenary vote — are records of their own under the <b>amendments</b> scope, each pointing to its parent text. Parsed lists are checked against the totals the record states (they agree on 716 of the 733 votes with a stated result; the others differ by a State or two, usually a vote corrected after the roll-call). As an independent check, the same lists were compared with the Committee's e-voting board printouts (<a href="https://www.un.org/en/ga/third/77/votingsheets.shtml" target="_blank" rel="noopener">voting sheets</a>, sessions 75–77): 10,480 of 10,482 State-votes agree. The roll-call panel then shows the committee result next to the plenary one and names every State that changed between the two. Summary records of the most recent session appear months after the vote, so the newest resolutions show the plenary stage only, with the Committee's totals taken from the Assembly's <a href="https://igov.un.org" target="_blank" rel="noopener">iGov</a> proposals register where it has them.
@@ -1293,11 +1294,11 @@ VRC.metricLine=function(host,o){host.innerHTML='';
   o.ticks.forEach(v=>{el('line',{x1:PL,x2:W-PR,y1:Y(v),y2:Y(v),stroke:'var(--line-2)'},s);
     txt({x:PL-6,y:Y(v)+3,'text-anchor':'end'},s,o.fmt(v));});
   if(o.zero!=null)el('line',{x1:PL,x2:W-PR,y1:Y(o.zero),y2:Y(o.zero),stroke:'var(--ink-2)','stroke-dasharray':'2 2',opacity:.55},s);
-  ['CHR','HRC'].forEach(b=>{const p=items.filter(d=>d.body===b).sort((a,c)=>a.y-c.y);if(p.length<2)return;
+  ['CHR','HRC','GA'].forEach(b=>{const p=items.filter(d=>d.body===b).sort((a,c)=>a.y-c.y);if(p.length<2)return;
     let d='';p.forEach((q,i)=>{d+=(i?'L':'M')+X(q.y).toFixed(1)+' '+Y(q.v).toFixed(1)+' ';});
-    el('path',{d:d.trim(),fill:'none',stroke:b==='HRC'?'var(--hrc)':'var(--chr)','stroke-width':1.9,'stroke-linejoin':'round'},s);});
+    el('path',{d:d.trim(),fill:'none',stroke:b==='HRC'?'var(--hrc)':b==='GA'?'var(--ga)':'var(--chr)','stroke-width':1.9,'stroke-linejoin':'round'},s);});
   items.forEach(d=>{const part=isPartialYear(d.y);
-    const c=el('circle',{cx:X(d.y),cy:Y(d.v),r:2.8,fill:d.body==='HRC'?'var(--hrc)':'var(--chr)'},s);
+    const c=el('circle',{cx:X(d.y),cy:Y(d.v),r:2.8,fill:d.body==='HRC'?'var(--hrc)':d.body==='GA'?'var(--ga)':'var(--chr)'},s);
     if(part)c.setAttribute('fill-opacity','.45');
     hov(c,'<b>'+d.y+'</b> · '+d.body+(part?' · year in progress':'')+'<br>'+o.label+': '+o.fmt(d.v)+'<br>'+d.nop+' operative clauses');});
   for(let y=Math.ceil(y0/10)*10;y<=y1;y+=10)txt({x:X(y),y:H-6,'text-anchor':'middle'},s,y);
@@ -1530,7 +1531,7 @@ function renderOverview(){
   const RS=RES.filter(kindOK);
   $('ov-tiles').innerHTML=[
     [gKind==='amd'?'Recorded amendments':'Recorded resolutions',fmt(RS.length),gKind==='res'?'amendments excluded':''],['Countries',fmt(countriesInScope()),''],
-    ['Roll-call votes cast',fmt(rollcallCount()),''],['Years covered',M.yearMin+'–'+M.yearMax,'']
+    ['Roll-call votes cast',fmt(rollcallCount()),''],['Years covered',(()=>{const ys=RES.filter(kindOK).map(r=>r.year).filter(Boolean);return ys.length?Math.min(...ys)+'–'+Math.max(...ys):M.yearMin+'–'+M.yearMax;})(),'']
   ].map(t=>`<div class="tile"><div class="tk">${t[0]}</div><div class="tv">${t[1]}<small class="tvs">${t[2]}</small></div></div>`).join('');
   const years=[];for(let y=M.yearMin;y<=M.yearMax;y++)years.push(y);
   const perYear={};years.forEach(y=>perYear[y]={CHR:0,HRC:0,GA:0});
@@ -2020,6 +2021,14 @@ function flipStats(){
 }
 let _cnStatic=null;
 function renderConsensus(){
+  /* the GA file holds recorded votes only (no consensus texts, no adoption modes): the tab is Commission/Council-only */
+  const sec=$('view-consensus'),note=$('cn-body-note');
+  sec.querySelectorAll('.panel').forEach(p=>p.style.display=gBody==='ga'?'none':'');
+  if(gBody==='ga'){_cnStatic=null;
+    $('cn-tiles').innerHTML='<div class="note">The General Assembly voting data holds <b>recorded votes only</b> — no consensus adoptions, no adoption modes — so there is nothing to measure here for the Third Committee. Consensus analysis covers the Commission and the Council: switch <b>Bodies</b> to <i>CHR + HRC</i> or <i>All three</i>. (Methodology 14.)</div>';
+    note.style.display='none';return;}
+  note.style.display=gBody==='all'?'':'none';
+  note.textContent='Commission and Council only: the General Assembly file carries no consensus adoptions, so it does not enter this tab.';
   if(!RA.length){$('cn-tiles').innerHTML='<div class="note">Rebuild data.js to include the full catalogue (resAll missing).</div>';return;}
   if(_cnStatic!==gKind){_cnStatic=gKind;
     const RAS=RA.filter(kindOK);
@@ -2345,6 +2354,14 @@ function lgLadder(host,rows,groups,colorfn){
       '<span class="lad-n">'+fmt(r[1])+'</span></div>'+split;});});
   host.innerHTML=html;
 }
+/* verb ladder for the Bodies scope: per-organ counts merged, context-scored verbs re-resolved */
+function scopeVerbs(D){const vb=D.verbsByBody;if(!vb)return D.verbs;
+  const bodies=gBody==='all'?['CHR','HRC','GA']:gBody==='ga'?['GA']:['CHR','HRC'];
+  const acc=new Map();
+  bodies.forEach(bd=>(vb[bd]||[]).forEach(r=>{const a=acc.get(r[0]);
+    if(!a){acc.set(r[0],[r[0],r[1],r[2],r[3],r[4]?{...r[4]}:null]);return;}
+    a[1]+=r[1];if(r[4]){a[4]=a[4]||{};for(const k in r[4])a[4][k]=(a[4][k]||0)+r[4][k];}}));
+  return [...acc.values()].map(r=>{if(r[4]){let best=r[3],bn=-1;for(const k in r[4])if(r[4][k]>bn){bn=r[4][k];best=+k;}r[3]=best;}return r;}).sort((x,y)=>y[1]-x[1]);}
 function renderLanguage(){langInit().then(()=>{
   const st=$('lg-desc');
   if(LANG.err){$('lg-trend').innerHTML='';
@@ -2352,9 +2369,13 @@ function renderLanguage(){langInit().then(()=>{
       ?'The Language analysis loads its data over HTTP, which the offline file cannot do. Open <b>lszoszk.github.io/hrc-voting</b>.'
       :'Language data unavailable ('+esc(LANG.err)+').';return;}
   const D=LANG.data;
+  /* Bodies scope: one series per organ; the Assembly's texts enter only when asked for */
+  const bodyIn=b=>gBody==='all'?true:(gBody==='ga'?b==='GA':b!=='GA');
+  const BY=D.byYear.filter(o=>bodyIn(o.body));
+  const V=scopeVerbs(D);
   /* Corpus disclosure: these analyses read resolution TEXTS, which begin in 1993 —
      not the 1947– voting record the rest of the dashboard covers. */
-  {const yy=D.byYear.map(o=>o.y),nres=D.byYear.reduce((s,o)=>s+o.nres,0);
+  {const yy=BY.map(o=>o.y),nres=BY.reduce((s,o)=>s+o.nres,0);
    $('lg-corpus').innerHTML=fmt(nres)+' resolution texts · <b>'+Math.min(...yy)+'–'+Math.max(...yy)
      +'</b> — the text corpus starts in 1993, so this tab covers a shorter period than the '
      +M.yearMin+'–'+M.yearMax+' voting record. <b>Scope is fixed to resolutions only</b> here (the selector top-right is disabled on this tab) — an amendment is an instruction to edit a draft, not a commitment of the organ, so it carries no directive force or sentiment of its own to score. Annexed instruments (declarations, protocols reproduced after the text) are excluded the same way.';}
@@ -2363,22 +2384,23 @@ function renderLanguage(){langInit().then(()=>{
     /* Axis spans the TEXT corpus (1993–), not the voting record (1947–). Drawing the
        full 80-year axis left half the plot blank and implied a gap in the phenomenon
        rather than in the sources. */
-    const yrs=D.byYear.map(o=>o.y),cMin=Math.min(...yrs),cMax=Math.max(...yrs);
-    VRC.metricLine($('lg-trend'),{items:D.byYear.map(o=>({y:o.y,body:o.body,v:o[m.key],nop:o.nop})),
+    const yrs=BY.map(o=>o.y),cMin=Math.min(...yrs),cMax=Math.max(...yrs);
+    VRC.metricLine($('lg-trend'),{items:BY.map(o=>({y:o.y,body:o.body,v:o[m.key],nop:o.nop})),
       ymin:cMin,ymax:cMax,lo:m.lo,hi:m.hi,ticks:m.ticks,zero:m.zero,label:m.label,fmt:m.fmt});
     $('lg-desc').innerHTML=m.desc;
-    const b=D.byYear;const chr=b.filter(o=>o.body==='CHR'),hrc=b.filter(o=>o.body==='HRC');
+    const b=BY;const chr=b.filter(o=>o.body==='CHR'),hrc=b.filter(o=>o.body==='HRC'),ga=b.filter(o=>o.body==='GA');
     const mean=(a,k)=>a.length?a.reduce((s,o)=>s+(o[k]||0),0)/a.length:0;
     const span=a=>a.length?a[0].y+'–'+a[a.length-1].y:'—';
-    $('lg-note').textContent='Commission '+span(chr)+' '+m.fmt(mean(chr,m.key))
-      +' → Council '+span(hrc)+' '+m.fmt(mean(hrc,m.key));
+    $('lg-note').textContent=[chr.length?'Commission '+span(chr)+' '+m.fmt(mean(chr,m.key)):'',
+      hrc.length?'Council '+span(hrc)+' '+m.fmt(mean(hrc,m.key)):'',
+      ga.length?'General Assembly '+span(ga)+' '+m.fmt(mean(ga,m.key)):''].filter(Boolean).join(' → ');
     CSVDATA.lgyear={name:'commitment-language-by-year',title:'Operative-verb commitment language, by year',
       headers:['year','body','operative_clauses','directive_force','sentiment','encourage_share_pct','condemn_share_pct','delegation_share_pct'],
-      rows:D.byYear.map(o=>[o.y,o.body,o.nop,o.dir,o.val,Math.round(o.encShare*100),Math.round(o.condShare*100),Math.round(o.delegShare*100)])};};
+      rows:BY.map(o=>[o.y,o.body,o.nop,o.dir,o.val,Math.round(o.encShare*100),Math.round(o.condShare*100),Math.round(o.delegShare*100)])};};
   drawTrend();LANG._drawTrend=drawTrend;
   /* 02 ladder */
-  $('lg-nres').textContent=fmt(D.byYear.reduce((s,o)=>s+o.nres,0));
-  const dirV=D.verbs.filter(v=>v[2]>0),expV=D.verbs.filter(v=>v[2]===0);
+  $('lg-nres').textContent=fmt(BY.reduce((s,o)=>s+o.nres,0));
+  const dirV=V.filter(v=>v[2]>0),expV=V.filter(v=>v[2]===0);
   const dirCol=r=>'color-mix(in oklab, var(--accent) '+(30+r[2]*14)+'%, var(--paper-2))';
   const valCol=r=>r[3]>0?'color-mix(in oklab, var(--yes) '+(40+r[3]*25)+'%, var(--paper-2))'
     :r[3]<0?'color-mix(in oklab, var(--no) '+(40+(-r[3])*25)+'%, var(--paper-2))':'var(--dimmer)';
@@ -2398,9 +2420,9 @@ function renderLanguage(){langInit().then(()=>{
     {label:'−2 · condemnation — Condemns',pick:r=>r[3]<=-2}],valCol);
   CSVDATA.lgverbs={name:'operative-verb-coding',title:'Operative verbs — frequency and two-axis coding',
     headers:['verb','operative_clauses','directive_force','sentiment','valence_split_if_context_scored'],
-    rows:D.verbs.map(r=>[r[0],r[1],r[2],r[3],r[4]?JSON.stringify(r[4]):''])};
+    rows:V.map(r=>[r[0],r[1],r[2],r[3],r[4]?JSON.stringify(r[4]):''])};
   /* 03 subjects */
-  const sub=D.bySubject;
+  const sub=D.bySubject.filter(r=>r[6]?bodyIn(r[6]==='GA'?'GA':'HRC'):gBody!=='ga');
   const mk=r=>({label:tc(r[0]),value:r[2]/5,max:1,color:VRC.divColor?null:'var(--accent)',right:r[2].toFixed(2),
     hover:'<b>'+esc(tc(r[0]))+'</b><br>directive force '+r[2].toFixed(2)+' · '+r[1]+' resolutions<br>mostly '+esc(r[5])});
   VRC.hbars($('lg-subj-top'),{lbl:200,max:1,rowh:20,rows:sub.slice(0,12).map(mk)});
@@ -2411,7 +2433,7 @@ function renderLanguage(){langInit().then(()=>{
   const chip=(pairs)=>pairs.map(p=>'<div class="lad-row"><span class="lad-name">'+esc(p[0])+'</span>'+
     '<span class="lad-bar" style="width:'+Math.max(p[1]/pairs[0][1]*100,2).toFixed(0)+'%;background:var(--chr)"></span><span class="lad-n">'+fmt(p[1])+'</span></div>').join('');
   $('lg-new').innerHTML=chip(D.newVerbs);
-  $('lg-intens').innerHTML=chip(D.intensified);
+  $('lg-intens').innerHTML=chip(D.intensified)+(gBody!=='hrc'?'<div class="mut" style="font-size:10px;margin-top:6px">New verbs and intensifiers are counted over the Commission and Council texts.</div>':'');
   /* 05 scatter */
   /* Colour carried UN regional-group variables keyed off thresholds on the plotted
      axes themselves — it re-encoded x and y while implying a regional split that was
