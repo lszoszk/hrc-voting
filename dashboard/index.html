@@ -912,6 +912,7 @@ function hov(node,html){node.addEventListener('mousemove',e=>show(html,e.clientX
    line on every time axis so trends are never read straight across the discontinuity. */
 const HRC_YEAR=2006;
 function hrcMark(s,px,yTop,yBot,o){o=o||{};
+  if(typeof gBody!=='undefined'&&gBody==='ga')return;   /* the 2006 break is the Commission→Council one: meaningless on an Assembly-only axis */
   el('line',{x1:px,x2:px,y1:yTop,y2:yBot,stroke:'var(--ink-2)','stroke-width':1.3,'stroke-dasharray':'3 3',opacity:0.72},s);
   if(o.label!==false){const left=!!o.labelLeft;
     txt({x:px+(left?-4:4),y:o.labelY!=null?o.labelY:yTop+9,'font-size':'8.5','font-weight':'700',
