@@ -366,7 +366,7 @@ body.touring .ga-consent{display:none}
     <span class="statchip"><i class="dot"></i><span id="hd-stat">loading…</span></span>
   </div>
   <h1 class="mh-title">Voting Records</h1>
-  <div class="mh-sub">Commission on Human Rights (1946–2006) · Human Rights Council (2006–) — every recorded roll-call vote, per country</div>
+  <div class="mh-sub" id="mh-sub">Commission on Human Rights (1946–2006) · Human Rights Council (2006–) — every recorded roll-call vote, per country</div>
 </div>
 
 <nav class="tabs" id="tabs">
@@ -389,7 +389,7 @@ body.touring .ga-consent{display:none}
     <div class="p-head"><span class="p-idx">01</span><span class="p-title">Recorded votes per year</span><span class="p-note">resolutions decided by roll-call, by deciding body</span><span class="p-exp"><button class="expb" data-csv="ovtl" title="Download data as CSV">CSV</button><button class="expb" data-png="ov-timeline" data-pngname="recorded-votes-per-year" title="Download chart as PNG">PNG</button></span></div>
     <div class="p-body">
       <div id="ov-timeline"></div>
-      <div class="legend" id="ov-legend"><span class="li"><i class="sw swchr"></i>Commission on Human Rights</span><span class="li"><i class="sw swhrc"></i>Human Rights Council</span></div>
+      <div class="legend" id="ov-legend"><span class="li"><i class="sw swchr"></i>Commission on Human Rights</span><span class="li"><i class="sw swhrc"></i>Human Rights Council</span><span class="li" id="ov-lg-ga" style="display:none"><i class="sw" style="background:var(--ga)"></i>General Assembly (Third Committee)</span></div>
     </div>
   </div>
   <div class="grid2">
@@ -1543,6 +1543,7 @@ function renderOverview(){
   RS.forEach(r=>{if(r.year!=null&&perYear[r.year])perYear[r.year][r.body]++;});
   const maxY=Math.max(...years.map(y=>perYear[y].CHR+perYear[y].HRC+perYear[y].GA));
   VRC.ovTimeline($('ov-timeline'),{years,perYear,maxY,ymin:M.yearMin,ymax:M.yearMax});
+  {const lg=$('ov-lg-ga');if(lg)lg.style.display=gBody==='hrc'?'none':'';}   /* the Assembly's bars get their legend entry only when in scope */
   CSVDATA.ovtl={name:'recorded-votes-per-year',title:'Recorded votes per year, by deciding body',headers:['year','CHR','HRC','GA','total'],
     rows:years.filter(y=>perYear[y].CHR+perYear[y].HRC+perYear[y].GA>0).map(y=>[y,perYear[y].CHR,perYear[y].HRC,perYear[y].GA,perYear[y].CHR+perYear[y].HRC+perYear[y].GA])};
   const buckets=[['Near-unanimous (0–5)',0,5],['Clear (6–15)',6,15],['Divided (16–30)',16,30],['Highly divided (31+)',31,9999]];
@@ -2839,6 +2840,10 @@ try{if(!localStorage.getItem('hrc-tour-done'))setTimeout(openTour,450);}catch(e)
    the tile 200px below it whenever amendments were excluded (the default). */
 function refreshStats(){
   const nRes=RES.filter(kindOK).length;
+  const sub=$('mh-sub');if(sub)sub.textContent={
+    hrc:'Commission on Human Rights (1946–2006) · Human Rights Council (2006–) — every recorded roll-call vote, per country',
+    ga:'General Assembly — Third Committee resolutions (1970–): plenary roll-calls and, from 2000, the Committee stage, per State',
+    all:'Commission on Human Rights (1946–2006) · Human Rights Council (2006–) · General Assembly, Third Committee (1970–) — every recorded roll-call vote, per country'}[gBody];
   $('hd-stat').textContent=fmt(nRes)+' recorded · '+fmt(rollcallCount())+' roll-calls · '+scopeLabel();
   $('f-note').textContent=fmt(nRes)+' recorded of '+fmt(M.coverage.totalResolutions)
     +' catalogued · '+M.yearMin+'–'+M.yearMax;

@@ -59,6 +59,7 @@ with sync_playwright() as p:
     checks["ga tile (resolutions)"] = pg.evaluate("document.querySelector('#ov-tiles .tv').textContent")
     checks["ga divided rows"] = pg.evaluate("document.querySelectorAll('#ov-close .gtr').length")
     checks["ga csv has GA column"] = pg.evaluate("CSVDATA.ovtl.headers.includes('GA')")
+    checks["ga overview legend + subtitle"] = pg.evaluate("document.getElementById('ov-lg-ga').style.display!=='none'&&document.getElementById('mh-sub').textContent.includes('General Assembly')")
     pg.evaluate("openResolution(RES.findIndex(r=>r.c))"); pg.wait_for_timeout(300)
     checks["ga committee block"] = pg.evaluate("document.getElementById('rc-head').textContent.includes('Third Committee stage')")
     checks["ga related block"] = pg.evaluate("RES.some(r=>r.body==='GA'&&r.rel&&r.rel.length)")
