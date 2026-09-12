@@ -66,8 +66,12 @@
 .kk{font-weight:700;color:var(--ink);border:1px solid var(--line);padding:1px 5px;background:var(--paper)}
 .khint{flex:1;text-align:left;padding-left:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 /* tabs */
-.tabs{grid-area:tabs;display:flex;border-bottom:1px solid var(--line);background:var(--paper);overflow-x:auto;scrollbar-width:thin}
-.tab{display:flex;align-items:baseline;gap:8px;padding:10px 14px;color:var(--dim);position:relative;flex-shrink:0;letter-spacing:.02em}
+.tabs{grid-area:tabs;display:flex;flex-wrap:wrap;border-bottom:1px solid var(--line);background:var(--paper)}   /* wraps (selectors drop to a second line below ~1150px) — never a horizontal scroll */
+.tab{display:flex;align-items:baseline;gap:8px;padding:10px 13px;color:var(--dim);position:relative;flex-shrink:0;letter-spacing:.02em}
+.gctl{margin-left:auto;display:inline-flex;align-items:center;gap:14px;padding:0 12px;flex-shrink:0}   /* Scope + Bodies travel together when the strip wraps */
+.mth-bar{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.mth-bar .mh-kicker{font-size:10px}
+.mth-bar a{font-size:11px;color:var(--dim);cursor:pointer}.mth-bar a:hover{color:var(--ink)}
 .tab:hover{color:var(--ink)}
 .tab.on{color:var(--ink)}
 .tab.on::after{content:"";position:absolute;left:0;bottom:-1px;height:2px;width:100%;background:var(--accent)}
@@ -314,7 +318,6 @@ body.touring .ga-consent{display:none}
   .ft-tour-lbl{display:none}
   .mh-cmdk{flex-basis:100%;max-width:none}
   /* all tabs visible (no hidden horizontal scroll), filters + headers shrink cleanly */
-  .tabs{flex-wrap:wrap;overflow-x:visible}
   .tab{padding:7px 9px;font-size:11px}
   .tidx{display:none}
   .fbar{gap:10px 12px;padding:10px 12px;margin-bottom:12px}
@@ -365,14 +368,13 @@ body.touring .ga-consent{display:none}
 
 <nav class="tabs" id="tabs">
   <button class="tab on" data-view="overview"><span class="tidx">01</span><span class="tlbl">Overview</span></button>
-  <button class="tab" data-view="country"><span class="tidx">02</span><span class="tlbl">Country profile</span></button>
+  <button class="tab" data-view="country"><span class="tidx">02</span><span class="tlbl">Countries</span></button>
   <button class="tab" data-view="topics"><span class="tidx">03</span><span class="tlbl">Topics</span></button>
-  <button class="tab" data-view="blocs"><span class="tidx">04</span><span class="tlbl">Blocs &amp; alignment</span></button>
+  <button class="tab" data-view="blocs"><span class="tidx">04</span><span class="tlbl">Blocs</span></button>
   <button class="tab" data-view="consensus"><span class="tidx">05</span><span class="tlbl">Consensus</span></button>
   <button class="tab" data-view="texts"><span class="tidx">06</span><span class="tlbl">Texts</span></button>
   <button class="tab" data-view="language"><span class="tidx">07</span><span class="tlbl">Language</span></button>
-  <button class="tab" data-view="method"><span class="tidx">08</span><span class="tlbl">Methodology</span></button>
-  <span style="margin-left:auto;display:inline-flex;align-items:center;gap:7px;padding:0 12px;flex-shrink:0"><span class="flbl" style="margin:0" title="Amendments answer a different question than resolutions — a Yes on a hostile amendment often opposes the parent text. See Methodology.">Scope</span><select class="sel" id="g-kind" style="min-width:0;padding:4px 6px"><option value="res">Resolutions only</option><option value="all">Resolutions + amendments</option><option value="amd">Amendments only</option></select></span><span style="display:inline-flex;align-items:center;gap:7px;padding:0 12px 0 0;flex-shrink:0"><span class="flbl" style="margin:0" title="Which organs' records are in play. CHR and HRC are the OHCHR collection; the General Assembly adds the Third Committee's human rights resolutions — plenary roll-calls from the UN Digital Library, committee-stage votes from the summary records. See Methodology 14.">Bodies</span><select class="sel" id="g-body" style="min-width:0;padding:4px 6px"><option value="hrc">CHR + HRC</option><option value="ga">General Assembly (Third Committee)</option><option value="all">All three</option></select></span>
+  <span class="gctl"><span style="display:inline-flex;align-items:center;gap:7px"><span class="flbl" style="margin:0" title="Amendments answer a different question than resolutions — a Yes on a hostile amendment often opposes the parent text. See Methodology &amp; sources (footer).">Scope</span><select class="sel" id="g-kind" style="min-width:0;padding:4px 6px"><option value="res">Resolutions only</option><option value="all">With amendments</option><option value="amd">Amendments only</option></select></span><span style="display:inline-flex;align-items:center;gap:7px"><span class="flbl" style="margin:0" title="Which organs' records are in play. CHR and HRC are the OHCHR collection; the General Assembly adds the Third Committee's human rights resolutions — plenary roll-calls from the UN Digital Library, committee-stage votes from the summary records. See Methodology 14.">Bodies</span><select class="sel" id="g-body" style="min-width:0;padding:4px 6px"><option value="hrc">CHR + HRC</option><option value="ga">GA Third Committee</option><option value="all">All three</option></select></span></span>
 </nav>
 
 <main class="main"><div class="inner">
@@ -695,6 +697,7 @@ body.touring .ga-consent{display:none}
 
 <!-- ================= 08 METHODOLOGY ================= -->
 <section id="view-method" style="display:none">
+  <div class="mth-bar"><span class="mh-kicker">Methodology &amp; sources — how this site is built and what it cannot tell you</span><a role="button" tabindex="0" id="mth-back">← back to the views</a></div>
   <div class="panel">
     <div class="p-head"><span class="p-idx">01</span><span class="p-title">Source &amp; scope</span></div>
     <div class="p-body ptext">All data comes from the <a href="https://searchlibrary.ohchr.org/search?c=Voting" target="_blank" rel="noopener">OHCHR Search Library — Voting collection</a>, harvested in full (<span id="m-total-inline">…</span> records — matching the collection's own reported total) via its MARCXML export. It covers every voting record catalogued for the <b>Commission on Human Rights</b> (1946–2006) and its successor, the <b>Human Rights Council</b> (2006–present).
@@ -703,7 +706,7 @@ body.touring .ga-consent{display:none}
   <div class="panel">
     <div class="p-head"><span class="p-idx">02</span><span class="p-title">Why most views show ~1,700 resolutions, not <span id="m-total-head">6,346</span></span></div>
     <div class="p-body">
-      <div class="p-desc">Only resolutions decided by an actual roll-call (recorded) vote have a per-country breakdown. The Country profile, Topics, and Blocs views all depend on that breakdown, so they operate on this subset. Everything else — most resolutions — passed by consensus, with no individual positions logged.</div>
+      <div class="p-desc">Only resolutions decided by an actual roll-call (recorded) vote have a per-country breakdown. The Countries, Topics, and Blocs views all depend on that breakdown, so they operate on this subset. Everything else — most resolutions — passed by consensus, with no individual positions logged.</div>
       <div class="tiles mb12" id="m-tiles"></div>
       <div class="tblwrap gt">
         <div class="gtr gth colsvt"><span class="gtc">Vote type (source catalogue)</span><span class="gtc num">Resolutions</span><span class="gtc num">Has roll-call</span></div>
@@ -750,13 +753,13 @@ body.touring .ga-consent{display:none}
   <div class="panel">
     <div class="p-head"><span class="p-idx">07</span><span class="p-title">Analytics &amp; privacy</span></div>
     <div class="p-body">
-      <div class="p-desc m0">This site uses <b>Google Analytics 4</b> only to see which views are used, and only <b>after you accept</b> the banner (Google Consent Mode v2 defaults to denied; nothing is sent before then, and a <code class="cd">Do-Not-Track</code> browser setting skips it entirely). We record <b>view names only</b> (Overview, Country profile, Topics, Blocs, Methodology). We never send your searches, the countries or subjects you select, the records you open, or your IP address in clear — GA4 anonymises IP and ad-personalisation / Google signals are disabled. The offline single-file version does no tracking at all. <span id="m-ga-state" class="mut"></span></div>
+      <div class="p-desc m0">This site uses <b>Google Analytics 4</b> only to see which views are used, and only <b>after you accept</b> the banner (Google Consent Mode v2 defaults to denied; nothing is sent before then, and a <code class="cd">Do-Not-Track</code> browser setting skips it entirely). We record <b>view names only</b> (Overview, Countries, Topics, Blocs, Methodology). We never send your searches, the countries or subjects you select, the records you open, or your IP address in clear — GA4 anonymises IP and ad-personalisation / Google signals are disabled. The offline single-file version does no tracking at all. <span id="m-ga-state" class="mut"></span></div>
       <div style="margin-top:12px"><button class="palbtn" id="m-ga-reset" type="button">Reset analytics choice</button></div>
     </div>
   </div>
   <div class="panel">
     <div class="p-head"><span class="p-idx">08</span><span class="p-title">Alignment methods</span></div>
-    <div class="p-body ptext">The <b>Blocs &amp; alignment</b> tab uses three standard measures from the study of legislative and UN voting, all computed client-side from the recorded roll-calls (no external data):
+    <div class="p-body ptext">The <b>Blocs</b> tab (blocs &amp; alignment) uses three standard measures from the study of legislative and UN voting, all computed client-side from the recorded roll-calls (no external data):
       <br>• <b>Alignment map</b> — a <b>reference-pole scatter</b>: each state is placed by its voting agreement with two anchor states you choose (horizontal = agreement with the first, vertical = agreement with the second, each 0–100% over shared recorded votes). Positions are directly interpretable; the dashed diagonal marks equal agreement with both anchors. The axes are drawn to an <b>identical scale</b> on a square plot over the full, uncropped 0–100% domain — so the diagonal is exactly 45° and distance from it reads directly as a state's net leaning toward one anchor.
       <br>• <b>Regional-group cohesion</b> — the <b>Agreement Index</b> (<a href="https://doi.org/10.1017/S0007123405000128" target="_blank" rel="noopener">Hix, Noury &amp; Roland 2005</a>): for each resolution, (largest bloc − ½·the rest) ÷ total among a group's members, averaged over the window; 1 = unanimous, 0 = evenly split.
       <br>• <b>Most often outvoted</b> — the share of a state's votes cast <b>against the side that prevailed</b>, over states with at least 20 votes in the window. The prevailing side is whichever of Yes or No is larger in the official whole-chamber totals: abstention is not a side that can win, so a plurality of abstentions is not treated as a verdict, and a Yes/No tie leaves no prevailing position (those resolutions are skipped rather than tie-broken by column order). Excluding abstentions from the winning side is not an arbitrary choice — it mirrors UN practice itself: under General Assembly rule 86, a member that abstains is "considered as not voting" and only Yes/No votes count toward the majority required (1986 UN Office of Legal Affairs opinion, reproduced in <a href="https://unitar.org/sites/default/files/media/publication/doc/UN%20Resolution%20Guidelines_Handbook_English-7x10-Unitar_1.pdf" target="_blank" rel="noopener">UNITAR NYO, <i>Guidelines for United Nations Resolutions</i>, 2020</a>, Annex I). CHR/HRC operate under their own, smaller-body rules rather than the GA's, but the same "abstention ≠ a position that can win" convention holds — see the caveat below on transferring GA-specific findings. Because a 62-vote record and a 953-vote record are not equal evidence, every bar carries its 95% Wilson interval and its vote count. It measures being on the losing side, which is not the same as being isolated — a state can be in a large, cohesive minority bloc.</div>
@@ -841,7 +844,7 @@ body.touring .ga-consent{display:none}
 
 <footer class="foot">
   <div class="fl"><span class="sup">CHR·HRC VR</span><span class="fauthor">by <a href="https://lszoszk.github.io/" target="_blank" rel="noopener">Łukasz Szoszkiewicz</a></span><span class="fsrc">Source: <a href="https://searchlibrary.ohchr.org/search?c=Voting" target="_blank" rel="noopener">OHCHR Search Library — Voting collection</a></span><span class="fsep fsrc">·</span><span id="f-note">loading dataset…</span></div>
-  <div class="fr"><span class="pallbl">Palette</span><button class="palbtn on" data-pal="paper">paper</button><button class="palbtn" data-pal="terminal">terminal</button><button class="palbtn" data-pal="ink">ink</button><button class="palbtn" id="ft-cite" type="button" style="margin-left:16px" title="Copy an academic citation for this dashboard">Cite</button><span class="pallbl ft-tour-lbl" style="margin-left:16px">First visit?</span><button class="palbtn" id="ft-tour" type="button">✦ tour</button></div>
+  <div class="fr"><span class="pallbl">Palette</span><button class="palbtn on" data-pal="paper">paper</button><button class="palbtn" data-pal="terminal">terminal</button><button class="palbtn" data-pal="ink">ink</button><button class="palbtn" id="ft-method" type="button" style="margin-left:16px" title="Sources, coverage, every measure defined, and what the data cannot tell you">Methodology &amp; sources</button><button class="palbtn" id="ft-cite" type="button" style="margin-left:8px" title="Copy an academic citation for this dashboard">Cite</button><span class="pallbl ft-tour-lbl" style="margin-left:16px">First visit?</span><button class="palbtn" id="ft-tour" type="button">✦ tour</button></div>
 </footer>
 
 <div class="kwrap" id="k-wrap">
@@ -1497,6 +1500,7 @@ const VIEWS=['overview','country','topics','blocs','consensus','texts','language
 function switchTab(v){VIEW=v;
   VIEWS.forEach(x=>{$('view-'+x).style.display=x===v?'':'none';});
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.view===v));
+  const fm=$('ft-method');if(fm)fm.classList.toggle('on',v==='method');   /* Methodology lives in the footer, not the tab strip */
   /* Language always scores resolutions only (amendments are edit instructions, not
      commitments — see the corpus banner). The global Scope selector can't change that,
      so leaving it live here would let the masthead say "amendments only" while the tab
@@ -2468,7 +2472,7 @@ function renderMethod(){
 let kSel=0;
 function kItems(q){
   q=(q||'').trim().toLowerCase();const out=[];
-  [['overview','Overview'],['country','Country profile'],['topics','Topics'],['blocs','Blocs & alignment'],['consensus','Consensus'],['texts','Texts'],['method','Methodology']]
+  [['overview','Overview'],['country','Countries'],['topics','Topics'],['blocs','Blocs'],['consensus','Consensus'],['texts','Texts'],['language','Language'],['method','Methodology & sources']]
     .forEach(p=>{if(!q||p[1].toLowerCase().includes(q))out.push({type:'view',kind:'view',label:p[1],n:'',v:p[0]});});
   const cs=q?C.filter(c=>c.name.toLowerCase().includes(q)):C.slice().sort((a,b)=>b.n-a.n).slice(0,4);
   cs.forEach(c=>{if(out.length<14)out.push({type:'country',kind:'country',label:c.name,n:fmt(c.n)+' votes',v:c.iso3});});
@@ -2512,13 +2516,13 @@ window.addEventListener('keydown',e=>{
 const GA_KEY='hrc-ga-consent';
 const GA_VIEWS={
   overview:['CHR·HRC Voting — Overview','/hrc-voting/overview'],
-  country:['CHR·HRC Voting — Country profile','/hrc-voting/country'],
+  country:['CHR·HRC Voting — Countries','/hrc-voting/country'],
   topics:['CHR·HRC Voting — Topics','/hrc-voting/topics'],
-  blocs:['CHR·HRC Voting — Blocs & alignment','/hrc-voting/blocs'],
+  blocs:['CHR·HRC Voting — Blocs','/hrc-voting/blocs'],
   consensus:['CHR·HRC Voting — Consensus','/hrc-voting/consensus'],
   language:['CHR·HRC Voting — Language','/hrc-voting/language'],
   texts:['CHR·HRC Voting — Texts','/hrc-voting/texts'],
-  method:['CHR·HRC Voting — Methodology','/hrc-voting/methodology'],
+  method:['CHR·HRC Voting — Methodology & sources','/hrc-voting/methodology'],
 };
 const gaState=()=>{try{return localStorage.getItem(GA_KEY)}catch(e){return null}};
 const gaDNT=()=>navigator.doNotTrack==='1'||window.doNotTrack==='1';
@@ -2714,16 +2718,16 @@ function buildTour(){
    <div class="tour-spark">${tourSpark()}</div>
    <div class="tour-cap">Recorded votes per year — gold: Commission · red: Council. The dashed line marks the 2006 institutional break.</div>`,
   `<div class="tour-kicker">The views</div>
-   <h2 class="tour-h">Eight ways in.</h2>
+   <h2 class="tour-h">Seven views — and the method behind them.</h2>
    ${[['overview','Overview','the record at a glance — volume over time, how contested votes were, the most divided decisions'],
-      ['country','Country profile','any state\'s full record: yearly positions, closest &amp; furthest partners, an agreement world map'],
+      ['country','Countries','any state\'s full record: yearly positions, closest &amp; furthest partners, an agreement world map'],
       ['topics','Topics','browse by OHCHR\'s own subject tags — support trends over time, by state or by regional group'],
-      ['blocs','Blocs &amp; alignment','who votes with whom: coincidence matrix, alignment map, group cohesion, most-outvoted states'],
+      ['blocs','Blocs','who votes with whom: coincidence matrix, alignment map, group cohesion, most-outvoted states'],
       ['consensus','Consensus','how texts get adopted — being forced to a vote is itself a diplomatic signal (experimental)'],
       ['texts','Texts','search inside the adopted texts themselves — clause-by-clause full-text search (experimental)'],
       ['language','Language','how strongly the organ commits — operative-verb analysis of the texts, 1993– (experimental)'],
-      ['method','Methodology','sources, coverage, every measure defined, and what the data cannot tell you']]
-     .map((v,i)=>`<button class="tview" data-goto="${v[0]}"><span class="ti">0${i+1}</span><span class="tn">${v[1]}</span><span class="td">${v[2]}</span></button>`).join('')}
+      ['method','Methodology &amp; sources','sources, coverage, every measure defined, and what the data cannot tell you — a page of its own, linked from the footer']]
+     .map((v,i)=>`<button class="tview" data-goto="${v[0]}"><span class="ti">${v[0]==='method'?'§':'0'+(i+1)}</span><span class="tn">${v[1]}</span><span class="td">${v[2]}</span></button>`).join('')}
    <div class="tour-cap" style="margin-top:12px">Click any row to open that view.</div>`,
   `<div class="tour-kicker">Every number opens</div>
    <h2 class="tour-h">From chart to roll-call to source.</h2>
@@ -2739,7 +2743,7 @@ function buildTour(){
      <li><b>Method notes</b> under the charts link each caveat to the peer-reviewed literature.</li>
      <li>Every chart exports <b>CSV + PNG with a source citation</b>; the full dataset is on Zenodo.</li>
    </ul>
-   <div class="tour-lead" style="margin-top:14px">Defaults are chosen to not mislead. The Methodology tab documents every choice.</div>`,
+   <div class="tour-lead" style="margin-top:14px">Defaults are chosen to not mislead. The Methodology &amp; sources page (footer link) documents every choice.</div>`,
   `<div class="tour-kicker">Start anywhere</div>
    <h2 class="tour-h">Where to first?</h2>
    <div class="tstart">
@@ -2778,6 +2782,8 @@ $('tour-skip').addEventListener('click',closeTour);
 $('tour-dots').addEventListener('click',e=>{const d=e.target.closest('.tdot');if(d)tourGo(+d.dataset.i);});
 $('tour-wrap').addEventListener('click',e=>{if(e.target.id==='tour-wrap')closeTour();});
 $('ft-tour').addEventListener('click',openTour);
+$('ft-method').addEventListener('click',()=>{switchTab('method');$('main')&&$('main').scrollTo&&$('main').scrollTo(0,0);});
+$('mth-back').addEventListener('click',()=>switchTab('overview'));
 window.addEventListener('keydown',e=>{if(!$('tour-wrap').classList.contains('open'))return;
   if(e.key==='Escape')closeTour();
   else if(e.key==='ArrowRight')tourGo(tourI+1);

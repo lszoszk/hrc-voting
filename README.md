@@ -88,7 +88,7 @@ catalogued resolutions, two experimental views over the 4,437 harvested resoluti
 **texts** (1993–2026), and Methodology:
 
 - **Overview** — volume over time (CHR→HRC), how contested votes were, most divided votes.
-- **Country profile** — per-state yearly Yes/Abstain/No **composition** chart (100%
+- **Countries** (country profile) — per-state yearly Yes/Abstain/No **composition** chart (100%
   columns + votes-per-year strip + dashed membership-gap markers), **closest /
   furthest 30** voting partners (scrollable lists, coloured by UN group), a **world
   choropleth** of voting agreement with the selected state (same blue/red encoding
@@ -104,7 +104,7 @@ catalogued resolutions, two experimental views over the 4,437 harvested resoluti
   For any topic: the matching resolutions, a **support-over-time trend** (yearly average
   Yes-share from official totals, with a least-squares rising/falling note in pp per
   decade), and **how every state voted** (Yes/Abstain/No share, ranked by support).
-- **Blocs & alignment** — an **alignment map** (reference-pole scatter: each state
+- **Blocs** (blocs & alignment) — an **alignment map** (reference-pole scatter: each state
   placed by its % agreement with two anchor states you pick, default USA → vs China ↑,
   so position is directly interpretable), a voting-coincidence matrix (blue = alike, red
   = apart) with greedy clustering, **regional-group cohesion** (Hix–Noury–Roland
@@ -112,7 +112,7 @@ catalogued resolutions, two experimental views over the 4,437 harvested resoluti
   state's votes that differ from the whole-chamber majority position). Country sets: 30
   most active, each UN regional group,
   P5 + key states, plus computed **30 most agreeing / 30 most disagreeing** states;
-  filter by year range. Methods are documented in the Methodology tab.
+  filter by year range. Methods are documented on the Methodology & sources page (footer link).
 - **Consensus** *(experimental)* — reads the mode of adoption as a diplomatic signal
   across ALL 6,346 catalogued resolutions (`resAll` in the payload, trimmed titles):
   **breakdowns & rapprochements** (subjects whose mode flipped consensus↔votes — the
@@ -157,7 +157,7 @@ bugs; `scripts/export_test.py` downloads and validates every CSV + PNG.
 Topics come straight from the library catalogue — no ML/topic-modelling — so every
 label is authoritative and traceable. The thematic/country split is a heuristic
 (`build_dashboard_data.py`) and editable. Coverage/reconciliation stats shown in the
-Methodology tab are computed at build time in `build_dashboard_data.py`
+Methodology & sources page are computed at build time in `build_dashboard_data.py`
 (`meta.coverage`) so they can never drift from the underlying CSVs.
 
 Rebuild the payload after re-harvesting: `python scripts/build_dashboard_data.py`.

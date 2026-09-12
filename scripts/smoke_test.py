@@ -36,6 +36,8 @@ with sync_playwright() as p:
     checks["hrc line (overview)"] = pg.evaluate("[...document.querySelectorAll('#ov-timeline svg line')].some(l=>l.getAttribute('stroke-dasharray')==='3 3')")
     # global amendments scope: default excludes amendments; counts shift per scope
     checks["scope default"] = pg.evaluate("document.getElementById('g-kind').value")
+    checks["tab strip fits (no overflow at 1440)"] = pg.evaluate("(()=>{const t=document.getElementById('tabs');return t.scrollWidth<=t.clientWidth+1&&t.getBoundingClientRect().height<60})()")
+    checks["7 tabs + footer methodology link"] = pg.evaluate("document.querySelectorAll('#tabs .tab').length===7&&!!document.getElementById('ft-method')")
     checks["ov tile (res)"] = pg.evaluate("document.querySelector('#ov-tiles .tv').textContent")
     pg.select_option("#g-kind", "all"); pg.wait_for_timeout(400)
     checks["ov tile (all)"] = pg.evaluate("document.querySelector('#ov-tiles .tv').textContent")
@@ -61,7 +63,7 @@ with sync_playwright() as p:
     checks["ga committee block"] = pg.evaluate("document.getElementById('rc-head').textContent.includes('Third Committee stage')")
     checks["ga related block"] = pg.evaluate("RES.some(r=>r.body==='GA'&&r.rel&&r.rel.length)")
     pg.evaluate("document.getElementById('rc-close').click()")
-    pg.click('.tab[data-view="method"]'); pg.wait_for_timeout(400)
+    pg.click('#ft-method'); pg.wait_for_timeout(400)
     checks["method 14 filled"] = pg.evaluate("document.getElementById('m-ga-res').textContent!=='—'&&document.getElementById('m-ga-res').textContent!==''")
     pg.click('.tab[data-view="overview"]')
     pg.select_option("#g-kind", "amd"); pg.wait_for_timeout(500)
@@ -153,7 +155,7 @@ with sync_playwright() as p:
     pg.wait_for_timeout(400)
     checks["language offline note (file://)"] = pg.evaluate("document.getElementById('lg-desc').textContent.includes('over HTTP')")
 
-    pg.click('.tab[data-view="method"]')
+    pg.click('#ft-method')
     checks["method total"] = pg.evaluate("document.getElementById('m-tile-total').textContent")
     checks["method vt rows"] = pg.evaluate("document.querySelectorAll('#m-vt .gtr').length")
     pg.screenshot(path=str(SHOTS / "05_method.png"))
