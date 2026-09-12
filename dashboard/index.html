@@ -111,7 +111,8 @@
 .p-desc{font-size:10.5px;color:var(--dim);margin-bottom:12px;letter-spacing:.01em;max-width:70em}
 .ptext{font-size:11.5px;line-height:1.7;color:var(--ink-2);max-width:70em}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.grid2>*{min-width:0}   /* prevent grid-item min-content blowout (tables/SVGs) */
+.grid2>*{min-width:0}
+html,body{margin:0}   /* the root grid is exactly 100dvh tall: a default body margin pushed the footer below the viewport */   /* prevent grid-item min-content blowout (tables/SVGs) */
 @media(max-width:900px){.grid2{grid-template-columns:1fr}}
 .panel svg{max-width:100%}
 /* legends */
@@ -210,7 +211,9 @@
 .fl{display:flex;gap:10px;align-items:center;overflow:hidden;min-width:0}
 /* the source citation truncates first; the dataset stat is never clipped */
 .fl .fsrc{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;flex:0 1 auto}
-.fl .sup,.fl #f-note,.fl .fauthor{flex:0 0 auto}
+.fl .sup,.fl .fauthor{flex:0 0 auto}
+.fl #f-note{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}   /* truncates with an ellipsis instead of being cut mid-glyph */
+@media(max-width:1400px){.ft-tour-lbl{display:none}}
 .fr{display:flex;gap:6px;align-items:center;flex-shrink:0}
 .fsep{color:var(--dimmer)}
 .sup{border:1px solid var(--line);padding:1px 6px;letter-spacing:.12em;text-transform:uppercase;font-size:9px;flex-shrink:0}
