@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Interactive explorer of UN human-rights voting records: 1,705 recorded roll-call votes of the Commission on Human Rights and Human Rights Council (1947–2026), from the OHCHR Search Library.">
-<title>Voting Records — CHR · HRC · GA Third Committee</title>
+<title>UN Human Rights Voting Records — CHR · HRC · GA Third Committee</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗳️</text></svg>">
 <!-- Google Analytics 4 (G-F3XBX45HQC) — consent-gated (Consent Mode v2, default
      DENIED), DNT-respecting, IP-anonymised, no ad signals, send_page_view:false.
@@ -361,12 +361,12 @@ body.touring .ga-consent{display:none}
 
 <div class="masthead">
   <div class="fx ac jb gap16 mh-row">
-    <span class="mh-kicker">OHCHR Search Library — Voting Collection</span>
+    <span class="mh-kicker">OHCHR Search Library · UN Digital Library</span>
     <button class="cmdk mh-cmdk" id="k-open"><span class="kk">⌘K</span><span class="khint">Jump to a view, country, or subject tag…</span></button>
     <span class="statchip"><i class="dot"></i><span id="hd-stat">loading…</span></span>
   </div>
-  <h1 class="mh-title">Voting Records</h1>
-  <div class="mh-sub" id="mh-sub">Commission on Human Rights (1946–2006) · Human Rights Council (2006–) — every recorded roll-call vote, per country</div>
+  <h1 class="mh-title">UN Human Rights Voting Records</h1>
+  <div class="mh-sub" id="mh-sub">Commission on Human Rights (1946–2006) · Human Rights Council (2006–) — how each text was adopted, who voted how, and what it says</div>
 </div>
 
 <nav class="tabs" id="tabs">
@@ -848,7 +848,7 @@ body.touring .ga-consent{display:none}
 </div></main>
 
 <footer class="foot">
-  <div class="fl"><span class="sup">CHR·HRC VR</span><span class="fauthor">by <a href="https://lszoszk.github.io/" target="_blank" rel="noopener">Łukasz Szoszkiewicz</a></span><span class="fsrc">Source: <a href="https://searchlibrary.ohchr.org/search?c=Voting" target="_blank" rel="noopener">OHCHR Search Library — Voting collection</a></span><span class="fsep fsrc">·</span><span id="f-note">loading dataset…</span></div>
+  <div class="fl"><span class="sup">CHR·HRC VR</span><span class="fauthor">by <a href="https://lszoszk.github.io/" target="_blank" rel="noopener">Łukasz Szoszkiewicz</a></span><span class="fsrc">Sources: <a href="https://searchlibrary.ohchr.org/search?c=Voting" target="_blank" rel="noopener">OHCHR Search Library</a> · <a href="https://digitallibrary.un.org/record/4060887" target="_blank" rel="noopener">UN Digital Library</a></span><span class="fsep fsrc">·</span><span id="f-note">loading dataset…</span></div>
   <div class="fr"><span class="pallbl">Palette</span><button class="palbtn on" data-pal="paper">paper</button><button class="palbtn" data-pal="terminal">terminal</button><button class="palbtn" data-pal="ink">ink</button><button class="palbtn" id="ft-method" type="button" style="margin-left:16px" title="Sources, coverage, every measure defined, and what the data cannot tell you">Methodology &amp; sources</button><button class="palbtn" id="ft-cite" type="button" style="margin-left:8px" title="Copy an academic citation for this dashboard">Cite</button><span class="pallbl ft-tour-lbl" style="margin-left:16px">First visit?</span><button class="palbtn" id="ft-tour" type="button">✦ tour</button></div>
 </footer>
 
@@ -1376,7 +1376,7 @@ const CK_LABEL={amendment:'AMENDMENT',paragraph:'PARAGRAPH VOTE',motion:'PROCEDU
 /* ---------- export: CSV (data behind each plot) + PNG (the plot itself) ---------- */
 /* Each CSVDATA[key] carries {name (file slug), title (human title), headers, rows}. */
 const CSVDATA={};
-const CITE_BASE='Source: OHCHR Search Library — Voting collection (searchlibrary.ohchr.org); General Assembly: UN Dag Hammarskjöld Library, General Assembly voting data v5 (digitallibrary.un.org/record/4060887) · CHR·HRC Voting Records · https://lszoszk.github.io/hrc-voting';
+const CITE_BASE='Source: OHCHR Search Library — Voting collection (searchlibrary.ohchr.org); General Assembly: UN Dag Hammarskjöld Library, General Assembly voting data v5 (digitallibrary.un.org/record/4060887) · UN Human Rights Voting Records · https://lszoszk.github.io/hrc-voting';
 function citeLine(){const d=new Date(),p=n=>String(n).padStart(2,'0');
   return CITE_BASE+' · accessed '+d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());}
 /* Academic citation for the SOFTWARE (this dashboard + pipeline), distinct from
@@ -2835,10 +2835,15 @@ try{if(!localStorage.getItem('hrc-tour-done'))setTimeout(openTour,450);}catch(e)
    the tile 200px below it whenever amendments were excluded (the default). */
 function refreshStats(){
   const nRes=RES.filter(kindOK).length;
+  /* The predicate covers all seven tabs, not just the roll-call ones: "adopted" is the
+     Consensus view (63% of the catalogue never went to a vote), "voted how" is
+     Overview/Countries/Blocs, "what it says" is Texts/Language. It used to read "every
+     recorded roll-call vote, per country", which described three tabs and overclaimed
+     "every" for the Assembly, whose committee stage only starts in 2000. */
   const sub=$('mh-sub');if(sub)sub.textContent={
-    hrc:'Commission on Human Rights (1946–2006) · Human Rights Council (2006–) — every recorded roll-call vote, per country',
-    ga:'General Assembly — Third Committee resolutions (1970–): plenary roll-calls and, from 2000, the Committee stage, per State',
-    all:'Commission on Human Rights (1946–2006) · Human Rights Council (2006–) · General Assembly, Third Committee (1970–) — every recorded roll-call vote, per country'}[gBody];
+    hrc:'Commission on Human Rights (1946–2006) · Human Rights Council (2006–) — how each text was adopted, who voted how, and what it says',
+    ga:'General Assembly, Third Committee (1970–) — plenary roll-calls and, from 2000, the committee stage, with the texts themselves',
+    all:'Commission on Human Rights · Human Rights Council · General Assembly, Third Committee — how each text was adopted, who voted how, and what it says'}[gBody];
   $('hd-stat').textContent=fmt(nRes)+' recorded · '+fmt(rollcallCount())+' roll-calls · '+scopeLabel();
   $('f-note').textContent=fmt(nRes)+' recorded of '+fmt(M.coverage.totalResolutions)
     +' catalogued · '+M.yearMin+'–'+M.yearMax;

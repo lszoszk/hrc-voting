@@ -1,7 +1,7 @@
 {
   "@context": "https://w3id.org/codemeta/3.0",
   "type": "SoftwareSourceCode",
-  "name": "OHCHR Voting Records — CHR · HRC",
+  "name": "UN Human Rights Voting Records — CHR · HRC · GA Third Committee",
   "description": "Interactive dashboard and reproducible pipeline for UN Commission on Human Rights and Human Rights Council voting records from the OHCHR Search Library.",
   "codeRepository": "https://github.com/lszoszk/hrc-voting",
   "url": "https://lszoszk.github.io/hrc-voting/",

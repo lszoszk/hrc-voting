@@ -1,5 +1,5 @@
 ---
-pretty_name: UN Human Rights Voting Records (CHR 1946–2006 · HRC 2006–)
+pretty_name: UN Human Rights Voting Records (CHR · HRC · GA Third Committee)
 homepage: https://lszoszk.github.io/hrc-voting/
 license: other
 license_name: polyform-noncommercial-1.0.0
@@ -80,7 +80,7 @@ configs:
     path: data/ga_clauses-train.parquet
 ---
 
-# UN Human Rights Voting Records — CHR · HRC
+# UN Human Rights Voting Records — CHR · HRC · GA Third Committee
 
 Every voting record catalogued by the OHCHR Search Library for the **UN Commission on
 Human Rights (1946–2006)** and its successor the **Human Rights Council (2006–present)**:
@@ -417,7 +417,7 @@ from the OHCHR Search Library.
 ```bibtex
 @software{szoszkiewicz_hrc_voting_2026,
   author    = {Szoszkiewicz, {\L}ukasz},
-  title     = {OHCHR Voting Records --- CHR {\textperiodcentered} HRC},
+  title     = {UN Human Rights Voting Records --- CHR {\textperiodcentered} HRC {\textperiodcentered} GA Third Committee},
   year      = {2026},
   version   = {1.0.0},
   publisher = {Zenodo},

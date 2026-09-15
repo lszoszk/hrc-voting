@@ -1,4 +1,4 @@
-# OHCHR Voting Records — CHR · HRC
+# UN Human Rights Voting Records — CHR · HRC · GA Third Committee
 
 **Live dashboard: <https://lszoszk.github.io/hrc-voting/>**
 
@@ -62,7 +62,7 @@ dashboard/texts/               # catalog.json, docs-<year>.json, idx/, lang.json
 
 # Hugging Face package (rebuilt from the committed outputs above)
 scripts/prepare_hf_dataset.py  # -> huggingface/hrc-voting/data/*.parquet + dashboard/hf_stats.js
-huggingface/hrc-voting/        # dataset card + 9 parquet configs (5 CHR/HRC + 4 GA), ready to upload
+huggingface/hrc-voting/        # dataset card + 10 parquet configs (5 CHR/HRC + 5 GA), ready to upload
 
 # app + checks
 dashboard/index.html           # self-contained static dashboard (open directly)
