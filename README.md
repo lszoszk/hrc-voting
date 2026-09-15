@@ -76,6 +76,7 @@ dashboard/data.js              # embedded data payload (~2.4 MB)
 scripts/smoke_test.py          # file:// regression check, must pass before shipping
 scripts/audit.py               # desktop + mobile overflow / console sweep
 scripts/export_test.py         # downloads and validates every CSV + PNG
+scripts/check_figures.py       # fails if a figure stated in prose drifted from the build
 ```
 
 ## Dashboard
@@ -264,6 +265,7 @@ python scripts/tag_terms.py          # -> dashboard/texts/{lang,terms}.json
 python scripts/prepare_hf_dataset.py # -> huggingface/ + dashboard/hf_stats.js
 
 python scripts/build_single_file.py  # -> dashboard/OHCHR_voting_dashboard.html
+python scripts/check_figures.py      # prose figures / version / title vs the build
 python scripts/smoke_test.py         # file:// regression check, must pass
 git commit -am "refresh data" && git push   # Actions redeploys Pages
 ```
@@ -295,6 +297,12 @@ The same run writes `dashboard/hf_stats.js`, which Methodology §13 renders its 
 table from. Nothing about the package is restated by hand in the dashboard: adding a
 config without a description in `HF_DESC` fails the build rather than shipping a table
 that cannot describe it.
+
+The README's own figures cannot be derived that way — markdown is read as written — so
+they get the other half of the pattern. `python scripts/check_figures.py` compares every
+coverage figure, the config count, the version and the title against
+`dataset_stats.json`, `data.js` and `CITATION.cff`, and exits non-zero naming whichever
+drifted. Run it after a rebuild, before pushing.
 
 ## Citation
 
