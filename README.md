@@ -4,15 +4,21 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21281232.svg)](https://doi.org/10.5281/zenodo.21281232)
 
-Complete harvest of the **Voting** collection of the OHCHR search library
-(<https://searchlibrary.ohchr.org/search?c=Voting>) — voting records of the
-**Commission on Human Rights (CHR, 1946–2006)** and the **Human Rights Council
-(HRC, 2006–present)** — parsed into dashboard-ready CSVs and an interactive,
-zero-build static dashboard.
+Human rights voting records of three UN organs — the **Commission on Human Rights
+(CHR, 1946–2006)**, the **Human Rights Council (HRC, 2006–present)** and the **General
+Assembly's Third Committee (1970–present)** — parsed into dashboard-ready CSVs and an
+interactive, zero-build static dashboard. The Commission and Council come from a
+complete harvest of the **Voting** collection of the OHCHR Search Library
+(<https://searchlibrary.ohchr.org/search?c=Voting>); the Assembly from the UN Digital
+Library and the Third Committee's own records (see below).
 
-**Coverage: 6,346 resolutions / 80,159 individual country roll-call votes (1946–2026).**
-Record count matches the collection total exactly (verified by three independent
-harvest methods).
+**Coverage: 7,360 records across three organs, 1946–2026.** The CHR/HRC catalogue is
+complete — 6,346 resolutions, of which 1,705 went to a roll-call (80,159 individual
+country votes); the record count matches the collection total exactly, verified by
+three independent harvest methods. The Assembly is roll-call only: 1,014 Third
+Committee resolutions adopted by recorded vote (130,591 plenary votes, plus 126,080
+committee-stage votes), because no equivalent catalogue of its consensus adoptions
+exists. 2,719 records in total carry a per-country breakdown.
 
 **General Assembly extension (September 2026).** The dashboard's *Bodies* selector
 adds the Assembly's human rights resolutions — the texts that come out of the
@@ -82,10 +88,11 @@ a single ~2.7 MB file with `data.js` and `world.js` inlined; regenerate it with
 tabs fetch shards over HTTP and stay inert there by design, with a notice).
 `scripts/smoke_test.py` loads the page from `file://` in headless Chromium (light
 + dark), clicks through every tab and key interaction, and fails on any console
-error — run it before sending the prototype onward. Eight views: five over the
-~1,705 recorded (roll-call) votes, an experimental Consensus view over all 6,346
-catalogued resolutions, two experimental views over the 4,437 harvested resolution
-**texts** (1993–2026), and Methodology:
+error — run it before sending the prototype onward. Seven tabs plus a Methodology &
+sources page reached from the footer: four over the 2,719 recorded (roll-call) votes,
+an experimental Consensus view over the 6,346 catalogued CHR/HRC resolutions (the
+Assembly has no consensus catalogue, so that view is scoped out under Assembly-only),
+and two experimental views over the 5,007 harvested resolution **texts** (1993–2026):
 
 - **Overview** — volume over time (CHR→HRC), how contested votes were, most divided votes.
 - **Countries** (country profile) — per-state yearly Yes/Abstain/No **composition** chart (100%
@@ -114,14 +121,14 @@ catalogued resolutions, two experimental views over the 4,437 harvested resoluti
   P5 + key states, plus computed **30 most agreeing / 30 most disagreeing** states;
   filter by year range. Methods are documented on the Methodology & sources page (footer link).
 - **Consensus** *(experimental)* — reads the mode of adoption as a diplomatic signal
-  across ALL 6,346 catalogued resolutions (`resAll` in the payload, trimmed titles):
+  across ALL 6,346 catalogued CHR/HRC resolutions (`resAll` in the payload, trimmed titles):
   **breakdowns & rapprochements** (subjects whose mode flipped consensus↔votes — the
   hero panel, e.g. HIV/AIDS 94%→0%), consensus share per year (peak 86%, HRC low 43%
   in 2021), a 100% adoption-mode stack, most/least consensual subjects, a withdrawn-
   drafts panel (a post-2010 phenomenon), and a filterable explorer of the full
   catalogue. Modes, thresholds and caveats (without-a-vote ≠ unanimity; small-n flips
   are candidates, not findings) documented in Methodology.
-- **Texts** *(experimental)* — clause-level full-text search over the **4,437 harvested
+- **Texts** *(experimental)* — clause-level full-text search over the **5,007 harvested
   resolution texts (1993–2026)**, the earliest the OHCHR/ODS document mirrors reach.
   Results are shown clause by clause with preambular / operative labels; AND / OR /
   `"exact phrase"` / `prefix*` / `-exclude`, plural folding, relevance or date sort.
@@ -141,9 +148,10 @@ catalogued resolutions, two experimental views over the 4,437 harvested resoluti
   (2020)](https://unitar.org/sites/default/files/media/publication/doc/UN%20Resolution%20Guidelines_Handbook_English-7x10-Unitar_1.pdf),
   Annex VI–VII, in addition to the JG-1/02/10 glossary; caveats in `tag_terms.py` and
   Methodology.
-- **Methodology** — explains, with live numbers pulled from `meta.coverage`, why the
-  vote-based views operate on ~1,705 resolutions instead of the full 6,346 (only
-  recorded/roll-call votes carry a per-country breakdown), the vote-code legend, how
+- **Methodology & sources** (footer link) — explains, with live numbers pulled from
+  `meta.coverage`, why the vote-based views operate on 2,719 records rather than the
+  whole catalogue (only recorded/roll-call votes carry a per-country breakdown), the
+  vote-code legend, how
   topics are identified, every alignment/consensus/language measure defined, and the
   known data-quality caveats below.
 
@@ -207,9 +215,10 @@ One row per country per resolution. `record_id` joins to `resolutions.csv`.
 | `.` | Absent / did not participate | 701 |
 | `` (empty) | Not a Council member at the time / no position recorded | 643 |
 
-Only ~1,705 resolutions (RECORDED votes) carry a per-country roll-call; the rest
-were adopted without a vote or only totals were published (totals are still in
-`resolutions.csv`).
+Only 1,705 of the CHR/HRC resolutions (RECORDED votes) carry a per-country roll-call;
+the rest were adopted without a vote or only totals were published (totals are still in
+`resolutions.csv`). The Assembly's votes live in `ga_votes_long.csv` and
+`ga_committee_votes.csv`.
 
 ## Data-quality notes (source, not parsing)
 
