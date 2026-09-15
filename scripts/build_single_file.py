@@ -21,7 +21,7 @@ OUT = DASH / "OHCHR_voting_dashboard.html"
 
 html = (DASH / "index.html").read_text(encoding="utf-8")
 
-for name in ("world.js", "data.js"):
+for name in ("world.js", "data.js", "hf_stats.js"):
     tag = f'<script src="{name}"></script>'
     if tag not in html:
         raise SystemExit(f"expected {tag} in index.html — inline step needs updating")

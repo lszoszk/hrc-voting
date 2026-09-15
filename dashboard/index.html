@@ -143,7 +143,7 @@ html,body{margin:0}   /* the root grid is exactly 100dvh tall: a default body ma
 .colsvt{grid-template-columns:minmax(0,1fr) 110px 110px}
 .colsdec{grid-template-columns:90px minmax(0,1fr) minmax(0,1fr)}
 .colscd{grid-template-columns:70px minmax(0,1fr) 90px 70px}
-.colshf{grid-template-columns:118px 80px minmax(0,1fr)}
+.colshf{grid-template-columns:152px 78px minmax(0,1fr)}  /* fits ga_committee_events */
 /* pills */
 .pill{display:inline-block;padding:1px 7px;font-size:9px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;border:1px solid;white-space:nowrap}
 .pY{color:var(--yes);border-color:var(--yes);background:color-mix(in oklab, var(--yes) 10%, transparent)}
@@ -822,7 +822,7 @@ body.touring .ga-consent{display:none}
       <br>• <b>One chart</b> — every panel on this site carries a <span class="cd">CSV</span> button for the exact numbers behind it and a <span class="cd">PNG</span> button for the figure. Each export is stamped with the source citation, the active <b>Scope</b> and the access date, so a chart pulled from here carries its own provenance.
       <br>• <b>The full tables</b> — <a href="https://github.com/lszoszk/hrc-voting/tree/main/data/csv" target="_blank" rel="noopener"><code>data/csv/</code></a> in the repository: <code>resolutions.csv</code> (one row per catalogued text) and <code>votes_long.csv</code> (one row per country per resolution), exactly as the pipeline emits them.
       <br>• <b>A citable archive</b> — the <a href="https://doi.org/10.5281/zenodo.21281232" target="_blank" rel="noopener">Zenodo record</a> freezes code and data together at a version, for when an exact figure has to stay reproducible.
-      <br>• <b>Analysis-ready</b> — the <a href="https://huggingface.co/datasets/lszoszk/hrc-voting" target="_blank" rel="noopener">Hugging Face dataset</a> packages the same records as parquet in five configs:
+      <br>• <b>Analysis-ready</b> — the <a href="https://huggingface.co/datasets/lszoszk/hrc-voting" target="_blank" rel="noopener">Hugging Face dataset</a> packages the same records as parquet in <span id="m-hf-n">several</span> configs:
       <div class="cite-box"><code>from datasets import load_dataset<br>ds = load_dataset("lszoszk/hrc-voting", "votes", split="train")</code></div>
       <div class="tblwrap gt" style="margin:2px 0 10px">
         <div class="gtr gth colshf"><span class="gtc">Config</span><span class="gtc num">Rows</span><span class="gtc">One row is</span></div>
@@ -894,6 +894,7 @@ body.touring .ga-consent{display:none}
 
 <script src="world.js"></script>
 <script src="data.js"></script>
+<script src="hf_stats.js"></script>
 <script>
 /* ================= VRC — SVG chart renderers (design-system port) =================
    Pure drawing; all fills reference CSS custom properties so palette switches restyle live. */
@@ -2489,18 +2490,15 @@ function renderMethod(){
   const all=ct.Y+ct.N+ct.A+ct.absent+ct.blank;
   $('m-codes').innerHTML=[['Y','Yes',ct.Y],['N','No',ct.N],['A','Abstain',ct.A],['.','Absent / did not participate',ct.absent],['(blank)','Not a member at the time / no position recorded',ct.blank]]
     .map(p=>`<div class="gtr colscd"><span class="gtc"><code class="cd">${p[0]}</code></span><span class="gtc" title="${p[1]}">${p[1]}</span><span class="gtc num">${fmt(p[2])}</span><span class="gtc num">${Math.round(p[2]/all*100)}%</span></div>`).join('');
-  /* Hugging Face config table. Row counts describe the PACKAGE, not this payload, so
-     they are stated rather than derived — keep them in step with
-     huggingface/hrc-voting/dataset_stats.json, which the prepare script writes. (The
-     votes figure is 80,159 there against 80,158 here: the dashboard drops one
-     malformed 967 field that has no country, the dataset keeps it for fidelity.) */
-  $('m-hf').innerHTML=[
-    ['resolutions','6,346','a catalogued resolution, decision or amendment (1946–2026)'],
-    ['votes','80,159',"one state's position on one resolution (1947–2026)"],
-    ['clauses','96,451','one preambular / operative / annex clause — the Texts corpus, 1993–2026'],
-    ['countries','154','a state that cast at least one roll-call vote'],
-    ['subjects','1,033','one OHCHR controlled subject heading'],
-  ].map(r=>`<div class="gtr colshf"><span class="gtc"><code class="cd">${r[0]}</code></span><span class="gtc num">${r[1]}</span><span class="gtc mut" title="${esc(r[2])}">${esc(r[2])}</span></div>`).join('');
+  /* Hugging Face config table, read from hf_stats.js — written by
+     scripts/prepare_hf_dataset.py alongside the parquet files. Row counts describe the
+     PACKAGE, not this payload (votes is 80,159 there against 80,158 here: the dashboard
+     drops one malformed 967 field with no country, the dataset keeps it). These were
+     hardcoded once and went stale at v1.1.0 — five configs listed, ten shipped. */
+  const hf=(window.HF_STATS&&HF_STATS.configs)||[];
+  $('m-hf-n').textContent=hf.length?['','one','two','three','four','five','six','seven','eight','nine','ten'][hf.length]||hf.length:'several';
+  $('m-hf').innerHTML=hf.length?hf.map(c=>`<div class="gtr colshf"><span class="gtc"><code class="cd">${esc(c.name)}</code></span><span class="gtc num">${fmt(c.rows)}</span><span class="gtc mut" title="${esc(c.desc)}">${esc(c.desc)}</span></div>`).join('')
+    :'<div class="gtr colshf"><span class="gtc mut" style="grid-column:1/-1">Config list unavailable — see the dataset page.</span></div>';
   $('m-subj-all').textContent=fmt(cov.nSubjectsAll);
   $('m-subj-rec').textContent=fmt(cov.nSubjectsRecorded);
   const mp=Math.round(cov.mismatched/(cov.reconciled+cov.mismatched)*100);

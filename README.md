@@ -61,7 +61,7 @@ data/ap_mirror/, data/ods_texts/, data/text_cache/   # sources + extraction cach
 dashboard/texts/               # catalog.json, docs-<year>.json, idx/, lang.json
 
 # Hugging Face package (rebuilt from the committed outputs above)
-scripts/prepare_hf_dataset.py  # -> huggingface/hrc-voting/{README.md, data/*.parquet}
+scripts/prepare_hf_dataset.py  # -> huggingface/hrc-voting/data/*.parquet + dashboard/hf_stats.js
 huggingface/hrc-voting/        # dataset card + 9 parquet configs (5 CHR/HRC + 4 GA), ready to upload
 
 # app + checks
@@ -250,6 +250,10 @@ python scripts/harvest_ods_texts.py  # -> data/ods_texts/
 python scripts/build_text_index.py   # -> dashboard/texts/{catalog,docs-*,idx}
 python scripts/tag_terms.py          # -> dashboard/texts/{lang,terms}.json
 
+# must precede build_single_file.py: it writes dashboard/hf_stats.js, which the
+# single-file build inlines and Methodology 13 renders its config table from
+python scripts/prepare_hf_dataset.py # -> huggingface/ + dashboard/hf_stats.js
+
 python scripts/build_single_file.py  # -> dashboard/OHCHR_voting_dashboard.html
 python scripts/smoke_test.py         # file:// regression check, must pass
 git commit -am "refresh data" && git push   # Actions redeploys Pages
@@ -257,20 +261,31 @@ git commit -am "refresh data" && git push   # Actions redeploys Pages
 
 ## Hugging Face dataset
 
-`huggingface/hrc-voting/` holds a ready-to-upload package with three configs —
-`resolutions` (6,346), `votes` (80,159) and `clauses` (96,451, texts 1993–2026) — as
-parquet, plus a dataset card. Rebuild it from the committed CSVs and text index with:
+`huggingface/hrc-voting/` holds a ready-to-upload package as parquet, plus a dataset
+card. Live at [`lszoszk/hrc-voting`](https://huggingface.co/datasets/lszoszk/hrc-voting).
+Rebuild it from the committed CSVs and text index with:
 
 ```bash
 python scripts/prepare_hf_dataset.py
+hf upload lszoszk/hrc-voting ./huggingface/hrc-voting --repo-type=dataset
 ```
 
-The card leads with the four analytical traps in this data (roll-call selection,
-abstentions not being votes against, amendments not being resolutions, the ~9%
-reconciliation gap) and the package ships derived columns — `prevailing_side`,
-`adopted`, `rollcall_reconciles`, `clause_type` — so downstream users do not have to
-rediscover them. Upload with `huggingface-cli upload`; note the **PolyForm
-Noncommercial** licence carries over, so the card declares `license: other`.
+Ten configs: five over the CHR/HRC record (`resolutions`, `votes`, `clauses`,
+`countries`, `subjects`) and five over the General Assembly Third Committee
+(`ga_resolutions`, `ga_votes`, `ga_committee_events`, `ga_committee_votes`,
+`ga_clauses`). Exact row counts are in `dataset_stats.json`, written by the same run.
+
+The card leads with the analytical traps in this data (roll-call selection, abstentions
+not being votes against, amendments not being resolutions, the ~9% reconciliation gap)
+and the package ships derived columns — `prevailing_side`, `adopted`,
+`rollcall_reconciles`, `clause_type` — so downstream users do not have to rediscover
+them. The **PolyForm Noncommercial** licence carries over, so the card declares
+`license: other`.
+
+The same run writes `dashboard/hf_stats.js`, which Methodology §13 renders its config
+table from. Nothing about the package is restated by hand in the dashboard: adding a
+config without a description in `HF_DESC` fails the build rather than shipping a table
+that cannot describe it.
 
 ## Citation
 

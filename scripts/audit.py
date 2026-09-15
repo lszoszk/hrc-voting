@@ -47,7 +47,11 @@ with sync_playwright() as p:
         print(f"\n===== {label} {vp['width']}×{vp['height']} =====")
         issues = 0
         for view in ["overview","country","topics","blocs","consensus","texts","language","method"]:
-            pg.click(f'.tab[data-view="{view}"]'); pg.wait_for_timeout(350)
+            # Methodology left the tab strip for the footer, so it has no .tab to click
+            # — this loop had been dying on it, silently dropping the one tab from the
+            # overflow sweep since then.
+            pg.click('#ft-method' if view == "method" else f'.tab[data-view="{view}"]')
+            pg.wait_for_timeout(350)
             if view == "country":
                 pg.select_option("#c-country", "USA"); pg.wait_for_timeout(400)
             if view == "topics":
