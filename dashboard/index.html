@@ -316,7 +316,10 @@ body.touring .ga-consent{display:none}
   .mh-sub{font-size:10px;line-height:1.35}
   .inner{padding:14px 12px 32px}
   .foot{height:auto;flex-wrap:nowrap;padding:6px 12px;white-space:nowrap;font-size:9px;gap:8px}
-  .fl .fsrc{display:none}          /* source citation lives in Methodology on small screens */
+  /* Source attribution stays on screen at phone widths — it is a condition of use, not
+     chrome. The dataset stat yields instead; it is repeated on Overview. */
+  .fl .fsrc .fsrc-long{display:none}
+  .fl #f-note,.fl .fauthor{display:none}
   #ft-cite{display:none}           /* citation copy-box lives in Methodology §12 on small screens */
   .ft-tour-lbl{display:none}
   .mh-cmdk{flex-basis:100%;max-width:none}
@@ -361,7 +364,7 @@ body.touring .ga-consent{display:none}
 
 <div class="masthead">
   <div class="fx ac jb gap16 mh-row">
-    <span class="mh-kicker">OHCHR Search Library · UN Digital Library</span>
+    <span class="mh-kicker">Data: <a href="https://searchlibrary.ohchr.org/search?c=Voting" target="_blank" rel="noopener">OHCHR Library — HRC voting records</a> · <a href="https://digitallibrary.un.org/record/4060887" target="_blank" rel="noopener">UN Digital Library</a></span>
     <button class="cmdk mh-cmdk" id="k-open"><span class="kk">⌘K</span><span class="khint">Jump to a view, country, or subject tag…</span></button>
     <span class="statchip"><i class="dot"></i><span id="hd-stat">loading…</span></span>
   </div>
@@ -704,7 +707,7 @@ body.touring .ga-consent{display:none}
   <div class="mth-bar"><span class="mh-kicker">Methodology &amp; sources — how this site is built and what it cannot tell you</span><a role="button" tabindex="0" id="mth-back">← back to the views</a></div>
   <div class="panel">
     <div class="p-head"><span class="p-idx">01</span><span class="p-title">Source &amp; scope</span></div>
-    <div class="p-body ptext">All data comes from the <a href="https://searchlibrary.ohchr.org/search?c=Voting" target="_blank" rel="noopener">OHCHR Search Library — Voting collection</a>, harvested in full (<span id="m-total-inline">…</span> records — matching the collection's own reported total) via its MARCXML export. It covers every voting record catalogued for the <b>Commission on Human Rights</b> (1946–2006) and its successor, the <b>Human Rights Council</b> (2006–present).
+    <div class="p-body ptext">The <b>Commission on Human Rights</b> (1946–2006) and its successor the <b>Human Rights Council</b> (2006–present) come from the <a href="https://searchlibrary.ohchr.org/search?c=Voting" target="_blank" rel="noopener"><b>OHCHR Library — HRC voting records database</b></a> (the <i>Voting</i> collection of the OHCHR Search Library), harvested in full via its MARCXML export: <span id="m-total-inline">…</span> records, matching the collection's own reported total. The <b>General Assembly's Third Committee</b> (1970–present) is not in that collection and comes from two other sources — the <a href="https://digitallibrary.un.org/record/4060887" target="_blank" rel="noopener">UN Digital Library's <i>General Assembly voting data</i></a> and the Committee's own summary records and voting sheets on un.org (<span id="m-ga-inline">…</span> resolutions; see §14).
       <br>• <b>The 2006 institutional break</b> — the Council did not merely rename the Commission: it introduced new membership, election rules, the Universal Periodic Review and a different sessional rhythm. Because voting dynamics before and after differ substantially, every time-axis chart carries a dashed <b>HRC</b> reference line at 2006; treat trends read straight across it with care.</div>
   </div>
   <div class="panel">
@@ -848,7 +851,7 @@ body.touring .ga-consent{display:none}
 </div></main>
 
 <footer class="foot">
-  <div class="fl"><span class="sup">CHR·HRC VR</span><span class="fauthor">by <a href="https://lszoszk.github.io/" target="_blank" rel="noopener">Łukasz Szoszkiewicz</a></span><span class="fsrc">Sources: <a href="https://searchlibrary.ohchr.org/search?c=Voting" target="_blank" rel="noopener">OHCHR Search Library</a> · <a href="https://digitallibrary.un.org/record/4060887" target="_blank" rel="noopener">UN Digital Library</a></span><span class="fsep fsrc">·</span><span id="f-note">loading dataset…</span></div>
+  <div class="fl"><span class="sup">CHR·HRC VR</span><span class="fauthor">by <a href="https://lszoszk.github.io/" target="_blank" rel="noopener">Łukasz Szoszkiewicz</a></span><span class="fsrc">Data: <a href="https://searchlibrary.ohchr.org/search?c=Voting" target="_blank" rel="noopener">OHCHR Library — HRC voting records</a><span class="fsrc-long"> · <a href="https://digitallibrary.un.org/record/4060887" target="_blank" rel="noopener">UN Digital Library</a></span></span><span class="fsep fsrc">·</span><span id="f-note">loading dataset…</span></div>
   <div class="fr"><span class="pallbl">Palette</span><button class="palbtn on" data-pal="paper">paper</button><button class="palbtn" data-pal="terminal">terminal</button><button class="palbtn" data-pal="ink">ink</button><button class="palbtn" id="ft-method" type="button" style="margin-left:16px" title="Sources, coverage, every measure defined, and what the data cannot tell you">Methodology &amp; sources</button><button class="palbtn" id="ft-cite" type="button" style="margin-left:8px" title="Copy an academic citation for this dashboard">Cite</button><span class="pallbl ft-tour-lbl" style="margin-left:16px">First visit?</span><button class="palbtn" id="ft-tour" type="button">✦ tour</button></div>
 </footer>
 
@@ -2475,7 +2478,13 @@ function renderMethod(){
    const cc=ga.committeeCoverage;g('m-ga-cov',cc?fmt(cc.matched)+' of '+fmt(cc.eligible):'—');
    g('m-ga-conly',ga.committeeOnly!=null?fmt(ga.committeeOnly):'—');}
   langInit().then(fillVocab);fillVocab();
-  $('m-total-inline').textContent=fmt(cov.totalResolutions);
+  /* The OHCHR collection is the CHR/HRC catalogue alone — 6,346. cov.totalResolutions
+     is 7,360 because it also counts the Assembly's roll-call-only records, which come
+     from the UN Digital Library. Crediting that larger number to OHCHR, next to the
+     claim that it "matches the collection's own reported total", made the attribution
+     wrong in the one place it most needs to be right. */
+  $('m-total-inline').textContent=fmt(RA.length);
+  $('m-ga-inline').textContent=fmt(RES.filter(r=>r.body==='GA').length);
   $('m-total-head').textContent=fmt(cov.totalResolutions);
   $('m-tiles').innerHTML=[
     ['Total resolutions',fmt(cov.totalResolutions),'',' id="m-tile-total"'],
