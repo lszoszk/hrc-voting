@@ -1685,8 +1685,14 @@ function renderTopicChips(){
   if(more)more.onclick=()=>{chipsExpanded=!chipsExpanded;renderTopicChips();};
 }
 function hideSuggest(){const b=$('t-suggest');b.style.display='none';b.innerHTML='';}
+/* Quotes mean "exact phrase" in the Texts tab, and readers carry the habit over. Topics
+   is already a plain substring match over headings and titles, so there a quote is just
+   a character no title contains: "torture" found nothing where torture found five — a
+   silent zero that reads like an empty corpus. Strip them here; the handoff below still
+   passes the query to Texts as typed, because there they change the result. */
+const tqClean=s=>s.replace(/[“”]/g,'"').replace(/"/g,'').replace(/\s+/g,' ').trim();
 function renderSuggest(){
-  const box=$('t-suggest'),q=$('t-search').value.trim().toLowerCase();
+  const box=$('t-suggest'),q=tqClean($('t-search').value).toLowerCase();
   if(q.length<2){hideSuggest();return;}
   const type=$('t-type').value;
   const pool=SUBJ.filter(s=> type===''?true : type==='country'?s.cs : !s.cs);
@@ -1699,7 +1705,7 @@ function renderSuggest(){
   box.querySelectorAll('.sitem[data-s]').forEach(it=>it.onmousedown=e=>{e.preventDefault();pickSubject(it.dataset.s);});
 }
 function topicMatched(){
-  const text=$('t-search').value.trim().toLowerCase(),type=$('t-type').value;
+  const text=tqClean($('t-search').value).toLowerCase(),type=$('t-type').value;
   const [ymin,ymax]=yearPair('t-ymin','t-ymax'),matched=[];
   RES.forEach((r,i)=>{
     if(r.year==null||r.year<ymin||r.year>ymax)return;
@@ -1779,7 +1785,7 @@ function toTextSearch(q){
   switchTab('texts');
 }
 function renderTopics(){
-  const text=$('t-search').value.trim();
+  const raw=$('t-search').value.trim(),text=tqClean(raw);
   const matched=topicMatched();
   const show=!!(topicState.subject||text.length>=2);
   $('t-result').style.display=show?'':'none';
@@ -1800,7 +1806,7 @@ function renderTopics(){
             +'Council never addressed it: many topics are written into the text of resolutions '
             +'without ever becoming a catalogued heading. To search inside the resolutions — ')
         +'<button class="palbtn" id="t-tofts" type="button">Search the full text for “'+esc(text)+'” →</button>';
-      const btn=$('t-tofts');if(btn)btn.onclick=()=>toTextSearch(text);
+      const btn=$('t-tofts');if(btn)btn.onclick=()=>toTextSearch(raw);
     } else ft.style.display='none';
   }
   const heading=topicState.subject?tc(topicState.subject):'“'+text+'”';
