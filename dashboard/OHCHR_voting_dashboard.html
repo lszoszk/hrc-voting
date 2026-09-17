@@ -465,7 +465,7 @@ body.touring .ga-consent{display:none}
   <div class="fbar">
     <div class="fitem fgrow posrel">
       <label class="flbl" for="t-search">Search title or subject</label>
-      <input class="tin w100" type="text" id="t-search" autocomplete="off" placeholder="Type 2+ letters for subject suggestions — free text also searches titles">
+      <input class="tin w100" type="text" id="t-search" autocomplete="off" placeholder="Subject headings and titles — to search inside the texts, use the Texts tab">
       <div class="suggest" id="t-suggest"></div>
     </div>
     <div class="fitem"><label class="flbl" for="t-type">Topic type</label><select class="sel" id="t-type"><option value="">All topics</option><option value="theme">Thematic only</option><option value="country">Country situations</option></select></div>
@@ -477,6 +477,7 @@ body.touring .ga-consent{display:none}
     <div class="p-body chiprow" id="t-chips"></div>
   </div>
   <div id="t-result" style="display:none">
+    <div id="t-fulltext" style="display:none"></div>
     <div class="tiles" id="t-tiles"></div>
     <div class="panel" id="t-relatedcard" style="display:none">
       <div class="p-body chiprow"><span class="relbl">Related subject tags in these results:</span><span id="t-related" class="chiprow" style="display:contents"></span></div>
@@ -1697,7 +1698,7 @@ function renderSuggest(){
   const pool=SUBJ.filter(s=> type===''?true : type==='country'?s.cs : !s.cs);
   const hits=pool.filter(s=>s.name.toLowerCase().includes(q)).slice(0,8); /* pool is most-voted-first */
   if(!hits.length){
-    box.innerHTML=`<div class="sitem mut" style="cursor:default">No subject tag matches — free text still searches resolution titles</div>`;
+    box.innerHTML=`<div class="sitem mut" style="cursor:default">No subject heading matches — free text still searches titles, and the Texts tab searches inside the resolutions</div>`;
     box.style.display='block';return;}
   box.innerHTML=hits.map(s=>`<div class="sitem" data-s="${esc(s.name)}"><span>${esc(tc(s.name))}</span><span class="cnt">${s.n} vote${s.n>1?'s':''}${s.cs?' · country':''}</span></div>`).join('');
   box.style.display='block';
@@ -1775,6 +1776,14 @@ function trendGroupsData(matched){
     points:[...per[g].entries()].map(e=>({year:e[0],n:e[1].Y+e[1].N+e[1].A,share:e[1].Y/(e[1].Y+e[1].N+e[1].A)}))
       .filter(p=>p.n>=3).sort((a,b)=>a.year-b.year)}));
 }
+/* Topics matches OHCHR's catalogued subject headings and resolution titles — never the
+   body of a resolution. A reader searching "rural women" gets nothing here while the
+   Texts tab finds it in 20 resolutions, because no subject heading carries that phrase.
+   Hand the query over rather than letting an empty result read as an empty corpus. */
+function toTextSearch(q){
+  const box=$('tx-q');if(box)box.value=q;
+  switchTab('texts');
+}
 function renderTopics(){
   const text=$('t-search').value.trim();
   const matched=topicMatched();
@@ -1782,6 +1791,24 @@ function renderTopics(){
   $('t-result').style.display=show?'':'none';
   $('t-empty').style.display=show?'none':'';
   if(!show)return;
+  /* The handoff to full-text search: loud when this tab found nothing, quiet when it
+     found something (a reader with two subject-tag hits still has no way of knowing
+     the phrase occurs in twenty more resolutions). */
+  const ft=$('t-fulltext');
+  if(ft){
+    if(text.length>=2&&!topicState.subject){
+      ft.style.display='';
+      ft.className=matched.length?'mnote':'note';
+      ft.innerHTML=(matched.length
+          ?'This tab searches OHCHR’s catalogued subject headings and resolution titles. '
+            +'To search <b>inside</b> the resolutions as well — '
+          :'<b>No subject heading or title matches “'+esc(text)+'”.</b> That does not mean the '
+            +'Council never addressed it: many topics are written into the text of resolutions '
+            +'without ever becoming a catalogued heading. To search inside the resolutions — ')
+        +'<button class="palbtn" id="t-tofts" type="button">Search the full text for “'+esc(text)+'” →</button>';
+      const btn=$('t-tofts');if(btn)btn.onclick=()=>toTextSearch(text);
+    } else ft.style.display='none';
+  }
   const heading=topicState.subject?tc(topicState.subject):'“'+text+'”';
   const yrs=matched.map(i=>RES[i].year).filter(Boolean);
   let sh=0,kk=0;matched.forEach(i=>{const r=RES[i],tot=(r.y||0)+(r.n||0)+(r.a||0);if(tot){sh+=r.y/tot;kk++;}});
