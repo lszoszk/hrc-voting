@@ -143,8 +143,8 @@ a well-documented selection problem (Fjelstul, Hug & Kilby 2025). Filter on
 **2. An abstention is not a vote against.** Under the chamber's own rules a member that
 abstains is "considered as not voting", so the outcome turns on Yes vs No alone. Taking
 `max(yes, no, abstain)` as the winning side — the obvious-looking move — scores the
-winning Yes bloc as *defeated* on **53 adopted resolutions** in this corpus, where more
-members abstained than voted Yes but the text still carried. Use `prevailing_side` /
+winning Yes bloc as *defeated* on adopted resolutions where more members abstained than
+voted Yes but the text still carried. Use `prevailing_side` /
 `adopted`, which are computed correctly (Yes vs No, null on a 5-case tie).
 
 **3. Amendments are not resolutions.** 749 catalogued items are amendments to draft
@@ -205,9 +205,9 @@ which exist for many resolutions that have no per-country breakdown.
   rows). See the `subjects` config for how this is derived
 - `url_resolution`, `url_draft`, `record_url`
 
-Adoption modes: adopted without a vote 3,835 · recorded vote 1,713 · non-recorded vote
-371 · withdrawn 236 · non-recorded unanimous 142 · not considered 33 · non-recorded no
-information 15 · recorded at a closed meeting 1. Bodies: CHR 3,082 · HRC 3,264.
+Adoption modes: adopted without a vote 3,860 · recorded vote 1,724 · non-recorded vote
+371 · withdrawn 247 · non-recorded unanimous 142 · not considered 32 · non-recorded no
+information 15 · recorded at a closed meeting 1. Bodies: CHR 3,082 · HRC 3,310.
 
 ## Config: `votes`
 
@@ -223,20 +223,20 @@ One row per (resolution, country). 154 states appear.
   prevailed; null when it cast no vote or the resolution had no Yes/No outcome
 - `subject`, `is_amendment` — denormalised from `resolutions` for convenient filtering
 
-Vote codes: `Y` yes 44,536 · `N` no 18,368 · `A` abstain 15,911 · `.` absent or not
-participating 701 · empty 643 (not a member at the time, or no position recorded).
+Vote codes: `Y` yes 44,566 · `N` no 18,903 · `A` abstain 15,864 · `.` absent or not
+participating 701 · empty 642 (not a member at the time, or no position recorded).
 
 ## Config: `clauses`
 
-Clause-segmented full text of 4,437 resolutions, **1993–2026** — the earliest the
+Clause-segmented full text of 4,543 resolutions, **1993–2026** — the earliest the
 OHCHR/ODS document mirrors reach, so this config covers a much shorter period than the
 other two. Extracted from `.doc`/`.pdf` originals and segmented on structural markers.
 
 - `record_id`, `symbol`, `year`, `body`, `subject`, `title`, `is_amendment`,
   `adoption_mode`, `adopted`
 - `clause_index`, `clause_label` — e.g. `PP3`, `OP7`, `OP2(a)`, `AX1`
-- `clause_type` — `preambular` 35,670 · `operative` 42,957 · `operative_subitem` 12,498 ·
-  `annex` 2,082 · `other` 3,244
+- `clause_type` — `preambular` 36,695 · `operative` 43,850 · `operative_subitem` 12,738 ·
+  `annex` 2,082 · `other` 3,375
 - `text`, `n_chars`, `n_words`
 
 Four **experimental** columns score top-level operative clauses only (null elsewhere).
@@ -294,12 +294,12 @@ Dimension table, 200 states — the 154 that cast a roll-call vote in the Commis
 
 ## Config: `subjects`
 
-Dimension table, all 1,033 controlled subject headings (MARC 991$d) — OHCHR's own
+Dimension table, all 1,035 controlled subject headings (MARC 991$d) — OHCHR's own
 cataloguing vocabulary, **not** ML-derived, so every label is traceable to the source.
 Join on `subject`.
 
 - `subject` — the heading as catalogued, upper-case
-- `is_country_situation` — 307 of 1,033 name a state or territory
+- `is_country_situation` — 307 of 1,035 name a state or territory
 - `n_resolutions_all`, `n_resolutions_recorded` — how many resolutions carry it, in the
   full catalogue and in the roll-call subset
 

@@ -32,9 +32,9 @@ already made and fixed (see notes/AUDIT-2026-07.md):
   prevailing_side / adopted   Under the chamber's own rules an abstention is not a vote
                               cast, so the outcome turns on Yes vs No alone. Taking
                               max(Yes, No, Abstain) instead — the obvious-looking move —
-                              scores the winning Yes bloc as defeated on 53 adopted
-                              resolutions in this corpus.
-  rollcall_reconciles         ~9% of recorded votes have a per-country roll-call whose
+                              scores the winning Yes bloc as defeated on adopted
+                              resolutions where more members abstained than voted Yes.
+  rollcall_reconciles         ~3% of recorded votes have a per-country roll-call whose
                               tally does not match the official totals. The flag lets a
                               user filter them rather than discover the discrepancy
                               halfway through an analysis.
