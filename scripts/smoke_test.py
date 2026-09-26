@@ -258,11 +258,11 @@ ok = (checks["DATA loaded"] and checks["overview tiles"] == 4 and checks["countr
       and checks["tour closed + flag"] and checks["tour stays closed on revisit"] and checks["footer reopens tour"]
       and checks["scatter fullscreen"] and checks["scatter fullscreen closes"]
       and checks["hrc line (overview)"] and checks["hrc line (erosion)"]
-      and checks["scope default"] == "res" and "1,248" in checks["ov tile (res)"]
-      and "1,705" in checks["ov tile (all)"] and checks["amd pills (all)"] >= 5
+      and checks["scope default"] == "res" and "1,251" in checks["ov tile (res)"]
+      and "1,716" in checks["ov tile (all)"] and checks["amd pills (all)"] >= 5
       and "breakdowns" in checks["consensus flipnote"] and checks["consensus strip dots"] > 100
       and checks["consensus erosion bars"] > 60 and checks["consensus explorer rows"] > 100
-      and checks["consensus WD filter"].startswith("236")
+      and checks["consensus WD filter"].startswith("247")
       and checks["file:// GA script absent"] and checks["file:// consent banner absent"]
       and checks["palette paper"] == "paper" and not errors)
 print("SMOKE:", "PASS" if ok else "FAIL")

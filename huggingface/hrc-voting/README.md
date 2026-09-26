@@ -84,7 +84,7 @@ configs:
 
 Every voting record catalogued by the OHCHR Search Library for the **UN Commission on
 Human Rights (1946–2006)** and its successor the **Human Rights Council (2006–present)**:
-6,346 resolutions, 80,159 individual country roll-call votes, and 96,451 clause-segmented
+6,392 records (resolutions, decisions and amendments), 80,676 individual country roll-call votes, and 98,740 clause-segmented
 paragraphs of the adopted texts. Since September 2026 four further configs (`ga_*`) add
 the **General Assembly's** human rights resolutions — the texts that come out of its
 Third Committee — with both the committee-stage and the plenary roll-call (see
@@ -92,8 +92,10 @@ Third Committee — with both the committee-stage and the plenary roll-call (see
 
 Harvested from the OHCHR Search Library's MARCXML export and parsed with the pipeline in
 [`lszoszk/hrc-voting`](https://github.com/lszoszk/hrc-voting). The record count matches
-the collection's own reported total exactly, verified by three independent harvest
-methods. An interactive dashboard over the same data is at
+the collection's own reported total exactly (26 September 2026), verified by three
+independent harvest methods. The catalogue itself omits a few Council texts — two rejected
+drafts and 21 amendments in 2020–2024, per the session reports; see the data-quality notes
+in the GitHub README. An interactive dashboard over the same data is at
 <https://lszoszk.github.io/hrc-voting/>.
 
 ## Configs
@@ -102,11 +104,11 @@ Three fact tables and two dimension tables for the Commission and the Council; f
 
 | config | rows | one row is | period |
 |---|---|---|---|
-| `resolutions` *(default)* | 6,346 | a catalogued resolution, decision or amendment | 1946–2026 |
-| `votes` | 80,159 | one country's position on one resolution | 1947–2026 |
-| `clauses` | 96,451 | one preambular / operative / annex clause | 1993–2026 |
+| `resolutions` *(default)* | 6,392 | a catalogued resolution, decision or amendment | 1946–2026 |
+| `votes` | 80,676 | one country's position on one resolution | 1947–2026 |
+| `clauses` | 98,740 | one preambular / operative / annex clause | 1993–2026 |
 | `countries` | 200 | a state that cast at least one roll-call vote in any of the three organs (154 in the CHR/HRC tables) | — |
-| `subjects` | 1,033 | one OHCHR controlled subject heading | — |
+| `subjects` | 1,035 | one OHCHR controlled subject heading | — |
 
 ```python
 from datasets import load_dataset
@@ -132,7 +134,7 @@ These are the four things most likely to produce a wrong result. The first two a
 mistakes this project made and corrected; derived columns are provided so you do not
 have to repeat them.
 
-**1. Only 27% of resolutions have a per-country roll-call.** 1,705 of 6,346. The rest
+**1. Only 27% of resolutions have a per-country roll-call.** 1,716 of 6,392. The rest
 were adopted without a vote or published as totals only, so no individual positions
 exist. Roll-call statistics describe *contested* politics, not the Council's output —
 a well-documented selection problem (Fjelstul, Hug & Kilby 2025). Filter on
@@ -143,14 +145,14 @@ abstains is "considered as not voting", so the outcome turns on Yes vs No alone.
 `max(yes, no, abstain)` as the winning side — the obvious-looking move — scores the
 winning Yes bloc as *defeated* on **53 adopted resolutions** in this corpus, where more
 members abstained than voted Yes but the text still carried. Use `prevailing_side` /
-`adopted`, which are computed correctly (Yes vs No, null on a 6-case tie).
+`adopted`, which are computed correctly (Yes vs No, null on a 5-case tie).
 
-**3. Amendments are not resolutions.** 731 catalogued items are amendments to draft
-texts, and 462 of them went to a recorded vote — 27% of all roll-calls, almost all
+**3. Amendments are not resolutions.** 749 catalogued items are amendments to draft
+texts, and 465 of them went to a recorded vote — 27% of all roll-calls, almost all
 post-2010. A Yes on a hostile amendment frequently *opposes* the parent text's aim, so
 pooling them with resolutions inverts meaning. Filter on `is_amendment`.
 
-**4. ~9% of roll-calls do not reconcile with the official totals.** For 148 recorded
+**4. ~3% of roll-calls do not reconcile with the official totals.** For 49 recorded
 votes the sum of individual Yes/No/Abstain positions does not match the resolution's
 official 996 totals, almost always by a small margin in abstentions or
 non-participation. These are inconsistencies in OHCHR's own cataloguing and are

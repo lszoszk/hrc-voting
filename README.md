@@ -12,13 +12,17 @@ complete harvest of the **Voting** collection of the OHCHR Search Library
 (<https://searchlibrary.ohchr.org/search?c=Voting>); the Assembly from the UN Digital
 Library and the Third Committee's own records (see below).
 
-**Coverage: 7,360 records across three organs, 1946–2026.** The CHR/HRC catalogue is
-complete — 6,346 resolutions, of which 1,705 went to a roll-call (80,159 individual
-country votes); the record count matches the collection total exactly, verified by
-three independent harvest methods. The Assembly is roll-call only: 1,014 Third
+**Coverage: 7,406 records across three organs, 1946–2026.** The CHR/HRC harvest is
+complete against the OHCHR catalogue as of 26 September 2026 — 6,392 records
+(resolutions, decisions, presidential statements and 749 amendments to draft texts),
+of which 1,716 went to a roll-call (80,676 individual country votes); the record count
+matches the collection total exactly, verified by three independent harvest methods.
+The catalogue itself omits a few Council texts — two rejected drafts and 21
+amendments in 2020–2024, checked against the session reports (see
+[Data-quality notes](#data-quality-notes-source-not-parsing)). The Assembly is roll-call only: 1,014 Third
 Committee resolutions adopted by recorded vote (130,591 plenary votes, plus 126,080
 committee-stage votes), because no equivalent catalogue of its consensus adoptions
-exists. 2,719 records in total carry a per-country breakdown.
+exists. 2,730 records in total carry a per-country breakdown.
 
 **General Assembly extension (September 2026).** The dashboard's *Bodies* selector
 adds the Assembly's human rights resolutions — the texts that come out of the
@@ -90,10 +94,10 @@ tabs fetch shards over HTTP and stay inert there by design, with a notice).
 `scripts/smoke_test.py` loads the page from `file://` in headless Chromium (light
 + dark), clicks through every tab and key interaction, and fails on any console
 error — run it before sending the prototype onward. Seven tabs plus a Methodology &
-sources page reached from the footer: four over the 2,719 recorded (roll-call) votes,
-an experimental Consensus view over the 6,346 catalogued CHR/HRC resolutions (the
+sources page reached from the footer: four over the 2,730 recorded (roll-call) votes,
+an experimental Consensus view over the 6,392 catalogued CHR/HRC records (the
 Assembly has no consensus catalogue, so that view is scoped out under Assembly-only),
-and two experimental views over the 5,007 harvested resolution **texts** (1993–2026):
+and two experimental views over the 5,113 harvested resolution **texts** (1993–2026):
 
 - **Overview** — volume over time (CHR→HRC), how contested votes were, most divided votes.
 - **Countries** (country profile) — per-state yearly Yes/Abstain/No **composition** chart (100%
@@ -122,14 +126,14 @@ and two experimental views over the 5,007 harvested resolution **texts** (1993�
   P5 + key states, plus computed **30 most agreeing / 30 most disagreeing** states;
   filter by year range. Methods are documented on the Methodology & sources page (footer link).
 - **Consensus** *(experimental)* — reads the mode of adoption as a diplomatic signal
-  across ALL 6,346 catalogued CHR/HRC resolutions (`resAll` in the payload, trimmed titles):
+  across ALL 6,392 catalogued CHR/HRC records (`resAll` in the payload, trimmed titles):
   **breakdowns & rapprochements** (subjects whose mode flipped consensus↔votes — the
-  hero panel, e.g. HIV/AIDS 94%→0%), consensus share per year (peak 86%, HRC low 43%
-  in 2021), a 100% adoption-mode stack, most/least consensual subjects, a withdrawn-
+  hero panel, e.g. HIV/AIDS 94%→0%), consensus share per year (peak 86%, HRC low 69%
+  in 2021; amendments excluded, as in the default Scope), a 100% adoption-mode stack, most/least consensual subjects, a withdrawn-
   drafts panel (a post-2010 phenomenon), and a filterable explorer of the full
   catalogue. Modes, thresholds and caveats (without-a-vote ≠ unanimity; small-n flips
   are candidates, not findings) documented in Methodology.
-- **Texts** *(experimental)* — clause-level full-text search over the **5,007 harvested
+- **Texts** *(experimental)* — clause-level full-text search over the **5,113 harvested
   resolution texts (1993–2026)**, the earliest the OHCHR/ODS document mirrors reach.
   Results are shown clause by clause with preambular / operative labels; AND / OR /
   `"exact phrase"` / `prefix*` / `-exclude`, plural folding, relevance or date sort.
@@ -150,7 +154,7 @@ and two experimental views over the 5,007 harvested resolution **texts** (1993�
   Annex VI–VII, in addition to the JG-1/02/10 glossary; caveats in `tag_terms.py` and
   Methodology.
 - **Methodology & sources** (footer link) — explains, with live numbers pulled from
-  `meta.coverage`, why the vote-based views operate on 2,719 records rather than the
+  `meta.coverage`, why the vote-based views operate on 2,730 records rather than the
   whole catalogue (only recorded/roll-call votes carry a per-country breakdown), the
   vote-code legend, how
   topics are identified, every alignment/consensus/language measure defined, and the
@@ -216,18 +220,19 @@ One row per country per resolution. `record_id` joins to `resolutions.csv`.
 | `.` | Absent / did not participate | 701 |
 | `` (empty) | Not a Council member at the time / no position recorded | 643 |
 
-Only 1,705 of the CHR/HRC resolutions (RECORDED votes) carry a per-country roll-call;
+Only 1,716 of the CHR/HRC resolutions (RECORDED votes) carry a per-country roll-call;
 the rest were adopted without a vote or only totals were published (totals are still in
 `resolutions.csv`). The Assembly's votes live in `ga_votes_long.csv` and
 `ga_committee_votes.csv`.
 
 ## Data-quality notes (source, not parsing)
 
-- **~148 recorded votes (~9%, mostly older CHR)** have a roll-call whose Y/N/A
+- **49 recorded votes (~3%; 31 Council, 18 Commission)** have a roll-call whose Y/N/A
   counts don't perfectly reconcile with the official 996 totals — almost always
   a discrepancy in **abstentions / non-participation**, occasionally a blank vote
   code where the total implies a position. These are inconsistencies in OHCHR's
-  own MARC cataloguing; the data is preserved as-is (996 = official totals).
+  own MARC cataloguing; the data is preserved as-is (996 = official totals). The July
+  2026 harvest had 148 such votes; OHCHR has since corrected most of them.
 - **Three 967$b codes contradict the country name in 967$e** and are repaired by
   `parse_marcxml.py` (`repair_iso`), which trusts the name and takes the code from
   the corpus majority: rec 21027 HUNGARY was `HND`, rec 21028 NORWAY was `PER`,
@@ -238,8 +243,16 @@ the rest were adopted without a vote or only totals were published (totals are s
   recorded vote at all.** A state casting no roll-call in one of those years says
   nothing about its membership, so the Country profile draws no marker there.
 - One roll-call row (rec 24737, `E/CN.4/RES/6(XX)`) has a malformed 967 with no
-  country and is dropped from the dashboard payload — hence 80,158 country-votes in
-  the app against 80,159 rows in `votes_long.csv`.
+  country and is dropped from the dashboard payload — hence 80,675 country-votes in
+  the app against 80,676 rows in `votes_long.csv`.
+- **The OHCHR catalogue omits some Council texts.** Checked against the session
+  reports (`A/HRC/<session>/2`) for sessions 43–59 (2020–2025), symbols and outcomes
+  agree except that the catalogue lacks two of the Council's three rejected drafts
+  (A/HRC/48/L.11, Yemen; A/HRC/51/L.6, debate on Xinjiang) and 21 amendments
+  (A/HRC/48/L.49–L.57; A/HRC/49/L.43; A/HRC/56/L.27, L.28, L.37, L.38, L.43, L.50,
+  L.52–L.56). The votes on 26/L.37 and 29/L.37 are no-action motions (Yes = take no
+  action). All are kept as published; Methodology §06 lists them with the report
+  references. New sessions reach the catalogue some weeks after they close.
 
 ## Deploy (GitHub Pages)
 
@@ -287,7 +300,7 @@ Ten configs: five over the CHR/HRC record (`resolutions`, `votes`, `clauses`,
 `ga_clauses`). Exact row counts are in `dataset_stats.json`, written by the same run.
 
 The card leads with the analytical traps in this data (roll-call selection, abstentions
-not being votes against, amendments not being resolutions, the ~9% reconciliation gap)
+not being votes against, amendments not being resolutions, the ~3% reconciliation gap)
 and the package ships derived columns — `prevailing_side`, `adopted`,
 `rollcall_reconciles`, `clause_type` — so downstream users do not have to rediscover
 them. The **PolyForm Noncommercial** licence carries over, so the card declares
