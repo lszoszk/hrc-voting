@@ -1560,7 +1560,7 @@ function renderOverview(){
   {const lg=$('ov-lg-ga');if(lg)lg.style.display=gBody==='hrc'?'none':'';}   /* the Assembly's bars get their legend entry only when in scope */
   CSVDATA.ovtl={name:'recorded-votes-per-year',title:'Recorded votes per year, by deciding body',headers:['year','CHR','HRC','GA','total'],
     rows:years.filter(y=>perYear[y].CHR+perYear[y].HRC+perYear[y].GA>0).map(y=>[y,perYear[y].CHR,perYear[y].HRC,perYear[y].GA,perYear[y].CHR+perYear[y].HRC+perYear[y].GA])};
-  const buckets=[['Near-unanimous (0–5)',0,5],['Clear (6–15)',6,15],['Divided (16–30)',16,30],['Highly divided (31+)',31,9999]];
+  const buckets=[['Near-unanimous (31+)',31,9999],['Clear (16–30)',16,30],['Divided (6–15)',6,15],['Highly divided (0–5)',0,5]];
   const counts=buckets.map(()=>0);
   RS.forEach(r=>{if(r.y==null||r.n==null)return;const m=Math.abs(r.y-r.n);
     for(let i=0;i<buckets.length;i++)if(m>=buckets[i][1]&&m<=buckets[i][2]){counts[i]++;break;}});
