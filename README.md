@@ -323,7 +323,7 @@ If you use this software, the data pipeline, or the derived datasets, please
 cite it (see [`CITATION.cff`](CITATION.cff); GitHub's "Cite this repository"
 button generates APA/BibTeX from it):
 
-> Szoszkiewicz, Ł. (2026). *UN Human Rights Voting Records — CHR · HRC · GA Third Committee* (v1.1.0)
+> Szoszkiewicz, Ł. (2026). *UN Human Rights Voting Records — CHR · HRC · GA Third Committee* (v1.2.0)
 > [Software]. Zenodo. https://doi.org/10.5281/zenodo.21281232
 
 The dashboard surfaces the same line in two places: a **Cite** button in the footer

@@ -413,7 +413,7 @@ from the OHCHR Search Library.
 
 ## Citation
 
-> Szoszkiewicz, Ł. (2026). *UN Human Rights Voting Records — CHR · HRC · GA Third Committee* (v1.1.0) [Software].
+> Szoszkiewicz, Ł. (2026). *UN Human Rights Voting Records — CHR · HRC · GA Third Committee* (v1.2.0) [Software].
 > Zenodo. https://doi.org/10.5281/zenodo.21281232
 
 ```bibtex
@@ -421,7 +421,7 @@ from the OHCHR Search Library.
   author    = {Szoszkiewicz, {\L}ukasz},
   title     = {UN Human Rights Voting Records --- CHR {\textperiodcentered} HRC {\textperiodcentered} GA Third Committee},
   year      = {2026},
-  version   = {1.0.0},
+  version   = {1.2.0},
   publisher = {Zenodo},
   doi       = {10.5281/zenodo.21281232},
   url       = {https://lszoszk.github.io/hrc-voting/}
