@@ -393,7 +393,7 @@ body.touring .ga-consent{display:none}
   <button class="tab" data-view="blocs"><span class="tidx">04</span><span class="tlbl">Blocs</span></button>
   <button class="tab" data-view="consensus"><span class="tidx">05</span><span class="tlbl">Consensus</span></button>
   <button class="tab" data-view="texts"><span class="tidx">06</span><span class="tlbl">Texts</span></button>
-  <button class="tab" data-view="language"><span class="tidx">07</span><span class="tlbl">Language</span></button>
+  <button class="tab" data-view="language"><span class="tidx">07</span><span class="tlbl">Language</span><span class="exp-badge">experimental</span></button>
   <span class="gctl"><span style="display:inline-flex;align-items:center;gap:7px"><span class="flbl" style="margin:0" title="Amendments answer a different question than resolutions — a Yes on a hostile amendment often opposes the parent text. See Methodology &amp; sources (footer).">Scope</span><select class="sel" id="g-kind" style="min-width:0;padding:4px 6px"><option value="res">Resolutions only</option><option value="all">With amendments</option><option value="amd">Amendments only</option></select></span><span style="display:inline-flex;align-items:center;gap:7px"><span class="flbl" style="margin:0" title="Which organs' records are in play. CHR and HRC are the OHCHR collection; the General Assembly adds the Third Committee's human rights resolutions — plenary roll-calls from the UN Digital Library, committee-stage votes from the summary records. See Methodology 14.">Bodies</span><select class="sel" id="g-body" style="min-width:0;padding:4px 6px"><option value="hrc">CHR + HRC</option><option value="ga">GA Third Committee</option><option value="all">All three</option></select></span></span>
 </nav>
 
@@ -707,14 +707,6 @@ body.touring .ga-consent{display:none}
       </div>
     </div>
   </div>
-  <div class="panel">
-    <div class="p-head"><span class="p-idx">05</span><span class="p-title">Loud vs structured</span><span class="p-note">directive force × institutional follow-through</span><span class="p-exp"><button class="expb" data-png="lg-scatter" data-pngname="loud-vs-binding" title="Download chart as PNG">PNG</button></span></div>
-    <div class="p-body">
-      <div class="p-desc">Each dot is a subject: horizontal = mean <b>directive force</b>, vertical = share of operative clauses that <b>create or task machinery</b> (the delegation axis of legalization). Top-right = loud <i>and</i> institutionalized; bottom-right = loud but empty; top-left = quiet but institutionalized. <span style="color:var(--no)">■</span> country situations · <span style="color:var(--accent)">■</span> thematic · dot size = resolutions.</div>
-      <div id="lg-scatter"></div>
-      <div class="mnote">Method note — a clause counts as delegation only when it is <b>directive</b> and either establishes / renews / extends a mechanism, or names a UN actor and gives it something to do. A passing reference to a rapporteur or a report does not qualify — counting mentions put 40% of all operative clauses on this axis and built in a spurious trend, since OHCHR and the special procedures only expanded after 1993. This operationalizes the third axis of <a href="https://doi.org/10.1162/002081800551271" target="_blank" rel="noopener">Abbott et&nbsp;al. (2000)</a>. Leading-verb tagging captures illocutionary force but not addressee or precision — read as a first-order signal.</div>
-    </div>
-  </div>
 </section>
 
 <!-- ================= 08 METHODOLOGY ================= -->
@@ -727,7 +719,7 @@ body.touring .ga-consent{display:none}
       <br>• <b>Acknowledgements</b> — the first version of this tool was inspired by Alfonso Garcia Miguel.</div>
   </div>
   <div class="panel">
-    <div class="p-head"><span class="p-idx">02</span><span class="p-title">Why most views show ~1,700 resolutions, not <span id="m-total-head">6,346</span></span></div>
+    <div class="p-head"><span class="p-idx">02</span><span class="p-title">Why most views show ~1,250 resolutions, not <span id="m-total-head">6,346</span></span></div>
     <div class="p-body">
       <div class="p-desc">Only resolutions decided by an actual roll-call (recorded) vote have a per-country breakdown. The Countries, Topics, and Blocs views all depend on that breakdown, so they operate on this subset. Everything else — most resolutions — passed by consensus, with no individual positions logged.</div>
       <div class="tiles mb12" id="m-tiles"></div>
@@ -782,7 +774,7 @@ body.touring .ga-consent{display:none}
   <div class="panel">
     <div class="p-head"><span class="p-idx">07</span><span class="p-title">Analytics &amp; privacy</span></div>
     <div class="p-body">
-      <div class="p-desc m0">This site uses <b>Google Analytics 4</b> only to see which views are used, and only <b>after you accept</b> the banner (Google Consent Mode v2 defaults to denied; nothing is sent before then, and a <code class="cd">Do-Not-Track</code> browser setting skips it entirely). We record <b>view names only</b> (Overview, Countries, Topics, Blocs, Methodology). We never send your searches, the countries or subjects you select, the records you open, or your IP address in clear — GA4 anonymises IP and ad-personalisation / Google signals are disabled. The offline single-file version does no tracking at all. <span id="m-ga-state" class="mut"></span></div>
+      <div class="p-desc m0">This site uses <b>Google Analytics 4</b> only to see which views are used, and only <b>after you accept</b> the banner (Google Consent Mode v2 defaults to denied; nothing is sent before then, and a <code class="cd">Do-Not-Track</code> browser setting skips it entirely). We record <b>view names only</b> (Overview, Countries, Topics, Blocs, Consensus, Texts, Language, Methodology). We never send your searches, the countries or subjects you select, the records you open, or your IP address in clear — GA4 anonymises IP and ad-personalisation / Google signals are disabled. The offline single-file version does no tracking at all. <span id="m-ga-state" class="mut"></span></div>
       <div style="margin-top:12px"><button class="palbtn" id="m-ga-reset" type="button">Reset analytics choice</button></div>
     </div>
   </div>
@@ -829,7 +821,7 @@ body.touring .ga-consent{display:none}
       <br>• <b>Why "Notes" / "Takes note" / "Expresses" / "Recognizes" are context-scored</b> — these four verbs carry no fixed valence; the score is resolved per clause from the object ("<i>expresses grave concern</i>" → −1, "<i>expresses appreciation</i>" → +1, bare "<i>notes</i>" → neutral). This is not an ad hoc reading: a 2001 UN Office of Legal Affairs opinion, endorsed by the General Assembly in decision 55/488 and reproduced in the same UNITAR handbook (Annex VI), holds that the bare terms "takes note of" and "notes" are neutral, constituting neither approval nor disapproval — while UNITAR's own glossary separately catalogues the valenced compound forms ("notes with appreciation", "notes with concern") as distinct entries. The per-clause split is shown inline on the vocabulary ladder below wherever it applies.
       <br>• <b>Critical caveat</b> — this measures <b>rhetorical / directive hardness, not legal bindingness</b>. Even "Decides" binds only under Security-Council Chapter VII; Commission, Council and General Assembly resolutions are formally non-binding whatever the verb. Tagging only the <i>leading</i> verb also omits the addressee and the precision of the ask — read the score as a first-order signal, not a legal determination.
       <br>• <b>Bodies</b> — the tab follows the <b>Bodies</b> selector: <span id="m-lg-bodies">Commission and Council texts by default; the General Assembly's Third Committee texts on request</span>. Each organ is a series of its own on the time chart, and the verb ladder and the subject ranking are recomputed for the organs in scope (the Assembly's subjects are the UN Digital Library's tags, the Commission's and Council's are OHCHR's). Comparing organs is a comparison of drafting cultures, not of legal weight: the Assembly's texts are the Committee's drafts as adopted in plenary, and its subject mix (country situations, self-determination, racism, social development) differs from the Council's. The <i>New terms</i> and <i>intensifiers</i> lists below are counted over the Commission and Council texts only.
-      <br>• <b>New terms</b> — the corpus uses operative verbs absent from both UNITAR sources, above all <i>Encourages</i> (~3,100 clauses), plus low-volume <i>Applauds, Thanks, Highlights, Observes</i> — a small measure of drafting drift toward hortatory language. (Four terms once flagged here — <i>Appreciates, Underscores, Calls for</i>, and the unused <i>Discourages</i> — turned out to be attested in Annex VII of the second UNITAR source and were moved into the canonical count.)</div>
+      <br>• <b>New terms</b> — the corpus uses operative verbs absent from both UNITAR sources, above all <i>Encourages</i> (~3,500 clauses), plus low-volume <i>Applauds, Thanks, Highlights, Observes</i> — a small measure of drafting drift toward hortatory language. (Four terms once flagged here — <i>Appreciates, Underscores, Calls for</i>, and the unused <i>Discourages</i> — turned out to be attested in Annex VII of the second UNITAR source and were moved into the canonical count.)</div>
   </div>
   <div class="panel">
     <div class="p-head"><span class="p-idx">12</span><span class="p-title">How to cite this dashboard</span></div>
@@ -853,7 +845,7 @@ body.touring .ga-consent{display:none}
         <div class="gtr gth colshf"><span class="gtc">Config</span><span class="gtc num">Rows</span><span class="gtc">One row is</span></div>
         <div id="m-hf"></div>
       </div>
-      <span class="mut">The package ships the derived columns this Methodology argues for, so the same reasoning survives leaving the dashboard: <code>prevailing_side</code> and <code>adopted</code> (Yes vs No, never <code>max(Y,N,A)</code> — see §08), <code>rollcall_reconciles</code> (the ~9% in §06), <code>is_amendment</code> (§09), <code>clause_type</code> separating annexed instruments from operative text (§11), and <code>subject_is_country_situation</code> (§05). The <code>clauses</code> config also carries the experimental verb coding, with the same caveat: it measures rhetorical hardness, not legal bindingness.</span>
+      <span class="mut">The package ships the derived columns this Methodology argues for, so the same reasoning survives leaving the dashboard: <code>prevailing_side</code> and <code>adopted</code> (Yes vs No, never <code>max(Y,N,A)</code> — see §08), <code>rollcall_reconciles</code> (the ~3% in §06), <code>is_amendment</code> (§09), <code>clause_type</code> separating annexed instruments from operative text (§11), and <code>subject_is_country_situation</code> (§05). The <code>clauses</code> config also carries the experimental verb coding, with the same caveat: it measures rhetorical hardness, not legal bindingness.</span>
       <br>• <b>Licence</b> — everything above is <a href="https://polyformproject.org/licenses/noncommercial/1.0.0/" target="_blank" rel="noopener">PolyForm Noncommercial 1.0.0</a>: research, education, non-profit and personal use are free; commercial use needs a separate licence. The underlying voting records are public UN documents.</div>
   </div>
   <div class="panel">
@@ -1337,16 +1329,6 @@ VRC.metricLine=function(host,o){host.innerHTML='';
     hov(c,'<b>'+d.y+'</b> · '+d.body+(part?' · year in progress':'')+'<br>'+o.label+': '+o.fmt(d.v)+'<br>'+d.nop+' operative clauses');});
   for(let y=Math.ceil(y0/10)*10;y<=y1;y+=10)txt({x:X(y),y:H-6,'text-anchor':'middle'},s,y);
   if(y0<HRC_YEAR&&y1>=HRC_YEAR)hrcMark(s,X(HRC_YEAR-0.5),PT,PT+ih);
-  host.appendChild(s);};
-VRC.langScatter=function(host,o){host.innerHTML='';
-  const pts=o.points;const W=1140,H=440,PL=48,PR=16,PT=14,PB=40,iw=W-PL-PR,ih=H-PT-PB;
-  const s=svg(W,H),X=v=>PL+(v-o.xlo)/(o.xhi-o.xlo)*iw,Y=v=>PT+ih-v*ih;
-  [3,3.5,4,4.5].forEach(v=>{if(v<o.xlo||v>o.xhi)return;el('line',{x1:X(v),x2:X(v),y1:PT,y2:PT+ih,stroke:'var(--line-2)'},s);txt({x:X(v),y:PT+ih+15,'text-anchor':'middle'},s,v);});
-  [0,.25,.5,.75,1].forEach(v=>{el('line',{x1:PL,x2:W-PR,y1:Y(v),y2:Y(v),stroke:'var(--line-2)'},s);txt({x:PL-6,y:Y(v)+3,'text-anchor':'end'},s,Math.round(v*100)+'%');});
-  txt({x:PL+iw/2,y:H-6,'text-anchor':'middle',fill:'var(--ink-2)','font-size':'11'},s,'directive force →');
-  el('text',{x:14,y:PT+ih/2,fill:'var(--ink-2)','font-size':'11','text-anchor':'middle','font-family':'JetBrains Mono,monospace',transform:'rotate(-90 14 '+(PT+ih/2)+')'},s).textContent='creates machinery (delegation) →';
-  pts.forEach(p=>{const c=el('circle',{cx:X(p.x),cy:Y(p.y),r:Math.min(3+Math.sqrt(p.n),9),fill:p.col,'fill-opacity':.5,stroke:'var(--paper)','stroke-width':.6},s);
-    hov(c,'<b>'+esc(p.label)+'</b><br>directive '+p.x.toFixed(2)+' · delegation '+Math.round(p.y*100)+'%<br>'+p.n+' resolutions · mostly '+esc(p.top));});
   host.appendChild(s);};
 
 window.VRC=VRC;
@@ -2518,13 +2500,6 @@ function renderLanguage(){langInit().then(()=>{
     '<span class="lad-bar" style="width:'+Math.max(p[1]/pairs[0][1]*100,2).toFixed(0)+'%;background:var(--chr)"></span><span class="lad-n">'+fmt(p[1])+'</span></div>').join('');
   $('lg-new').innerHTML=chip(D.newVerbs);
   $('lg-intens').innerHTML=chip(D.intensified)+(gBody!=='hrc'?'<div class="mut" style="font-size:10px;margin-top:6px">New verbs and intensifiers are counted over the Commission and Council texts.</div>':'');
-  /* 05 scatter */
-  /* Colour carried UN regional-group variables keyed off thresholds on the plotted
-     axes themselves — it re-encoded x and y while implying a regional split that was
-     not in the data. Country-situation vs thematic is the real distinction here. */
-  VRC.langScatter($('lg-scatter'),{xlo:2.4,xhi:4.6,
-    points:sub.map(r=>({x:r[2],y:r[4],n:r[1],label:tc(r[0]),top:r[5],
-      col:subjCS.get(r[0])?'var(--no)':'var(--accent)'}))});
 });}
 
 /* ---------- 08 METHODOLOGY ---------- */

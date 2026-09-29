@@ -208,7 +208,6 @@ with sync_playwright() as p:
     pgh.click('.tab[data-view="language"]'); pgh.wait_for_timeout(700)
     checks["language trend pts"] = pgh.evaluate("document.querySelectorAll('#lg-trend circle').length")
     checks["language ladder rows"] = pgh.evaluate("document.querySelectorAll('#lg-lad-dir .lad-row, #lg-lad-val .lad-row').length")
-    checks["language scatter dots"] = pgh.evaluate("document.querySelectorAll('#lg-scatter circle').length")
     pgh.close(); srv.shutdown()
 
     # --- first-run tour: fresh profile (no localStorage) must auto-open it ---
@@ -252,7 +251,7 @@ ok = (checks["DATA loaded"] and checks["overview tiles"] == 4 and checks["countr
       and checks["rollcall opens"] and checks["rollcall map paths"] > 150 and checks["rollcall list cols"] >= 3
       and checks["group trend series"] >= 4 and "regional groups" in checks["group stance title"]
       and checks["texts offline note (file://)"] and checks["texts FTS results"] > 5 and checks["texts FTS highlights"]
-      and checks["language offline note (file://)"] and checks["language trend pts"] > 20 and checks["language ladder rows"] > 40 and checks["language scatter dots"] > 100
+      and checks["language offline note (file://)"] and checks["language trend pts"] > 20 and checks["language ladder rows"] > 40
       and checks["tour auto-opens"] and checks["tour slides"] == 5 and checks["tour sparkline"]
       and checks["tour minimap"] and checks["tour goto view"] == "country"
       and checks["tour closed + flag"] and checks["tour stays closed on revisit"] and checks["footer reopens tour"]
