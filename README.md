@@ -337,6 +337,10 @@ Built and maintained by [Łukasz Szoszkiewicz](https://lszoszk.github.io/)
 (Adam Mickiewicz University, Poznań) ·
 [ORCID 0000-0001-6671-2893](https://orcid.org/0000-0001-6671-2893).
 
+## Acknowledgements
+
+The first version of this tool was inspired by Alfonso Garcia Miguel.
+
 ## License
 
 Code and data are released under the **PolyForm Noncommercial License 1.0.0**
