@@ -131,6 +131,20 @@ def main():
                 fails.append(f"dashboard/index.html JSON-LD {node['@type']}: version {ver!r}, CITATION.cff says {version!r}")
             if node["@type"] == "Dataset" and node["name"] != title:
                 fails.append(f"dashboard/index.html JSON-LD Dataset: name is {node['name']!r}, CITATION.cff says {title!r}")
+    # Dates: the JSON-LD says when the dataset was last modified and the sitemap says when
+    # the page was; both are typed by hand, so assert they cannot fall behind the release.
+    released = re.search(r'^date-released:\s*"([^"]+)"', cff, re.M).group(1)
+    if ld:
+        for node in json.loads(ld.group(1))["@graph"]:
+            if node["@type"] == "Dataset" and node.get("dateModified") != released:
+                fails.append(f"dashboard/index.html JSON-LD Dataset: dateModified is {node.get('dateModified')!r}, "
+                             f"CITATION.cff date-released is {released!r}")
+    sm = (ROOT / "dashboard" / "sitemap.xml").read_text(encoding="utf-8")
+    lastmod = re.search(r"<lastmod>(\d{4}-\d{2}-\d{2})</lastmod>", sm)
+    if not lastmod:
+        fails.append("dashboard/sitemap.xml: no <lastmod> found")
+    elif lastmod.group(1) < released:
+        fails.append(f"dashboard/sitemap.xml: lastmod {lastmod.group(1)} is older than the release {released}")
     head = re.search(r'<span id="m-total-head">([^<]+)</span>', index)
     if not head or head.group(1) != f"{cov['totalResolutions']:,}":
         fails.append(f"dashboard/index.html: the raw-HTML default of m-total-head should read {cov['totalResolutions']:,}")
