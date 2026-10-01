@@ -28,6 +28,7 @@ with sync_playwright() as p:
     # banner must NOT appear — it only activates on http(s).
     pg.wait_for_timeout(800)
     checks["file:// GA script absent"] = pg.evaluate("!document.querySelector('script[src*=googletagmanager]')")
+    checks["file:// page counter absent"] = pg.evaluate("!document.querySelector('script[data-goatcounter]')")
     checks["file:// consent banner absent"] = pg.evaluate("!document.querySelector('.ga-consent')")
     checks["masthead stat"] = pg.evaluate("document.getElementById('hd-stat').textContent")
     checks["overview tiles"] = pg.evaluate("document.querySelectorAll('#ov-tiles .tile').length")
@@ -262,7 +263,7 @@ ok = (checks["DATA loaded"] and checks["overview tiles"] == 4 and checks["countr
       and "breakdowns" in checks["consensus flipnote"] and checks["consensus strip dots"] > 100
       and checks["consensus erosion bars"] > 60 and checks["consensus explorer rows"] > 100
       and checks["consensus WD filter"].startswith("247")
-      and checks["file:// GA script absent"] and checks["file:// consent banner absent"]
+      and checks["file:// GA script absent"] and checks["file:// page counter absent"] and checks["file:// consent banner absent"]
       and checks["palette paper"] == "paper" and not errors)
 print("SMOKE:", "PASS" if ok else "FAIL")
 raise SystemExit(0 if ok else 1)

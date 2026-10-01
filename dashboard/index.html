@@ -885,7 +885,8 @@ body.touring .ga-consent{display:none}
   <div class="panel">
     <div class="p-head"><span class="p-idx">07</span><span class="p-title">Analytics &amp; privacy</span></div>
     <div class="p-body">
-      <div class="p-desc m0">This site uses <b>Google Analytics 4</b> only to see which views are used, and only <b>after you accept</b> the banner (Google Consent Mode v2 defaults to denied; nothing is sent before then, and a <code class="cd">Do-Not-Track</code> browser setting skips it entirely). We record <b>view names only</b> (Overview, Countries, Topics, Blocs, Consensus, Texts, Language, Methodology). We never send your searches, the countries or subjects you select, the records you open, or your IP address in clear — GA4 anonymises IP and ad-personalisation / Google signals are disabled. The offline single-file version does no tracking at all. <span id="m-ga-state" class="mut"></span></div>
+      <div class="p-desc m0">This site uses <b>Google Analytics 4</b> only to see which views are used, and only <b>after you accept</b> the banner (Google Consent Mode v2 defaults to denied; nothing is sent before then, and a <code class="cd">Do-Not-Track</code> browser setting skips it entirely). We record <b>view names only</b> (Overview, Countries, Topics, Blocs, Consensus, Texts, Language, Methodology). We never send your searches, the countries or subjects you select, the records you open, or your IP address in clear — GA4 anonymises IP and ad-personalisation / Google signals are disabled. The offline single-file version does no tracking at all. <span id="m-ga-state" class="mut"></span>
+      <br>• <b>Cookie-free page counter</b> — whatever you choose above, the site counts page views with <a href="https://www.goatcounter.com/" target="_blank" rel="noopener">GoatCounter</a>, an open-source counter that sets no cookies and stores nothing in your browser, so it runs without a consent banner. Each view sends only the view name (for instance <code class="cd">/hrc-voting/consensus</code>), the page that referred you, your screen width and the browser and system named in your browser's User-Agent; it is not sent at all when your browser sends Do-Not-Track. Your searches, the countries or subjects you select and the records you open are never sent. See GoatCounter's <a href="https://www.goatcounter.com/privacy" target="_blank" rel="noopener">privacy policy</a>.</div>
       <div style="margin-top:12px"><button class="palbtn" id="m-ga-reset" type="button">Reset analytics choice</button></div>
     </div>
   </div>
@@ -1633,7 +1634,7 @@ function switchTab(v){VIEW=v;
     ?'Language always scores resolutions only — amendments are edit instructions, not commitments'
     :'';
   renderCurrent();
-  trackView(v);
+  trackView(v);gcView(v);
 }
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.view)));
 function renderCurrent(){
@@ -2715,13 +2716,36 @@ const GA_VIEWS={
 const gaState=()=>{try{return localStorage.getItem(GA_KEY)}catch(e){return null}};
 const gaDNT=()=>navigator.doNotTrack==='1'||window.doNotTrack==='1';
 const gaHttp=()=>location.protocol.indexOf('http')===0;
+/* Cookie-free page counter (GoatCounter). It records the same coarse thing as the GA events
+   below — which view was opened — but sets no cookies and keeps nothing in the browser, so it
+   runs without the consent banner. Skipped offline (file://) and when the browser sends
+   Do-Not-Track. Later hits pass an empty referrer so one visit does not count its entry
+   referrer again on every tab switch. */
+const GC_URL='https://lszoszk.goatcounter.com/count';
+let GC_QUEUE=[],GC_READY=false,GC_TAG=false,GC_FIRST=true;
+function gcView(v){
+  if(!gaHttp()||gaDNT())return;
+  const l=GA_VIEWS[v]||['CHR·HRC Voting — '+v,'/hrc-voting/'+v];
+  const hit={path:l[1],title:l[0]};
+  if(!GC_FIRST)hit.referrer='';
+  GC_FIRST=false;
+  if(GC_READY&&window.goatcounter&&window.goatcounter.count){try{window.goatcounter.count(hit);}catch(e){}return;}
+  GC_QUEUE.push(hit);
+  if(GC_TAG)return;
+  GC_TAG=true;
+  const sc=document.createElement('script');
+  sc.async=true;sc.src='https://gc.zgo.at/count.js';
+  sc.dataset.goatcounter=GC_URL;sc.dataset.goatcounterSettings='{"no_onload":true}';
+  sc.onload=()=>{GC_READY=true;GC_QUEUE.splice(0).forEach(h=>{try{window.goatcounter.count(h);}catch(e){}});};
+  document.head.appendChild(sc);
+}
 function trackView(v){
   if(gaState()!=='granted'||typeof window.gtag!=='function')return;
   const l=GA_VIEWS[v]||['CHR·HRC Voting — '+v,'/hrc-voting/'+v];
   try{window.gtag('event','page_view',{page_title:l[0],page_path:l[1]});}catch(e){}
 }
 function gaRefresh(){const st=$('m-ga-state');if(!st)return;const s=gaState();
-  st.textContent=' '+(s==='granted'?'Current choice: analytics allowed — thank you.':s==='denied'?'Current choice: analytics declined.':gaDNT()?'Your browser sends Do-Not-Track — analytics stays off.':'No choice made yet.');}
+  st.textContent=' '+(s==='granted'?'Current choice: Google Analytics allowed — thank you.':s==='denied'?'Current choice: Google Analytics declined.':gaDNT()?'Your browser sends Do-Not-Track — Google Analytics stays off and the page counter is skipped.':'No choice made yet.');}
 function gaGrant(){
   try{localStorage.setItem(GA_KEY,'granted')}catch(e){}
   if(typeof window.gtag==='function')window.gtag('consent','update',{analytics_storage:'granted'});
@@ -2744,7 +2768,7 @@ function gaBanner(){
   document.addEventListener('keydown',function esc(e){if(e.key==='Escape'&&document.body.contains(host)){document.removeEventListener('keydown',esc);close();}});
 }
 function gaInit(){
-  gaRefresh();
+  gaRefresh();gcView(VIEW);
   const btn=$('m-ga-reset');if(btn)btn.onclick=()=>{try{localStorage.removeItem(GA_KEY)}catch(e){}location.reload();};
   if(gaState()==='granted'&&typeof window.gtag==='function'){try{window.gtag('consent','update',{analytics_storage:'granted'});}catch(e){}trackView(VIEW);}
   if(gaState()===null&&gaHttp()&&!gaDNT())setTimeout(gaBanner,600);
