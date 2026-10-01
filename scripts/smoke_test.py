@@ -209,6 +209,11 @@ with sync_playwright() as p:
     pgh.click('.tab[data-view="language"]'); pgh.wait_for_timeout(700)
     checks["language trend pts"] = pgh.evaluate("document.querySelectorAll('#lg-trend circle').length")
     checks["language ladder rows"] = pgh.evaluate("document.querySelectorAll('#lg-lad-dir .lad-row, #lg-lad-val .lad-row').length")
+    # --- deep link from the static country pages: #country=POL opens that profile ---
+    pgd = ctx.new_page()
+    pgd.goto("http://127.0.0.1:8768/index.html#country=POL"); pgd.wait_for_timeout(1500)
+    checks["deep link country"] = pgd.evaluate("document.getElementById('c-country').value==='POL' && document.querySelector('.tab.on').dataset.view==='country'")
+    pgd.close()
     pgh.close(); srv.shutdown()
 
     # --- first-run tour: fresh profile (no localStorage) must auto-open it ---
@@ -263,7 +268,7 @@ ok = (checks["DATA loaded"] and checks["overview tiles"] == 4 and checks["countr
       and "breakdowns" in checks["consensus flipnote"] and checks["consensus strip dots"] > 100
       and checks["consensus erosion bars"] > 60 and checks["consensus explorer rows"] > 100
       and checks["consensus WD filter"].startswith("247")
-      and checks["file:// GA script absent"] and checks["file:// page counter absent"] and checks["file:// consent banner absent"]
+      and checks["file:// GA script absent"] and checks["deep link country"] and checks["file:// page counter absent"] and checks["file:// consent banner absent"]
       and checks["palette paper"] == "paper" and not errors)
 print("SMOKE:", "PASS" if ok else "FAIL")
 raise SystemExit(0 if ok else 1)

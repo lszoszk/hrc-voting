@@ -2729,10 +2729,11 @@ const gaHttp=()=>location.protocol.indexOf('http')===0;
    Do-Not-Track. Later hits pass an empty referrer so one visit does not count its entry
    referrer again on every tab switch. */
 const GC_URL='https://lszoszk.goatcounter.com/count';
-let GC_QUEUE=[],GC_READY=false,GC_TAG=false,GC_FIRST=true;
+let GC_QUEUE=[],GC_READY=false,GC_TAG=false,GC_FIRST=true,GC_LAST='';
 function gcView(v){
   if(!gaHttp()||gaDNT())return;
   const l=GA_VIEWS[v]||['CHR·HRC Voting — '+v,'/hrc-voting/'+v];
+  if(l[1]===GC_LAST)return;GC_LAST=l[1];       /* the same view twice in a row is one view */
   const hit={path:l[1],title:l[0]};
   if(!GC_FIRST)hit.referrer='';
   GC_FIRST=false;
@@ -3114,6 +3115,17 @@ function fillYears(sel,def){const s=$(sel);let h='';for(let y=M.yearMin;y<=M.yea
   let pal=null;try{pal=localStorage.getItem('vrPalette')}catch(e){}
   if(pal&&pal!=='paper')setPalette(pal); else renderTopicChips(),renderOverview();
   if(pal&&pal!=='paper')renderTopicChips();
+  /* Deep link used by the static country pages: /hrc-voting/#country=POL opens that
+     state's profile (and remembers it, like picking it from the ⌘K palette). */
+  function applyDeepLink(){
+    const m=/^#country=([A-Za-z]{3})$/.exec(location.hash),iso=m&&m[1].toUpperCase();
+    if(!iso||!byIso[iso])return;
+    $('c-country').value=iso;cSortKey='year';cSortDir=1;COUNTRY_GUESSED=false;
+    try{localStorage.setItem('hrc-country',iso);}catch(e){}
+    switchTab('country');
+  }
+  window.addEventListener('hashchange',applyDeepLink);
+  applyDeepLink();
   gaInit();
 })();
 </script>

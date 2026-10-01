@@ -293,7 +293,7 @@ def main():
             for r in reversed(rids))
         body = (f"<h1>{esc(nm)} at the UN Commission on Human Rights and Human Rights Council</h1>"
                 f'<p class="sub">Recorded votes {y0}–{y1} · {fmt(n)} votes · <a href="{base}/country/{slug}/votes.csv">download CSV</a></p><p>{txt}</p>'
-                f'<p class=sub>The <a href="{base}/">interactive dashboard</a> adds a world map of agreement with {esc(nm)}, regional-group cohesion and the consensus view.</p>'
+                f'<p class=sub>The <a href="{base}/#country={i}">interactive dashboard</a> adds a world map of agreement with {esc(nm)}, regional-group cohesion and the consensus view.</p>'
                 f'<div class="cols"><div><h2>Closest voting partners</h2><ul class=l>{pl(close)}</ul></div><div><h2>Furthest voting partners</h2><ul class=l>{pl(far)}</ul></div></div>'
                 f'<h2>Year by year</h2><div class=scroll><table><tr><th>Year</th><th class=n>Votes</th><th class=n>Yes</th><th class=n>No</th><th class=n>Abstain</th></tr>{yr_rows}</table></div>'
                 f'<h2>Every recorded vote</h2><div class=scroll><table><tr><th>Year</th><th>Resolution</th><th>Title</th><th>Vote</th></tr>{vote_rows}</table></div>')
