@@ -105,6 +105,44 @@ def main():
     elif title not in cite.group(1) or f"v{version}" not in cite.group(1):
         fails.append(f"dashboard/index.html: CITE_ACADEMIC should carry {title!r} and v{version}")
 
+    # --- the page's own static copy: head/JSON-LD, <noscript> and the About panel -------
+    # A crawler that does not run JavaScript reads these, not the payload, so the numbers
+    # they state are the ones an assistant will quote. Same pattern as the README: the
+    # figures stay hand-written here and this asserts they still match the build.
+    n_cat = len(payload["resAll"])
+    n_rc = sum(1 for r in payload["res"] if r["body"] in ("CHR", "HRC"))
+    n_votes = stats["votes"]
+    n_free = sum(1 for r in payload["resAll"] if r.get("vt") == "C")
+    ld = re.search(r'<script type="application/ld\+json">\n(.*?)\n</script>', index, re.S)
+    nos = re.search(r"<noscript>(.*?)</noscript>", index, re.S)
+    about = re.search(r'<div class="panel" id="about">(.*?)</div>\s*</div>', index, re.S)
+    if not (ld and nos and about):
+        fails.append("dashboard/index.html: JSON-LD, <noscript> or the About panel is missing")
+    else:
+        for where, text in (("JSON-LD", ld.group(1)), ("<noscript>", nos.group(1)), ("About panel", about.group(1))):
+            for label, v in (("CHR/HRC records", n_cat), ("CHR/HRC roll-calls", n_rc),
+                             ("country votes", n_votes), ("GA resolutions", ga.get("resolutions"))):
+                if f"{v:,}" not in text:
+                    fails.append(f"dashboard/index.html {where}: {label} should read {v:,}")
+        graph = json.loads(ld.group(1))["@graph"]
+        for node in graph:
+            ver = node.get("version") or node.get("softwareVersion")
+            if ver != version:
+                fails.append(f"dashboard/index.html JSON-LD {node['@type']}: version {ver!r}, CITATION.cff says {version!r}")
+            if node["@type"] == "Dataset" and node["name"] != title:
+                fails.append(f"dashboard/index.html JSON-LD Dataset: name is {node['name']!r}, CITATION.cff says {title!r}")
+    head = re.search(r'<span id="m-total-head">([^<]+)</span>', index)
+    if not head or head.group(1) != f"{cov['totalResolutions']:,}":
+        fails.append(f"dashboard/index.html: the raw-HTML default of m-total-head should read {cov['totalResolutions']:,}")
+    if 'rel="canonical" href="https://lszoszk.github.io/hrc-voting/"' not in index:
+        fails.append("dashboard/index.html: canonical link missing")
+    # The Methodology states two different shares, and mixing them up was a real error:
+    # records with no per-country roll-call vs records adopted without a vote.
+    no_rc, free = round((1 - n_rc / n_cat) * 100), round(n_free / n_cat * 100)
+    want("share of records with no roll-call", f"{no_rc}% of catalogued records carry no per-country roll-call",
+         index, "dashboard/index.html")
+    want("share adopted without a vote", f"{free}% were adopted without a vote", index, "dashboard/index.html")
+
     if fails:
         print(f"FIGURES: {len(fails)} drifted\n")
         for f in fails:

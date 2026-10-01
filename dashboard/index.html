@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Interactive explorer of UN human-rights voting records: 1,716 recorded roll-call votes of the Commission on Human Rights and Human Rights Council (1947–2026), from the OHCHR Search Library.">
+<meta name="description" content="Roll-call votes of the UN Commission on Human Rights, Human Rights Council and GA Third Committee, 1946–2026: country profiles, blocs, consensus.">
+<link rel="canonical" href="https://lszoszk.github.io/hrc-voting/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="HRC Voting">
 <meta property="og:title" content="Eighty years of UN human rights votes, on one page">
@@ -18,6 +19,109 @@
 <meta name="twitter:title" content="HRC Voting: eighty years of UN human rights votes">
 <meta name="twitter:description" content="Every recorded vote of the Commission on Human Rights and the Human Rights Council, with country profiles, blocs and roll-call sheets.">
 <meta name="twitter:image" content="https://lszoszk.github.io/hrc-voting/social-card.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Dataset",
+   "@id": "https://lszoszk.github.io/hrc-voting/#dataset",
+   "name": "UN Human Rights Voting Records — CHR · HRC · GA Third Committee",
+   "description": "Roll-call and summary voting records of the UN Commission on Human Rights (1946–2006), the Human Rights Council (2006–present) and the General Assembly's Third Committee: 6,392 catalogued CHR and HRC records, 1,716 of them decided by roll-call (80,676 individual country votes), plus 708 Assembly resolutions adopted by recorded vote. Harvested from the OHCHR Library voting records database and the UN Digital Library; independent of the UN.",
+   "url": "https://lszoszk.github.io/hrc-voting/",
+   "identifier": "https://doi.org/10.5281/zenodo.21281232",
+   "sameAs": [
+    "https://doi.org/10.5281/zenodo.21281232",
+    "https://github.com/lszoszk/hrc-voting",
+    "https://huggingface.co/datasets/lszoszk/hrc-voting"
+   ],
+   "version": "1.2.0",
+   "datePublished": "2026-07-09",
+   "dateModified": "2026-09-28",
+   "inLanguage": "en",
+   "temporalCoverage": "1946/2026",
+   "isAccessibleForFree": true,
+   "license": "https://polyformproject.org/licenses/noncommercial/1.0.0/",
+   "keywords": [
+    "human rights",
+    "United Nations",
+    "Human Rights Council",
+    "Commission on Human Rights",
+    "voting records",
+    "roll-call votes",
+    "General Assembly",
+    "Third Committee",
+    "open data"
+   ],
+   "creator": {
+    "@type": "Person",
+    "name": "Łukasz Szoszkiewicz",
+    "identifier": "https://orcid.org/0000-0001-6671-2893",
+    "affiliation": {
+     "@type": "Organization",
+     "name": "Adam Mickiewicz University, Poznań"
+    }
+   },
+   "isBasedOn": [
+    {
+     "@type": "Dataset",
+     "name": "OHCHR Library — HRC voting records",
+     "url": "https://searchlibrary.ohchr.org/search?c=Voting"
+    },
+    {
+     "@type": "Dataset",
+     "name": "UN Dag Hammarskjöld Library — General Assembly voting data, version 5",
+     "url": "https://digitallibrary.un.org/record/4060887"
+    }
+   ],
+   "distribution": [
+    {
+     "@type": "DataDownload",
+     "name": "Resolutions (CSV)",
+     "encodingFormat": "text/csv",
+     "contentUrl": "https://raw.githubusercontent.com/lszoszk/hrc-voting/main/data/csv/resolutions.csv"
+    },
+    {
+     "@type": "DataDownload",
+     "name": "Country votes (CSV)",
+     "encodingFormat": "text/csv",
+     "contentUrl": "https://raw.githubusercontent.com/lszoszk/hrc-voting/main/data/csv/votes_long.csv"
+    },
+    {
+     "@type": "DataDownload",
+     "name": "Analysis-ready parquet (Hugging Face)",
+     "encodingFormat": "application/vnd.apache.parquet",
+     "contentUrl": "https://huggingface.co/datasets/lszoszk/hrc-voting"
+    }
+   ]
+  },
+  {
+   "@type": "WebApplication",
+   "@id": "https://lszoszk.github.io/hrc-voting/#app",
+   "name": "UN Human Rights Voting Records",
+   "url": "https://lszoszk.github.io/hrc-voting/",
+   "applicationCategory": "Data visualization",
+   "operatingSystem": "Any (web browser)",
+   "softwareVersion": "1.2.0",
+   "isAccessibleForFree": true,
+   "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+   },
+   "license": "https://polyformproject.org/licenses/noncommercial/1.0.0/",
+   "author": {
+    "@type": "Person",
+    "name": "Łukasz Szoszkiewicz",
+    "identifier": "https://orcid.org/0000-0001-6671-2893"
+   },
+   "isBasedOn": {
+    "@id": "https://lszoszk.github.io/hrc-voting/#dataset"
+   }
+  }
+ ]
+}
+</script>
 <title>UN Human Rights Voting Records — CHR · HRC · GA Third Committee</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗳️</text></svg>">
 <!-- Google Analytics 4 (G-F3XBX45HQC) — consent-gated (Consent Mode v2, default
@@ -374,6 +478,7 @@ body.touring .ga-consent{display:none}
 </style>
 </head>
 <body>
+<noscript><div style="max-width:46em;margin:24px auto;padding:0 16px;font:14px/1.6 system-ui,sans-serif"><h1>UN Human Rights Voting Records</h1><p>This dashboard needs JavaScript. It collects the recorded votes of the Commission on Human Rights (1946–2006), the Human Rights Council (2006–present) and the General Assembly's Third Committee: 6,392 catalogued CHR and HRC records, 1,716 of them decided by roll-call (80,676 individual country votes), plus 708 Assembly resolutions adopted by recorded vote.</p><p>Without JavaScript, the data is available as <a href="https://github.com/lszoszk/hrc-voting/tree/main/data/csv">CSV files on GitHub</a>, <a href="https://huggingface.co/datasets/lszoszk/hrc-voting">parquet on Hugging Face</a> and <a href="https://doi.org/10.5281/zenodo.21281232">an archived version on Zenodo</a> (PolyForm Noncommercial 1.0.0). Source: OHCHR Library voting records and the UN Digital Library; the project is independent of the UN.</p></div></noscript>
 <div class="vr" id="vr" data-palette="paper">
 
 <div class="masthead">
@@ -421,6 +526,12 @@ body.touring .ga-consent{display:none}
         <div id="ov-close"></div>
       </div>
     </div>
+  </div>
+  <div class="panel" id="about">
+    <div class="p-head"><span class="p-title"><h2 style="display:inline;font:inherit;margin:0">About this dataset</h2></span></div>
+    <div class="p-body ptext">This dashboard collects the recorded votes of the <b>Commission on Human Rights</b> (1946–2006), the <b>Human Rights Council</b> (2006–present) and the <b>General Assembly's Third Committee</b> (plenary votes from 1970, committee-stage votes from 2000) in one place. It covers 6,392 catalogued CHR and HRC records, 1,716 of them decided by roll-call (80,676 individual country votes), plus 708 Assembly resolutions adopted by recorded vote.
+      <br>The Commission and Council records come from the <a href="https://searchlibrary.ohchr.org/search?c=Voting" target="_blank" rel="noopener">OHCHR Library voting records database</a>, and the Assembly votes from the <a href="https://digitallibrary.un.org/record/4060887" target="_blank" rel="noopener">UN Digital Library</a>. The project is independent of the UN; the known gaps in the source catalogue are listed in the Methodology (§06).
+      <br>The data is free for research, education and non-profit use (PolyForm Noncommercial 1.0.0). Get it from <a href="https://github.com/lszoszk/hrc-voting" target="_blank" rel="noopener">GitHub</a>, <a href="https://doi.org/10.5281/zenodo.21281232" target="_blank" rel="noopener">Zenodo (DOI)</a> or <a href="https://huggingface.co/datasets/lszoszk/hrc-voting" target="_blank" rel="noopener">Hugging Face</a>. Built by <a href="https://lszoszk.github.io/" target="_blank" rel="noopener">Łukasz Szoszkiewicz</a> (Adam Mickiewicz University, Poznań).</div>
   </div>
 </section>
 
@@ -566,7 +677,7 @@ body.touring .ga-consent{display:none}
       <div class="p-body">
         <div class="p-desc">Share of each state's votes cast <b>against the side that prevailed</b> — whichever of Yes or No was larger in the official whole-chamber totals (min. 20 votes in the window; Yes/No ties have no prevailing side and are skipped). Whisker = 95% interval, right-hand figure = share · votes cast, so thin records read as thin. A high rate often means siding with a cohesive minority bloc, not voting alone — compare the cohesion panel. Bar colour = UN regional group.</div>
         <div id="b-isolation" class="scrolly" style="max-height:420px"></div>
-      <div class="mnote">Method note — computed on recorded votes only — in this dataset 73% of texts pass without any vote (see Consensus tab), and which texts get a roll-call is itself political (documented for the UNGA: <a href="https://doi.org/10.1007/s11558-024-09580-1" target="_blank" rel="noopener">Fjelstul, Hug &amp; Kilby 2025</a>).</div>
+      <div class="mnote">Method note — computed on recorded votes only — in this dataset 73% of catalogued records carry no per-country roll-call (60% were adopted without a vote; see Consensus tab), and which texts get a roll-call is itself political (documented for the UNGA: <a href="https://doi.org/10.1007/s11558-024-09580-1" target="_blank" rel="noopener">Fjelstul, Hug &amp; Kilby 2025</a>).</div>
         <div class="legend"><span class="li"><i class="sw swg-af"></i>African</span><span class="li"><i class="sw swg-ap"></i>Asia-Pacific</span><span class="li"><i class="sw swg-ee"></i>Eastern Europe</span><span class="li"><i class="sw swg-gr"></i>Latin America &amp; Caribbean</span><span class="li"><i class="sw swg-we"></i>Western Europe &amp; Others</span></div>
       </div>
     </div>
@@ -576,7 +687,7 @@ body.touring .ga-consent{display:none}
     <div class="p-body">
       <div class="p-desc">Every pair of states in the selected set, by how often they voted the same way — blue = vote alike, red = vote apart. The densest view: the whole matrix at once, for those who want the pairwise detail. Hover any cell for the figure.</div>
       <div id="b-heat"></div>
-      <div class="mnote">Method note — raw coincidence is inflated by lopsided majorities — a property of the measure (<a href="https://doi.org/10.1093/pan/mpr023" target="_blank" rel="noopener">Häge 2011</a>). Roll-calls are the contested minority of output: 73% of catalogued texts here passed without a vote (see Consensus tab; on the same selection issue in the UNGA, <a href="https://doi.org/10.1007/s11558-024-09580-1" target="_blank" rel="noopener">Fjelstul, Hug &amp; Kilby 2025</a>). On preference-vs-bloc voting in the HRC itself, <a href="https://doi.org/10.1007/s11558-013-9172-2" target="_blank" rel="noopener">Hug &amp; Lukács 2014</a>.</div>
+      <div class="mnote">Method note — raw coincidence is inflated by lopsided majorities — a property of the measure (<a href="https://doi.org/10.1093/pan/mpr023" target="_blank" rel="noopener">Häge 2011</a>). Roll-calls are the contested minority of output: 73% of catalogued records here carry no per-country roll-call, and 60% were adopted without a vote (see Consensus tab; on the same selection issue in the UNGA, <a href="https://doi.org/10.1007/s11558-024-09580-1" target="_blank" rel="noopener">Fjelstul, Hug &amp; Kilby 2025</a>). On preference-vs-bloc voting in the HRC itself, <a href="https://doi.org/10.1007/s11558-013-9172-2" target="_blank" rel="noopener">Hug &amp; Lukács 2014</a>.</div>
       <div class="legend"><span>Vote apart</span><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 100%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 70%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 40%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-lo) 20%, var(--div-mid))"></i><i class="sw" style="background:var(--div-mid)"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 20%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 40%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 70%, var(--div-mid))"></i><i class="sw" style="background:color-mix(in oklab, var(--div-hi) 100%, var(--div-mid))"></i><span>Vote alike</span><span class="mut">· grey = too few shared votes</span></div>
       <div class="legend"><span class="mut">Labels:</span><span class="li"><i class="sw swg-af"></i>African</span><span class="li"><i class="sw swg-ap"></i>Asia-Pacific</span><span class="li"><i class="sw swg-ee"></i>Eastern Europe</span><span class="li"><i class="sw swg-gr"></i>Latin America &amp; Caribbean</span><span class="li"><i class="sw swg-we"></i>Western Europe &amp; Others</span></div>
     </div>
@@ -719,7 +830,7 @@ body.touring .ga-consent{display:none}
       <br>• <b>Acknowledgements</b> — the first version of this tool was inspired by Alfonso Garcia Miguel.</div>
   </div>
   <div class="panel">
-    <div class="p-head"><span class="p-idx">02</span><span class="p-title">Why most views show ~1,250 resolutions, not <span id="m-total-head">6,346</span></span></div>
+    <div class="p-head"><span class="p-idx">02</span><span class="p-title">Why most views show ~1,250 resolutions, not <span id="m-total-head">7,406</span></span></div>
     <div class="p-body">
       <div class="p-desc">Only resolutions decided by an actual roll-call (recorded) vote have a per-country breakdown. The Countries, Topics, and Blocs views all depend on that breakdown, so they operate on this subset. Everything else — most resolutions — passed by consensus, with no individual positions logged.</div>
       <div class="tiles mb12" id="m-tiles"></div>
@@ -802,7 +913,7 @@ body.touring .ga-consent{display:none}
       <br>• <b>Chance agreement</b> — with lopsided majorities, any two states "agree" often by chance; raw coincidence and cohesion overstate alignment. <a href="https://doi.org/10.1093/pan/mpr023" target="_blank" rel="noopener">Häge 2011</a>, <i>Political Analysis</i> 19(3).
       <br>• <b>Consensus inclusion</b> — similarity/cohesion measures change substantially depending on whether consensus adoptions count as unanimous pseudo-votes (demonstrated on UNGA data; the point is general). <a href="https://doi.org/10.1080/03050629.2016.1138107" target="_blank" rel="noopener">Häge &amp; Hug 2016</a>, <i>International Interactions</i> 42(3).
       <br>• <b>Agreement Index</b> — the cohesion measure used here; developed for the European Parliament. <a href="https://doi.org/10.1017/S0007123405000128" target="_blank" rel="noopener">Hix, Noury &amp; Roland 2005</a>, <i>BJPS</i> 35(2).
-      <br>• <b>Selection into roll-calls</b> — visible directly in this dataset: 73% of catalogued texts passed without any vote, so roll-call statistics describe contested politics only (the same problem is documented for the UNGA: <a href="https://doi.org/10.1007/s11558-024-09580-1" target="_blank" rel="noopener">Fjelstul, Hug &amp; Kilby 2025</a>, <i>RIO</i>).
+      <br>• <b>Selection into roll-calls</b> — visible directly in this dataset: 73% of catalogued records carry no per-country roll-call (60% were adopted without a vote; the remainder are non-recorded votes, withdrawn drafts and texts not considered), so roll-call statistics describe contested politics only (the same problem is documented for the UNGA: <a href="https://doi.org/10.1007/s11558-024-09580-1" target="_blank" rel="noopener">Fjelstul, Hug &amp; Kilby 2025</a>, <i>RIO</i>).
       <br><br><b>Evidence from this body (CHR / HRC):</b>
       <br>• <a href="https://doi.org/10.1007/s11558-013-9172-2" target="_blank" rel="noopener">Hug &amp; Lukács 2014</a>, <i>RIO</i> 9 — Bayesian analysis of HRC roll-calls 2006–2010: state <i>preferences</i>, not regional-bloc membership, dominate voting; contested texts are disproportionately tabled by states with poor rights records.
       <br>• <a href="https://doi.org/10.1111/j.1468-2478.2006.00429.x" target="_blank" rel="noopener">Lebovic &amp; Voeten 2006</a>, <i>ISQ</i> 50(4) — CHR country-condemnation politics 1977–2001: after the Cold War, targeting tracked actual violations more than partisan ties.
