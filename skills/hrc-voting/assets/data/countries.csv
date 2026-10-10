@@ -1,0 +1,201 @@
+iso3,name,group,historical
+AFG,Afghanistan,Asia-Pacific,0
+AGO,Angola,African,0
+ALB,Albania,Eastern Europe,0
+AND,Andorra,Western Europe & Others,0
+ARE,United Arab Emirates,Asia-Pacific,0
+ARG,Argentina,Latin America & Caribbean,0
+ARM,Armenia,Eastern Europe,0
+ATG,Antigua and Barbuda,Latin America & Caribbean,0
+AUS,Australia,Western Europe & Others,0
+AUT,Austria,Western Europe & Others,0
+AZE,Azerbaijan,Eastern Europe,0
+BDI,Burundi,African,0
+BEL,Belgium,Western Europe & Others,0
+BEN,Benin,African,0
+BFA,Burkina Faso,African,0
+BGD,Bangladesh,Asia-Pacific,0
+BGR,Bulgaria,Eastern Europe,0
+BHR,Bahrain,Asia-Pacific,0
+BHS,Bahamas,Latin America & Caribbean,0
+BIH,Bosnia and Herzegovina,Eastern Europe,0
+BLR,Belarus,Eastern Europe,0
+BLZ,Belize,Latin America & Caribbean,0
+BOL,Bolivia,Latin America & Caribbean,0
+BRA,Brazil,Latin America & Caribbean,0
+BRB,Barbados,Latin America & Caribbean,0
+BRN,Brunei Darussalam,Asia-Pacific,0
+BTN,Bhutan,Asia-Pacific,0
+BWA,Botswana,African,0
+CAF,Central African Republic,African,0
+CAN,Canada,Western Europe & Others,0
+CHE,Switzerland,Western Europe & Others,0
+CHL,Chile,Latin America & Caribbean,0
+CHN,China,Asia-Pacific,0
+CIV,Côte d'Ivoire,African,0
+CMR,Cameroon,African,0
+COD,DR Congo,African,0
+COG,Congo,African,0
+COL,Colombia,Latin America & Caribbean,0
+COM,Comoros,African,0
+CPV,Cabo Verde,African,0
+CRI,Costa Rica,Latin America & Caribbean,0
+CSK,Czechoslovakia,Eastern Europe,1
+CUB,Cuba,Latin America & Caribbean,0
+CYP,Cyprus,Asia-Pacific,0
+CZE,Czech Republic,Eastern Europe,0
+DDR,Germany (GDR),Eastern Europe,1
+DEU,Germany,Western Europe & Others,0
+DJI,Djibouti,African,0
+DMA,Dominica,Latin America & Caribbean,0
+DNK,Denmark,Western Europe & Others,0
+DOM,Dominican Republic,Latin America & Caribbean,0
+DZA,Algeria,African,0
+ECU,Ecuador,Latin America & Caribbean,0
+EGY,Egypt,African,0
+ERI,Eritrea,African,0
+ESP,Spain,Western Europe & Others,0
+EST,Estonia,Eastern Europe,0
+ETH,Ethiopia,African,0
+FIN,Finland,Western Europe & Others,0
+FJI,Fiji,Asia-Pacific,0
+FRA,France,Western Europe & Others,0
+FSM,Micronesia (Federated States Of),Asia-Pacific,0
+GAB,Gabon,African,0
+GBR,United Kingdom,Western Europe & Others,0
+GEO,Georgia,Eastern Europe,0
+GER,Germany (FRG),Western Europe & Others,1
+GHA,Ghana,African,0
+GIN,Guinea,African,0
+GMB,Gambia,African,0
+GNB,Guinea-Bissau,African,0
+GNQ,Equatorial Guinea,African,0
+GRC,Greece,Western Europe & Others,0
+GRD,Grenada,Latin America & Caribbean,0
+GTM,Guatemala,Latin America & Caribbean,0
+GUY,Guyana,Latin America & Caribbean,0
+HND,Honduras,Latin America & Caribbean,0
+HRV,Croatia,Eastern Europe,0
+HTI,Haiti,Latin America & Caribbean,0
+HUN,Hungary,Eastern Europe,0
+IDN,Indonesia,Asia-Pacific,0
+IND,India,Asia-Pacific,0
+IRL,Ireland,Western Europe & Others,0
+IRN,Iran,Asia-Pacific,0
+IRQ,Iraq,Asia-Pacific,0
+ISL,Iceland,Western Europe & Others,0
+ISR,Israel,Western Europe & Others,0
+ITA,Italy,Western Europe & Others,0
+JAM,Jamaica,Latin America & Caribbean,0
+JOR,Jordan,Asia-Pacific,0
+JPN,Japan,Asia-Pacific,0
+KAZ,Kazakhstan,Asia-Pacific,0
+KEN,Kenya,African,0
+KGZ,Kyrgyzstan,Asia-Pacific,0
+KHM,Cambodia,Asia-Pacific,0
+KIR,Kiribati,Asia-Pacific,0
+KNA,Saint Kitts and Nevis,Latin America & Caribbean,0
+KOR,Republic of Korea,Asia-Pacific,0
+KWT,Kuwait,Asia-Pacific,0
+LAO,Laos,Asia-Pacific,0
+LBN,Lebanon,Asia-Pacific,0
+LBR,Liberia,African,0
+LBY,Libya,African,0
+LCA,Saint Lucia,Latin America & Caribbean,0
+LIE,Liechtenstein,Western Europe & Others,0
+LKA,Sri Lanka,Asia-Pacific,0
+LSO,Lesotho,African,0
+LTU,Lithuania,Eastern Europe,0
+LUX,Luxembourg,Western Europe & Others,0
+LVA,Latvia,Eastern Europe,0
+MAR,Morocco,African,0
+MCO,Monaco,Western Europe & Others,0
+MDA,Republic of Moldova,Eastern Europe,0
+MDG,Madagascar,African,0
+MDV,Maldives,Asia-Pacific,0
+MEX,Mexico,Latin America & Caribbean,0
+MHL,Marshall Islands,Asia-Pacific,0
+MKD,North Macedonia,Eastern Europe,0
+MLI,Mali,African,0
+MLT,Malta,Western Europe & Others,0
+MMR,Myanmar,Asia-Pacific,0
+MNE,Montenegro,Eastern Europe,0
+MNG,Mongolia,Asia-Pacific,0
+MOZ,Mozambique,African,0
+MRT,Mauritania,African,0
+MUS,Mauritius,African,0
+MWI,Malawi,African,0
+MYS,Malaysia,Asia-Pacific,0
+NAM,Namibia,African,0
+NER,Niger,African,0
+NGA,Nigeria,African,0
+NIC,Nicaragua,Latin America & Caribbean,0
+NLD,Netherlands,Western Europe & Others,0
+NOR,Norway,Western Europe & Others,0
+NPL,Nepal,Asia-Pacific,0
+NRU,Nauru,Asia-Pacific,0
+NZL,New Zealand,Western Europe & Others,0
+OMN,Oman,Asia-Pacific,0
+PAK,Pakistan,Asia-Pacific,0
+PAN,Panama,Latin America & Caribbean,0
+PER,Peru,Latin America & Caribbean,0
+PHL,Philippines,Asia-Pacific,0
+PLW,Palau,Asia-Pacific,0
+PNG,Papua New Guinea,Asia-Pacific,0
+POL,Poland,Eastern Europe,0
+PRK,DPR Korea,Asia-Pacific,0
+PRT,Portugal,Western Europe & Others,0
+PRY,Paraguay,Latin America & Caribbean,0
+QAT,Qatar,Asia-Pacific,0
+ROU,Romania,Eastern Europe,0
+RUS,Russian Federation,Eastern Europe,0
+RWA,Rwanda,African,0
+SAU,Saudi Arabia,Asia-Pacific,0
+SCG,Serbia and Montenegro,Eastern Europe,1
+SDN,Sudan,African,0
+SEN,Senegal,African,0
+SGP,Singapore,Asia-Pacific,0
+SLB,Solomon Islands,Asia-Pacific,0
+SLE,Sierra Leone,African,0
+SLV,El Salvador,Latin America & Caribbean,0
+SMR,San Marino,Western Europe & Others,0
+SOM,Somalia,African,0
+SRB,Serbia,Eastern Europe,0
+SSD,South Sudan,African,0
+STP,São Tomé and Príncipe,African,0
+SUN,Soviet Union,Eastern Europe,1
+SUR,Suriname,Latin America & Caribbean,0
+SVK,Slovakia,Eastern Europe,0
+SVN,Slovenia,Eastern Europe,0
+SWE,Sweden,Western Europe & Others,0
+SWZ,Eswatini,African,0
+SYC,Seychelles,African,0
+SYR,Syria,Asia-Pacific,0
+TCD,Chad,African,0
+TGO,Togo,African,0
+THA,Thailand,Asia-Pacific,0
+TJK,Tajikistan,Asia-Pacific,0
+TKM,Turkmenistan,Asia-Pacific,0
+TLS,Timor-Leste,Asia-Pacific,0
+TON,Tonga,Asia-Pacific,0
+TTO,Trinidad and Tobago,Latin America & Caribbean,0
+TUN,Tunisia,African,0
+TUR,Türki̇ye,Western Europe & Others,0
+TUV,Tuvalu,Asia-Pacific,0
+TZA,Tanzania,African,0
+UGA,Uganda,African,0
+UKR,Ukraine,Eastern Europe,0
+URY,Uruguay,Latin America & Caribbean,0
+USA,United States,Western Europe & Others,0
+UZB,Uzbekistan,Asia-Pacific,0
+VCT,Saint Vincent and the Grenadines,Latin America & Caribbean,0
+VEN,Venezuela,Latin America & Caribbean,0
+VNM,Viet Nam,Asia-Pacific,0
+VUT,Vanuatu,Asia-Pacific,0
+WSM,Samoa,Asia-Pacific,0
+YEM,Yemen,Asia-Pacific,0
+YMD,Democratic Yemen,Asia-Pacific,1
+YUG,Yugoslavia,Eastern Europe,1
+ZAF,South Africa,African,0
+ZMB,Zambia,African,0
+ZWE,Zimbabwe,African,0

@@ -157,6 +157,22 @@ def main():
          index, "dashboard/index.html")
     want("share adopted without a vote", f"{free}% were adopted without a vote", index, "dashboard/index.html")
 
+    # --- the Claude skills: the bundled snapshot and the figures their descriptions quote ----
+    meta = json.loads((ROOT / "skills" / "hrc-voting" / "assets" / "data" / "meta.json").read_text())
+    if meta["version"] != version:
+        fails.append(f"skills/hrc-voting snapshot is v{meta['version']}, CITATION.cff says v{version} — run scripts/build_skill_snapshot.py")
+    for key, want_ in (("records", len(payload["resAll"])), ("country_votes", stats["votes"]),
+                       ("recorded_records", n_rc), ("ga_resolutions", ga.get("resolutions"))):
+        if meta[key] != want_:
+            fails.append(f"skills/hrc-voting meta.{key} is {meta[key]:,}, the build says {want_:,} — run scripts/build_skill_snapshot.py")
+    for rel in ("skills/hrc-voting/SKILL.md", "skills/hrc-voting-cite/SKILL.md"):
+        text = (ROOT / rel).read_text(encoding="utf-8")
+        for label, v in (("version", f"v{version}"), ("records", f"{len(payload['resAll']):,}")):
+            if v not in text:
+                fails.append(f"{rel}: should mention {label} {v}")
+    if f"{meta['country_votes']:,}" not in (ROOT / "skills/hrc-voting/SKILL.md").read_text(encoding="utf-8"):
+        fails.append(f"skills/hrc-voting/SKILL.md: should mention {meta['country_votes']:,} country votes")
+
     if fails:
         print(f"FIGURES: {len(fails)} drifted\n")
         for f in fails:

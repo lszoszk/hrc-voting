@@ -41,6 +41,18 @@ every State that changed between them. The Committee's 306 other recorded votes
 a plenary vote) are records of their own under the *amendments* scope. Methodology 14 documents the sources, the
 attribution rule for pre-2000 records and the terms of use.
 
+## Use with Claude and other AI assistants
+
+- **Claude skills** ([`skills/`](skills/)): `hrc-voting` answers questions about how States voted (country records,
+  voting partners, resolution tallies, consensus vs recorded votes, amendments, fact-checking against the Council's
+  session reports) from a bundled offline snapshot, and `hrc-voting-cite` writes citations, methods notes and captions.
+  Both build the dataset's safeguards into their answers (amendments kept apart from resolutions, an abstention is not a
+  vote against, known catalogue gaps flagged). Download the zips and install steps: <https://lszoszk.github.io/hrc-voting/skills/>.
+- **Plain pages for crawlers and assistants**: one page per State (`/country/<name>/`, with a CSV of its votes) and per recorded
+  resolution (`/resolution/<symbol>/`), generated from `data/csv/` in the Pages workflow, plus [`/llms.txt`](https://lszoszk.github.io/hrc-voting/llms.txt).
+- **Machine-readable data**: Hugging Face (`lszoszk/hrc-voting`, 10 parquet configs), Zenodo DOI, `CITATION.cff`, schema.org
+  `Dataset` markup on the dashboard.
+
 ## Layout
 
 ```
@@ -73,6 +85,16 @@ dashboard/texts/               # catalog.json, docs-<year>.json, idx/, lang.json
 # Hugging Face package (rebuilt from the committed outputs above)
 scripts/prepare_hf_dataset.py  # -> huggingface/hrc-voting/data/*.parquet + dashboard/hf_stats.js
 huggingface/hrc-voting/        # dataset card + 10 parquet configs (5 CHR/HRC + 5 GA), ready to upload
+
+# Claude skills (see skills/README.md)
+skills/hrc-voting/             # query + analyse, with a gzipped snapshot of the CSVs and a stdlib-only CLI
+skills/hrc-voting-cite/        # citations, methods notes, licence wording
+scripts/build_skill_snapshot.py# refresh the snapshot bundled in the skill (after a re-harvest)
+scripts/package_skills.py      # zip each skill for upload (the Pages workflow publishes them)
+
+# crawlable pages (generated in the Pages workflow, nothing committed)
+scripts/build_static_pages.py  # one page per State and recorded resolution, skills page, llms.txt, sitemap
+scripts/check_static_pages.py  # fails the deploy on a broken link, duplicate title or collapsed page count
 
 # app + checks
 dashboard/index.html           # self-contained static dashboard (open directly)

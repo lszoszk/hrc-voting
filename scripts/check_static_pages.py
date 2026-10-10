@@ -24,7 +24,7 @@ if "--base" in args:
     del args[i:i + 2]
 root = Path(args[0]).resolve()
 fails = []
-htmls = [p for p in root.rglob("*.html") if p.relative_to(root).parts[0] in ("country", "resolution")]
+htmls = [p for p in root.rglob("*.html") if p.relative_to(root).parts[0] in ("country", "resolution", "skills")]
 titles, broken = collections.Counter(), collections.Counter()
 for p in htmls:
     t = p.read_text(encoding="utf-8")
@@ -54,12 +54,15 @@ if dup:
     fails.append(f"{len(dup)} duplicate titles, e.g. {dup[0]!r}")
 if broken:
     fails.append(f"{len(broken)} broken internal links, e.g. {next(iter(broken))}")
+for z in ("hrc-voting.zip", "hrc-voting-cite.zip"):
+    if not (root / "skills" / z).exists():
+        fails.append(f"skills/{z} is missing (run scripts/package_skills.py --out <dir>/skills before this check)")
 n_c = len(list((root / "country").glob("*/index.html")))
 n_r = len(list((root / "resolution").glob("*/index.html")))
 if n_c < 140 or n_r < 1200:
     fails.append(f"page counts collapsed: {n_c} countries, {n_r} resolutions")
 sm = (root / "sitemap.xml").read_text(encoding="utf-8")
-listed = set(re.findall(r"<loc>https://lszoszk\.github\.io" + re.escape(base) + r"/((?:country|resolution)/[^<]*)</loc>", sm))
+listed = set(re.findall(r"<loc>https://lszoszk\.github\.io" + re.escape(base) + r"/((?:country|resolution|skills)/[^<]*)</loc>", sm))
 on_disk = {str(p.relative_to(root).parent).replace("\\", "/") + "/" for p in htmls} | {"country/", "resolution/"}
 if listed != on_disk:
     fails.append(f"sitemap and pages differ: {len(listed ^ on_disk)} entries")

@@ -381,6 +381,17 @@ resolutions whose catalogued title matches the GA text (token Jaccard ≥ 0.6; 4
 - Historical states appear under their own codes (`CSK` Czechoslovakia, `SUN` Soviet
   Union, `YUG` Yugoslavia, `DDR`/`GER` the two Germanys).
 
+## Use with Claude and other AI assistants
+
+- **Claude skills.** `hrc-voting` answers questions about how States voted (country records, voting partners, resolution tallies,
+  consensus vs recorded votes, amendments, checking a published figure against the Council's session reports) from an offline
+  snapshot of this dataset, with the safeguards of "Read this before analysing" built in; `hrc-voting-cite` writes citations,
+  methods notes and captions. Zips and install steps: <https://lszoszk.github.io/hrc-voting/skills/> (source:
+  [`skills/`](https://github.com/lszoszk/hrc-voting/tree/main/skills) on GitHub).
+- **Plain pages.** One HTML page per State and per recorded resolution
+  (<https://lszoszk.github.io/hrc-voting/country/>, `/resolution/`), each State with a CSV of its votes, and a plain-text map
+  of the site at <https://lszoszk.github.io/hrc-voting/llms.txt>.
+
 ## Suitable for
 
 Roll-call and ideal-point analysis of a small elected chamber (as opposed to the UN
