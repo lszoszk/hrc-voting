@@ -224,6 +224,7 @@ with sync_playwright() as p:
     pg2.goto(INDEX.as_uri()); pg2.wait_for_timeout(1300)
     checks["tour auto-opens"] = pg2.evaluate("document.getElementById('tour-wrap').classList.contains('open')")
     checks["tour slides"] = pg2.evaluate("document.querySelectorAll('#tour-slides .tslide').length")
+    checks["tour figures"] = pg2.evaluate("[...document.querySelectorAll('#tour-slides .tslide')[0].querySelectorAll('.tour-stats b')].map(b=>b.textContent).slice(0,3).join('|')")
     checks["tour sparkline"] = pg2.evaluate("document.querySelectorAll('#tour-slides svg rect').length > 40")
     checks["tour minimap"] = pg2.evaluate("document.querySelectorAll('#tour-map path').length > 100")
     for _ in range(4):
@@ -258,7 +259,7 @@ ok = (checks["DATA loaded"] and checks["overview tiles"] == 4 and checks["countr
       and checks["group trend series"] >= 4 and "regional groups" in checks["group stance title"]
       and checks["texts offline note (file://)"] and checks["texts FTS results"] > 5 and checks["texts FTS highlights"]
       and checks["language offline note (file://)"] and checks["language trend pts"] > 20 and checks["language ladder rows"] > 40
-      and checks["tour auto-opens"] and checks["tour slides"] == 5 and checks["tour sparkline"]
+      and checks["tour auto-opens"] and checks["tour slides"] == 5 and checks["tour figures"] == "6,392|1,716|80,676" and checks["tour sparkline"]
       and checks["tour minimap"] and checks["tour goto view"] == "country"
       and checks["tour closed + flag"] and checks["tour stays closed on revisit"] and checks["footer reopens tour"]
       and checks["scatter fullscreen"] and checks["scatter fullscreen closes"]

@@ -2929,8 +2929,14 @@ function tourSpark(){
 function buildTour(){
   if(tourBuilt)return;tourBuilt=true;
   const host=$('tour-slides');
-  const gaC=(M.coverage&&M.coverage.ga)||{};/* the tour describes the OHCHR collection: keep the GA extension out of its counts */
-  const nRec=fmt(RES.length-(gaC.resolutions||0)),nAll=fmt((D.resAll||[]).length||M.coverage&&M.coverage.totalResolutions||6346),nCells=fmt(nVotesTotal-(gaC.votes||0));
+  const gaC=(M.coverage&&M.coverage.ga)||{};
+  /* The tour describes the OHCHR collection, so every figure here is CHR/HRC only. Subtracting just the
+     Assembly's plenary resolutions and votes left its 306 committee-only records and their 49,283 votes
+     in (2,022 and 129,958 instead of 1,716 and 80,676). The votes figure is the same one the README and
+     the Hugging Face card state, read from hf_stats.js; the fallback removes both GA vote sets. */
+  const hfVotes=((window.HF_STATS&&HF_STATS.configs)||[]).find(c=>c.name==='votes');
+  const nRec=fmt(RES.filter(r=>r.body!=='GA').length),nAll=fmt((D.resAll||[]).length||M.coverage&&M.coverage.totalResolutions||6346),
+    nCells=fmt(hfVotes?hfVotes.rows:nVotesTotal-(gaC.votes||0)-(gaC.committeeOnlyVotes||0));
   const slides=[
   `<div class="tour-kicker">First time here · a 90-second tour</div>
    <h2 class="tour-h">Eighty years of human-rights votes, on one page.</h2>
