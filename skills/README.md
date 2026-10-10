@@ -29,6 +29,13 @@ unzip hrc-voting.zip hrc-voting-cite.zip -d ~/.claude/skills   # or: ./.claude/s
 In a clone of this repository, copy or link the folders from `skills/` the same way. Check an install with
 `python ~/.claude/skills/hrc-voting/scripts/hrcv.py selftest`.
 
+## Prefer a connector?
+
+[`mcp-hrc-voting`](https://github.com/lszoszk/mcp-hrc-voting) is the same data as a Model Context Protocol server (nine read-only
+tools, offline, same safeguards) for Claude Desktop, Claude Code and other MCP clients:
+`claude mcp add --scope user hrc-voting -- npx -y github:lszoszk/mcp-hrc-voting`. Its golden values come from `hrcv.py`, so the
+two answer identically.
+
 ## Newer data
 
 The snapshot is the data of the release it was built for (`assets/data/meta.json`). `python scripts/hrcv.py refresh` downloads the

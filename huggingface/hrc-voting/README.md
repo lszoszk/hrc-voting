@@ -388,6 +388,9 @@ resolutions whose catalogued title matches the GA text (token Jaccard ≥ 0.6; 4
   snapshot of this dataset, with the safeguards of "Read this before analysing" built in; `hrc-voting-cite` writes citations,
   methods notes and captions. Zips and install steps: <https://lszoszk.github.io/hrc-voting/skills/> (source:
   [`skills/`](https://github.com/lszoszk/hrc-voting/tree/main/skills) on GitHub).
+- **MCP server.** [`mcp-hrc-voting`](https://github.com/lszoszk/mcp-hrc-voting) exposes the same data as nine read-only tools for
+  Claude Desktop, Claude Code and other MCP clients, offline, with the same safeguards
+  (`claude mcp add --scope user hrc-voting -- npx -y github:lszoszk/mcp-hrc-voting`).
 - **Plain pages.** One HTML page per State and per recorded resolution
   (<https://lszoszk.github.io/hrc-voting/country/>, `/resolution/`), each State with a CSV of its votes, and a plain-text map
   of the site at <https://lszoszk.github.io/hrc-voting/llms.txt>.

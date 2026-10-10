@@ -116,7 +116,7 @@ def page(path, title, desc, body, base, nodes, canonical):
 <link rel="stylesheet" href="{base}/static.css">
 {jsonld(*nodes)}
 </head><body>
-<header class="top"><div class="wrap"><a class="b" href="{base}/">UN Human Rights Voting Records</a><a href="{base}/country/">Countries</a><a href="{base}/resolution/">Resolutions</a><a href="{base}/skills/">AI skills</a><a href="{base}/">Open the dashboard</a></div></header>
+<header class="top"><div class="wrap"><a class="b" href="{base}/">UN Human Rights Voting Records</a><a href="{base}/country/">Countries</a><a href="{base}/resolution/">Resolutions</a><a href="{base}/skills/">AI assistants</a><a href="{base}/">Open the dashboard</a></div></header>
 <main class="wrap">
 {body}
 <footer>Source: <a href="https://searchlibrary.ohchr.org/search?c=Voting">OHCHR Library voting records</a>; independent of the UN. Data and code: <a href="https://github.com/lszoszk/hrc-voting">GitHub</a> · <a href="{DOI}">Zenodo (DOI)</a> · <a href="https://huggingface.co/datasets/lszoszk/hrc-voting">Hugging Face</a>. Licence: PolyForm Noncommercial 1.0.0. Cite as: Szoszkiewicz, Ł. (2026). {esc(TITLE)}. {DOI}. Known gaps in the catalogue are listed in the dashboard's Methodology (§06).</footer>
@@ -327,9 +327,10 @@ def main():
     cff = (ROOT / "CITATION.cff").read_text(encoding="utf-8")
     ver = re.search(r'^version:\s*"([^"]+)"', cff, re.M).group(1)
     n_cat, n_roll, n_votes = len(res), sum(1 for r in res if r["record_id"] in cast), len(votes)
+    MCP = "https://github.com/lszoszk/mcp-hrc-voting"
     zips = {"hrc-voting": f"{base}/skills/hrc-voting.zip", "hrc-voting-cite": f"{base}/skills/hrc-voting-cite.zip"}
     skills_body = (
-        "<h1>Claude skills for HRC Voting</h1>"
+        "<h1>HRC Voting for AI assistants</h1>"
         "<p>Two <a href=\"https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview\">Agent Skills</a> that let Claude answer questions about UN human-rights votes from this dataset, "
         "with its safeguards built in: amendments are kept apart from resolutions, an abstention is never a vote against, every answer states its scope and the data version, and the known gaps of the source catalogue are flagged.</p>"
         f"<h2>hrc-voting</h2><p>Query and analyse how States voted at the Commission on Human Rights, the Human Rights Council and, as plenary votes, the General Assembly's Third Committee. "
@@ -339,18 +340,24 @@ def main():
         "<h2>hrc-voting-cite</h2><p>Cite the dataset (DOI, BibTeX, APA and OSCOLA-style forms), cite a resolution together with how the vote went, and write a methods or data-availability note, a chart caption and the licence statement.</p>"
         "<p class=sub>Try: \"Give me the footnote for A/HRC/RES/48/1 with the vote.\" · \"Write the data section for my chapter.\"</p>"
         f"<p><a href=\"{zips['hrc-voting-cite']}\">Download hrc-voting-cite.zip</a> (small)</p>"
-        "<h2>Install</h2><p><b>Claude (claude.ai, Claude Desktop):</b> Settings, Capabilities, Skills, then upload each zip (the menu name varies by app version; skills need code execution enabled).</p>"
+        "<h2>MCP server: mcp-hrc-voting</h2><p>The same data as a <a href=\"https://modelcontextprotocol.io\">Model Context Protocol</a> connector for Claude Desktop, Claude Code and other MCP clients: nine read-only tools (search, resolution tallies, country records, voting partners, head to head, consensus versus recorded votes, amendments, known gaps) and four reference documents. Same safeguards, answered from a bundled offline snapshot; no account, no key.</p>"
+        "<p><code>claude mcp add --scope user hrc-voting -- npx -y github:lszoszk/mcp-hrc-voting</code></p>"
+        f"<p><a href=\"{MCP}\">Source, Claude Desktop configuration and tests on GitHub</a></p>"
+        "<h2>Install the skills</h2><p><b>Claude (claude.ai, Claude Desktop):</b> Settings, Capabilities, Skills, then upload each zip (the menu name varies by app version; skills need code execution enabled).</p>"
         "<p><b>Claude Code:</b> <code>mkdir -p ~/.claude/skills &amp;&amp; unzip hrc-voting.zip hrc-voting-cite.zip -d ~/.claude/skills</code></p>"
         "<p>The skills work without network access. <code>python scripts/hrcv.py refresh</code> fetches newer data when a network is available. "
         "Details, maintenance notes and the source: <a href=\"https://github.com/lszoszk/hrc-voting/tree/main/skills\">skills/ on GitHub</a>.</p>")
     node = {"@type": "SoftwareApplication", "name": "HRC Voting Claude skills", "applicationCategory": "DeveloperApplication",
             "operatingSystem": "Any", "softwareVersion": ver, "isAccessibleForFree": True, "license": lic, "creator": org,
             "url": f"{SITE}{base}/skills/", "downloadUrl": [f"{SITE}{u}" for u in zips.values()], "isPartOf": {"@id": dataset_id}}
+    mcp_node = {"@type": "SoftwareSourceCode", "name": "mcp-hrc-voting", "description": "Model Context Protocol server for UN human-rights voting records.",
+                "codeRepository": "https://github.com/lszoszk/mcp-hrc-voting", "programmingLanguage": "JavaScript", "license": lic, "creator": org,
+                "version": ver, "isPartOf": {"@id": dataset_id}}
     d = out / "skills"
     d.mkdir(parents=True, exist_ok=True)
-    (d / "index.html").write_text(page(d, "Claude skills for UN human-rights voting records | HRC Voting",
-        "Claude skills to query how States voted at the UN Commission on Human Rights, Human Rights Council and General Assembly Third Committee, and to cite the data. Offline snapshot included.",
-        skills_body, base, [crumbs(("UN Human Rights Voting Records", "/"), ("AI skills", "/skills/")), node], "/skills/"), encoding="utf-8")
+    (d / "index.html").write_text(page(d, "Claude skills and an MCP server for UN human-rights voting records | HRC Voting",
+        "Claude skills and an MCP server to query how States voted at the UN Commission on Human Rights, Human Rights Council and General Assembly Third Committee, and to cite the data. Offline.",
+        skills_body, base, [crumbs(("UN Human Rights Voting Records", "/"), ("AI assistants", "/skills/")), node, mcp_node], "/skills/"), encoding="utf-8")
     urls.append(f"{SITE}{base}/skills/")
     llms = f"""# UN Human Rights Voting Records (HRC Voting)
 
@@ -368,6 +375,7 @@ def main():
 
 ## Use with AI assistants
 - [Claude skills]({SITE}{base}/skills/): `hrc-voting` (query and analyse, offline snapshot) and `hrc-voting-cite` (citations, methods notes)
+- [MCP server mcp-hrc-voting](https://github.com/lszoszk/mcp-hrc-voting): the same data as nine read-only tools for Claude Desktop, Claude Code and other MCP clients (`npx -y github:lszoszk/mcp-hrc-voting`)
 
 ## Read before interpreting
 - Amendments are kept apart from resolutions; an abstention is not a vote against; "adopted without a vote" is not unanimity; the General Assembly is not added to CHR/HRC.

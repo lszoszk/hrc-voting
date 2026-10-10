@@ -48,6 +48,9 @@ attribution rule for pre-2000 records and the terms of use.
   session reports) from a bundled offline snapshot, and `hrc-voting-cite` writes citations, methods notes and captions.
   Both build the dataset's safeguards into their answers (amendments kept apart from resolutions, an abstention is not a
   vote against, known catalogue gaps flagged). Download the zips and install steps: <https://lszoszk.github.io/hrc-voting/skills/>.
+- **MCP server** ([`lszoszk/mcp-hrc-voting`](https://github.com/lszoszk/mcp-hrc-voting)): the same data as nine read-only tools and four
+  reference documents for Claude Desktop, Claude Code and other MCP clients, offline and with the same safeguards. Install:
+  `claude mcp add --scope user hrc-voting -- npx -y github:lszoszk/mcp-hrc-voting`.
 - **Plain pages for crawlers and assistants**: one page per State (`/country/<name>/`, with a CSV of its votes) and per recorded
   resolution (`/resolution/<symbol>/`), generated from `data/csv/` in the Pages workflow, plus [`/llms.txt`](https://lszoszk.github.io/hrc-voting/llms.txt).
 - **Machine-readable data**: Hugging Face (`lszoszk/hrc-voting`, 10 parquet configs), Zenodo DOI, `CITATION.cff`, schema.org
