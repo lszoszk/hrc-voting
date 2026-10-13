@@ -887,7 +887,8 @@ body.touring .ga-consent{display:none}
     <div class="p-head"><span class="p-idx">07</span><span class="p-title">Analytics &amp; privacy</span></div>
     <div class="p-body">
       <div class="p-desc m0">This site uses <b>Google Analytics 4</b> only to see which views are used, and only <b>after you accept</b> the banner (Google Consent Mode v2 defaults to denied; nothing is sent before then, and a <code class="cd">Do-Not-Track</code> browser setting skips it entirely). We record <b>view names only</b> (Overview, Countries, Topics, Blocs, Consensus, Texts, Language, Methodology). We never send your searches, the countries or subjects you select, the records you open, or your IP address in clear — GA4 anonymises IP and ad-personalisation / Google signals are disabled. The offline single-file version does no tracking at all. <span id="m-ga-state" class="mut"></span>
-      <br>• <b>Cookie-free page counter</b> — whatever you choose above, the site counts page views with <a href="https://www.goatcounter.com/" target="_blank" rel="noopener">GoatCounter</a>, an open-source counter that sets no cookies and stores nothing in your browser, so it runs without a consent banner. Each view sends only the view name (for instance <code class="cd">/hrc-voting/consensus</code>), the page that referred you, your screen width and the browser and system named in your browser's User-Agent; it is not sent at all when your browser sends Do-Not-Track. Your searches, the countries or subjects you select and the records you open are never sent. See GoatCounter's <a href="https://www.goatcounter.com/privacy" target="_blank" rel="noopener">privacy policy</a>.</div>
+      <br>• <b>Cookie-free page counter</b> — whatever you choose above, the site counts page views with <a href="https://www.goatcounter.com/" target="_blank" rel="noopener">GoatCounter</a>, an open-source counter that sets no cookies and stores nothing in your browser, so it runs without a consent banner. Each view sends only the view name (for instance <code class="cd">/hrc-voting/consensus</code>), the page that referred you, your screen width and the browser and system named in your browser's User-Agent; it is not sent at all when your browser sends Do-Not-Track. Your searches, the countries or subjects you select and the records you open are never sent. See GoatCounter's <a href="https://www.goatcounter.com/privacy" target="_blank" rel="noopener">privacy policy</a>.
+      <br>• <b>&ldquo;Who are you?&rdquo;</b> — once, after you have used the site for a while, a small box asks whether you are a lawyer, researcher, student, NGO, court or public institution. Answering is optional and anonymous: a click sends only that category to GoatCounter, and this browser remembers that it was answered or closed so it is not asked again.</div>
       <div style="margin-top:12px"><button class="palbtn" id="m-ga-reset" type="button">Reset analytics choice</button></div>
     </div>
   </div>
@@ -3130,5 +3131,6 @@ function fillYears(sel,def){const s=$(sel);let h='';for(let y=M.yearMin;y<=M.yea
   gaInit();
 })();
 </script>
+<script src="who.js?v=20261013" data-tool="hrc-voting" data-endpoint="https://lszoszk.goatcounter.com/count" defer></script>
 </body>
 </html>
