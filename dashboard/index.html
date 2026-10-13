@@ -170,6 +170,7 @@
 /* topbar (console shell — kept for completeness; masthead shell hides it) */
 .topbar{grid-area:top;height:44px;display:none;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;padding:0 16px;border-bottom:1px solid var(--line);background:var(--paper)}
 .statchip{display:inline-flex;align-items:center;gap:7px;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap;font-size:10px}
+.statchip .asof{margin-left:4px;padding-left:9px;border-left:1px solid var(--line);color:var(--dim);cursor:help}
 .dot{width:6px;height:6px;border-radius:50%;background:#2ecc71;box-shadow:0 0 0 3px rgba(46,204,113,.22);animation:vrpulse 2s infinite;display:inline-block}
 @keyframes vrpulse{50%{opacity:.4}}
 /* masthead (editorial serif header — the active shell) */
@@ -485,7 +486,7 @@ body.touring .ga-consent{display:none}
   <div class="fx ac jb gap16 mh-row">
     <span class="mh-kicker">Data: <a href="https://searchlibrary.ohchr.org/search?c=Voting" target="_blank" rel="noopener">OHCHR Library — HRC voting records</a> · <a href="https://digitallibrary.un.org/record/4060887" target="_blank" rel="noopener">UN Digital Library</a></span>
     <button class="cmdk mh-cmdk" id="k-open"><span class="kk">⌘K</span><span class="khint">Jump to a view, country, or subject tag…</span></button>
-    <span class="statchip"><i class="dot"></i><span id="hd-stat">loading…</span></span>
+    <span class="statchip"><i class="dot"></i><span id="hd-stat">loading…</span><span class="asof" id="hd-asof" tabindex="0" hidden></span></span>
   </div>
   <h1 class="mh-title">UN Human Rights Voting Records</h1>
   <div class="mh-sub" id="mh-sub">Commission on Human Rights (1946–2006) · Human Rights Council (2006–) — how each text was adopted, who voted how, and what it says</div>
@@ -1446,6 +1447,7 @@ window.VRC=VRC;
 <script>
 /* ================= App logic (audited pipeline, design-system markup) ================= */
 'use strict';
+const HARVESTED='2026-09-26';   /* used until data.js carries meta.harvested (scripts/build_dashboard_data.py) */
 const D=window.DATA, RES=D.res, C=D.countries, M=D.meta, GLAB=M.groupLabels;
 const byIso=Object.fromEntries(C.map(c=>[c.iso3,c]));
 /* UN-agency short display names for a few long/formal names (patched in place, so every
@@ -3030,6 +3032,12 @@ function refreshStats(){
   $('hd-stat').textContent=fmt(nRes)+' recorded · '+fmt(rollcallCount())+' roll-calls · '+scopeLabel();
   $('f-note').textContent=fmt(nRes)+' recorded of '+fmt(M.coverage.totalResolutions)
     +' catalogued · '+M.yearMin+'–'+M.yearMax;
+  /* How current the data is: the newest dated vote in this view, and the day of the OHCHR harvest. New sessions
+     reach the OHCHR catalogue some weeks after they close. */
+  let last='';for(const r of RES)if(r.date&&bodyOK(r)&&r.date>last)last=r.date;
+  const ao=$('hd-asof'),day=d=>new Date(d+'T00:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'});
+  if(ao&&last){const h=M.harvested||HARVESTED;ao.textContent='Data to '+day(last);ao.hidden=false;
+    ao.title='Newest recorded vote in this view: '+day(last)+'. Harvested from the OHCHR Library on '+day(h)+'; new sessions reach the catalogue some weeks after they close.';}
 }
 
 /* ---------- boot ---------- */

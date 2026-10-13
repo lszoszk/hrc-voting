@@ -18,6 +18,12 @@ from tz_countries import TZ_TO_ISO2
 ROOT = Path(__file__).resolve().parent.parent
 CSV = ROOT / "data" / "csv"
 OUT = ROOT / "dashboard"
+
+
+def harvest_date() -> str | None:
+    """Day of the newest OHCHR harvest (data/raw/year_*.xml); the site shows it beside the data date."""
+    files = list((ROOT / "data" / "raw").glob("year_*.xml"))
+    return datetime.fromtimestamp(max(f.stat().st_mtime for f in files)).date().isoformat() if files else None
 OUT.mkdir(exist_ok=True)
 
 # UN regional groups (best-effort; editable). Note UN quirks: Cyprus & Turkey
@@ -533,6 +539,7 @@ def main():
             "nCountries": len(countries),
             "yearMin": min(r["year"] for r in res if r["year"]),
             "yearMax": max(r["year"] for r in res if r["year"]),
+            "harvested": harvest_date(),
             "groupLabels": GROUP_LABEL,
             "coverage": {
                 "totalResolutions": len(res_rows),
