@@ -84,7 +84,7 @@ configs:
 
 Every voting record catalogued by the OHCHR Search Library for the **UN Commission on
 Human Rights (1946–2006)** and its successor the **Human Rights Council (2006–present)**:
-6,392 records (resolutions, decisions and amendments), 80,676 individual country roll-call votes, and 98,740 clause-segmented
+6,406 records (resolutions, decisions and amendments), 80,958 individual country roll-call votes, and 99,286 clause-segmented
 paragraphs of the adopted texts. Since September 2026 four further configs (`ga_*`) add
 the **General Assembly's** human rights resolutions — the texts that come out of its
 Third Committee — with both the committee-stage and the plenary roll-call (see
@@ -104,9 +104,9 @@ Three fact tables and two dimension tables for the Commission and the Council; f
 
 | config | rows | one row is | period |
 |---|---|---|---|
-| `resolutions` *(default)* | 6,392 | a catalogued resolution, decision or amendment | 1946–2026 |
-| `votes` | 80,676 | one country's position on one resolution | 1947–2026 |
-| `clauses` | 98,740 | one preambular / operative / annex clause | 1993–2026 |
+| `resolutions` *(default)* | 6,406 | a catalogued resolution, decision or amendment | 1946–2026 |
+| `votes` | 80,958 | one country's position on one resolution | 1947–2026 |
+| `clauses` | 99,286 | one preambular / operative / annex clause | 1993–2026 |
 | `countries` | 200 | a state that cast at least one roll-call vote in any of the three organs (154 in the CHR/HRC tables) | — |
 | `subjects` | 1,035 | one OHCHR controlled subject heading | — |
 
@@ -134,7 +134,7 @@ These are the four things most likely to produce a wrong result. The first two a
 mistakes this project made and corrected; derived columns are provided so you do not
 have to repeat them.
 
-**1. Only 27% of resolutions have a per-country roll-call.** 1,716 of 6,392. The rest
+**1. Only 27% of resolutions have a per-country roll-call.** 1,722 of 6,406. The rest
 were adopted without a vote or published as totals only, so no individual positions
 exist. Roll-call statistics describe *contested* politics, not the Council's output —
 a well-documented selection problem (Fjelstul, Hug & Kilby 2025). Filter on
@@ -228,14 +228,14 @@ participating 701 · empty 642 (not a member at the time, or no position recorde
 
 ## Config: `clauses`
 
-Clause-segmented full text of 4,543 resolutions, **1993–2026** — the earliest the
+Clause-segmented full text of 4,557 resolutions, **1993–2026** — the earliest the
 OHCHR/ODS document mirrors reach, so this config covers a much shorter period than the
 other two. Extracted from `.doc`/`.pdf` originals and segmented on structural markers.
 
 - `record_id`, `symbol`, `year`, `body`, `subject`, `title`, `is_amendment`,
   `adoption_mode`, `adopted`
 - `clause_index`, `clause_label` — e.g. `PP3`, `OP7`, `OP2(a)`, `AX1`
-- `clause_type` — `preambular` 36,695 · `operative` 43,850 · `operative_subitem` 12,738 ·
+- `clause_type` — `preambular` 36,977 · `operative` 44,096 · `operative_subitem` 12,756 ·
   `annex` 2,082 · `other` 3,375
 - `text`, `n_chars`, `n_words`
 

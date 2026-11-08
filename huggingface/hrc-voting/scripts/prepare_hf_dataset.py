@@ -79,6 +79,22 @@ ADOPTION_MODE = {
 }
 
 
+# "One row is …" for each config, as shown in Methodology 13. A config with no entry
+# here fails the build rather than reaching the dashboard undescribed.
+HF_DESC = {
+    "resolutions": "a catalogued resolution, decision or amendment (1946–2026)",
+    "votes": "one state's position on one resolution (1947–2026)",
+    "clauses": "one preambular / operative / annex clause — the Texts corpus, 1993–2026",
+    "countries": "a state that cast at least one roll-call vote in any of the three organs (154 in the CHR/HRC tables)",
+    "subjects": "one OHCHR controlled subject heading",
+    "ga_resolutions": "a GA resolution adopted by recorded vote on a Third Committee text (1970–2025)",
+    "ga_votes": "one state's plenary vote on one GA resolution (1970–2025)",
+    "ga_committee_events": "one recorded vote in the Third Committee — draft, amendment, paragraph or motion (2000–2024)",
+    "ga_committee_votes": "one state's vote in one committee-stage roll-call (2000–2024)",
+    "ga_clauses": "one clause of an Assembly text, same columns as clauses (1993–2025)",
+}
+
+
 def load_payload():
     raw = (ROOT / "dashboard" / "data.js").read_text(encoding="utf-8")
     return json.loads(raw[len("window.DATA = "):].rstrip().rstrip(";"))
@@ -423,6 +439,21 @@ def main():
         pq.write_table(table, path, compression="zstd")
         print(f"  {name:<12} {len(df):>7,} rows  {path.stat().st_size/1024/1024:>6.1f} MB  "
               f"{len(df.columns)} cols")
+
+    # Methodology 13 renders its config table from this file, so the dashboard can never
+    # again list five configs and 154 countries while the package has ten and 200 —
+    # the drift that happened at v1.1.0. One description per config, kept here with
+    # the row counts so a new config cannot reach the Hub without reaching the table.
+    undescribed = [name for name, _ in tables if name not in HF_DESC]
+    if undescribed:
+        raise SystemExit(f"no HF_DESC entry for {undescribed} — add one before shipping, "
+                         "or Methodology 13 lists a config it cannot describe")
+    hf_stats = {"configs": [{"name": name, "rows": len(df), "desc": HF_DESC[name]}
+                            for name, df in tables]}
+    (ROOT / "dashboard" / "hf_stats.js").write_text(
+        "window.HF_STATS = " + json.dumps(hf_stats, ensure_ascii=False) + ";\n",
+        encoding="utf-8")
+    print(f"  dashboard/hf_stats.js: {len(tables)} configs")
 
     stats = {
         "resolutions": len(res_df),
