@@ -3126,8 +3126,22 @@ function fillYears(sel,def){const s=$(sel);let h='';for(let y=M.yearMin;y<=M.yea
   if(pal&&pal!=='paper')setPalette(pal); else renderTopicChips(),renderOverview();
   if(pal&&pal!=='paper')renderTopicChips();
   /* Deep link used by the static country pages: /hrc-voting/#country=POL opens that
-     state's profile (and remembers it, like picking it from the ⌘K palette). */
+     state's profile (and remembers it, like picking it from the ⌘K palette).
+     #res=A/HRC/56/L.39 opens that record's roll-call sheet; a record without a
+     roll-call (e.g. #res=A/HRC/RES/56/5, adopted without a vote) opens its text
+     preview instead. An unknown symbol is ignored. */
+  async function openResDeepLink(raw){
+    let sym;try{sym=decodeURIComponent(raw).trim().toUpperCase();}catch(e){return;}
+    if(!sym)return;
+    const r=RES.find(x=>x.sym&&x.sym.toUpperCase()===sym);
+    if(r){openResolution(r.i);return;}
+    await txInit();if(!TX.cat)return;
+    const di=TX.cat.docs.findIndex(d=>d[0]&&d[0].toUpperCase()===sym);
+    if(di>=0)openTextDoc(di);
+  }
   function applyDeepLink(){
+    const rm=/^#res=(.+)$/.exec(location.hash);
+    if(rm){openResDeepLink(rm[1]);return;}
     const m=/^#country=([A-Za-z]{3})$/.exec(location.hash),iso=m&&m[1].toUpperCase();
     if(!iso||!byIso[iso])return;
     $('c-country').value=iso;cSortKey='year';cSortDir=1;COUNTRY_GUESSED=false;
