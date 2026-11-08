@@ -61,7 +61,7 @@ consensus" (never "unanimously": delegations can dissociate); "rejected" only wh
 ## 3. Methods or data-availability note (fill the brackets)
 
 > Voting data come from HRC Voting v[1.2.0] (Szoszkiewicz 2026; snapshot [28 September 2026]), which harvests the OHCHR Library
-> "Voting" collection for the Commission on Human Rights and the Human Rights Council ([6,392] catalogued records, [1,716] with
+> "Voting" collection for the Commission on Human Rights and the Human Rights Council ([6,406] catalogued records, [1,722] with
 > a per-State roll-call) and, for the General Assembly, the UN Dag Hammarskjöld Library's General Assembly voting data (v5).
 > [Amendments to draft texts were excluded / analysed separately.] An abstention is not counted as a vote against; outcomes follow
 > Yes versus No. The catalogue omits two of the Council's rejected draft texts and 21 amendments in 2020–2024 [relevant if the

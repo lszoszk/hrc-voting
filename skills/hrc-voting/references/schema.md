@@ -1,6 +1,6 @@
 # Data schema (bundled snapshot = data/csv of the repository)
 
-## resolutions.csv — one row per catalogued CHR/HRC record (6,392)
+## resolutions.csv — one row per catalogued CHR/HRC record (6,406)
 `record_id` (stable OHCHR id; `record_url` links to it), `symbol` (e.g. A/HRC/RES/48/1, A/HRC/48/L.59 for an amendment,
 E/CN.4/RES/1999/3), `title` (catalogue boilerplate ": resolution /…" — trim it), `statement`, `date`, `year`,
 `body` (Commission on Human Rights | Human Rights Council), `vote_type`
@@ -10,7 +10,7 @@ E/CN.4/RES/1999/3), `title` (catalogue boilerplate ": resolution /…" — trim 
 `nonvoting` `total` (official totals), `n_rollcall`, `url_resolution`, `url_draft`, `record_url`.
 Amendment test: title contains ": amendment /" or `draft` starts with "Amendment" (749 records).
 
-## votes_long.csv — one row per State per recorded resolution (80,676)
+## votes_long.csv — one row per State per recorded resolution (80,958)
 `record_id`, `symbol`, `date`, `year`, `body`, `vote_type`, `seq`, `iso3`, `country`, `vote`:
 `Y` Yes · `N` No · `A` Abstain · `.` absent or not participating · empty = not a member / no position recorded.
 Only Y, N, A are positions.

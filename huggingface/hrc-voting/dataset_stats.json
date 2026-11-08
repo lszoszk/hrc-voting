@@ -1,7 +1,7 @@
 {
-  "resolutions": 6392,
-  "votes": 80676,
-  "clauses": 98740,
+  "resolutions": 6406,
+  "votes": 80958,
+  "clauses": 99286,
   "countries": 200,
   "subjects": 1035,
   "country_situation_subjects": 307,
@@ -9,15 +9,15 @@
   "year_min": 1946,
   "year_max": 2026,
   "n_voting_states": 154,
-  "with_rollcall": 1716,
+  "with_rollcall": 1722,
   "rollcall_mismatch": 49,
   "amendments": 749,
   "clause_years": [
     1993,
     2026
   ],
-  "clause_docs": 4543,
-  "operative_clauses": 43850,
+  "clause_docs": 4557,
+  "operative_clauses": 44096,
   "ga": {
     "resolutions": 708,
     "votes": 130591,

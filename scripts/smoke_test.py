@@ -259,13 +259,13 @@ ok = (checks["DATA loaded"] and checks["overview tiles"] == 4 and checks["countr
       and checks["group trend series"] >= 4 and "regional groups" in checks["group stance title"]
       and checks["texts offline note (file://)"] and checks["texts FTS results"] > 5 and checks["texts FTS highlights"]
       and checks["language offline note (file://)"] and checks["language trend pts"] > 20 and checks["language ladder rows"] > 40
-      and checks["tour auto-opens"] and checks["tour slides"] == 5 and checks["tour figures"] == "6,392|1,716|80,676" and checks["tour sparkline"]
+      and checks["tour auto-opens"] and checks["tour slides"] == 5 and checks["tour figures"] == "6,406|1,722|80,958" and checks["tour sparkline"]
       and checks["tour minimap"] and checks["tour goto view"] == "country"
       and checks["tour closed + flag"] and checks["tour stays closed on revisit"] and checks["footer reopens tour"]
       and checks["scatter fullscreen"] and checks["scatter fullscreen closes"]
       and checks["hrc line (overview)"] and checks["hrc line (erosion)"]
-      and checks["scope default"] == "res" and "1,251" in checks["ov tile (res)"]
-      and "1,716" in checks["ov tile (all)"] and checks["amd pills (all)"] >= 5
+      and checks["scope default"] == "res" and "1,257" in checks["ov tile (res)"]
+      and "1,722" in checks["ov tile (all)"] and checks["amd pills (all)"] >= 5
       and "breakdowns" in checks["consensus flipnote"] and checks["consensus strip dots"] > 100
       and checks["consensus erosion bars"] > 60 and checks["consensus explorer rows"] > 100
       and checks["consensus WD filter"].startswith("247")

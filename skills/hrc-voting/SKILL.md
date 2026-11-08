@@ -1,6 +1,6 @@
 ---
 name: hrc-voting
-description: Query and analyse UN human-rights voting records — how States voted on resolutions of the Commission on Human Rights (1946–2006) and the Human Rights Council (2006–), plus General Assembly Third Committee plenary votes (1970–). Use this whenever the user asks how a country voted at the HRC/CHR/UNGA Third Committee, which States vote together, voting blocs or alignment, consensus versus recorded votes, amendments at the Council, roll-call counts, or wants a published figure about Council votes checked — even if they never name the dataset. Bundles an offline snapshot (v1.2.0, 28 Sep 2026; 6,392 CHR/HRC records, 80,676 country votes, 708 GA resolutions) and a CLI that applies the dataset's safeguards (amendments vs resolutions, abstention is not "against", catalogue gaps). Part of HRC Voting (https://lszoszk.github.io/hrc-voting/, DOI 10.5281/zenodo.21281232).
+description: Query and analyse UN human-rights voting records — how States voted on resolutions of the Commission on Human Rights (1946–2006) and the Human Rights Council (2006–), plus General Assembly Third Committee plenary votes (1970–). Use this whenever the user asks how a country voted at the HRC/CHR/UNGA Third Committee, which States vote together, voting blocs or alignment, consensus versus recorded votes, amendments at the Council, roll-call counts, or wants a published figure about Council votes checked — even if they never name the dataset. Bundles an offline snapshot (v1.2.0, 28 Sep 2026; 6,406 CHR/HRC records, 80,958 country votes, 708 GA resolutions) and a CLI that applies the dataset's safeguards (amendments vs resolutions, abstention is not "against", catalogue gaps). Part of HRC Voting (https://lszoszk.github.io/hrc-voting/, DOI 10.5281/zenodo.21281232).
 ---
 
 # HRC Voting: how States vote on UN human-rights texts
@@ -15,7 +15,7 @@ skill answers questions from a bundled snapshot, so it works offline; the snapsh
    `python scripts/hrcv.py <command>` (path relative to this skill's folder; Python 3, standard library only).
 2. **State the scope in the answer**: body (CHR, HRC, or GA), years, "recorded votes only", "amendments excluded", and the
    snapshot version/date. The CLI prints this; carry it into your reply. Without it a number can be misread
-   by an order of magnitude (e.g. 1,251 resolutions vs 1,716 roll-call records vs 6,392 catalogued records).
+   by an order of magnitude (e.g. 1,257 resolutions vs 1,722 roll-call records vs 6,406 catalogued records).
 3. **Apply the safeguards below** before interpreting. They exist because each one is a mistake that has already been made
    with this kind of data; `references/pitfalls.md` explains the reasoning.
 4. **Link the source**: resolutions carry an OHCHR record URL; countries have a dashboard deep link

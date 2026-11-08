@@ -12,17 +12,17 @@ complete harvest of the **Voting** collection of the OHCHR Search Library
 (<https://searchlibrary.ohchr.org/search?c=Voting>); the Assembly from the UN Digital
 Library and the Third Committee's own records (see below).
 
-**Coverage: 7,406 records across three organs, 1946–2026.** The CHR/HRC harvest is
-complete against the OHCHR catalogue as of 26 September 2026 — 6,392 records
+**Coverage: 7,420 records across three organs, 1946–2026.** The CHR/HRC harvest is
+complete against the OHCHR catalogue as of 8 November 2026 — 6,406 records
 (resolutions, decisions, presidential statements and 749 amendments to draft texts),
-of which 1,716 went to a roll-call (80,676 individual country votes); the record count
+of which 1,722 went to a roll-call (80,958 individual country votes); the record count
 matches the collection total exactly, verified by three independent harvest methods.
 The catalogue itself omits a few Council texts — two rejected drafts and 21
 amendments in 2020–2024, checked against the session reports (see
 [Data-quality notes](#data-quality-notes-source-not-parsing)). The Assembly is roll-call only: 1,014 Third
 Committee resolutions adopted by recorded vote (130,591 plenary votes, plus 126,080
 committee-stage votes), because no equivalent catalogue of its consensus adoptions
-exists. 2,730 records in total carry a per-country breakdown.
+exists. 2,736 records in total carry a per-country breakdown.
 
 **General Assembly extension (September 2026).** The dashboard's *Bodies* selector
 adds the Assembly's human rights resolutions — the texts that come out of the
@@ -119,10 +119,10 @@ tabs fetch shards over HTTP and stay inert there by design, with a notice).
 `scripts/smoke_test.py` loads the page from `file://` in headless Chromium (light
 + dark), clicks through every tab and key interaction, and fails on any console
 error — run it before sending the prototype onward. Seven tabs plus a Methodology &
-sources page reached from the footer: four over the 2,730 recorded (roll-call) votes,
-an experimental Consensus view over the 6,392 catalogued CHR/HRC records (the
+sources page reached from the footer: four over the 2,736 recorded (roll-call) votes,
+an experimental Consensus view over the 6,406 catalogued CHR/HRC records (the
 Assembly has no consensus catalogue, so that view is scoped out under Assembly-only),
-and two experimental views over the 5,113 harvested resolution **texts** (1993–2026):
+and two experimental views over the 5,127 harvested resolution **texts** (1993–2026):
 
 - **Overview** — volume over time (CHR→HRC), how contested votes were, most divided votes.
 - **Countries** (country profile) — per-state yearly Yes/Abstain/No **composition** chart (100%
@@ -151,14 +151,14 @@ and two experimental views over the 5,113 harvested resolution **texts** (1993�
   P5 + key states, plus computed **30 most agreeing / 30 most disagreeing** states;
   filter by year range. Methods are documented on the Methodology & sources page (footer link).
 - **Consensus** *(experimental)* — reads the mode of adoption as a diplomatic signal
-  across ALL 6,392 catalogued CHR/HRC records (`resAll` in the payload, trimmed titles):
+  across ALL 6,406 catalogued CHR/HRC records (`resAll` in the payload, trimmed titles):
   **breakdowns & rapprochements** (subjects whose mode flipped consensus↔votes — the
   hero panel, e.g. HIV/AIDS 94%→0%), consensus share per year (peak 86%, HRC low 69%
   in 2021; amendments excluded, as in the default Scope), a 100% adoption-mode stack, most/least consensual subjects, a withdrawn-
   drafts panel (a post-2010 phenomenon), and a filterable explorer of the full
   catalogue. Modes, thresholds and caveats (without-a-vote ≠ unanimity; small-n flips
   are candidates, not findings) documented in Methodology.
-- **Texts** *(experimental)* — clause-level full-text search over the **5,113 harvested
+- **Texts** *(experimental)* — clause-level full-text search over the **5,127 harvested
   resolution texts (1993–2026)**, the earliest the OHCHR/ODS document mirrors reach.
   Results are shown clause by clause with preambular / operative labels; AND / OR /
   `"exact phrase"` / `prefix*` / `-exclude`, plural folding, relevance or date sort.
@@ -179,7 +179,7 @@ and two experimental views over the 5,113 harvested resolution **texts** (1993�
   Annex VI–VII, in addition to the JG-1/02/10 glossary; caveats in `tag_terms.py` and
   Methodology.
 - **Methodology & sources** (footer link) — explains, with live numbers pulled from
-  `meta.coverage`, why the vote-based views operate on 2,730 records rather than the
+  `meta.coverage`, why the vote-based views operate on 2,736 records rather than the
   whole catalogue (only recorded/roll-call votes carry a per-country breakdown), the
   vote-code legend, how
   topics are identified, every alignment/consensus/language measure defined, and the
@@ -245,7 +245,7 @@ One row per country per resolution. `record_id` joins to `resolutions.csv`.
 | `.` | Absent / did not participate | 701 |
 | `` (empty) | Not a Council member at the time / no position recorded | 643 |
 
-Only 1,716 of the CHR/HRC resolutions (RECORDED votes) carry a per-country roll-call;
+Only 1,722 of the CHR/HRC resolutions (RECORDED votes) carry a per-country roll-call;
 the rest were adopted without a vote or only totals were published (totals are still in
 `resolutions.csv`). The Assembly's votes live in `ga_votes_long.csv` and
 `ga_committee_votes.csv`.
@@ -269,7 +269,7 @@ the rest were adopted without a vote or only totals were published (totals are s
   nothing about its membership, so the Country profile draws no marker there.
 - One roll-call row (rec 24737, `E/CN.4/RES/6(XX)`) has a malformed 967 with no
   country and is dropped from the dashboard payload — hence 80,675 country-votes in
-  the app against 80,676 rows in `votes_long.csv`.
+  the app against 80,958 rows in `votes_long.csv`.
 - **The OHCHR catalogue omits some Council texts.** Checked against the session
   reports (`A/HRC/<session>/2`) for sessions 43–59 (2020–2025), symbols and outcomes
   agree except that the catalogue lacks two of the Council's three rejected drafts
