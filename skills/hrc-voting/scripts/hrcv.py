@@ -421,8 +421,8 @@ def cmd_selftest(d, a):
     def eq(label, got, want):
         if got != want:
             fails.append(f"{label}: got {got!r}, want {want!r}")
-    eq("catalogue records", len(d.res), 6392)
-    eq("records with roll-call", sum(1 for rid in d.res if rid in d.cast), 1716)
+    eq("catalogue records", len(d.res), 6406)
+    eq("records with roll-call", sum(1 for rid in d.res if rid in d.cast), 1722)
     eq("amendments", sum(r["am"] for r in d.res.values()), 749)
     r48 = next(r for r in d.res.values() if r["symbol"] == "A/HRC/RES/48/1")
     eq("A/HRC/RES/48/1 tally", dict(Counter(d.cast[r48["record_id"]].values())), {"Y": 28, "N": 5, "A": 14})

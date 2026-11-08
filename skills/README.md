@@ -51,7 +51,7 @@ python scripts/check_figures.py               # fails if the snapshot or the fig
 python scripts/package_skills.py --out dist   # what the Pages workflow publishes under /hrc-voting/skills/
 ```
 
-The `selftest` golden values (6,392 records, 1,716 roll-calls, A/HRC/RES/48/1 = 28–5–14, Poland's 560 votes…) belong to v1.2.0; update them
+The `selftest` golden values (6,406 records, 1,722 roll-calls, A/HRC/RES/48/1 = 28–5–14, Poland's 560 votes…) belong to v1.2.0; update them
 with the snapshot at each release.
 
 Licence: PolyForm Noncommercial 1.0.0, like the rest of the repository. The data are public UN records; HRC Voting is independent of
