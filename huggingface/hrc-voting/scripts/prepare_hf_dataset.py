@@ -146,6 +146,14 @@ def build_resolutions(res_rows, tally):
             "url_resolution": r["url_resolution"] or None,
             "url_draft": r["url_draft"] or None,
             "record_url": r["record_url"] or None,
+            # amendments keep their own L. symbol: the draft they amended and the final
+            # text that draft became (parse_marcxml.link_amendments)
+            "amends_draft": r.get("amends_draft") or None,
+            "final_symbol": r.get("final_symbol") or None,
+            # Council dates come from OHCHR's session pages where they exist; the
+            # catalogue sometimes gives the draft's date (parse_marcxml.apply_adoption_dates)
+            "catalogue_date": r.get("catalogue_date") or None,
+            "date_source": r.get("date_source") or None,
         })
     return pd.DataFrame(rows)
 
