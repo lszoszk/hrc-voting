@@ -7,7 +7,10 @@ E/CN.4/RES/1999/3), `title` (catalogue boilerplate ": resolution /…" — trim 
 (ADOPTED WITHOUT VOTE · RECORDED · NON-RECORDED · NON-RECORDED, adopted unanimously · WITHDRAWN · NOT CONSIDERED · …),
 `agenda_subject` (OHCHR's controlled subject heading), `agenda_item_title`, `main_sponsors`, `draft` (for amendments:
 "Amendment A/HRC/48/L.59 to draft resolution A/HRC/48/L.8 ADOPTED by a recorded vote"), `yes` `no` `abstain`
-`nonvoting` `total` (official totals), `n_rollcall`, `url_resolution`, `url_draft`, `record_url`.
+`nonvoting` `total` (official totals), `n_rollcall`, `url_resolution`, `url_draft`, `record_url`,
+`amends_draft` and `final_symbol` (amendments only: the draft amended and the A/HRC/RES, DEC or PRST it became),
+`catalogue_date` and `date_source` (Council dates come from OHCHR's session pages where they exist; the catalogue
+sometimes gives the draft's date).
 Amendment test: title contains ": amendment /" or `draft` starts with "Amendment" (749 records).
 
 ## votes_long.csv — one row per State per recorded resolution (80,958)

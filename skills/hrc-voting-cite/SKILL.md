@@ -49,7 +49,11 @@ OSCOLA-style examples (check against your style guide; the symbols are the stabl
 - Commission on Human Rights: UNCHR Res 2005/80 (21 April 2005) UN Doc E/CN.4/RES/2005/80.
 - General Assembly: UNGA Res 2647 (XXV) (30 November 1970) UN Doc A/RES/2647(XXV).
 - An amendment is not a resolution: cite its L-document and the draft it amends, e.g. "Amendment A/HRC/48/L.59 to draft resolution
-  A/HRC/48/L.8 (adopted by 16 votes to 13, with 16 abstentions)" and do not describe it as a resolution.
+  A/HRC/48/L.8 (adopted by 16 votes to 13, with 16 abstentions)" and do not describe it as a resolution. An amendment keeps its
+  L. symbol for good; to point the reader to the final text, add the resolution the draft became (`final_symbol` in
+  resolutions.csv, shown by `hrcv.py resolution <symbol>`), e.g. "…, the draft adopted as resolution 48/x".
+- A resolution is cited by its final symbol (A/HRC/RES/<session>/<number>), never by its draft L. symbol: an L. document is
+  the text as tabled, which can still change at adoption or in editing.
 
 Source line for the tally: "Votes as recorded in the OHCHR Library voting records, <record_url from the data>, accessed [date]."
 For General Assembly votes: "United Nations Dag Hammarskjöld Library, General Assembly Voting Data, version 5 (February 2026),

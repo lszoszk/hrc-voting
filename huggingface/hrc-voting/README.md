@@ -187,7 +187,10 @@ which exist for many resolutions that have no per-country breakdown.
 
 - `record_id` — stable Invenio id (MARC 001); join key
 - `symbol` — e.g. `A/HRC/RES/61/29`, `E/CN.4/RES/2005/1`
-- `title`, `date`, `year`, `body` — `CHR` or `HRC`
+- `title`, `date`, `year`, `body` — `CHR` or `HRC`. For the Council, `date` is the adoption
+  date from OHCHR's session pages where they give one (sessions 12–63); the catalogue
+  sometimes gives the draft's date instead, kept in `catalogue_date`; `date_source` says which
+  (`OHCHR session page`, `OHCHR session page (same meeting)`, `catalogue`)
 - `vote_type` — raw catalogue value (MARC 591); `adoption_mode` — readable form
 - `is_amendment` — an amendment to a draft text, detected from two agreeing catalogue
   signals (a `: amendment /` title marker and the MARC 993 draft note)
@@ -204,6 +207,10 @@ which exist for many resolutions that have no per-country breakdown.
   territory rather than a theme; null only where the record carries no subject (219
   rows). See the `subjects` config for how this is derived
 - `url_resolution`, `url_draft`, `record_url`
+- `amends_draft`, `final_symbol` — amendments only. An amendment keeps its own L. symbol (it
+  is never re-issued as a resolution); these name the draft it was tabled to and the final
+  A/HRC/RES, DEC or PRST that draft became (745 of 749; null when the draft was not adopted).
+  Cite a resolution by its final symbol, never by its draft L. symbol
 
 Adoption modes: adopted without a vote 3,860 · recorded vote 1,724 · non-recorded vote
 371 · withdrawn 247 · non-recorded unanimous 142 · not considered 32 · non-recorded no

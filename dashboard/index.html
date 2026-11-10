@@ -876,11 +876,13 @@ body.touring .ga-consent{display:none}
         <div class="tile"><div class="tk">Roll-call vs. totals mismatch</div><div class="tv" id="m-mismatch">…<small class="tvs" id="m-mismatch-pct"></small></div></div>
       </div>
       <div class="p-desc m0">For <span id="m-mm-inline">~3%</span> of recorded votes the sum of individual Yes/No/Abstain positions doesn't exactly match the resolution's official totals, almost always by a small margin in the Abstain / non-participation count. Official totals are treated as authoritative; the per-country breakdown is shown alongside rather than forced to reconcile. One lowercase vote-code typo was normalised during parsing; nothing else is altered.</div>
-      <div class="p-desc m0" style="margin-top:12px"><b>Gaps in the source catalogue.</b> "Complete" means complete against the OHCHR catalogue as harvested on 26 September 2026 — not against everything the Council decided. The Council's amendments and rejected texts for sessions 43–59 (2020–2025) were checked against its official session reports (<code class="cd">A/HRC/&lt;session&gt;/2</code>): symbols and outcomes agree, except for the items below, which the catalogue does not hold and this dataset therefore lacks.
+      <div class="p-desc m0" style="margin-top:12px"><b>Gaps in the source catalogue.</b> "Complete" means complete against the OHCHR catalogue as harvested on 8 November 2026 — not against everything the Council decided. The Council's amendments and rejected texts for sessions 43–59 (2020–2025) were checked against its official session reports (<code class="cd">A/HRC/&lt;session&gt;/2</code>): symbols and outcomes agree, except for the items below, which the catalogue does not hold and this dataset therefore lacks.
         <br>• <b>Two of the Council's three rejected draft texts</b> — <a href="https://undocs.org/A/HRC/48/L.11" target="_blank" rel="noopener">A/HRC/48/L.11</a> (Yemen; rejected 18–21, 7 abstentions) and draft decision <a href="https://undocs.org/A/HRC/51/L.6" target="_blank" rel="noopener">A/HRC/51/L.6</a> (debate on the Xinjiang Uyghur Autonomous Region; rejected 17–19, 11 abstentions); see <a href="https://undocs.org/A/HRC/48/2" target="_blank" rel="noopener">A/HRC/48/2</a> and <a href="https://undocs.org/A/HRC/51/2" target="_blank" rel="noopener">A/HRC/51/2</a>. The third, A/HRC/59/L.1/Rev.1, is catalogued.
         <br>• <b>21 amendments</b> — A/HRC/48/L.49–L.57, to draft resolution L.21/Rev.1 (seven rejected by recorded vote, L.49 and L.51 withdrawn; <a href="https://undocs.org/A/HRC/48/2" target="_blank" rel="noopener">A/HRC/48/2</a>); A/HRC/49/L.43 (rejected; <a href="https://undocs.org/A/HRC/49/2" target="_blank" rel="noopener">A/HRC/49/2</a>); and eleven from the 56th session — L.43 (rejected), L.27, L.50 and L.52–L.56 (withdrawn), L.28 (not considered, no Council member co-sponsored it), L.37 and L.38 (to L.4; the report records no action on them) (<a href="https://undocs.org/A/HRC/56/2" target="_blank" rel="noopener">A/HRC/56/2</a>).
         <br>• <b>Catalogue oddities, kept as published</b> — A/HRC/53/L.47 (withdrawn) is catalogued but not mentioned in A/HRC/53/2; the draft note of A/HRC/48/L.65 names it L.64.
         <br>• <b>No-action motions</b> — the catalogued votes on A/HRC/26/L.37 (2014) and A/HRC/29/L.37 (2015) are votes on a motion that no action be taken on the amendment: <i>Yes</i> there means in favour of taking no action. Other procedural votes are not catalogued.
+        <br>• <b>Symbols: amendments keep their L. number</b> — adopted texts are listed under their final symbol (A/HRC/RES, DEC, PRST). The L. symbols you see are amendments, which are never re-issued under another symbol, and rejected or withdrawn drafts. Each amendment now names the draft it was tabled to and the resolution that draft became (745 of 749; the label reads <i>AMD → RES 62/13</i>). Where the catalogue's note names a draft on another subject, the link is made by title within the session (13 cases).
+        <br>• <b>Adoption dates</b> — the catalogue sometimes dates a Council text by its draft rather than its adoption (A/HRC/RES/63/2: catalogued 24 September 2026, adopted 5 October 2026). Council dates now come from OHCHR's session pages where they exist (sessions 12–63), and texts voted at the same meeting take that meeting's date: 218 dates moved, all by two weeks or less. A record whose date changed shows the catalogue's date beside it.
         <br>• <b>Recent sessions</b> reach the catalogue some weeks after they close, so the newest session may be missing or incomplete until the next harvest.</div>
     </div>
   </div>
@@ -1015,7 +1017,7 @@ body.touring .ga-consent{display:none}
     <button class="rc-close" id="rc-close" type="button" aria-label="Close">✕</button>
     <div class="rc-head" id="rc-head"></div>
     <div class="rc-body">
-      <div class="p-desc" id="rc-votedesc" style="margin:0 0 6px">How each state voted on this resolution — <span class="li"><i class="sw swyes"></i>Yes</span> <span class="li"><i class="sw swab"></i>Abstain</span> <span class="li"><i class="sw swno"></i>No</span> <span class="li"><i class="sw swabs"></i>absent / not a member</span>. Hover the map for a state.</div>
+      <div class="p-desc" id="rc-votedesc" style="margin:0 0 6px">How each state voted on this <span id="rc-kind">resolution</span> — <span class="li"><i class="sw swyes"></i>Yes</span> <span class="li"><i class="sw swab"></i>Abstain</span> <span class="li"><i class="sw swno"></i>No</span> <span class="li"><i class="sw swabs"></i>absent / not a member</span>. Hover the map for a state.</div>
       <div id="rc-map"></div>
       <div class="rc-lists" id="rc-lists"></div>
       <div id="rc-text"></div>
@@ -1678,7 +1680,7 @@ function renderOverview(){
     rows:buckets.map((b,i)=>[b[0],counts[i],Math.round(counts[i]/tot*100)])};
   const closeRows=RS.filter(r=>r.y!=null&&r.n!=null&&(r.y+r.n)>10)
     .map(r=>({r,m:Math.abs(r.y-r.n)})).sort((a,b)=>a.m-b.m).slice(0,12).map(x=>x.r);
-  $('ov-close').innerHTML=closeRows.map(r=>`<div class="gtr cols5s"><span class="gtc">${r.year==null?'—':r.year}</span><span class="gtc rescell" title="${esc(r.title)}"><a class="reslink" role="button" tabindex="0" data-ri="${r.i}" title="View roll-call">${esc(r.sym||r.title.slice(0,40))}</a>${r.am?'<span class="pill pX" style="margin-left:5px;font-size:8px;padding:0 4px;flex:0 0 auto" title="Amendment to a draft text">AMD</span>':''}<a class="srclink" href="${recUrl(r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(r.sym||'record')} on OHCHR (new tab)" title="OHCHR source ↗"><span aria-hidden="true">↗</span></a></span><span class="gtc mut" title="${esc(r.title)}">${r.subj?esc(tc(r.subj)):'—'}</span><span class="gtc num">${r.y}</span><span class="gtc num">${r.n}</span><span class="gtc num">${r.a==null?'—':r.a}</span></div>`).join('');
+  $('ov-close').innerHTML=closeRows.map(r=>`<div class="gtr cols5s"><span class="gtc">${r.year==null?'—':r.year}</span><span class="gtc rescell" title="${esc(r.title)}"><a class="reslink" role="button" tabindex="0" data-ri="${r.i}" title="View roll-call">${esc(r.sym||r.title.slice(0,40))}</a>${amdPill(r)}<a class="srclink" href="${recUrl(r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(r.sym||'record')} on OHCHR (new tab)" title="OHCHR source ↗"><span aria-hidden="true">↗</span></a></span><span class="gtc mut" title="${esc(r.title)}">${r.subj?esc(tc(r.subj)):'—'}</span><span class="gtc num">${r.y}</span><span class="gtc num">${r.n}</span><span class="gtc num">${r.a==null?'—':r.a}</span></div>`).join('');
   CSVDATA.ovclose={name:'most-divided-votes',title:'Most divided recorded votes (narrowest Yes−No margin)',headers:['year','resolution','subject','title','yes','no','abstain','record_url'],
     rows:closeRows.map(r=>[r.year,r.sym,r.subj,r.title,r.y,r.n,r.a,recUrl(r.id)])};
 }
@@ -1774,7 +1776,7 @@ function renderCountry(){
     else if(cSortKey==='subj'){va=a.r.subj||'';vb=b.r.subj||'';}
     else{va=a.r.sym||'';vb=b.r.sym||'';}
     return (va>vb?1:va<vb?-1:0)*cSortDir;});
-  $('c-rows').innerHTML=sorted.map(x=>`<div class="gtr colsc2"><span class="gtc">${x.r.year==null?'—':x.r.year}</span><span class="gtc rescell" title="${esc(x.r.title)}"><a class="reslink" role="button" tabindex="0" data-ri="${x.r.i}" title="View roll-call">${esc(x.r.sym||x.r.title.slice(0,50))}</a>${x.r.am?'<span class="pill pX" style="margin-left:5px;font-size:8px;padding:0 4px;flex:0 0 auto" title="Amendment to a draft text">AMD</span>':''}<a class="srclink" href="${recUrl(x.r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(x.r.sym||'record')} on OHCHR (new tab)" title="OHCHR source ↗"><span aria-hidden="true">↗</span></a></span><span class="gtc mut" title="${esc(x.r.title)}">${x.r.subj?esc(tc(x.r.subj)):'—'}</span><span class="gtc"><span class="pill ${cls[x.code]||'pX'}">${lbl[x.code]||x.code||'—'}</span></span><span class="gtc">${x.r.body}</span></div>`).join('');
+  $('c-rows').innerHTML=sorted.map(x=>`<div class="gtr colsc2"><span class="gtc">${x.r.year==null?'—':x.r.year}</span><span class="gtc rescell" title="${esc(x.r.title)}"><a class="reslink" role="button" tabindex="0" data-ri="${x.r.i}" title="View roll-call">${esc(x.r.sym||x.r.title.slice(0,50))}</a>${amdPill(x.r)}<a class="srclink" href="${recUrl(x.r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(x.r.sym||'record')} on OHCHR (new tab)" title="OHCHR source ↗"><span aria-hidden="true">↗</span></a></span><span class="gtc mut" title="${esc(x.r.title)}">${x.r.subj?esc(tc(x.r.subj)):'—'}</span><span class="gtc"><span class="pill ${cls[x.code]||'pX'}">${lbl[x.code]||x.code||'—'}</span></span><span class="gtc">${x.r.body}</span></div>`).join('');
   CSVDATA.crows={name:'country-'+iso+'-votes',title:c.name+' — every recorded vote '+cwin,headers:['year','resolution','subject','title','vote','body','record_url'],
     rows:sorted.map(x=>[x.r.year,x.r.sym,x.r.subj,x.r.title,lbl[x.code]||x.code,x.r.body,recUrl(x.r.id)])};
 }
@@ -1971,7 +1973,7 @@ function renderTopics(){
   /* resolutions table */
   $('t-restitle').textContent='('+matched.length+') — '+heading;
   const tres=matched.map(i=>RES[i]).sort((a,b)=>(b.year||0)-(a.year||0));
-  $('t-rows').innerHTML=tres.map(r=>`<div class="gtr cols6s"><span class="gtc">${r.year==null?'—':r.year}</span><span class="gtc rescell" title="${esc(r.title)}"><a class="reslink" role="button" tabindex="0" data-ri="${r.i}" title="View roll-call">${esc(r.sym||r.title.slice(0,44))}</a>${r.am?'<span class="pill pX" style="margin-left:5px;font-size:8px;padding:0 4px;flex:0 0 auto" title="Amendment to a draft text">AMD</span>':''}<a class="srclink" href="${recUrl(r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(r.sym||'record')} on OHCHR (new tab)" title="OHCHR source ↗"><span aria-hidden="true">↗</span></a></span><span class="gtc mut" title="${esc(r.title)}">${r.subj?esc(tc(r.subj)):'—'}</span><span class="gtc num">${r.y==null?'—':r.y}</span><span class="gtc num">${r.n==null?'—':r.n}</span><span class="gtc num">${r.a==null?'—':r.a}</span><span class="gtc">${r.body}</span></div>`).join('');
+  $('t-rows').innerHTML=tres.map(r=>`<div class="gtr cols6s"><span class="gtc">${r.year==null?'—':r.year}</span><span class="gtc rescell" title="${esc(r.title)}"><a class="reslink" role="button" tabindex="0" data-ri="${r.i}" title="View roll-call">${esc(r.sym||r.title.slice(0,44))}</a>${amdPill(r)}<a class="srclink" href="${recUrl(r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(r.sym||'record')} on OHCHR (new tab)" title="OHCHR source ↗"><span aria-hidden="true">↗</span></a></span><span class="gtc mut" title="${esc(r.title)}">${r.subj?esc(tc(r.subj)):'—'}</span><span class="gtc num">${r.y==null?'—':r.y}</span><span class="gtc num">${r.n==null?'—':r.n}</span><span class="gtc num">${r.a==null?'—':r.a}</span><span class="gtc">${r.body}</span></div>`).join('');
   CSVDATA.trows={name:'topic-'+slug+'-resolutions',title:heading+' — resolutions '+twin,headers:['year','resolution','subject','title','yes','no','abstain','body','record_url'],
     rows:tres.map(r=>[r.year,r.sym,r.subj,r.title,r.y,r.n,r.a,r.body,recUrl(r.id)])};
   /* stance (individual states or UN regional groups) */
@@ -2300,8 +2302,8 @@ function renderCNExplorer(){
   $('cn-rows').innerHTML=shown.map(r=>{
     const canOpen=(r.vt==='V'||r.vt==='VC')&&byIdRES[r.id]!=null;
     const symCell=canOpen
-      ?`<span class="gtc rescell" title="${esc(r.t)}"><a class="reslink" role="button" tabindex="0" data-ri="${byIdRES[r.id]}" title="View roll-call">${esc(r.sym||'—')}</a>${r.am?'<span class="pill pX" style="margin-left:5px;font-size:8px;padding:0 4px;flex:0 0 auto" title="Amendment to a draft text">AMD</span>':''}<a class="srclink" href="${recUrl(r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(r.sym||'record')} on OHCHR (new tab)"><span aria-hidden="true">↗</span></a></span>`
-      :`<span class="gtc rescell" title="${esc(r.t)}"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.sym||'—')}</span>${r.am?'<span class="pill pX" style="margin-left:5px;font-size:8px;padding:0 4px;flex:0 0 auto" title="Amendment to a draft text">AMD</span>':''}<a class="srclink" href="${recUrl(r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(r.sym||'record')} on OHCHR (new tab)"><span aria-hidden="true">↗</span></a></span>`;
+      ?`<span class="gtc rescell" title="${esc(r.t)}"><a class="reslink" role="button" tabindex="0" data-ri="${byIdRES[r.id]}" title="View roll-call">${esc(r.sym||'—')}</a>${amdPill(r)}<a class="srclink" href="${recUrl(r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(r.sym||'record')} on OHCHR (new tab)"><span aria-hidden="true">↗</span></a></span>`
+      :`<span class="gtc rescell" title="${esc(r.t)}"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.sym||'—')}</span>${amdPill(r)}<a class="srclink" href="${recUrl(r.id)}" target="_blank" rel="noopener" aria-label="Open ${esc(r.sym||'record')} on OHCHR (new tab)"><span aria-hidden="true">↗</span></a></span>`;
     return `<div class="gtr colsc2"><span class="gtc">${r.year==null?'—':r.year}</span>${symCell}<span class="gtc mut" title="${esc(r.t)}">${r.subj?esc(tc(r.subj)):esc(r.t.slice(0,60))}</span><span class="gtc">${pill(r.vt)}</span><span class="gtc">${r.body}</span></div>`;}).join('');
   const scopedN=RA.filter(kindOK).length;
   let hint=rows.length>CAP?' · showing first '+CAP+' — narrow the filters or download the CSV':'';
@@ -2819,6 +2821,19 @@ function relatedBlock(r){
     rows.map(x=>'<a class="reslink" role="button" tabindex="0" data-ri="'+x.i+'" title="'+esc(x.title||'')+'">'+esc(x.sym)+'</a> '+(x.year||'')+
       (x.y!=null?' <span class="mut">('+x.y+'–'+x.n+'–'+x.a+')</span>':'')).join(' · ')+'</div>';
 }
+/* An HRC amendment keeps its own L. symbol for good (it is never re-issued as a resolution),
+   so wherever one is listed say which draft it amended and what that draft became. */
+function shortSym(s){return (s||'').replace(/^A\/HRC\/(RES|DEC|PRST)\//,'$1 ');}
+function amdTip(r){if(!r||!r.am||r.ck)return 'Amendment to a draft text';
+  return 'Amendment'+(r.ad?' to draft '+r.ad:' to a draft text')+(r.fin?'; the draft was adopted as '+r.fin:(r.ad?'; that draft was not adopted':''));}
+function amdPill(r){if(!r||!r.am)return '';
+  return '<span class="pill pX" style="margin-left:5px;font-size:8px;padding:0 4px;flex:0 0 auto" title="'+esc(amdTip(r))+'">AMD'+(r.fin?' → '+esc(shortSym(r.fin)):'')+'</span>';}
+function amdBlock(r){if(!r||!r.am||r.ck||r.body==='GA'||!(r.ad||r.fin))return '';
+  const und=s=>'<a href="https://undocs.org/'+esc(s)+'" target="_blank" rel="noopener">'+esc(s)+' ↗</a>';
+  const fin=r.fin?(r.finI!=null?'<a class="reslink" role="button" tabindex="0" style="display:inline" data-ri="'+r.finI+'" title="View its roll-call">'+esc(r.fin)+'</a> (<a href="https://undocs.org/'+esc(r.fin)+'" target="_blank" rel="noopener">text ↗</a>)':und(r.fin)):'';
+  return '<div class="rc-meta" style="margin-top:6px"><span class="mut">This is an amendment, not a resolution:</span> it was tabled'+
+    (r.ad?' to draft '+und(r.ad):'')+(r.fin?'; that draft was adopted as '+fin+'.':(r.ad?'; that draft was not adopted.':'.'))+
+    ' Cite the amendment by its own symbol, '+esc(r.sym)+'.</div>';}
 function openResolution(ri){
   const r=RES[ri];if(!r)return;
   const bk={Y:[],A:[],N:[],o:[]},byVote={};
@@ -2826,18 +2841,18 @@ function openResolution(ri){
     (bk[code==='Y'?'Y':code==='A'?'A':code==='N'?'N':'o']).push(c);});
   const links=['<a href="'+recUrl(r.id)+'" target="_blank" rel="noopener">'+(r.ck?'Summary record':r.body==='GA'?'UN Digital Library record':'OHCHR record')+' ↗</a>'];
   if(r.urlR)links.push('<a href="'+esc(r.urlR)+'" target="_blank" rel="noopener">Resolution ↗</a>');
-  if(r.urlD)links.push('<a href="'+esc(r.urlD)+'" target="_blank" rel="noopener">Draft ↗</a>');
+  if(r.urlD){const ds=(r.urlD.match(/(A\/[^?#]+)$/)||[])[1];links.push('<a href="'+esc(r.urlD)+'" target="_blank" rel="noopener">Draft'+(ds?' '+esc(ds):'')+' ↗</a>');}
   const bodyName=r.body==='HRC'?'Human Rights Council':r.body==='GA'?'General Assembly · Third Committee':'Commission on Human Rights';
   $('rc-head').innerHTML=
-    '<div class="rc-sym">'+esc(r.sym||'')+(r.am?' <span class="pill pX" style="font-size:8px;padding:0 5px;vertical-align:middle" title="'+(r.ck?'Third Committee stage vote':'Amendment to a draft text')+'">'+(CK_LABEL[r.ck]||'AMENDMENT')+'</span>':'')+'</div>'+
+    '<div class="rc-sym">'+esc(r.sym||'')+(r.am?' <span class="pill pX" style="font-size:8px;padding:0 5px;vertical-align:middle" title="'+(r.ck?'Third Committee stage vote':esc(amdTip(r)))+'">'+(CK_LABEL[r.ck]||'AMENDMENT')+'</span>':'')+'</div>'+
     '<div class="rc-title">'+esc(r.title||'')+'</div>'+
-    '<div class="rc-meta">'+bodyName+(r.date?' · '+fmtDate(r.date):(r.year?' · '+r.year:''))+(r.item?' · '+esc(r.item):'')+
+    '<div class="rc-meta">'+bodyName+(r.date?' · '+fmtDate(r.date)+(r.cd?' <span class="mut" title="Adoption date from OHCHR\'s session page; the OHCHR catalogue record gives the date of the draft">(catalogue: '+fmtDate(r.cd)+')</span>':''):(r.year?' · '+r.year:''))+(r.item?' · '+esc(r.item):'')+
       (r.spon?'<br>Main sponsors: '+esc(r.spon):'')+(r.mtg?(r.spon?' · ':'<br>')+esc(r.mtg):'')+'</div>'+
     '<div class="rc-tot"><span class="mut">Official result:</span> <span class="pill pY">Yes '+(r.y==null?bk.Y.length:r.y)+'</span>'+
       '<span class="pill pN">No '+(r.n==null?bk.N.length:r.n)+'</span>'+
       '<span class="pill pA">Abstain '+(r.a==null?bk.A.length:r.a)+'</span>'+
       '<span class="mut">· '+links.join(' · ')+'</span></div>'+
-    committeeBlock(r,ri)+relatedBlock(r)+
+    amdBlock(r)+committeeBlock(r,ri)+relatedBlock(r)+
     (((r.y!=null&&r.y!==bk.Y.length)||(r.n!=null&&r.n!==bk.N.length)||(r.a!=null&&r.a!==bk.A.length))
       ?'<div class="rc-meta" style="margin-top:6px;color:var(--dimmer)">⚠ The per-country roll-call below and the official totals differ for this record — a known cataloguing quirk in older/edge records (see Methodology).</div>':'');
   VRC.rollcallMap($('rc-map'),{voteByIso:byVote,names:Object.fromEntries(C.map(c=>[c.iso3,c.name]))});
@@ -2847,6 +2862,7 @@ function openResolution(ri){
       '</div></div>';};
   $('rc-lists').innerHTML=col('Yes',bk.Y)+col('Abstain',bk.A)+col('No',bk.N)+(bk.o.length?col('Absent / non-member',bk.o):'');
   ['rc-votedesc','rc-map','rc-lists'].forEach(id=>$(id).style.display='');
+  $('rc-kind').textContent=r.ck?(CK_LABEL[r.ck]||'text').toLowerCase():r.am?'amendment':'resolution';
   rcText(r.id);
   $('rc-box').scrollTop=0;$('rc-wrap').classList.add('open');
 }

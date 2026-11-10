@@ -359,6 +359,10 @@ def main():
         }
         if is_amendment(r):
             row["am"] = 1
+            if r.get("amends_draft"):
+                row["ad"] = r["amends_draft"]
+            if r.get("final_symbol"):
+                row["fin"] = r["final_symbol"]
         if r["yes"].isdigit() and (int(r["yes"]) + int(r["no"]) + int(r["abstain"])) > 0:
             row["y"], row["n"], row["a"] = int(r["yes"]), int(r["no"]), int(r["abstain"])
         res_all.append(row)
@@ -366,7 +370,8 @@ def main():
     res = [{
         "id": r["record_id"], "sym": r["symbol"], "title": r["title"],
         "year": int(r["year"]) if r["year"].isdigit() else None,
-        "date": r["date"].strip(),                    # 269$a raw YYYYMMDD (may be partial)
+        "date": r["date"].strip(),                    # HRC: adoption date from OHCHR's session page where it has one, else 269$a
+        **({"cd": r["catalogue_date"]} if r.get("catalogue_date") and r["catalogue_date"] != r["date"] else {}),
         "body": body_code(r),
         "subj": r["agenda_subject"].strip(),          # 991$d controlled subject tag
         "item": clean_item(r["agenda_item_title"]),   # 991$c formal agenda item
@@ -378,6 +383,10 @@ def main():
         "n": int(r["no"]) if r["no"].isdigit() else None,
         "a": int(r["abstain"]) if r["abstain"].isdigit() else None,
         **({"am": 1} if is_amendment(r) else {}),
+        # HRC amendment -> the draft it amended and the final text that draft became
+        # (parse_marcxml.link_amendments); an amendment never gets a RES symbol itself
+        **({"ad": r["amends_draft"]} if r.get("amends_draft") else {}),
+        **({"fin": r["final_symbol"]} if r.get("final_symbol") else {}),
         **({"c": {"y": int(ga_committee[r["record_id"]]["event"]["n_yes"]),
                   "n": int(ga_committee[r["record_id"]]["event"]["n_no"]),
                   "a": int(ga_committee[r["record_id"]]["event"]["n_abstain"]),
@@ -390,6 +399,10 @@ def main():
         **({"ck": r["ck"]} if r.get("ck") else {}),                 # committee-stage record: amendment / paragraph / motion / draft
     } for r in recorded]
     rec_index = {r["record_id"]: i for i, r in enumerate(recorded)}
+    sym_index = {r["symbol"]: i for i, r in enumerate(recorded)}
+    for row in res:
+        if row.get("fin") in sym_index:
+            row["finI"] = sym_index[row["fin"]]                      # the final text was itself a recorded vote
     for i, r in enumerate(recorded):
         if r.get("parent_id") in rec_index:
             res[i]["par"] = rec_index[r["parent_id"]]                # the resolution the committee vote belongs to

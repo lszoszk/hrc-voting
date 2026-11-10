@@ -216,7 +216,7 @@ python scripts/parse_marcxml.py  # writes data/csv/*.csv
 | `record_id` | MARC 001 | stable Invenio id; `record_url` links to the page |
 | `symbol` | 791$a | e.g. `A/HRC/RES/61/29`, `E/CN.4/RES/2005/1` |
 | `title`, `statement` | 245$a$b, 245$c | |
-| `date`, `year` | 269$a → ISO | falls back to 992$a |
+| `date`, `year` | 269$a → ISO | falls back to 992$a; for the Council, replaced by the adoption date from OHCHR's session pages where they give one (see `date_source`) |
 | `body` | 981$a | Commission on Human Rights / Human Rights Council |
 | `vote_type` | 591$a | RECORDED · ADOPTED WITHOUT VOTE · NON-RECORDED · WITHDRAWN · NOT CONSIDERED … |
 | `meeting`, `meeting_type` | 952$a, 793$v | |
@@ -225,6 +225,8 @@ python scripts/parse_marcxml.py  # writes data/csv/*.csv
 | `yes`,`no`,`abstain`,`nonvoting`,`total` | 996$b/$c/$d/$e/$f | **official** vote totals |
 | `n_rollcall` | count of 967 | number of per-country rows in `votes_long` |
 | `url_resolution`, `url_draft` | 856$u | undocs.org links |
+| `amends_draft`, `final_symbol` | 993$a + join | amendments only: the draft the amendment was tabled to, and the final A/HRC/RES, DEC or PRST that draft became (745 of 749; empty when the draft was not adopted) |
+| `catalogue_date`, `date_source` | 269$a; derived | the catalogue's own date, and where `date` comes from: `OHCHR session page`, `OHCHR session page (same meeting)` or `catalogue` |
 
 ## `votes_long.csv`
 
@@ -263,7 +265,24 @@ the rest were adopted without a vote or only totals were published (totals are s
   the corpus majority: rec 21027 HUNGARY was `HND`, rec 21028 NORWAY was `PER`,
   rec 30508 BRAZIL was `BEN`. Left alone each moved one vote onto another state's
   profile. Every repair is printed at parse time.
-- One vote-code typo (`y` → `Y`, UK 2011) is normalised; nothing else is altered.
+- One vote-code typo (`y` → `Y`, UK 2011) is normalised.
+- **Symbols.** Adopted Council texts are recorded under their final symbol (A/HRC/RES, DEC,
+  PRST), never under the draft's L. symbol: an L. document is the text as tabled, which can
+  change at adoption or in editing. The L. symbols in the data are amendments (which are
+  never re-issued under another symbol), rejected, withdrawn or not-considered drafts.
+  `parse_marcxml.py` (`link_amendments`) gives each amendment the draft it amended and the
+  final text that draft became: 745 of 749. The amendment's own 993 note names the wrong
+  draft in a dozen cases (A/HRC/37/L.51–57 on prevention of genocide say "to draft
+  resolution L.1", the Eastern Ghouta text), so a link stands only when the two titles
+  agree; otherwise the final text is found by title within the session (13 cases).
+- **Dates.** The catalogue sometimes dates a Council text by its draft rather than its
+  adoption (A/HRC/RES/63/2: catalogued 24 September 2026, adopted 5 October 2026).
+  `apply_adoption_dates` takes the adoption date from OHCHR's per-session pages
+  (sessions 12–63, saved in `data/ohchr_session_pages/hrc_adoption_dates.txt`; the pages
+  sit behind a browser check), and gives amendments and other texts voted at the same
+  meeting that meeting's date. 218 dates move, all by 14 days or less, none to another
+  year; 2,329 are confirmed. The catalogue's date stays in `catalogue_date`. Sessions 1–11
+  have no such page and keep the catalogue's date.
 - **12 calendar years (1949, 1951, 1953, 1956–57, 1959–63, 1965, 1973) contain no
   recorded vote at all.** A state casting no roll-call in one of those years says
   nothing about its membership, so the Country profile draws no marker there.

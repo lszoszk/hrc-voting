@@ -236,7 +236,7 @@ def main():
         if r["url_resolution"].strip():
             links.append(f'<a href="{esc(r["url_resolution"])}">Adopted text</a>')
         if r["url_draft"].strip():
-            links.append(f'<a href="{esc(r["url_draft"])}">Draft</a>')
+            links.append(f'<a href="{esc(r["url_draft"])}">Draft {esc(r["url_draft"].rsplit("org/", 1)[-1])}</a>')
         body = (f'<h1>{esc(title)}</h1><p class="sub">{esc(r["symbol"])} · {esc(r["date"])} · {esc(r["body"])}</p>'
                 f"<dl>{dl}</dl><p class=sub>Sources: {' · '.join(links)}</p>"
                 f'<div class="cols">{"".join(groups_html)}</div>'

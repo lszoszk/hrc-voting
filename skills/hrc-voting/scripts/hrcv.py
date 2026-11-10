@@ -223,6 +223,11 @@ def cmd_resolution(d, a):
         cast, absent = d.ga_cast.get(rid, {}), d.ga_absent.get(rid, [])
     print(f"{r['symbol']} — {trim_title(r['title'])}")
     print(f"  date {r['date']} · {r['body']}" + (" · AMENDMENT (not a resolution; a Yes may oppose the parent text)" if r.get("am") else ""))
+    if r.get("am") and (r.get("amends_draft") or r.get("final_symbol")):
+        print(f"  amends draft {r.get('amends_draft') or '(not named)'}" + (f"; that draft was adopted as {r['final_symbol']}"
+              if r.get("final_symbol") else "; that draft was not adopted (or is not in the catalogue)"))
+    elif not r.get("am") and (r.get("draft") or "").strip():
+        print(f"  draft: {r['draft'].strip()}")
     for k, lab in (("agenda_subject", "subject"), ("main_sponsors", "main sponsors"), ("agenda_item_title", "agenda item")):
         if r.get(k, "").strip():
             print(f"  {lab}: {r[k].strip().rstrip(' -–—')}")
