@@ -357,6 +357,14 @@ def main():
             "subj": r["agenda_subject"].strip(),
             "vt": VT_CODE.get(r["vote_type"], "O"),
         }
+        if not is_amendment(r) and re.search(r"A/HRC/(RES|DEC|PRST)/", r["symbol"]):
+            # the draft L. symbol this text was adopted from: the Texts search finds the
+            # final text when someone types the draft's symbol
+            sess = r["symbol"].split("/")[-2]
+            drafts = re.findall(r"A/HRC/(?:S-)?\d+/L\.\d+(?:/Rev\.\d+)?", r["url_draft"] + " " + r["draft"])
+            drafts = [d for d in drafts if d.split("/")[2] == sess] or drafts
+            if drafts:
+                row["dr"] = drafts[0]
         if is_amendment(r):
             row["am"] = 1
             if r.get("amends_draft"):

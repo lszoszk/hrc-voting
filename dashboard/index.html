@@ -765,7 +765,7 @@ body.touring .ga-consent{display:none}
   <div class="panel">
     <div class="p-head"><span class="p-idx">01</span><span class="p-title">Search inside the resolutions<span class="exp-badge">experimental</span></span><span class="p-note" id="tx-cov"></span></div>
     <div class="p-body">
-      <div class="p-desc">Full-text search over the adopted texts — results are shown <b>clause by clause</b> (preambular / operative), so you see exactly where a term appears. Words combine with AND and <b>fold plurals automatically</b>; <b>OR</b> makes alternatives, quotes make exact phrases (<i>"religion or belief"</i> stays one phrase), a trailing <b>*</b> searches prefixes (<i>indigen*</i>), and <b>-word</b> excludes. Respects the global Scope filter.</div>
+      <div class="p-desc">Full-text search over the adopted texts — results are shown <b>clause by clause</b> (preambular / operative), so you see exactly where a term appears. Words combine with AND and <b>fold plurals automatically</b>; <b>OR</b> makes alternatives, quotes make exact phrases (<i>"religion or belief"</i> stays one phrase), a trailing <b>*</b> searches prefixes (<i>indigen*</i>), and <b>-word</b> excludes. A <b>document symbol</b> puts that text first (<i>A/HRC/RES/60/17</i>, <i>A/HRC/60/17</i>, <i>res 60/17</i>, or the draft <i>A/HRC/60/L.12</i>, which finds the resolution it became). Respects the global Scope filter.</div>
       <div class="fbar" style="margin:10px 0 4px">
         <div class="fitem fgrow"><label class="flbl" for="tx-q">Keywords or "exact phrase"</label><input class="tin w100" type="text" id="tx-q" autocomplete="off" placeholder="e.g. arbitrary detention · digital OR online · &quot;religion or belief&quot; · indigen* · -committee"></div>
         <div class="fitem"><label class="flbl" for="tx-body">Body</label><select class="sel" id="tx-body"><option value="">All bodies</option><option value="CHR">Commission</option><option value="HRC">Council</option><option value="GA">General Assembly</option></select></div>
@@ -2328,7 +2328,7 @@ async function txInit(){
   try{TX.cat=await txFetch('catalog.json');TX.ready=true;
     const ys=TX.cat.docs.map(d=>d[2]).filter(Boolean);
     TX.ymin=Math.min(...ys);TX.ymax=Math.max(...ys);
-    const chips=[['arbitrary detention',''],['"religion or belief"','phrase'],['digital OR online','OR'],['disappearance','folds plurals'],['indigen*','prefix'],['torture -committee','exclude']];
+    const chips=[['A/HRC/60/17','symbol'],['arbitrary detention',''],['"religion or belief"','phrase'],['digital OR online','OR'],['disappearance','folds plurals'],['indigen*','prefix'],['torture -committee','exclude']];
     $('tx-chips').innerHTML='<span class="flbl" style="margin:0 4px 0 0">Try:</span>'+chips.map(c=>'<button class="chip" data-q="'+esc(c[0]).replace(/"/g,'&quot;')+'">'+esc(c[0])+(c[1]?' <span style="color:var(--dimmer)">·'+c[1]+'</span>':'')+'</button>').join('');
   }catch(e){TX.err=String(e);}
 }
@@ -2367,6 +2367,49 @@ async function txResolve(word){
   for(const k of terms)for(const [id,tf] of sh[k])posts.set(id,Math.max(posts.get(id)||0,tf));
   return {word,terms,posts,df:posts.size};
 }
+/* A typed document symbol finds that text first. People write symbols loosely
+   ("A/HRC/60/17", "res 60/17", "60/17", the draft "A/HRC/60/L.12"), so each symbol-like
+   token is expanded to the forms the catalogue uses; a draft L. symbol also finds the
+   text it was adopted as. Matches ignore the year/body filters and the amendments scope. */
+const TXS={cat:null,ra:null,dr:null,res:null};
+function txSymMaps(){
+  if(!TXS.cat&&TX.cat){TXS.cat=new Map();TX.cat.docs.forEach((d,i)=>TXS.cat.set(d[0].toUpperCase(),i));}
+  if(!TXS.ra){TXS.ra=new Map();TXS.dr=new Map();TXS.res=new Map();
+    RA.forEach(r=>{TXS.ra.set((r.sym||'').toUpperCase(),r);if(r.dr)TXS.dr.set(r.dr.toUpperCase().replace(/\/REV\.\d+$/,''),r);});
+    RES.forEach(r=>{if(r.sym&&!TXS.ra.has(r.sym.toUpperCase()))TXS.res.set(r.sym.toUpperCase(),r);});}
+}
+function txSymCands(tok){
+  const t=tok.toUpperCase().replace(/[.,;:]+$/,'');let m;
+  if((m=t.match(/^A\/HRC\/((?:S-)?\d+)\/(\d+)$/)))      /* A/HRC/60/17 — the report with that number is not a vote record */
+    return [['A/HRC/RES/'+m[1]+'/'+m[2],'resolution '+m[1]+'/'+m[2]],['A/HRC/DEC/'+m[1]+'/'+m[2],'decision '+m[1]+'/'+m[2]],['A/HRC/PRST/'+m[1]+'/'+m[2],'President’s statement '+m[1]+'/'+m[2]]];
+  if((m=t.match(/^(?:HRC\/)?(RES|DEC|PRST)?\/?((?:S-)?\d{1,2})\/(\d{1,3})$/))){
+    const k=m[1]?[m[1]]:['RES','DEC','PRST'],out=k.map(x=>['A/HRC/'+x+'/'+m[2]+'/'+m[3],'']);
+    if(!m[1]||m[1]==='RES')out.push(['A/RES/'+m[2]+'/'+m[3],'']);return out;}
+  if((m=t.match(/^(?:E\/CN\.4\/)?(RES|DEC)?\/?(19[4-9]\d|200[0-6])\/(\d{1,3})$/)))
+    return (m[1]?[m[1]]:['RES','DEC']).map(x=>['E/CN.4/'+x+'/'+m[2]+'/'+m[3],'']);
+  return [[t,'']];
+}
+function txSymbolPins(qraw){
+  txSymMaps();
+  const q=qraw.replace(/\b(?:resolution|res|decision|dec)\.?\s+(?=(?:S-)?\d)/gi,m=>/^d/i.test(m)?'DEC/':'RES/');
+  const pins=[],seen=new Set();let rest=q;
+  const add=(sym,note)=>{const u=sym.toUpperCase();if(seen.has(u))return false;
+    let i=TXS.cat.has(u)?TXS.cat.get(u):null,r=TXS.ra.get(u)||TXS.res.get(u)||null;
+    if(i==null&&!r)return false;
+    seen.add(u);const d=i!=null?TX.cat.docs[i]:[r.sym,r.id,r.year,r.body,r.vt||'V',r.am?1:0,r.subj||'',r.t||r.title||''];
+    pins.push({i,d,s:1e9,pin:note||'',noText:i==null});return true;};
+  for(const tok of (q.match(/[A-Za-z0-9.\-()]*\/[A-Za-z0-9.\/()\-]+/g)||[])){
+    let hit=false;
+    for(const [c,note] of txSymCands(tok))if(add(c,note?'Symbol match: '+note:'Symbol match'))hit=true;
+    const lb=tok.toUpperCase().replace(/[.,;:]+$/,'').replace(/\/REV\.\d+$/,'');
+    if(/\/L\.\d+$/.test(lb)&&TXS.dr.has(lb)){const r=TXS.dr.get(lb);
+      if(add(r.sym,'Draft '+tok.toUpperCase().replace(/[.,;:]+$/,'')+' was adopted as '+r.sym))hit=true;}
+    if(hit)rest=rest.replace(tok,' ');
+  }
+  /* only symbol-like tokens and none found: say so instead of matching "hrc" and "99" */
+  const symOnly=!pins.length&&/\//.test(q)&&q.trim().split(/\s+/).every(w=>/\/.*\d|\d.*\//.test(w));
+  return {pins,rest:rest.replace(/\s+/g,' ').trim(),symOnly};
+}
 let _txSeq=0,_txT=null;
 async function txSearch(){
   const qraw=$('tx-q').value.trim(),seq=++_txSeq,res=$('tx-results'),st=$('tx-status');
@@ -2381,8 +2424,13 @@ async function txSearch(){
   if($('tx-ymin').options.length===0){
     for(let y=TX.ymin;y<=TX.ymax;y++){$('tx-ymin').add(new Option(y,y));$('tx-ymax').add(new Option(y,y));}
     $('tx-ymax').value=TX.ymax;}
+  const sp=qraw.length>=3?txSymbolPins(qraw):{pins:[],rest:qraw};
+  if(sp.symOnly){st.textContent='No document with this symbol in the catalogue ('+fmt(TX.cat.n)+' texts, plus the vote records). Check the symbol, or search by words.';res.innerHTML='';TX.q=null;return;}
+  if(sp.pins.length&&!sp.rest){
+    TX.q={hits:sp.pins,phrases:[],shown:0,seq,hlRe:/(?!)/g,pinOnly:true};
+    await txRenderMore(true);return;}
   if(qraw.length<3){st.textContent='Type at least 3 characters — or try an example above. '+fmt(TX.cat.n)+' adopted texts are searchable, clause by clause.';res.innerHTML='';TX.q=null;return;}
-  const {groups,minus}=txParse(qraw);
+  const {groups,minus}=txParse(sp.pins.length?sp.rest:qraw);
   if(!groups.length){st.textContent='Only very common words — add something more specific.';res.innerHTML='';TX.q=null;return;}
   st.textContent='Searching…';
   /* resolve every distinct word once (with plural folding / prefix expansion) */
@@ -2418,7 +2466,9 @@ async function txSearch(){
   const allTerms=[...new Set(terms.flatMap(r=>r.terms))];
   const phrases=groups.flatMap(g=>g.phrases);
   const esc_=x=>x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-  TX.q={hits,phrases,shown:0,seq,
+  if(sp.pins.length){const pinned=new Set(sp.pins.filter(p=>p.i!=null).map(p=>p.i));
+    hits=hits.filter(h=>!pinned.has(h.i));}
+  TX.q={hits,phrases,shown:0,seq,pins:sp.pins,
         hlRe:new RegExp('('+[...phrases.map(esc_),...allTerms.map(esc_)].join('|')+')','gi')};
   /* phrase queries: verify against clause text up-front so counts are exact */
   if(phrases.length){
@@ -2435,11 +2485,13 @@ async function txSearch(){
   await txRenderMore(true);
 }
 function txSort(){
-  if(!TX.q)return;
+  if(!TX.q||TX.q.pinOnly)return;
   const m=$('tx-sort').value;
+  if(TX.q.pins&&TX.q.pins.length){const P=new Set(TX.q.pins);TX.q.hits=TX.q.hits.filter(h=>!P.has(h));}
   TX.q.hits.sort(m==='new'?((a,b)=>b.d[2]-a.d[2]||b.s-a.s)
                :m==='old'?((a,b)=>a.d[2]-b.d[2]||b.s-a.s)
                :((a,b)=>b.s-a.s||b.d[2]-a.d[2]));
+  if(TX.q.pins&&TX.q.pins.length)TX.q.hits=TX.q.pins.concat(TX.q.hits);
 }
 async function txRenderMore(reset){
   const Q=TX.q;if(!Q)return;
@@ -2456,16 +2508,18 @@ async function txRenderMore(reset){
     let snips=cls.map(c=>({k:c[0],t:c[1],n:(c[1].match(Q.hlRe)||[]).length})).filter(c=>c.n>0);
     if(Q.phrases.length){const ps=snips.filter(c=>Q.phrases.some(ph=>c.t.toLowerCase().includes(ph)));if(ps.length)snips=ps;}
     snips.sort((a,b)=>b.n-a.n);
-    const ri=byIdRES[id],canOpen=ri!=null;
+    const ri=byIdRES[id],canOpen=ri!=null,noTx=h.i==null;
     out.push('<div class="tx-card"><div class="tx-head">'+
       '<span class="tx-year">'+year+'</span>'+
       (canOpen?'<a class="reslink" role="button" tabindex="0" data-ri="'+ri+'" title="View roll-call + text">'+esc(sym)+'</a>'
+              :noTx?'<a class="reslink" href="'+recUrl(id)+'" target="_blank" rel="noopener" title="Open the OHCHR record">'+esc(sym)+'</a>'
               :'<a class="reslink" role="button" tabindex="0" data-tx="'+h.i+'" title="View adopted text">'+esc(sym)+'</a>')+
       '<a class="srclink" style="margin-left:0" href="'+recUrl(id)+'" target="_blank" rel="noopener" aria-label="Open '+esc(sym)+' on OHCHR (new tab)"><span aria-hidden="true">↗</span></a>'+
-      (am?'<span class="pill pX" style="font-size:8px;padding:0 4px">AMD</span>':'')+
+      (am?amdPill(RA.find(r=>r.id===id)||{am:1}):'')+
       '<span class="pill '+(vt==='C'?'pC':(vt==='V'||vt==='VC')?'pV':'pX')+'" style="font-size:8px;padding:0 5px">'+(vt==='C'?'No vote':(vt==='V'||vt==='VC')?'Voted':esc(vt))+'</span>'+
       (subj?'<span class="tx-subj">'+esc(tc(subj))+'</span>':'')+'</div>'+
       '<div class="tx-title">'+esc(title||'')+'</div>'+
+      (h.pin?'<div class="tx-status" style="margin-top:2px"><b>'+esc(h.pin)+'</b>'+(noTx?' · full text not in the search index yet; open the record':'')+'</div>':'')+
       snips.slice(0,3).map(c=>{const b=clauseBody(c.t);
         return '<div class="tx-clause"><span class="tx-cl-k">'+c.k+'</span>'+
         esc(b.length>420?b.slice(0,400)+'…':b).replace(Q.hlRe,'<mark>$1</mark>')+'</div>';}).join('')+
@@ -2476,7 +2530,9 @@ async function txRenderMore(reset){
   res.insertAdjacentHTML('beforeend',out.join(''));
   const left=Q.hits.length-Q.shown;
   if(left>0)res.insertAdjacentHTML('beforeend','<button class="palbtn" id="tx-more" type="button" style="margin:4px 0 8px">Show '+Math.min(40,left)+' more ('+fmt(left)+' left)</button>');
-  st.textContent=Q.hits.length
+  st.textContent=Q.pinOnly
+    ?(Q.hits.length===1?'Document symbol found':fmt(Q.hits.length)+' documents match this symbol')+' — add words to search the texts as well'
+    :Q.hits.length
     ?fmt(Q.hits.length)+' matching text'+(Q.hits.length>1?'s':'')+' · sorted by '+({rel:'relevance',new:'newest first',old:'oldest first'})[$('tx-sort').value]+' — clause labels: PP = preambular, OP = operative, AX = annexed instrument'
     :'No match in the indexed corpus — currently '+fmt(TX.cat.n)+' texts, '+TX.ymin+'–'+TX.ymax+'. Texts up to 2026 are still being harvested, so recent-era vocabulary (digital, internet, climate…) appears only as coverage grows.';
 }
